@@ -1,5 +1,5 @@
 /**
- * DbFeatureFlagProvider — Database-backed feature flag evaluation (Phase 285)
+ * DbFeatureFlagProvider -- Database-backed feature flag evaluation (Phase 285)
  *
  * Reads from tenant_feature_flag table. Supports:
  * - Boolean on/off flags
@@ -21,7 +21,7 @@ import {
   type TenantFeatureFlagRow,
 } from '../platform/pg/repo/module-repo.js';
 
-// ─── Deterministic Hash Rollout ────────────────────────────────
+// --- Deterministic Hash Rollout --------------------------------
 
 /**
  * Produce a deterministic number 0-99 from (flagKey, userId/tenantId).
@@ -34,7 +34,7 @@ function rolloutBucket(flagKey: string, seed: string): number {
   return val % 100;
 }
 
-// ─── Targeting Evaluation ──────────────────────────────────────
+// --- Targeting Evaluation --------------------------------------
 
 function evaluateTargetingRules(rules: UserTargetingRule[], context: FlagContext): boolean {
   if (!rules.length) return true; // No rules = pass
@@ -69,7 +69,7 @@ function evaluateTargetingRules(rules: UserTargetingRule[], context: FlagContext
   return true; // All rules passed
 }
 
-// ─── Provider Implementation ───────────────────────────────────
+// --- Provider Implementation -----------------------------------
 
 export class DbFeatureFlagProvider implements FeatureFlagProvider {
   readonly providerType = 'db' as const;
@@ -128,7 +128,7 @@ export class DbFeatureFlagProvider implements FeatureFlagProvider {
     // No-op: DB connections managed externally
   }
 
-  // ─── Internal ──────────────────────────────────────────────
+  // --- Internal ----------------------------------------------
 
   private evaluateRow(row: TenantFeatureFlagRow, context: FlagContext): FlagEvaluationResult {
     // 1. Basic on/off check

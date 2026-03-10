@@ -30,7 +30,7 @@ if (!existsSync(SUMMARY_FILE)) {
 
 const summary: AuditSummary = JSON.parse(readFileSync(SUMMARY_FILE, 'utf-8'));
 
-// ── Severity rubric ─────────────────────────────────────────────
+// -- Severity rubric ---------------------------------------------
 
 const SEVERITY_ORDER = ['critical', 'high', 'medium', 'low', 'info'] as const;
 const SEVERITY_EMOJI: Record<string, string> = {
@@ -41,7 +41,7 @@ const SEVERITY_EMOJI: Record<string, string> = {
   info: 'INFO',
 };
 
-// ── Collect failures and warnings ───────────────────────────────
+// -- Collect failures and warnings -------------------------------
 
 interface TriageItem {
   severity: string;
@@ -78,7 +78,7 @@ items.sort((a, b) => {
   return ai - bi;
 });
 
-// ── Generate markdown ───────────────────────────────────────────
+// -- Generate markdown -------------------------------------------
 
 const lines: string[] = [];
 lines.push('# Alignment Audit Triage Report');

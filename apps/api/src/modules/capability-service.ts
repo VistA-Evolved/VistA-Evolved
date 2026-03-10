@@ -1,5 +1,5 @@
 /**
- * Capability Service — Phase 37C.
+ * Capability Service -- Phase 37C.
  *
  * Resolves effective capabilities for a tenant based on:
  *   1. Module enablement (from module registry)
@@ -112,9 +112,9 @@ export function getCapabilityDefinitions(): Record<string, CapabilityDefinition>
  * Resolve effective capabilities for a tenant.
  *
  * Resolution logic:
- * 1. If module is disabled → capability is "disabled"
- * 2. If adapter is required but unavailable → capability is "pending"
- * 3. Otherwise → use configured status
+ * 1. If module is disabled -> capability is "disabled"
+ * 2. If adapter is required but unavailable -> capability is "pending"
+ * 3. Otherwise -> use configured status
  */
 export function resolveCapabilities(tenantId: string = 'default'): ResolvedCapability[] {
   const results: ResolvedCapability[] = [];
@@ -135,7 +135,7 @@ export function resolveCapabilities(tenantId: string = 'default'): ResolvedCapab
         effectiveStatus = 'pending';
         reason = `Adapter '${def.adapter}' is not loaded`;
       } else if (adapter._isStub) {
-        // Stub adapter → mark as pending unless already pending
+        // Stub adapter -> mark as pending unless already pending
         if (effectiveStatus === 'live') {
           effectiveStatus = 'pending';
           reason = `Adapter '${def.adapter}' is using stub implementation`;

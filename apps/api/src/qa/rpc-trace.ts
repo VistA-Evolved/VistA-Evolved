@@ -6,24 +6,24 @@
  * In-memory ring buffer that captures every RPC call with timing,
  * request context (via AsyncLocalStorage), and PHI-safe metadata.
  *
- * Max 5000 entries, FIFO eviction. No persistence — resets on restart.
+ * Max 5000 entries, FIFO eviction. No persistence -- resets on restart.
  */
 
 import { createHash, randomUUID } from 'node:crypto';
 import type { RpcTraceEntry, RpcTraceStats } from './types.js';
 
-/* ── Config ───────────────────────────────────────────────── */
+/* -- Config ------------------------------------------------- */
 
 const MAX_BUFFER_SIZE = Number(process.env.RPC_TRACE_BUFFER_SIZE || 5000);
 const ENABLED = process.env.RPC_TRACE_ENABLED !== 'false'; // on by default
 
-/* ── Ring Buffer ──────────────────────────────────────────── */
+/* -- Ring Buffer -------------------------------------------- */
 
 const buffer: RpcTraceEntry[] = [];
 let writeIndex = 0;
 let totalRecorded = 0;
 
-/* ── PHI Sanitization ─────────────────────────────────────── */
+/* -- PHI Sanitization --------------------------------------- */
 
 /**
  * Hash a DUZ so traces never contain raw user identifiers.
@@ -35,14 +35,14 @@ function hashDuz(duz: string): string {
 
 /**
  * Redact RPC parameters that may contain PHI.
- * - Patient DFN → "dfn:***"
- * - SSN patterns → "***-**-****"
+ * - Patient DFN -> "dfn:***"
+ * - SSN patterns -> "***-**-****"
  * - Long strings truncated to 50 chars
  */
 function sanitizeParams(params: string[]): string[] {
   return params.map((p, i) => {
     if (!p) return '';
-    // First param is often DFN — always redact
+    // First param is often DFN -- always redact
     if (i === 0 && /^\d+$/.test(p)) return `dfn:${p.slice(0, 1)}***`;
     // SSN pattern
     if (/\d{3}-?\d{2}-?\d{4}/.test(p)) return '***-**-****';
@@ -52,7 +52,7 @@ function sanitizeParams(params: string[]): string[] {
   });
 }
 
-/* ── Public API ───────────────────────────────────────────── */
+/* -- Public API --------------------------------------------- */
 
 export interface RecordRpcOptions {
   rpcName: string;

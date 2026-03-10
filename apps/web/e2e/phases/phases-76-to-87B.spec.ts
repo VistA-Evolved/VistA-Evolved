@@ -454,7 +454,7 @@ test.describe("Phase 87: Mega Prompt Audit: IMPLEMENT", () => {
   });
 });
 
-test.describe("Phase 87B: Philippines RCM Foundation (PayerOps core) — IMPLEMENT", () => {
+test.describe("Phase 87B: Philippines RCM Foundation (PayerOps core) -- IMPLEMENT", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/rcm/payerops/adapters`);
     expect(r0.status(), "/rcm/payerops/adapters not 500").not.toBe(500);

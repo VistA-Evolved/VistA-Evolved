@@ -40,7 +40,7 @@ export class StripeBillingProvider implements BillingProvider {
       'Content-Type': 'application/x-www-form-urlencoded',
     };
 
-    const options: RequestInit = { method, headers };
+    const options: RequestInit = { method, headers, signal: AbortSignal.timeout(15_000) };
     if (body) {
       options.body = new URLSearchParams(body).toString();
     }
@@ -143,7 +143,8 @@ export class StripeBillingProvider implements BillingProvider {
         `/invoices/upcoming?subscription=${existing.externalId}`,
       );
       return this.mapInvoice(inv, tenantId);
-    } catch {
+    } catch (err) {
+      log.debug('Stripe getUpcomingInvoice failed', { tenantId, error: String(err) });
       return null;
     }
   }
@@ -154,7 +155,12 @@ export class StripeBillingProvider implements BillingProvider {
     } else if (this.webhookSecret) {
       throw new Error('Missing Stripe-Signature header');
     } else {
-      log.warn('Stripe webhook: STRIPE_WEBHOOK_SECRET not set, skipping signature verification');
+      // In rc/prod mode, require webhook verification -- refuse to process unverified payloads
+      const mode = (process.env.PLATFORM_RUNTIME_MODE || 'dev').toLowerCase();
+      if (mode === 'rc' || mode === 'prod') {
+        throw new Error('STRIPE_WEBHOOK_SECRET must be set in rc/prod mode');
+      }
+      log.warn('Stripe webhook: STRIPE_WEBHOOK_SECRET not set, skipping signature verification (dev only)');
     }
 
     const body = payload as Record<string, unknown>;

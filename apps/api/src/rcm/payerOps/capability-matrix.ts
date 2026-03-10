@@ -12,7 +12,7 @@
 
 import { randomBytes, randomUUID } from 'node:crypto';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 export type CapabilityType =
   | 'eligibility'
@@ -58,11 +58,11 @@ function cellKey(payerId: string, capability: CapabilityType): string {
   return `${payerId}::${capability}`;
 }
 
-/* ── Store ──────────────────────────────────────────────────── */
+/* -- Store ---------------------------------------------------- */
 
 const matrix = new Map<string, PayerCapability>();
 
-/* ── DB audit sink (Phase 114 -- durable audit trail) ───────── */
+/* -- DB audit sink (Phase 114 -- durable audit trail) --------- */
 
 type AuditRepo = {
   getDb: () => any;
@@ -111,7 +111,7 @@ function auditMutation(
   }
 }
 
-/* ── CRUD ────────────────────────────────────────────────────── */
+/* -- CRUD ------------------------------------------------------ */
 
 /**
  * Get or create a capability cell. If not set, returns default (manual/none/no evidence).

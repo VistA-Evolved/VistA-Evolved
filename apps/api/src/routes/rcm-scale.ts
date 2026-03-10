@@ -1,18 +1,18 @@
 /**
- * RCM Scale Hardening — API Routes
+ * RCM Scale Hardening -- API Routes
  *
  * Phase 242 (Wave 6 P5): Batch submission, health monitoring dashboard,
  * and circuit breaker management endpoints.
  *
  * Routes:
- *   POST /rcm/batch/submit           — Submit a batch of claims
- *   GET  /rcm/batch/:batchId         — Get batch status
- *   GET  /rcm/batch                  — List recent batches
- *   GET  /rcm/connectors/health/live — Live health probe (triggers immediate probe)
- *   GET  /rcm/connectors/health/history — Health timeline for all connectors
- *   GET  /rcm/connectors/health/:id  — Health history for one connector
- *   GET  /rcm/connectors/circuit-breakers — Circuit breaker states
- *   POST /rcm/connectors/circuit-breakers/:id/reset — Reset a circuit breaker
+ *   POST /rcm/batch/submit           -- Submit a batch of claims
+ *   GET  /rcm/batch/:batchId         -- Get batch status
+ *   GET  /rcm/batch                  -- List recent batches
+ *   GET  /rcm/connectors/health/live -- Live health probe (triggers immediate probe)
+ *   GET  /rcm/connectors/health/history -- Health timeline for all connectors
+ *   GET  /rcm/connectors/health/:id  -- Health history for one connector
+ *   GET  /rcm/connectors/circuit-breakers -- Circuit breaker states
+ *   POST /rcm/connectors/circuit-breakers/:id/reset -- Reset a circuit breaker
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -51,7 +51,7 @@ export default async function rcmScaleRoutes(server: FastifyInstance): Promise<v
     return null;
   }
 
-  /** POST /rcm/batch/submit — Submit a batch of claims */
+  /** POST /rcm/batch/submit -- Submit a batch of claims */
   server.post('/rcm/batch/submit', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -72,7 +72,7 @@ export default async function rcmScaleRoutes(server: FastifyInstance): Promise<v
     return reply.code(202).send({ ok: true, batch });
   });
 
-  /** GET /rcm/batch/:batchId — Get batch status */
+  /** GET /rcm/batch/:batchId -- Get batch status */
   server.get('/rcm/batch/:batchId', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -86,7 +86,7 @@ export default async function rcmScaleRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, batch });
   });
 
-  /** GET /rcm/batch — List recent batches */
+  /** GET /rcm/batch -- List recent batches */
   server.get('/rcm/batch', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -98,7 +98,7 @@ export default async function rcmScaleRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, count: batches.length, batches });
   });
 
-  /** GET /rcm/connectors/health/live — Trigger live health probe */
+  /** GET /rcm/connectors/health/live -- Trigger live health probe */
   server.get('/rcm/connectors/health/live', async (_request, reply) => {
     const results = await probeAllConnectors();
     return reply.send({
@@ -109,13 +109,13 @@ export default async function rcmScaleRoutes(server: FastifyInstance): Promise<v
     });
   });
 
-  /** GET /rcm/connectors/health/history — Get health timeline */
+  /** GET /rcm/connectors/health/history -- Get health timeline */
   server.get('/rcm/connectors/health/history', async (_request, reply) => {
     const history = getHealthHistory();
     return reply.send({ ok: true, count: history.length, connectors: history });
   });
 
-  /** GET /rcm/connectors/health/:id — Health history for one connector */
+  /** GET /rcm/connectors/health/:id -- Health history for one connector */
   server.get('/rcm/connectors/health/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const history = getConnectorHealthHistory(id);
@@ -125,13 +125,13 @@ export default async function rcmScaleRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, connector: history });
   });
 
-  /** GET /rcm/connectors/circuit-breakers — All CB states */
+  /** GET /rcm/connectors/circuit-breakers -- All CB states */
   server.get('/rcm/connectors/circuit-breakers', async (_request, reply) => {
     const stats = getConnectorCbStats();
     return reply.send({ ok: true, count: stats.length, circuitBreakers: stats });
   });
 
-  /** POST /rcm/connectors/circuit-breakers/:id/reset — Reset one CB */
+  /** POST /rcm/connectors/circuit-breakers/:id/reset -- Reset one CB */
   server.post('/rcm/connectors/circuit-breakers/:id/reset', async (request, reply) => {
     const { id } = request.params as { id: string };
     resetConnectorCb(id);

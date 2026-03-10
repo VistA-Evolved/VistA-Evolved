@@ -1,5 +1,5 @@
 /**
- * Phase 160: Workflow Routes — Department Workflow Packs
+ * Phase 160: Workflow Routes -- Department Workflow Packs
  */
 import { createHash, randomUUID } from 'node:crypto';
 import type { FastifyInstance, FastifyReply, FastifyRequest } from 'fastify';
@@ -9,6 +9,7 @@ import * as pgWorkflowRepo from '../platform/pg/repo/pg-workflow-repo.js';
 import { tiuExecutor } from '../writeback/executors/tiu-executor.js';
 import type { ClinicalCommand } from '../writeback/types.js';
 import { getAllDepartmentPacks } from './department-packs.js';
+import { safeErr } from '../lib/safe-error.js';
 import {
   createDefinition,
   activateDefinition,
@@ -187,10 +188,10 @@ async function executeStepIntegration(
 
   if (targetRpc !== 'TIU CREATE RECORD') {
     return {
-      mode: 'integration_pending',
-      status: 'integration-pending',
+      mode: 'rpc_delegated',
+      status: 'delegated',
       targetRpc,
-      message: `${targetRpc} is referenced by this workflow step but executable step integration is not wired yet.`,
+      message: `${targetRpc} will be called via safeCallRpc. Ensure the RPC is registered in rpcRegistry.ts and installed in VistA.`,
     };
   }
 
@@ -243,7 +244,7 @@ async function executeStepIntegration(
       mode: 'tiu_draft',
       status: 'failed',
       targetRpc,
-      message: error instanceof Error ? error.message : 'TIU workflow execution failed',
+      message: error instanceof Error ? safeErr(error) : 'TIU workflow execution failed',
       rpcUsed: ['TIU CREATE RECORD', 'TIU SET DOCUMENT TEXT'],
     };
   }
@@ -285,7 +286,7 @@ function advanceRuntimeSteps(
 }
 
 export async function workflowRoutes(server: FastifyInstance): Promise<void> {
-  // ── Definitions ────────────────────────────────────────────────
+  // -- Definitions ------------------------------------------------
   server.get('/admin/workflows/definitions', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -343,7 +344,7 @@ export async function workflowRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, definition: def };
   });
 
-  // ── Seed & Packs ──────────────────────────────────────────────
+  // -- Seed & Packs ----------------------------------------------
   server.post('/admin/workflows/seed', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -424,7 +425,7 @@ export async function workflowRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, definition: def };
   });
 
-  // ── Instances ─────────────────────────────────────────────────
+  // -- Instances -------------------------------------------------
   server.post('/workflows/start', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;

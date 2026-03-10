@@ -1,5 +1,5 @@
 /**
- * Phase 405 (W23-P7): Consent + Purpose of Use — Routes
+ * Phase 405 (W23-P7): Consent + Purpose of Use -- Routes
  * Phase 494 (W34-P4): Auto-resolve pack granularity for directive creation
  */
 
@@ -20,7 +20,7 @@ import {
 import { getEffectivePolicy } from '../middleware/country-policy-hook.js';
 
 export default async function consentPouRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Consent Directives ────────────────────────────────────
+  // --- Consent Directives ------------------------------------
 
   server.get('/consent-pou/directives', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -106,7 +106,7 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
     }
   );
 
-  // ─── POU Enforcement ──────────────────────────────────────
+  // --- POU Enforcement --------------------------------------
 
   server.post('/consent-pou/evaluate', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -136,7 +136,7 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
     return { ok: true, evaluation: result };
   });
 
-  // ─── Disclosure Log ────────────────────────────────────────
+  // --- Disclosure Log ----------------------------------------
 
   server.get('/consent-pou/disclosures', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -151,7 +151,7 @@ export default async function consentPouRoutes(server: FastifyInstance): Promise
     };
   });
 
-  // ─── Dashboard ─────────────────────────────────────────────
+  // --- Dashboard ---------------------------------------------
 
   server.get('/consent-pou/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);

@@ -1,5 +1,5 @@
 /**
- * Pharmacy Writeback Contract Tests — Phase 303 (W12-P5)
+ * Pharmacy Writeback Contract Tests -- Phase 303 (W12-P5)
  *
  * Tests the Pharmacy executor through the command bus without a live VistA.
  * Validates: submission, dry-run, validation, safety, integration-pending.

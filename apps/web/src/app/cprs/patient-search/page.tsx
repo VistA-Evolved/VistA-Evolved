@@ -13,7 +13,7 @@ type PatientSearchResult = PatientSummary;
 
 /**
  * CPRS Patient Search / Selection page.
- * Mirrors frmPtSel from CPRS Delphi — patient list + search.
+ * Mirrors frmPtSel from CPRS Delphi -- patient list + search.
  */
 export default function CPRSPatientSearchPage() {
   const router = useRouter();
@@ -140,7 +140,7 @@ export default function CPRSPatientSearchPage() {
             autoFocus
             style={{ flex: 1 }}
           />
-          <button className={`${styles.btn} ${styles.btnPrimary}`} type="submit" disabled={loading}>
+          <button className={`${styles.btn} ${styles.btnPrimary}`} type="submit" disabled={loading} title={loading ? 'Patient search is already in progress.' : undefined}>
             {loading ? 'Searching...' : 'Search'}
           </button>
         </form>
@@ -199,8 +199,8 @@ export default function CPRSPatientSearchPage() {
                   >
                     <td>{p.name}</td>
                     <td>{p.dfn}</td>
-                    <td>{p.ssn || '—'}</td>
-                    <td>{p.dob || '—'}</td>
+                    <td>{p.ssn || '--'}</td>
+                    <td>{p.dob || '--'}</td>
                   </tr>
                 ))}
               </tbody>

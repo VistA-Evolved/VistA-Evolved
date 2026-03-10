@@ -26,7 +26,7 @@ const args = process.argv.slice(2);
 const command = args[0] || 'verify';
 const apiUrl = args.includes('--api') ? args[args.indexOf('--api') + 1] : 'http://localhost:3001';
 
-// ── Helpers ──
+// -- Helpers --
 
 function loadJson(path) {
   if (!existsSync(path)) return null;
@@ -39,7 +39,7 @@ function saveJson(path, data) {
   writeFileSync(path, JSON.stringify(data, null, 2) + '\n');
 }
 
-// ── Verify ──
+// -- Verify --
 
 function verify() {
   console.log('\n=== RPC Trace Verify ===\n');
@@ -95,7 +95,7 @@ function verify() {
   if (fail > 0) process.exit(1);
 }
 
-// ── Record ──
+// -- Record --
 
 async function record() {
   console.log(`\n=== RPC Trace Record (${apiUrl}) ===\n`);
@@ -138,7 +138,7 @@ async function record() {
   console.log(`  Written: ${CURRENT_PATH}\n`);
 }
 
-// ── Diff ──
+// -- Diff --
 
 function diff() {
   console.log('\n=== RPC Trace Diff ===\n');
@@ -187,7 +187,7 @@ function diff() {
   }
 }
 
-// ── Update ──
+// -- Update --
 
 function update() {
   console.log('\n=== RPC Trace Update ===\n');
@@ -205,7 +205,7 @@ function update() {
   console.log(`  Updated golden trace: ${GOLDEN_PATH}\n`);
 }
 
-// ── Main ──
+// -- Main --
 
 switch (command) {
   case 'verify':

@@ -58,33 +58,33 @@ describe('HL7v2 Use-Cases v1 -- Phase 260', () => {
 
     it('maps ADT^A01 to patient.admitted', () => {
       const content = fs.readFileSync(path.join(HL7_DIR, 'domain-mapper.ts'), 'utf-8');
-      expect(content).toContain('"patient.admitted"');
-      expect(content).toContain('A01: "patient.admitted"');
+      expect(content).toContain("'patient.admitted'");
+      expect(content).toContain("A01: 'patient.admitted'");
     });
 
     it('maps ADT^A03 to patient.discharged', () => {
       const content = fs.readFileSync(path.join(HL7_DIR, 'domain-mapper.ts'), 'utf-8');
-      expect(content).toContain('A03: "patient.discharged"');
+      expect(content).toContain("A03: 'patient.discharged'");
     });
 
     it('maps ADT^A08 to patient.updated', () => {
       const content = fs.readFileSync(path.join(HL7_DIR, 'domain-mapper.ts'), 'utf-8');
-      expect(content).toContain('A08: "patient.updated"');
+      expect(content).toContain("A08: 'patient.updated'");
     });
 
     it('maps ORU^R01 to result.received', () => {
       const content = fs.readFileSync(path.join(HL7_DIR, 'domain-mapper.ts'), 'utf-8');
-      expect(content).toContain('"result.received"');
+      expect(content).toContain("'result.received'");
     });
 
     it('maps SIU^S12 to appointment.booked', () => {
       const content = fs.readFileSync(path.join(HL7_DIR, 'domain-mapper.ts'), 'utf-8');
-      expect(content).toContain('S12: "appointment.booked"');
+      expect(content).toContain("S12: 'appointment.booked'");
     });
 
     it('maps SIU^S13 to appointment.rescheduled', () => {
       const content = fs.readFileSync(path.join(HL7_DIR, 'domain-mapper.ts'), 'utf-8');
-      expect(content).toContain('S13: "appointment.rescheduled"');
+      expect(content).toContain("S13: 'appointment.rescheduled'");
     });
 
     it('does not include patient names in domain event payload', () => {
@@ -98,9 +98,9 @@ describe('HL7v2 Use-Cases v1 -- Phase 260', () => {
 
     it('supports ADT, ORU, and SIU message families', () => {
       const content = fs.readFileSync(path.join(HL7_DIR, 'domain-mapper.ts'), 'utf-8');
-      expect(content).toContain('case "ADT"');
-      expect(content).toContain('case "ORU"');
-      expect(content).toContain('case "SIU"');
+      expect(content).toContain("case 'ADT'");
+      expect(content).toContain("case 'ORU'");
+      expect(content).toContain("case 'SIU'");
     });
   });
 

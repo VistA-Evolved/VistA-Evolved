@@ -1,5 +1,5 @@
 /**
- * QA Flow Catalog — Loader + Runner
+ * QA Flow Catalog -- Loader + Runner
  *
  * Phase 96B: QA/Audit OS v1.1
  *
@@ -11,13 +11,13 @@ import { readFileSync, readdirSync, existsSync } from 'node:fs';
 import { join, resolve } from 'node:path';
 import type { QaFlow, QaFlowResult, QaStepResult } from './types.js';
 
-/* ── Config ───────────────────────────────────────────────── */
+/* -- Config ------------------------------------------------- */
 
 const FLOWS_DIR = resolve(
   process.env.QA_FLOWS_DIR || join(process.cwd(), '..', '..', 'config', 'qa-flows')
 );
 
-/* ── Catalog ──────────────────────────────────────────────── */
+/* -- Catalog ------------------------------------------------ */
 
 const catalog = new Map<string, QaFlow>();
 
@@ -92,7 +92,7 @@ export function getFlowsByDomain(domain: string): QaFlow[] {
   return [...catalog.values()].filter((f) => f.domain === domain);
 }
 
-/* ── Runner ───────────────────────────────────────────────── */
+/* -- Runner ------------------------------------------------- */
 
 /**
  * Execute a QA flow against the API.
@@ -148,7 +148,7 @@ export async function executeFlow(
             headers['x-csrf-token'] = vars['csrfToken'];
           }
         } catch {
-          /* CSRF fetch failed — continue without it */
+          /* CSRF fetch failed -- continue without it */
         }
       }
 
@@ -236,7 +236,7 @@ export async function executeFlow(
   };
 }
 
-/* ── Helpers ──────────────────────────────────────────────── */
+/* -- Helpers ------------------------------------------------ */
 
 /**
  * Replace {{variable}} placeholders in a string.
@@ -258,7 +258,7 @@ function resolveJsonPath(obj: any, path: string): any {
   return current;
 }
 
-/* ── Results Store (in-memory) ────────────────────────────── */
+/* -- Results Store (in-memory) ------------------------------ */
 
 const MAX_RESULTS = 200;
 const results: QaFlowResult[] = [];

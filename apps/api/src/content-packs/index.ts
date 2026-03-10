@@ -1,5 +1,5 @@
 /**
- * Phase 390 (W22-P2): Content Pack Framework v2 — Barrel export
+ * Phase 390 (W22-P2): Content Pack Framework v2 -- Barrel export
  */
 export { default as contentPackRoutes } from './pack-routes.js';
 

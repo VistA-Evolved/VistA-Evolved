@@ -1,5 +1,5 @@
 /**
- * Order Check Types — Phase 434 (W27 P4)
+ * Order Check Types -- Phase 434 (W27 P4)
  *
  * Structured types for VistA order check system (ORWDXC RPCs).
  * Used by orders-cpoe.ts for the order-check endpoint and the
@@ -101,7 +101,7 @@ export interface PreSignCheckResult {
   /** Warnings (non-blocking) */
   warnings: string[];
   /** Source information */
-  source: 'vista' | 'integration-pending';
+  source: 'vista' | 'local';
   /** RPCs used */
   rpcUsed: string[];
 }

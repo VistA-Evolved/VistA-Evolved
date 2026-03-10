@@ -7,7 +7,7 @@
  * In sandbox mode, this connector serializes to the outbound queue
  * and returns simulated acknowledgments.
  *
- * Phase 38 — RCM + Payer Connectivity
+ * Phase 38 -- RCM + Payer Connectivity
  */
 
 import type { X12TransactionSet } from '../edi/types.js';
@@ -140,7 +140,7 @@ export class ClearinghouseConnector implements RcmConnector {
       healthy: hasConfig,
       details: hasConfig
         ? `Clearinghouse configured (${this.config.sftpHost || this.config.apiEndpoint})`
-        : 'No clearinghouse endpoint configured — operating in queue-only mode',
+        : 'No clearinghouse endpoint configured -- operating in queue-only mode',
     };
   }
 
@@ -150,7 +150,7 @@ export class ClearinghouseConnector implements RcmConnector {
     this.inboundQueue = [];
   }
 
-  /* ─── Test helpers ─────────────────────────────────────────────── */
+  /* --- Test helpers ----------------------------------------------- */
 
   getOutboundQueueSize(): number {
     return this.outboundQueue.length;

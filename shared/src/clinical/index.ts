@@ -1,5 +1,5 @@
 /**
- * Clinical types barrel — re-exports all canonical clinical types.
+ * Clinical types barrel -- re-exports all canonical clinical types.
  */
 
 export type {

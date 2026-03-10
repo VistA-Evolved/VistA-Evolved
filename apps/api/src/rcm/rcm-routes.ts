@@ -259,7 +259,7 @@ import {
   validatePayloadConformance,
 } from './conformance/gateway-conformance.js';
 
-/* ─── Submission safety (Phase 40) ───────────────────────────────── */
+/* --- Submission safety (Phase 40) --------------------------------- */
 
 function isSubmissionEnabled(): boolean {
   return process.env.CLAIM_SUBMISSION_ENABLED === 'true';
@@ -280,7 +280,7 @@ function getSubmissionSafetyStatus(): {
   };
 }
 
-/* ─── Initialize subsystems ──────────────────────────────────────── */
+/* --- Initialize subsystems ---------------------------------------- */
 
 let initialized = false;
 
@@ -395,12 +395,12 @@ async function ensureInitialized(): Promise<void> {
   scheduler.start();
 }
 
-/* ─── Route plugin ───────────────────────────────────────────────── */
+/* --- Route plugin ------------------------------------------------- */
 
 export default async function rcmRoutes(server: FastifyInstance): Promise<void> {
   await ensureInitialized();
 
-  /* ── Phase 49: RBAC guard for all RCM routes ──────────────────── */
+  /* -- Phase 49: RBAC guard for all RCM routes -------------------- */
   /*                                                                   */
   /* - GET (reads): require rcm:read (all authenticated clinical roles)*/
   /* - POST/PATCH/PUT/DELETE: require rcm:write (billing, admin)       */
@@ -411,7 +411,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   /*   POST /rcm/rules, PATCH /rcm/rules/:id, DELETE /rcm/rules/:id   */
   /*   POST /rcm/directory/refresh, POST /rcm/directory/import/:id     */
   /*   POST /rcm/payers/import/json                                    */
-  /* ─────────────────────────────────────────────────────────────────── */
+  /* ------------------------------------------------------------------- */
   server.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
     const url = request.url.split('?')[0];
     if (!url.startsWith('/rcm/')) return;
@@ -465,14 +465,14 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       return;
     }
 
-    // Read routes — rcm:read (all authenticated clinical roles)
+    // Read routes -- rcm:read (all authenticated clinical roles)
     requirePermission(session, 'rcm:read', reply, {
       requestId: (request as any).requestId,
       sourceIp: request.ip,
     });
   });
 
-  // ───── Health ────────────────────────────────────────────────────
+  // ----- Health ----------------------------------------------------
   server.get('/rcm/health', async (request: FastifyRequest) => {
     const tenantId = resolveTenantId(request);
     const payerStats = getPayerStats();
@@ -496,7 +496,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     };
   });
 
-  // ───── Payers ───────────────────────────────────────────────────
+  // ----- Payers ---------------------------------------------------
   server.get('/rcm/payers/stats', async () => {
     return { ok: true, stats: getPayerStats() };
   });
@@ -532,7 +532,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, payer };
   });
 
-  // ───── PATCH Payer (Phase 40) ───────────────────────────────────
+  // ----- PATCH Payer (Phase 40) -----------------------------------
   server.patch('/rcm/payers/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const existing = getPayer(id);
@@ -542,7 +542,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     const merged = {
       ...existing,
       ...body,
-      // Pin immutable fields — cannot be overwritten by user input
+      // Pin immutable fields -- cannot be overwritten by user input
       payerId: id,
       createdAt: existing.createdAt,
       country: existing.country,
@@ -552,7 +552,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, payer: getPayer(id) };
   });
 
-  // ───── CSV Payer Import (Phase 40) ──────────────────────────────
+  // ----- CSV Payer Import (Phase 40) ------------------------------
   server.post('/rcm/payers/import', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const csvText = body.csv;
@@ -609,7 +609,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, imported: imported.length, errors, payerIds: imported };
   });
 
-  // ───── Claims ────────────────────────────────────────────────────
+  // ----- Claims ----------------------------------------------------
   server.get('/rcm/claims/stats', async (request: FastifyRequest) => {
     const tenantId = resolveTenantId(request);
     return { ok: true, stats: getClaimStats(tenantId), store: getStoreStats() };
@@ -618,7 +618,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.get('/rcm/claims', async (request: FastifyRequest) => {
     const tenantId = resolveTenantId(request);
     const q = request.query as Record<string, string>;
-    const result = listClaims(tenantId, {
+    const result = await listClaims(tenantId, {
       status: q.status as ClaimStatus | undefined,
       patientDfn: q.patientDfn,
       payerId: q.payerId,
@@ -631,7 +631,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.get('/rcm/claims/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id, tenantId);
+    const claim = await getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
     return { ok: true, claim };
   });
@@ -684,7 +684,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.post('/rcm/claims/:id/validate', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id, tenantId);
+    const claim = await getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     const result = validateClaim(claim);
@@ -720,7 +720,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
     const idempotencyKey = (request.headers as Record<string, string>)['x-idempotency-key'] ?? '';
-    const claim = getClaim(id, tenantId);
+    const claim = await getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     // Idempotency guard: if already submitted with same key, return cached result
@@ -749,7 +749,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       });
     }
 
-    // ─── Submission safety gate (Phase 40) ───────────────────────
+    // --- Submission safety gate (Phase 40) -----------------------
     const safety = getSubmissionSafetyStatus();
     if (!safety.enabled) {
       // Export-only mode: generate X12 artifact and transition to ready_to_submit
@@ -795,7 +795,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
         safetyMode: 'export_only',
         message:
           'Claim exported as X12 artifact (CLAIM_SUBMISSION_ENABLED=false). Review artifact before enabling live submission.',
-          claim: getClaim(id, tenantId),
+          claim: await getClaim(id, tenantId),
         exportArtifact: exportResult,
       };
     }
@@ -857,7 +857,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       return {
         ok: true,
         submitted: true,
-        claim: getClaim(id, tenantId),
+        claim: await getClaim(id, tenantId),
         pipelineEntry: entry,
         connectorResult: result,
       };
@@ -889,13 +889,13 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
         return reply.code(400).send({ ok: false, error: 'newStatus is required' });
       }
 
-      const claim = getClaim(id, tenantId);
+      const claim = await getClaim(id, tenantId);
       if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
       if (!isValidTransition(claim.status, newStatus)) {
         return reply.code(400).send({
           ok: false,
-          error: `Invalid transition: ${claim.status} → ${newStatus}`,
+          error: `Invalid transition: ${claim.status} -> ${newStatus}`,
         });
       }
 
@@ -918,18 +918,18 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.get('/rcm/claims/:id/timeline', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id, tenantId);
+    const claim = await getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     const auditEntries = getRcmAuditEntries({ claimId: id, limit: 1000 });
     return { ok: true, claimId: id, timeline: auditEntries.items };
   });
 
-  // ───── Export Claim as X12 Artifact (Phase 40) ──────────────────
+  // ----- Export Claim as X12 Artifact (Phase 40) ------------------
   server.post('/rcm/claims/:id/export', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id, tenantId);
+    const claim = await getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     if (claim.status === 'draft') {
@@ -959,20 +959,20 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       detail: { action: 'export', exportPath: exportResult.path },
     });
 
-    return { ok: true, claim: getClaim(id, tenantId), exportArtifact: exportResult };
+    return { ok: true, claim: await getClaim(id, tenantId), exportArtifact: exportResult };
   });
 
-  // ───── Submission Safety Status (Phase 40) ──────────────────────
+  // ----- Submission Safety Status (Phase 40) ----------------------
   server.get('/rcm/submission-safety', async () => {
     const safety = getSubmissionSafetyStatus();
     return { ok: true, ...safety };
   });
 
-  // ───── Eligibility (Phase 69 route removed — superseded by Phase 100) ─────
+  // ----- Eligibility (Phase 69 route removed -- superseded by Phase 100) -----
   // Phase 100 registers POST /rcm/eligibility/check in eligibility/routes.ts
   // with adapter-first provenance tracking + durable SQLite persistence.
 
-  // ───── EDI Pipeline ─────────────────────────────────────────────
+  // ----- EDI Pipeline ---------------------------------------------
   server.get('/rcm/edi/pipeline', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = request.query as Record<string, string>;
     const tenantId = requireTenantId(request, reply);
@@ -994,7 +994,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, stats: getPipelineStats(tenantId) };
   });
 
-  // ───── Connectors ───────────────────────────────────────────────
+  // ----- Connectors -----------------------------------------------
   server.get('/rcm/connectors', async () => {
     return { ok: true, connectors: listConnectors() };
   });
@@ -1007,15 +1007,15 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, health: healthChecks };
   });
 
-  // ───── Validation Rules ─────────────────────────────────────────
+  // ----- Validation Rules -----------------------------------------
   server.get('/rcm/validation/rules', async () => {
     return { ok: true, rules: describeValidationRules() };
   });
 
-  // ───── Remittances ──────────────────────────────────────────────
+  // ----- Remittances ----------------------------------------------
   server.get('/rcm/remittances', async (request: FastifyRequest) => {
     const q = request.query as Record<string, string>;
-    const result = listRemittances(
+    const result = await listRemittances(
       resolveTenantId(request),
       Number(q.limit ?? 50),
       Number(q.offset ?? 0)
@@ -1031,7 +1031,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
         .send({ ok: false, error: 'payerId, checkNumber, and paymentAmount are required' });
     }
     if (body.claimId) {
-      const claim = getClaim(body.claimId, resolveTenantId(request));
+      const claim = await getClaim(body.claimId, resolveTenantId(request));
       if (!claim) {
         return reply.code(404).send({ ok: false, error: 'Claim not found' });
       }
@@ -1062,7 +1062,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     // Auto-match to claims if claimId provided
     let matched = false;
     if (body.claimId) {
-      matched = matchRemittanceToClaim(remittance.id, body.claimId);
+      matched = await matchRemittanceToClaim(remittance.id, body.claimId);
     }
 
     appendRcmAudit('remit.received', {
@@ -1082,7 +1082,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     });
   });
 
-  // ───── Audit ────────────────────────────────────────────────────
+  // ----- Audit ----------------------------------------------------
   server.get('/rcm/audit', async (request: FastifyRequest) => {
     const q = request.query as Record<string, string>;
     const result = getRcmAuditEntries({
@@ -1104,7 +1104,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, stats: getRcmAuditStats() };
   });
 
-  // ───── Job Queue (Phase 40 Superseding) ─────────────────────────
+  // ----- Job Queue (Phase 40 Superseding) -------------------------
   server.get('/rcm/jobs', async (request: FastifyRequest) => {
     const q = request.query as Record<string, string>;
     const queue = getJobQueue();
@@ -1166,7 +1166,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return reply.code(201).send({ ok: true, jobId });
   });
 
-  // ───── Payer Catalog Import via Importer Framework (Phase 40 Superceding) ──
+  // ----- Payer Catalog Import via Importer Framework (Phase 40 Superceding) --
   server.post('/rcm/payers/import/json', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const jsonData = body.data;
@@ -1188,7 +1188,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, imported: result.payers.length, errors: result.errors };
   });
 
-  // ───── Connector capability matrix (Phase 40 Superseding) ──────
+  // ----- Connector capability matrix (Phase 40 Superseding) ------
   server.get('/rcm/connectors/capabilities', async () => {
     const all = Array.from(getAllConnectors().values());
     const matrix = all.map((c) => ({
@@ -1200,7 +1200,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, connectors: matrix, total: matrix.length };
   });
 
-  // ───── VistA Binding Routes (Phase 40 Superseding) ─────────────
+  // ----- VistA Binding Routes (Phase 40 Superseding) -------------
   server.post(
     '/rcm/vista/encounter-to-claim',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -1271,7 +1271,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     if (!remittanceId) {
       return reply.code(400).send({ ok: false, error: 'remittanceId is required' });
     }
-    const remittance = getRemittance(remittanceId);
+    const remittance = await getRemittance(remittanceId);
     if (!remittance) {
       return reply.code(404).send({ ok: false, error: 'Remittance not found' });
     }
@@ -1286,7 +1286,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return result;
   });
 
-  // ───── Phase 42: Claim Draft from VistA Endpoints ──────────────
+  // ----- Phase 42: Claim Draft from VistA Endpoints --------------
 
   /** Create an RPC caller that uses the broker client */
   function makeRpcCaller(): RpcCaller {
@@ -1520,11 +1520,11 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     }
   });
 
-  // ═══════════════════════════════════════════════════════════════
-  // Phase 43 — Ack/Status/Remit Pipeline + Workqueues + Rules
-  // ═══════════════════════════════════════════════════════════════
+  // ===============================================================
+  // Phase 43 -- Ack/Status/Remit Pipeline + Workqueues + Rules
+  // ===============================================================
 
-  // ───── Ack Ingestion (999 / 277CA) ─────────────────────────────
+  // ----- Ack Ingestion (999 / 277CA) -----------------------------
   server.post('/rcm/acks/ingest', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const { type, disposition, originalControlNumber, ackControlNumber, idempotencyKey } = body;
@@ -1594,7 +1594,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, stats: getAckStats(tenantId) };
   });
 
-  // ───── Status Ingestion (276/277) ──────────────────────────────
+  // ----- Status Ingestion (276/277) ------------------------------
   server.post('/rcm/status/ingest', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const { categoryCode, statusCode, statusDescription, idempotencyKey } = body;
@@ -1660,11 +1660,11 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, stats: getStatusStats(tenantId) };
   });
 
-  // ───── Claim History (combined acks + status + remits) ─────────
+  // ----- Claim History (combined acks + status + remits) ---------
   server.get('/rcm/claims/:id/history', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id, tenantId);
+    const claim = await getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     const claimAcks = getAcksForClaim(tenantId, id);
@@ -1683,7 +1683,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     };
   });
 
-  // ───── Enhanced Remittance Ingestion (Phase 43) ────────────────
+  // ----- Enhanced Remittance Ingestion (Phase 43) ----------------
   server.post('/rcm/remittances/process', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const { payerId, totalCharged, totalPaid, idempotencyKey } = body;
@@ -1695,7 +1695,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
       });
     }
     if (body.claimId) {
-      const claim = getClaim(body.claimId, resolveTenantId(request));
+      const claim = await getClaim(body.claimId, resolveTenantId(request));
       if (!claim) {
         return reply.code(404).send({ ok: false, error: 'Claim not found' });
       }
@@ -1728,7 +1728,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, stats: getRemitProcessorStats() };
   });
 
-  // ───── Workqueues ──────────────────────────────────────────────
+  // ----- Workqueues ----------------------------------------------
   server.get('/rcm/workqueues', async (request: FastifyRequest) => {
     const q = request.query as Record<string, string>;
     const result = await listWorkqueueItems({
@@ -1787,13 +1787,13 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.get('/rcm/claims/:id/workqueue', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id, tenantId);
+    const claim = await getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
     const items = await getWorkqueueItemsForClaim(tenantId, id);
     return { ok: true, claimId: id, items, total: items.length };
   });
 
-  // ───── Payer Rules ────────────────────────────────────────────
+  // ----- Payer Rules --------------------------------------------
   server.get('/rcm/rules', async (request: FastifyRequest) => {
     const q = request.query as Record<string, string>;
     const result = listRules({
@@ -1898,7 +1898,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     let resolvedPayerId = payerId;
 
     if (claimId) {
-      const existingClaim = getClaim(claimId);
+      const existingClaim = await getClaim(claimId);
       if (!existingClaim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
       claim = existingClaim as unknown as Record<string, unknown>;
       resolvedPayerId = resolvedPayerId ?? existingClaim.payerId;
@@ -1917,7 +1917,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, ...result };
   });
 
-  // ───── CARC/RARC Reference ────────────────────────────────────
+  // ----- CARC/RARC Reference ------------------------------------
   server.get('/rcm/reference/carc', async (request: FastifyRequest) => {
     const q = request.query as Record<string, string>;
     if (q.code) {
@@ -1936,7 +1936,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, codes: RARC_CODES, total: Object.keys(RARC_CODES).length };
   });
 
-  // ───── Payer Directory (Phase 44) ─────────────────────────────
+  // ----- Payer Directory (Phase 44) -----------------------------
 
   /** GET /rcm/directory/stats -- directory statistics */
   server.get('/rcm/directory/stats', async () => {
@@ -2008,7 +2008,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     }
   );
 
-  // ───── Enrollment Packets (Phase 44) ──────────────────────────
+  // ----- Enrollment Packets (Phase 44) --------------------------
 
   /** GET /rcm/enrollment -- list all enrollment packets */
   server.get('/rcm/enrollment', async (request: FastifyRequest) => {
@@ -2058,13 +2058,13 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, packet };
   });
 
-  // ───── Claim Routing (Phase 44) ──────────────────────────────
+  // ----- Claim Routing (Phase 44) ------------------------------
 
   /** POST /rcm/claims/:id/route -- resolve route for a claim */
   server.post('/rcm/claims/:id/route', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = resolveTenantId(request);
     const { id } = request.params as { id: string };
-    const claim = getClaim(id, tenantId);
+    const claim = await getClaim(id, tenantId);
     if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
     const body = (request.body as any) || {};
@@ -2104,7 +2104,7 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, route };
   });
 
-  // ───── Transaction Engine (Phase 45) ──────────────────────────
+  // ----- Transaction Engine (Phase 45) --------------------------
 
   /** GET /rcm/transactions -- list transactions with optional filters */
   server.get('/rcm/transactions', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -2349,10 +2349,10 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     async (request: FastifyRequest, reply: FastifyReply) => {
       const tenantId = resolveTenantId(request);
       const { id } = request.params as { id: string };
-      const claim = getClaim(id, tenantId);
+      const claim = await getClaim(id, tenantId);
       if (!claim) return reply.code(404).send({ ok: false, error: 'Claim not found' });
 
-      const summary = buildReconciliationSummary(id);
+      const summary = await buildReconciliationSummary(id);
       return { ok: true, reconciliation: summary };
     }
   );
@@ -2361,13 +2361,13 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
   server.post('/rcm/claims/batch-reconciliation', async (request: FastifyRequest) => {
     const body = (request.body as any) || {};
     const claimIds = body.claimIds ?? [];
-    const stats = buildReconciliationStats(claimIds);
+    const stats = await buildReconciliationStats(claimIds);
     return { ok: true, stats };
   });
 
-  /* ═══════════════════════════════════════════════════════════════════
-   * Phase 46 — National Gateway Packs
-   * ═══════════════════════════════════════════════════════════════════ */
+  /* ===================================================================
+   * Phase 46 -- National Gateway Packs
+   * =================================================================== */
 
   /** GET /rcm/gateways/readiness -- Unified readiness for all gateways */
   server.get('/rcm/gateways/readiness', async (_request: FastifyRequest) => {
@@ -2432,9 +2432,9 @@ export default async function rcmRoutes(server: FastifyInstance): Promise<void> 
     }
   );
 
-  /* ═══════════════════════════════════════════════════════════════════
-   * Phase 69 — RCM Ops Excellence: Adapters, Polling, Jobs
-   * ═══════════════════════════════════════════════════════════════════ */
+  /* ===================================================================
+   * Phase 69 -- RCM Ops Excellence: Adapters, Polling, Jobs
+   * =================================================================== */
 
   /** GET /rcm/adapters -- List registered payer adapters */
   server.get('/rcm/adapters', async () => {

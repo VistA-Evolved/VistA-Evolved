@@ -1,14 +1,14 @@
 /**
- * Phase 79 — UI Preferences Routes (extended Phase 281 for theme packs)
+ * Phase 79 -- UI Preferences Routes (extended Phase 281 for theme packs)
  *
- * GET  /ui-prefs/coversheet   — Get user's coversheet layout (or defaults)
- * PUT  /ui-prefs/coversheet   — Save user's coversheet layout (partial merge allowed)
- * DELETE /ui-prefs/coversheet — Reset to defaults (deletes saved prefs)
- * GET  /ui-prefs/theme        — Get user's active theme pack + available packs
- * PUT  /ui-prefs/theme        — Set user's theme pack
+ * GET  /ui-prefs/coversheet   -- Get user's coversheet layout (or defaults)
+ * PUT  /ui-prefs/coversheet   -- Save user's coversheet layout (partial merge allowed)
+ * DELETE /ui-prefs/coversheet -- Reset to defaults (deletes saved prefs)
+ * GET  /ui-prefs/theme        -- Get user's active theme pack + available packs
+ * PUT  /ui-prefs/theme        -- Set user's theme pack
  *
  * All routes require session auth (covered by catch-all AUTH_RULES).
- * Audited via config.ui-prefs-save (metadata only — no PHI).
+ * Audited via config.ui-prefs-save (metadata only -- no PHI).
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -35,7 +35,7 @@ const VALID_THEME_IDS = new Set([
   'high-contrast',
 ]);
 
-/* Theme pack metadata (server-side, no tokens — tokens live in web) */
+/* Theme pack metadata (server-side, no tokens -- tokens live in web) */
 const THEME_PACK_LIST = [
   { id: 'modern-default', name: 'Modern Default', category: 'built-in', isDark: false },
   { id: 'modern-dark', name: 'Modern Dark', category: 'built-in', isDark: true },
@@ -167,7 +167,7 @@ export default async function uiPrefsRoutes(server: FastifyInstance): Promise<vo
   /* ----------------------------------------------------------------
    * GET /ui-prefs/theme
    * Returns the user's active theme pack + available theme packs.
-   * Resolution: user pref → tenant default → "modern-default"
+   * Resolution: user pref -> tenant default -> "modern-default"
    * ---------------------------------------------------------------- */
   server.get('/ui-prefs/theme', async (request, reply) => {
     const session = await requireSession(request, reply);

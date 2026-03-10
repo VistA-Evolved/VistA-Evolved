@@ -171,7 +171,7 @@ export default function MedsPanel({ dfn }: Props) {
               </div>
               <div className={styles.formGroup}>
                 <label>Sig</label>
-                <div>{selected.sig || '—'}</div>
+                <div>{selected.sig || '--'}</div>
               </div>
               <div className={styles.formGroup}>
                 <label>Status</label>

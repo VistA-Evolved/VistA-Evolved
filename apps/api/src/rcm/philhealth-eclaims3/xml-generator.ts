@@ -1,5 +1,5 @@
 /**
- * PhilHealth eClaims 3.0 — XML Generator (Placeholder)
+ * PhilHealth eClaims 3.0 -- XML Generator (Placeholder)
  *
  * Phase 96: Strict interface with "spec pending" implementation.
  *
@@ -23,7 +23,7 @@ import type {
   XmlValidationResult,
 } from './types.js';
 
-/* ── XML Escaping ───────────────────────────────────────────── */
+/* -- XML Escaping --------------------------------------------- */
 
 function escapeXml(s: string): string {
   return s
@@ -34,14 +34,14 @@ function escapeXml(s: string): string {
     .replace(/'/g, '&apos;');
 }
 
-/* ── Placeholder Implementation ─────────────────────────────── */
+/* -- Placeholder Implementation ------------------------------- */
 
 /**
  * Placeholder XML generator. Produces structurally representative XML
  * but is NOT schema-compliant (schema not yet available).
  *
  * Every output includes:
- *   - XML comment: "SPEC_PENDING — NOT FOR PRODUCTION SUBMISSION"
+ *   - XML comment: "SPEC_PENDING -- NOT FOR PRODUCTION SUBMISSION"
  *   - specBased: false in metadata
  */
 export function generatePlaceholderXml(packet: ClaimPacket): XmlGeneratorResult {
@@ -49,7 +49,7 @@ export function generatePlaceholderXml(packet: ClaimPacket): XmlGeneratorResult 
 
   lines.push('<?xml version="1.0" encoding="UTF-8"?>');
   lines.push('<!-- ============================================================ -->');
-  lines.push('<!-- SPEC_PENDING — NOT FOR PRODUCTION SUBMISSION                 -->');
+  lines.push('<!-- SPEC_PENDING -- NOT FOR PRODUCTION SUBMISSION                 -->');
   lines.push('<!-- This XML is a structural placeholder for eClaims 3.0.        -->');
   lines.push('<!-- Replace with schema-compliant output when spec is available.  -->');
   lines.push('<!-- ============================================================ -->');
@@ -57,7 +57,7 @@ export function generatePlaceholderXml(packet: ClaimPacket): XmlGeneratorResult 
     `<eClaimsCF version="3.0" specStatus="PENDING" generatedAt="${escapeXml(packet.assembledAt)}">`
   );
 
-  // CF1 — Facility + Patient
+  // CF1 -- Facility + Patient
   lines.push('  <CF1>');
   lines.push(`    <FacilityCode>${escapeXml(packet.facility.facilityCode)}</FacilityCode>`);
   lines.push(`    <FacilityName>${escapeXml(packet.facility.facilityName)}</FacilityName>`);
@@ -94,7 +94,7 @@ export function generatePlaceholderXml(packet: ClaimPacket): XmlGeneratorResult 
   }
   lines.push('  </CF1>');
 
-  // CF2 — Diagnoses + Procedures
+  // CF2 -- Diagnoses + Procedures
   lines.push('  <CF2>');
   lines.push(
     `    <ClaimType>${packet.patientType === 'I' ? 'inpatient' : 'outpatient'}</ClaimType>`
@@ -120,7 +120,7 @@ export function generatePlaceholderXml(packet: ClaimPacket): XmlGeneratorResult 
   );
   lines.push('  </CF2>');
 
-  // CF3 — Professional Fees (if any)
+  // CF3 -- Professional Fees (if any)
   if (packet.professionalFees.length > 0) {
     lines.push('  <CF3>');
     for (const fee of packet.professionalFees) {
@@ -137,7 +137,7 @@ export function generatePlaceholderXml(packet: ClaimPacket): XmlGeneratorResult 
     lines.push('  </CF3>');
   }
 
-  // CF4 — Charges (if any)
+  // CF4 -- Charges (if any)
   if (packet.charges.length > 0) {
     lines.push('  <CF4>');
     for (const c of packet.charges) {
@@ -177,7 +177,7 @@ export function generatePlaceholderXml(packet: ClaimPacket): XmlGeneratorResult 
   return { ok: false, reason: 'eClaims 3.0 XML schema not yet available.', placeholderXml: xml };
 }
 
-/* ── Placeholder Validator ──────────────────────────────────── */
+/* -- Placeholder Validator ------------------------------------ */
 
 export function validatePlaceholderXml(xml: string): XmlValidationResult {
   const errors: Array<{ path: string; message: string }> = [];
@@ -188,7 +188,7 @@ export function validatePlaceholderXml(xml: string): XmlValidationResult {
   if (!xml.includes('SPEC_PENDING')) {
     errors.push({
       path: '/',
-      message: 'Missing SPEC_PENDING marker — may be invalid placeholder.',
+      message: 'Missing SPEC_PENDING marker -- may be invalid placeholder.',
     });
   }
   if (!xml.includes('<eClaimsCF')) {
@@ -202,7 +202,7 @@ export function validatePlaceholderXml(xml: string): XmlValidationResult {
   };
 }
 
-/* ── XmlGenerator instance (placeholder) ────────────────────── */
+/* -- XmlGenerator instance (placeholder) ---------------------- */
 
 export const placeholderXmlGenerator: XmlGeneratorInterface = {
   specAvailable: false,

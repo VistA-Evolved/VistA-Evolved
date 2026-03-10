@@ -55,14 +55,14 @@ describe('Support Tooling v2 -- Phase 263', () => {
         'stores',
         'tenant',
       ]) {
-        expect(c).toContain(`"${s}"`);
+        expect(c).toContain(`'${s}'`);
       }
     });
 
     it('supports 4 correlation types', () => {
       const c = fs.readFileSync(storePath, 'utf-8');
       for (const t of ['hl7_event', 'hl7_dlq', 'posture_gate', 'audit_entry']) {
-        expect(c).toContain(`"${t}"`);
+        expect(c).toContain(`'${t}'`);
       }
     });
 

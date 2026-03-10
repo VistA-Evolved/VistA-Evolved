@@ -1,5 +1,5 @@
 /**
- * Audit Shipping Manifest — Phase 157
+ * Audit Shipping Manifest -- Phase 157
  *
  * Generates SHA-256 integrity manifests for uploaded audit JSONL chunks.
  * Each manifest records the content hash, entry range, and chain linkage
@@ -38,7 +38,7 @@ export function buildManifest(
     const firstEntry = JSON.parse(lines[0]);
     firstSeq = firstEntry.seq || 0;
   } catch {
-    /* malformed line — seq stays 0 */
+    // Malformed first line -- seq stays 0
   }
 
   try {
@@ -46,7 +46,7 @@ export function buildManifest(
     lastSeq = lastEntry.seq || 0;
     lastEntryHash = lastEntry.hash || '';
   } catch {
-    /* malformed line */
+    // Malformed last line -- seq stays 0
   }
 
   return {

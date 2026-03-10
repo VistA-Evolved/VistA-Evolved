@@ -4,7 +4,7 @@
  * Phase 464 (W31-P1). In-memory ED tracking store.
  * Manages ED visits, beds, and board metrics.
  *
- * Phase 523 (W38): PG write-through — fire-and-forget durability.
+ * Phase 523 (W38): PG write-through -- fire-and-forget durability.
  */
 
 import { randomBytes } from 'crypto';
@@ -19,7 +19,7 @@ import type {
   EdBoardMetrics,
 } from './types.js';
 
-// ── PG Write-Through (Phase 523 / W38) ────────────────────────────
+// -- PG Write-Through (Phase 523 / W38) ----------------------------
 
 interface EdDbRepo {
   insertEdVisit(data: any): Promise<any>;
@@ -41,12 +41,12 @@ function dbWarn(op: string, err: any): void {
   }
 }
 
-// ── Stores ─────────────────────────────────────────────────────────
+// -- Stores ---------------------------------------------------------
 
 const visits = new Map<string, EdVisit>();
 const beds = new Map<string, EdBed>();
 
-// ── Seed default beds ──────────────────────────────────────────────
+// -- Seed default beds ----------------------------------------------
 
 function seedBeds() {
   const zones = [
@@ -69,7 +69,7 @@ function seedBeds() {
 }
 seedBeds();
 
-// ── Visit CRUD ─────────────────────────────────────────────────────
+// -- Visit CRUD -----------------------------------------------------
 
 export function createVisit(
   patientDfn: string,
@@ -130,7 +130,7 @@ export function updateVisitStatus(id: string, status: EdVisitStatus): boolean {
   return true;
 }
 
-// ── Triage ─────────────────────────────────────────────────────────
+// -- Triage ---------------------------------------------------------
 
 export function triageVisit(id: string, triage: TriageAssessment): boolean {
   const visit = visits.get(id);
@@ -148,7 +148,7 @@ export function triageVisit(id: string, triage: TriageAssessment): boolean {
   return true;
 }
 
-// ── Bed Assignment ─────────────────────────────────────────────────
+// -- Bed Assignment -------------------------------------------------
 
 export function assignBed(visitId: string, bedId: string, assignedBy: string): boolean {
   const visit = visits.get(visitId);
@@ -203,7 +203,7 @@ export function listBeds(): EdBed[] {
   return Array.from(beds.values());
 }
 
-// ── Disposition ────────────────────────────────────────────────────
+// -- Disposition ----------------------------------------------------
 
 export function disposeVisit(
   id: string,
@@ -251,7 +251,7 @@ export function disposeVisit(
   return true;
 }
 
-// ── Board Metrics ──────────────────────────────────────────────────
+// -- Board Metrics --------------------------------------------------
 
 export function getBoardMetrics(): EdBoardMetrics {
   const all = Array.from(visits.values());

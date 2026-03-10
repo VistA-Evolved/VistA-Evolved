@@ -29,7 +29,7 @@ metadata:
     {{- include "ve-tenant.labels" . | nindent 4 }}
 type: Opaque
 data:
-  # Placeholder — real secrets injected by SOPS/External Secrets/sealed-secrets
+  # Placeholder -- real secrets injected by SOPS/External Secrets/sealed-secrets
   PLATFORM_PG_PASSWORD: {{ "changeme-in-production" | b64enc | quote }}
   VISTA_ADMIN_ACCESS: {{ "REPLACEME" | b64enc | quote }}
   VISTA_ADMIN_VERIFY: {{ "REPLACEME" | b64enc | quote }}

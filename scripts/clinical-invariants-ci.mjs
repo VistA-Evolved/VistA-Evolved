@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Clinical Invariants CI Runner + Drift Detector — Phase 268
+ * Clinical Invariants CI Runner + Drift Detector -- Phase 268
  *
  * Runs invariant test suite and detects changes in VistA output formats
  * that could break parsers.
@@ -9,8 +9,8 @@
  *   node scripts/clinical-invariants-ci.mjs [--output-dir <dir>]
  *
  * Outputs:
- *   invariants-report.json  — machine-readable results
- *   drift-report.json       — parser drift detection results
+ *   invariants-report.json  -- machine-readable results
+ *   drift-report.json       -- parser drift detection results
  */
 
 import { execSync } from 'node:child_process';
@@ -85,7 +85,7 @@ if (invariantFiles.length > 0) {
 }
 
 // ---------------------------------------------------------------------------
-// Step 2: Drift detection — hash fixture responses
+// Step 2: Drift detection -- hash fixture responses
 // ---------------------------------------------------------------------------
 
 console.log('\nRunning drift detection on fixtures...');

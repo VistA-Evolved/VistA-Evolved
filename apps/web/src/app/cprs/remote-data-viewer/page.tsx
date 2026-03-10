@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Remote Data Viewer — Phase 18E enhanced.
+ * Remote Data Viewer -- Phase 18E enhanced.
  *
  * View clinical data from remote facilities and external systems.
  * Phase 18 upgrades:
@@ -144,7 +144,7 @@ export default function RemoteDataViewerPage() {
           setExternalSources(external);
         }
       } catch {
-        /* ignore — admin API may not be accessible for non-admin users */
+        /* ignore -- admin API may not be accessible for non-admin users */
       }
 
       setLoading(false);
@@ -157,7 +157,7 @@ export default function RemoteDataViewerPage() {
     setQuerying(true);
     setQueryResult(null);
 
-    // Attempt real API call; fall back to integration-pending notice
+    // Attempt real API call; fall back to unavailable notice
     (async () => {
       try {
         const res = await fetch(
@@ -183,7 +183,7 @@ export default function RemoteDataViewerPage() {
     const domainLabel =
       REMOTE_DOMAINS.find((d) => d.id === selectedDomain)?.label || selectedDomain;
     const lines = [
-      '--- INTEGRATION PENDING ---',
+      '--- DATA UNAVAILABLE ---',
       '',
       `Domain: ${domainLabel}`,
       `Source: ${source ? `${source.label} (${source.type})` : `CIRN Facility ${facilityId}`}`,
@@ -354,7 +354,7 @@ export default function RemoteDataViewerPage() {
               {REMOTE_DOMAINS.find((d) => d.id === selectedDomain)?.label || 'Results'}
               {selectedFacility && (
                 <span style={{ fontSize: 11, fontWeight: 400, color: 'var(--cprs-text-muted)' }}>
-                  {' — '}
+                  {' -- '}
                   {facilities.find((f) => f.id === selectedFacility)?.name ||
                     externalSources.find((s) => s.id === selectedFacility)?.label ||
                     selectedFacility}
@@ -413,9 +413,9 @@ export default function RemoteDataViewerPage() {
             >
               <strong>Architecture (Phase 18E):</strong>
               <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
-                <li>ORWCIRN FACLIST — Lists connected remote VistA facilities</li>
-                <li>ORWCIRN HDRA — Retrieves remote patient data by facility + domain</li>
-                <li>C0FHIR Suite — FHIR R4 via MUMPS-native RPC (WorldVistA)</li>
+                <li>ORWCIRN FACLIST -- Lists connected remote VistA facilities</li>
+                <li>ORWCIRN HDRA -- Retrieves remote patient data by facility + domain</li>
+                <li>C0FHIR Suite -- FHIR R4 via MUMPS-native RPC (WorldVistA)</li>
                 <li>External FHIR servers and HL7v2 feeds from Integration Registry</li>
                 <li>Patient correlation via ICN (Integration Control Number)</li>
               </ul>

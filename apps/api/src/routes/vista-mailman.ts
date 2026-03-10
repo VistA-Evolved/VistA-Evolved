@@ -1,13 +1,13 @@
 /**
- * Phase 130 — VistA MailMan Bridge: Clinician-facing routes.
+ * Phase 130 -- VistA MailMan Bridge: Clinician-facing routes.
  *
  * Wraps existing ZVEMSGR.m RPCs via secure-messaging.ts service layer.
  * Routes:
- *   GET  /vista/mailman/inbox           — Inbox messages (VistA basket 1 / fallback)
- *   GET  /vista/mailman/message/:ien    — Single message by IEN
- *   POST /vista/mailman/send            — Send via VistA MailMan
- *   POST /vista/mailman/manage          — Mark read / delete / move
- *   GET  /vista/mailman/folders         — List MailMan baskets/folders
+ *   GET  /vista/mailman/inbox           -- Inbox messages (VistA basket 1 / fallback)
+ *   GET  /vista/mailman/message/:ien    -- Single message by IEN
+ *   POST /vista/mailman/send            -- Send via VistA MailMan
+ *   POST /vista/mailman/manage          -- Mark read / delete / move
+ *   GET  /vista/mailman/folders         -- List MailMan baskets/folders
  *
  * Auth: session (matches /^\/vista\// AUTH_RULE).
  * Security: message bodies NEVER in audit/logs.
@@ -89,7 +89,7 @@ export default async function vistaMailmanRoutes(server: FastifyInstance) {
 
     try {
       const result = await getVistaMessage(ien);
-      // Audit: metadata only — never log message body
+      // Audit: metadata only -- never log message body
       immutableAudit('messaging.read', result.ok ? 'success' : 'failure', auditActor(request), {
         detail: { route: '/vista/mailman/message', ien, source: result.source },
       });
@@ -129,7 +129,7 @@ export default async function vistaMailmanRoutes(server: FastifyInstance) {
         body.priority || 'routine'
       );
 
-      // Audit: metadata only — never log message body
+      // Audit: metadata only -- never log message body
       immutableAudit('messaging.send', result.ok ? 'success' : 'failure', auditActor(request), {
         detail: {
           route: '/vista/mailman/send',

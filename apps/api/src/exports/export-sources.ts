@@ -1,5 +1,5 @@
 /**
- * Export Data Sources — Phase 245: Data Exports v2
+ * Export Data Sources -- Phase 245: Data Exports v2
  *
  * Pluggable data source registry. Each source provides a name,
  * a category, and a fetch function that returns rows.
@@ -47,7 +47,7 @@ export interface ExportSourceDescriptor {
 const sourceRegistry = new Map<string, ExportSourceDescriptor>();
 
 /**
- * Register a data source. Idempotent — re-registering replaces the previous.
+ * Register a data source. Idempotent -- re-registering replaces the previous.
  */
 export function registerSource(source: ExportSourceDescriptor): void {
   sourceRegistry.set(source.id, source);
@@ -106,9 +106,9 @@ registerSource({
   label: 'Platform Audit Trail',
   category: 'audit',
   description: 'Immutable audit events from the platform audit trail',
-  estimateRows: () => 0, // lazy — actual count depends on runtime
+  estimateRows: () => 0, // lazy -- actual count depends on runtime
   fetchRows: async (filters) => {
-    // Delegate to audit query — import lazily to avoid circular deps
+    // Delegate to audit query -- import lazily to avoid circular deps
     try {
       const { queryAuditEvents } = await import('../lib/audit.js');
       const events = queryAuditEvents({
@@ -123,7 +123,8 @@ registerSource({
         timestamp: e.timestamp,
         detail: JSON.stringify(e.detail ?? {}),
       }));
-    } catch {
+    } catch (err) {
+      log.debug('Export source audit-events fetch failed', { error: String(err) });
       return [];
     }
   },
@@ -154,7 +155,8 @@ registerSource({
         timestamp: e.timestamp,
         tags: JSON.stringify(e.tags ?? {}),
       }));
-    } catch {
+    } catch (err) {
+      log.debug('Export source analytics-events fetch failed', { error: String(err) });
       return [];
     }
   },
@@ -192,7 +194,8 @@ registerSource({
         p95: b.p95,
         p99: b.p99,
       }));
-    } catch {
+    } catch (err) {
+      log.debug('Export source analytics-aggregated fetch failed', { error: String(err) });
       return [];
     }
   },

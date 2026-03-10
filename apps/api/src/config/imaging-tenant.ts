@@ -1,5 +1,5 @@
 /**
- * Multi-tenant Imaging Configuration — Phase 24.
+ * Multi-tenant Imaging Configuration -- Phase 24.
  *
  * Maps tenantId/facilityId to imaging infrastructure endpoints.
  * Each tenant can have its own Orthanc instance (or namespace),
@@ -46,7 +46,7 @@ export interface TenantImagingConfig {
 const tenantConfigs = new Map<string, TenantImagingConfig>();
 
 /**
- * Default tenant config — used for single-tenant development.
+ * Default tenant config -- used for single-tenant development.
  * All values come from IMAGING_CONFIG (env-overridable).
  */
 const DEFAULT_TENANT_ID = process.env.DEFAULT_TENANT_ID || 'default';
@@ -139,7 +139,7 @@ export function isAeTitleAllowed(tenantId: string, facilityId: string, aeTitle: 
 
 /**
  * Get the Orthanc URL for a given tenant+facility.
- * This is the internal URL used by the API proxy — never exposed to browsers.
+ * This is the internal URL used by the API proxy -- never exposed to browsers.
  */
 export function getOrthancUrl(tenantId: string, facilityId?: string): string {
   const cfg = resolveImagingConfig(tenantId, facilityId);

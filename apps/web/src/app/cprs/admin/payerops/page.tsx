@@ -1,13 +1,13 @@
 'use client';
 
 /**
- * PayerOps Admin — Phase 87: Philippines RCM Foundation
+ * PayerOps Admin -- Phase 87: Philippines RCM Foundation
  *
  * 4-tab interface:
- *   1. Enrollments — facility-payer enrollment lifecycle
- *   2. LOA Cases — Letter of Authorization request tracking
- *   3. Credential Vault — document storage for accreditation artifacts
- *   4. Adapters — view manual/portal adapter status
+ *   1. Enrollments -- facility-payer enrollment lifecycle
+ *   2. LOA Cases -- Letter of Authorization request tracking
+ *   3. Credential Vault -- document storage for accreditation artifacts
+ *   4. Adapters -- view manual/portal adapter status
  *
  * Accessible at /cprs/admin/payerops. Requires session + RCM module enabled.
  */
@@ -138,7 +138,7 @@ export default function PayerOpsPage() {
   );
 }
 
-/* ── Enrollments Tab ────────────────────────────────────────── */
+/* -- Enrollments Tab ------------------------------------------ */
 
 function EnrollmentsTab() {
   const [enrollments, setEnrollments] = useState<any[]>([]);
@@ -329,7 +329,7 @@ function EnrollmentForm({ onCreated }: { onCreated: () => void }) {
   );
 }
 
-/* ── LOA Cases Tab ──────────────────────────────────────────── */
+/* -- LOA Cases Tab -------------------------------------------- */
 
 function LOATab() {
   const [cases, setCases] = useState<any[]>([]);
@@ -624,7 +624,7 @@ function LOAForm({ onCreated }: { onCreated: () => void }) {
   );
 }
 
-/* ── Credentials Tab ────────────────────────────────────────── */
+/* -- Credentials Tab ------------------------------------------ */
 
 function CredentialsTab() {
   const [credentials, setCredentials] = useState<any[]>([]);
@@ -728,7 +728,7 @@ function CredentialsTab() {
   );
 }
 
-/* ── Adapters Tab ───────────────────────────────────────────── */
+/* -- Adapters Tab --------------------------------------------- */
 
 function AdaptersTab() {
   const [adapters, setAdapters] = useState<any[]>([]);
@@ -824,7 +824,7 @@ function AdaptersTab() {
   );
 }
 
-/* ── Shared Components ──────────────────────────────────────── */
+/* -- Shared Components ---------------------------------------- */
 
 function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, { bg: string; fg: string }> = {

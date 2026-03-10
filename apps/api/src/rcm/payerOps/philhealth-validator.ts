@@ -1,5 +1,5 @@
 /**
- * PhilHealth eClaims 3.0 Posture — Validation Engine
+ * PhilHealth eClaims 3.0 Posture -- Validation Engine
  *
  * Phase 90: Validates PhilHealth claim drafts against eClaims 3.0 rules.
  *
@@ -20,16 +20,16 @@ import type {
   PhilHealthValidationError,
 } from './philhealth-types.js';
 
-/* ── Configuration ───────────────────────────────────────────── */
+/* -- Configuration --------------------------------------------- */
 
-/** Default: April 1, 2026 — admissions on or after this date require eSOA */
+/** Default: April 1, 2026 -- admissions on or after this date require eSOA */
 const DEFAULT_ESOA_CUTOFF = '2026-04-01';
 
 function getEsoaCutoffDate(): string {
   return process.env.PHILHEALTH_ESOA_CUTOFF_DATE || DEFAULT_ESOA_CUTOFF;
 }
 
-/* ── PIN Validation ──────────────────────────────────────────── */
+/* -- PIN Validation -------------------------------------------- */
 
 /** PhilHealth PIN is typically 12 digits (e.g., 01-234567890-1) */
 const PIN_PATTERN = /^\d{2}-\d{9,10}-\d$/;
@@ -41,7 +41,7 @@ function isValidPin(pin: string): boolean {
   return PIN_PATTERN.test(pin) || PIN_LOOSE_PATTERN.test(cleaned);
 }
 
-/* ── Date helpers ────────────────────────────────────────────── */
+/* -- Date helpers ---------------------------------------------- */
 
 function isDateOnOrAfter(dateStr: string, cutoff: string): boolean {
   if (!dateStr || !cutoff) return false;
@@ -56,7 +56,7 @@ function isValidDate(dateStr: string | undefined): boolean {
   return !isNaN(d.getTime());
 }
 
-/* ── Main Validator ──────────────────────────────────────────── */
+/* -- Main Validator -------------------------------------------- */
 
 export function validatePhilHealthClaimDraft(
   draft: PhilHealthClaimDraft
@@ -67,7 +67,7 @@ export function validatePhilHealthClaimDraft(
   const esoaCutoff = getEsoaCutoffDate();
   const admissionRequiresEsoa = isDateOnOrAfter(draft.admissionDate, esoaCutoff);
 
-  // ── CF1 Required Fields (Facility + Patient Demographics) ──
+  // -- CF1 Required Fields (Facility + Patient Demographics) --
 
   if (!draft.facilityId) {
     errors.push({
@@ -156,7 +156,7 @@ export function validatePhilHealthClaimDraft(
     });
   }
 
-  // ── CF2 Required Fields (Diagnosis + Procedures) ──
+  // -- CF2 Required Fields (Diagnosis + Procedures) --
 
   if (draft.diagnoses.length === 0) {
     errors.push({
@@ -188,7 +188,7 @@ export function validatePhilHealthClaimDraft(
     }
   }
 
-  // ── Charges ──
+  // -- Charges --
 
   if (draft.charges.length === 0) {
     warnings.push({
@@ -227,7 +227,7 @@ export function validatePhilHealthClaimDraft(
     }
   }
 
-  // ── CF2b: Procedures ──
+  // -- CF2b: Procedures --
 
   if (draft.procedures.length > 0) {
     for (let i = 0; i < draft.procedures.length; i++) {
@@ -250,7 +250,7 @@ export function validatePhilHealthClaimDraft(
     });
   }
 
-  // ── CF3: Professional Fees (required for inpatient) ──
+  // -- CF3: Professional Fees (required for inpatient) --
 
   if (draft.patientType === 'I' && draft.professionalFees.length === 0) {
     warnings.push({
@@ -288,7 +288,7 @@ export function validatePhilHealthClaimDraft(
     }
   }
 
-  // ── Discharge date ──
+  // -- Discharge date --
 
   if (draft.patientType === 'I' && !draft.dischargeDate) {
     warnings.push({
@@ -309,7 +309,7 @@ export function validatePhilHealthClaimDraft(
     }
   }
 
-  // ── eClaims 3.0 eSOA Compliance ──
+  // -- eClaims 3.0 eSOA Compliance --
 
   const electronicSoaPresent = !!draft.soaElectronic;
   let scannedPdfDetected = false;

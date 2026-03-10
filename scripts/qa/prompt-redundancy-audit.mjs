@@ -28,7 +28,7 @@ const OUT_PATH = resolve(ROOT, 'docs/qa/prompt-redundancy-report.md');
 const args = process.argv.slice(2);
 const doMark = args.includes('--mark');
 
-// ── Load phase index ──
+// -- Load phase index --
 
 if (!existsSync(INDEX_PATH)) {
   console.error('ERROR: docs/qa/phase-index.json not found. Run: pnpm qa:phase-index');
@@ -38,7 +38,7 @@ if (!existsSync(INDEX_PATH)) {
 const raw = readFileSync(INDEX_PATH, 'utf-8');
 const index = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
 
-// ── Group by phase number ──
+// -- Group by phase number --
 
 const byPhaseNum = new Map();
 for (const p of index.phases) {
@@ -47,7 +47,7 @@ for (const p of index.phases) {
   byPhaseNum.get(key).push(p);
 }
 
-// ── Find exact duplicates (same phaseNumber, different folders) ──
+// -- Find exact duplicates (same phaseNumber, different folders) --
 
 const exactDuplicates = [];
 for (const [phaseNum, phases] of byPhaseNum) {
@@ -68,7 +68,7 @@ for (const [phaseNum, phases] of byPhaseNum) {
   }
 }
 
-// ── Fingerprint-based near-duplicate detection ──
+// -- Fingerprint-based near-duplicate detection --
 
 function fingerprint(phase) {
   const parts = [
@@ -113,7 +113,7 @@ for (const [fp, phases] of fpMap) {
   }
 }
 
-// ── Generate report ──
+// -- Generate report --
 
 const md = [];
 md.push('# Prompt Redundancy Report');
@@ -186,7 +186,7 @@ md.push('');
 mkdirSync(resolve(ROOT, 'docs/qa'), { recursive: true });
 writeFileSync(OUT_PATH, md.join('\n'));
 
-// ── Mark redundant folders with NOTES.md ──
+// -- Mark redundant folders with NOTES.md --
 
 const markedFolders = [];
 
@@ -212,7 +212,7 @@ if (doMark) {
   }
 }
 
-// ── Console summary ──
+// -- Console summary --
 
 console.log('\n=== Prompt Redundancy Audit ===\n');
 console.log(`  Exact duplicate phase numbers: ${exactDuplicates.length}`);

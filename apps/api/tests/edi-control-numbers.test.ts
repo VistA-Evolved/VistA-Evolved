@@ -1,5 +1,5 @@
 /**
- * EDI Control Number Tests — Phase 573B
+ * EDI Control Number Tests -- Phase 573B
  *
  * Verifies that:
  *   1. Control numbers are monotonically increasing

@@ -11,7 +11,7 @@
  *   - compare: both results returned side-by-side
  */
 
-// ── Types ──────────────────────────────────────────────────────────
+// -- Types ----------------------------------------------------------
 
 export type DualRunMode = 'off' | 'shadow' | 'compare';
 
@@ -56,7 +56,7 @@ export interface DualRunResult<T> {
   comparison?: DualRunComparison;
 }
 
-// ── In-memory stores ───────────────────────────────────────────────
+// -- In-memory stores -----------------------------------------------
 
 const comparisons: DualRunComparison[] = [];
 let comparisonSeq = 0;
@@ -67,7 +67,7 @@ const config: DualRunConfig = {
   maxLogEntries: 1000,
 };
 
-// ── Harness ────────────────────────────────────────────────────────
+// -- Harness --------------------------------------------------------
 
 export class DualRunHarness {
   getConfig(): DualRunConfig {
@@ -170,7 +170,7 @@ export class DualRunHarness {
   }
 }
 
-// ── Default shallow compare ────────────────────────────────────────
+// -- Default shallow compare ----------------------------------------
 
 function defaultCompare(a: unknown, b: unknown): FieldDiscrepancy[] {
   const discrepancies: FieldDiscrepancy[] = [];
@@ -195,6 +195,6 @@ function defaultCompare(a: unknown, b: unknown): FieldDiscrepancy[] {
   return discrepancies;
 }
 
-// ── Singleton ──────────────────────────────────────────────────────
+// -- Singleton ------------------------------------------------------
 
 export const dualRunHarness = new DualRunHarness();

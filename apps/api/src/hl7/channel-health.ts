@@ -1,5 +1,5 @@
 /**
- * HL7v2 Channel Health Monitor — Phase 279 (Wave 9)
+ * HL7v2 Channel Health Monitor -- Phase 279 (Wave 9)
  *
  * Aggregates health status across all configured tenant HL7 endpoints.
  * Tracks per-endpoint metrics: up/down, last message time, error rate,
@@ -12,7 +12,7 @@ import { listEndpoints, type Hl7TenantEndpoint } from './tenant-endpoints.js';
 import { listRoutes, getRouteStats, getDeadLetterQueue } from './routing/registry.js';
 import type { RouteStats } from './routing/types.js';
 
-/* ── Types ─────────────────────────────────────────────── */
+/* -- Types ----------------------------------------------- */
 
 export type EndpointHealthStatus = 'healthy' | 'degraded' | 'down' | 'unknown';
 
@@ -25,7 +25,7 @@ export interface EndpointHealth {
   lastMessageAt: number; // epoch ms, 0 = never
   messagesProcessed: number;
   messagesFailed: number;
-  errorRate: number; // 0.0 – 1.0
+  errorRate: number; // 0.0 - 1.0
   avgLatencyMs: number;
   activeConnections: number;
   uptimeMs: number;
@@ -46,7 +46,7 @@ export interface ChannelHealthSummary {
   checkedAt: string;
 }
 
-/* ── Health State Cache ────────────────────────────────── */
+/* -- Health State Cache ---------------------------------- */
 
 const endpointMetrics = new Map<
   string,
@@ -58,9 +58,9 @@ const endpointMetrics = new Map<
   }
 >();
 
-const ERROR_RATE_THRESHOLD_DEGRADED = 0.05; // 5% error rate → degraded
-const ERROR_RATE_THRESHOLD_DOWN = 0.5; // 50% error rate → down
-const STALE_THRESHOLD_MS = 5 * 60 * 1000; // 5 min no messages → unknown
+const ERROR_RATE_THRESHOLD_DEGRADED = 0.05; // 5% error rate -> degraded
+const ERROR_RATE_THRESHOLD_DOWN = 0.5; // 50% error rate -> down
+const STALE_THRESHOLD_MS = 5 * 60 * 1000; // 5 min no messages -> unknown
 
 /**
  * Record a message processed by an endpoint.
@@ -133,7 +133,7 @@ function computeEndpointHealth(endpoint: Hl7TenantEndpoint): EndpointHealth {
   };
 }
 
-/* ── Public API ────────────────────────────────────────── */
+/* -- Public API ------------------------------------------ */
 
 /**
  * Get aggregated health summary across all configured HL7 endpoints.

@@ -65,7 +65,7 @@ function fail(gate, detail) {
 
 console.log('\n=== QA Gate: Prompts Quality (Phase 211) ===\n');
 
-// ── Inventory ────────────────────────────────────────
+// -- Inventory ----------------------------------------
 
 const allEntries = readdirSync(PROMPTS_DIR);
 
@@ -203,7 +203,7 @@ for (const folder of phaseFolders) {
   }
 }
 
-// ── Summary ──────────────────────────────────────────
+// -- Summary ------------------------------------------
 
 console.log('\n=== Summary ===');
 console.log(`  Phase folders checked: ${phaseFolders.length}`);

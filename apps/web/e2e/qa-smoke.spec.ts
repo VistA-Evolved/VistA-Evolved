@@ -13,9 +13,9 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { setupConsoleGate } from './helpers/auth';
+import { TEST_ACCESS_CODE, TEST_DFN, TEST_VERIFY_CODE, chartRoute, setupConsoleGate } from './helpers/auth';
 
-const PATIENT_DFN = '3';
+const PATIENT_DFN = TEST_DFN;
 
 // All 18 CPRS chart tabs
 const TABS = [
@@ -65,8 +65,8 @@ test.describe('QA Smoke: Login', () => {
       const accessInput = page.locator('input').first();
       const submitButton = page.locator("button[type='submit']");
 
-      const accessCode = process.env.VISTA_ACCESS_CODE ?? 'PROV123';
-      const verifyCode = process.env.VISTA_VERIFY_CODE ?? 'PROV123!!';
+      const accessCode = TEST_ACCESS_CODE;
+      const verifyCode = TEST_VERIFY_CODE;
       await accessInput.fill(accessCode);
       await passwordInput.fill(verifyCode);
       await submitButton.click();
@@ -74,7 +74,7 @@ test.describe('QA Smoke: Login', () => {
       // Should redirect to patient search
       await page.waitForURL('**/cprs/patient-search**', { timeout: 20_000 });
     } else {
-      // Session already active or page redirected — verify we're on a working page
+      // Session already active or page redirected -- verify we're on a working page
       const bodyText = await page.textContent('body');
       expect(bodyText && bodyText.trim().length > 10, 'Page has visible content').toBeTruthy();
     }
@@ -161,12 +161,12 @@ test.describe('QA Smoke: CPRS Tabs', () => {
     for (const tab of TABS) {
       errors.length = 0;
 
-      await page.goto(`/cprs/chart/${PATIENT_DFN}/${tab}`);
+      await page.goto(chartRoute(tab, PATIENT_DFN));
       await page.waitForLoadState('domcontentloaded');
       await page.waitForTimeout(1500);
 
       const url = page.url();
-      if (!url.includes(`/cprs/chart/${PATIENT_DFN}/${tab}`)) {
+      if (!url.includes(chartRoute(tab, PATIENT_DFN))) {
         tabResults.push({ tab, status: 'FAIL', detail: `URL mismatch: ${url}` });
         continue;
       }

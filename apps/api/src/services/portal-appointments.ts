@@ -1,5 +1,5 @@
 /**
- * Portal Appointments — Phase 27
+ * Portal Appointments -- Phase 27
  *
  * Upcoming/past appointments, details, cancel/reschedule request flow.
  * In-memory store for dev mode. VistA scheduling RPCs not available in sandbox.
@@ -139,7 +139,7 @@ function rowToAppt(row: any): Appointment {
 }
 
 /** Seed demo appointments for dev patients */
-function seedDemoAppointments() {
+async function seedDemoAppointments() {
   const now = new Date();
 
   // Future appointments
@@ -208,7 +208,7 @@ function seedDemoAppointments() {
     };
     cacheAppt(appt);
     if (_repo) {
-      try { _repo.insertAppointment({
+      try { await _repo.insertAppointment({
         id: appt.id, tenantId: appt.tenantId,
         patientDfn: appt.patientDfn, patientName: appt.patientName,
         clinicId: appt.clinicId, clinicName: appt.clinicName,
@@ -226,9 +226,9 @@ if (process.env.NODE_ENV !== "production") seedDemoAppointments();
 /* Queries                                                              */
 /* ------------------------------------------------------------------ */
 
-export function getUpcomingAppointments(tenantId: string, patientDfn: string): Appointment[] {
+export async function getUpcomingAppointments(tenantId: string, patientDfn: string): Promise<Appointment[]> {
   if (_repo) {
-    try { return _repo.findUpcoming(tenantId, patientDfn).map(rowToAppt); } catch (e) { dbWarn("persist", e); }
+    try { return (await _repo.findUpcoming(tenantId, patientDfn)).map(rowToAppt); } catch (e) { dbWarn("persist", e); }
   }
   const now = new Date().toISOString();
   return [...appointmentCache.values()]
@@ -237,9 +237,9 @@ export function getUpcomingAppointments(tenantId: string, patientDfn: string): A
     .sort((a, b) => a.scheduledAt.localeCompare(b.scheduledAt));
 }
 
-export function getPastAppointments(tenantId: string, patientDfn: string): Appointment[] {
+export async function getPastAppointments(tenantId: string, patientDfn: string): Promise<Appointment[]> {
   if (_repo) {
-    try { return _repo.findPast(tenantId, patientDfn).map(rowToAppt); } catch (e) { dbWarn("persist", e); }
+    try { return (await _repo.findPast(tenantId, patientDfn)).map(rowToAppt); } catch (e) { dbWarn("persist", e); }
   }
   const now = new Date().toISOString();
   return [...appointmentCache.values()]
@@ -248,12 +248,12 @@ export function getPastAppointments(tenantId: string, patientDfn: string): Appoi
     .sort((a, b) => b.scheduledAt.localeCompare(a.scheduledAt));
 }
 
-export function getAppointment(appointmentId: string, tenantId: string, patientDfn: string): Appointment | null {
+export async function getAppointment(appointmentId: string, tenantId: string, patientDfn: string): Promise<Appointment | null> {
   const cached = appointmentCache.get(appointmentId);
   if (cached && cached.tenantId === tenantId && cached.patientDfn === patientDfn) return cached;
   if (_repo) {
     try {
-      const row = _repo.findAppointmentById(appointmentId);
+      const row = await _repo.findAppointmentById(appointmentId);
       if (row && row.tenantId === tenantId && row.patientDfn === patientDfn) { const a = rowToAppt(row); cacheAppt(a); return a; }
     } catch (e) { dbWarn("persist", e); }
   }
@@ -264,7 +264,7 @@ export function getAppointment(appointmentId: string, tenantId: string, patientD
 /* Request flows                                                        */
 /* ------------------------------------------------------------------ */
 
-export function requestAppointment(opts: {
+export async function requestAppointment(opts: {
   tenantId: string;
   patientDfn: string;
   patientName: string;
@@ -272,7 +272,7 @@ export function requestAppointment(opts: {
   appointmentType: AppointmentType;
   preferredDate: string;
   reason: string;
-}): Appointment {
+}): Promise<Appointment> {
   const id = `appt-${++apptSeq}-${randomBytes(4).toString("hex")}`;
   const appt: Appointment = {
     id,
@@ -287,7 +287,7 @@ export function requestAppointment(opts: {
     duration: 30,
     status: "pending_confirmation",
     reason: opts.reason.slice(0, 500),
-    notes: "Requested via patient portal — clinic will confirm.",
+    notes: "Requested via patient portal -- clinic will confirm.",
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
     vistaSync: "not_synced",
@@ -296,7 +296,7 @@ export function requestAppointment(opts: {
   };
 
   if (_repo) {
-    try { _repo.insertAppointment({
+    try { await _repo.insertAppointment({
       id: appt.id, tenantId: appt.tenantId,
       patientDfn: appt.patientDfn, patientName: appt.patientName,
       clinicId: appt.clinicId, clinicName: appt.clinicName,
@@ -315,13 +315,13 @@ export function requestAppointment(opts: {
   return appt;
 }
 
-export function requestCancellation(
+export async function requestCancellation(
   appointmentId: string,
   tenantId: string,
   patientDfn: string,
   reason: string
-): Appointment | null {
-  const appt = getAppointment(appointmentId, tenantId, patientDfn);
+): Promise<Appointment | null> {
+  const appt = await getAppointment(appointmentId, tenantId, patientDfn);
   if (!appt) return null;
   if (["cancelled", "completed", "no_show"].includes(appt.status)) return null;
 
@@ -333,7 +333,7 @@ export function requestCancellation(
 
   cacheAppt(appt);
   if (_repo) {
-    try { _repo.updateAppointment(appointmentId, { status: "cancel_requested", cancelReason: appt.cancelReason }); } catch (e) { dbWarn("persist", e); }
+    try { await _repo.updateAppointment(appointmentId, { status: "cancel_requested", cancelReason: appt.cancelReason }); } catch (e) { dbWarn("persist", e); }
   }
 
   portalAudit("portal.appointment.cancel", "success", patientDfn, {
@@ -344,13 +344,13 @@ export function requestCancellation(
   return appt;
 }
 
-export function requestReschedule(
+export async function requestReschedule(
   appointmentId: string,
   tenantId: string,
   patientDfn: string,
   preference: string
-): Appointment | null {
-  const appt = getAppointment(appointmentId, tenantId, patientDfn);
+): Promise<Appointment | null> {
+  const appt = await getAppointment(appointmentId, tenantId, patientDfn);
   if (!appt) return null;
   if (["cancelled", "completed", "no_show"].includes(appt.status)) return null;
 
@@ -362,7 +362,7 @@ export function requestReschedule(
 
   cacheAppt(appt);
   if (_repo) {
-    try { _repo.updateAppointment(appointmentId, { status: "reschedule_requested", reschedulePreference: appt.reschedulePreference }); } catch (e) { dbWarn("persist", e); }
+    try { await _repo.updateAppointment(appointmentId, { status: "reschedule_requested", reschedulePreference: appt.reschedulePreference }); } catch (e) { dbWarn("persist", e); }
   }
 
   portalAudit("portal.appointment.reschedule", "success", patientDfn, {

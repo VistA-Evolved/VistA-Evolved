@@ -1,5 +1,5 @@
 /**
- * FHIR R4 Gateway — Barrel Export (Phase 178).
+ * FHIR R4 Gateway -- Barrel Export (Phase 178).
  */
 
 export { default as fhirRoutes } from './fhir-routes.js';

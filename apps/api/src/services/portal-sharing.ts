@@ -1,5 +1,5 @@
 /**
- * Portal Sharing — Phase 27 → Phase 31 enhancements
+ * Portal Sharing -- Phase 27 -> Phase 31 enhancements
  *
  * Share Link + Access Code for time-limited, audited health record sharing.
  * Patients can create share links for specific sections of their health record.
@@ -83,7 +83,7 @@ export interface ShareAccessLog {
 /* ------------------------------------------------------------------ */
 
 const shareStore = new Map<string, ShareLink>();
-const tokenIndex = new Map<string, string>(); // token → shareId
+const tokenIndex = new Map<string, string>(); // token -> shareId
 
 /* Phase 146: DB repo wiring */
 type ShareRepoRow = {
@@ -141,7 +141,7 @@ function persistShareRow(share: ShareLink): void {
       accessedCount: share.accessCount,
       createdAt: share.createdAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 }
 
 function fromShareRepoRow(row: ShareRepoRow | null | undefined): ShareLink | null {
@@ -239,9 +239,9 @@ function maskIp(ip: string): string {
 /* CRUD                                                                 */
 /* ------------------------------------------------------------------ */
 
-/** Phase 31: stub CAPTCHA validation — always passes, logs warning. */
+/** Phase 31: stub CAPTCHA validation -- always passes, logs warning. */
 export function validateCaptcha(token?: string): boolean {
-  if (!token) return true; // stub — no real provider configured
+  if (!token) return true; // stub -- no real provider configured
   // When a real provider is added, validate here and return false on failure
   return true;
 }
@@ -427,7 +427,7 @@ export function verifyShareAccess(
     detail: { shareId: share.id, accessCount: share.accessCount, oneTimeRedeem: share.oneTimeRedeem },
   });
 
-  // Phase 31: one-time redeem — auto-revoke after first successful verification
+  // Phase 31: one-time redeem -- auto-revoke after first successful verification
   if (share.oneTimeRedeem) {
     share.revokedAt = new Date().toISOString();
     persistShareRow(share);

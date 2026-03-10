@@ -1,5 +1,5 @@
 /**
- * Backend Plugin SDK routes — Phase 358 (W18-P5)
+ * Backend Plugin SDK routes -- Phase 358 (W18-P5)
  *
  * REST endpoints for plugin lifecycle management, signing, and audit.
  * Prefix: /plugins
@@ -49,7 +49,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     );
   }
 
-  // ── Health ──────────────────────────────────────────────────────────
+  // -- Health ----------------------------------------------------------
   server.get('/plugins/health', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -59,7 +59,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, phase: 358, ...stats });
   });
 
-  // ── Sign manifest (dev/CI helper) ──────────────────────────────────
+  // -- Sign manifest (dev/CI helper) ----------------------------------
   server.post('/plugins/sign-manifest', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const {
@@ -100,7 +100,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, manifest });
   });
 
-  // ── Verify signature ───────────────────────────────────────────────
+  // -- Verify signature -----------------------------------------------
   server.post('/plugins/verify-signature', async (req: FastifyRequest, reply: FastifyReply) => {
     const manifest = (req.body as any) || {};
     if (!manifest.contentHash || !manifest.signature) {
@@ -110,7 +110,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, valid });
   });
 
-  // ── Install plugin ─────────────────────────────────────────────────
+  // -- Install plugin -------------------------------------------------
   server.post('/plugins/install', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -129,7 +129,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     }
   });
 
-  // ── Activate plugin ────────────────────────────────────────────────
+  // -- Activate plugin ------------------------------------------------
   server.post('/plugins/:pluginId/activate', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -144,7 +144,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     }
   });
 
-  // ── Suspend plugin ─────────────────────────────────────────────────
+  // -- Suspend plugin -------------------------------------------------
   server.post('/plugins/:pluginId/suspend', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -160,7 +160,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     }
   });
 
-  // ── Uninstall plugin ───────────────────────────────────────────────
+  // -- Uninstall plugin -----------------------------------------------
   server.delete('/plugins/:pluginId', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -172,7 +172,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, deleted: true });
   });
 
-  // ── Get plugin ─────────────────────────────────────────────────────
+  // -- Get plugin -----------------------------------------------------
   server.get('/plugins/:pluginId', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -184,7 +184,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, plugin });
   });
 
-  // ── List plugins ───────────────────────────────────────────────────
+  // -- List plugins ---------------------------------------------------
   server.get('/plugins/list', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -195,7 +195,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, plugins: list, count: list.length });
   });
 
-  // ── Plugin audit ───────────────────────────────────────────────────
+  // -- Plugin audit ---------------------------------------------------
   server.get('/plugins/audit', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -209,7 +209,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, audit: entries, count: entries.length });
   });
 
-  // ── Run validators (test/debug) ────────────────────────────────────
+  // -- Run validators (test/debug) ------------------------------------
   server.post('/plugins/validate', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { stage, data } = body;
@@ -218,7 +218,7 @@ export async function pluginRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, ...result });
   });
 
-  // ── Run transformers (test/debug) ──────────────────────────────────
+  // -- Run transformers (test/debug) ----------------------------------
   server.post('/plugins/transform', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { transformKey, data } = body;

@@ -1,19 +1,18 @@
 /**
- * Inpatient Operations Routes — Phase 83: Census + Bedboard + ADT + Movement
+ * Inpatient Operations Routes -- Phase 83: Census + Bedboard + ADT + Movement
  *
  * Extends Phase 67 ADT layer with enterprise inpatient views.
  * VistA-first: leverages ORQPT WARDS, ORQPT WARD PATIENTS, ORWPT16 ADMITLST.
- * Where VistA RPCs lack detail (bed assignment, movement history), endpoints
- * return structured integration-pending blockers with exact FileMan targets.
+ * ADT writes use VE ADT ADMIT/TRANSFER/DISCHARGE custom RPCs (ZVEADTW.m).
  *
  * Endpoints:
- *   GET  /vista/inpatient/wards                   — Ward list with census counts
- *   GET  /vista/inpatient/ward-census?ward=IEN     — Enriched census for a ward
- *   GET  /vista/inpatient/bedboard?ward=IEN        — Bed-level occupancy grid
- *   GET  /vista/inpatient/patient-movements?dfn=N  — Patient movement timeline
- *   POST /vista/inpatient/admit                    — (integration-pending)
- *   POST /vista/inpatient/transfer                 — (integration-pending)
- *   POST /vista/inpatient/discharge                — (integration-pending)
+ *   GET  /vista/inpatient/wards                   -- Ward list with census counts
+ *   GET  /vista/inpatient/ward-census?ward=IEN     -- Enriched census for a ward
+ *   GET  /vista/inpatient/bedboard?ward=IEN        -- Bed-level occupancy grid
+ *   GET  /vista/inpatient/patient-movements?dfn=N  -- Patient movement timeline
+ *   POST /vista/inpatient/admit                    -- VE ADT ADMIT
+ *   POST /vista/inpatient/transfer                 -- VE ADT TRANSFER
+ *   POST /vista/inpatient/discharge                -- VE ADT DISCHARGE
  *
  * Auth: session-based (/vista/* catch-all in security.ts).
  * RBAC: read endpoints require session; write stubs note role requirements.
@@ -196,21 +195,15 @@ function getInitials(name: string): string {
   return (first + last).toUpperCase();
 }
 
-/** Standard integration-pending response */
+/** Error fallback for failed RPC calls. */
 function pendingFallback(reply: FastifyReply, rpcName: string, err: any) {
   const errMsg = err?.message || String(err);
-  log.warn(`Inpatient ${rpcName} failed -- returning integration-pending`, {
-    err: errMsg,
-  });
-  return reply.send({
+  log.warn(`Inpatient ${rpcName} failed`, { err: errMsg });
+  return reply.code(502).send({
     ok: false,
     source: 'vista',
-    count: 0,
-    results: [],
-    rpcUsed: [],
-    pendingTargets: [rpcName],
-    _integration: 'pending',
-    _error: errMsg.includes('ECONNREFUSED') ? 'VistA unavailable' : 'RPC call failed',
+    error: errMsg.includes('ECONNREFUSED') ? 'VistA unavailable' : `${rpcName} failed: ${errMsg}`,
+    rpcUsed: [rpcName],
   });
 }
 
@@ -258,7 +251,6 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
         count: summaries.length,
         results: summaries,
         rpcUsed: ['ORQPT WARDS', 'ORQPT WARD PATIENTS'],
-        pendingTargets: [],
         _note: 'patientCount uses N+1 ward queries; production should use ZVEADT WARDS RPC',
       });
     } catch (err: any) {
@@ -332,7 +324,6 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
           count: census.length,
           results: census,
           rpcUsed: ['ORQPT WARD PATIENTS', 'ORWPT16 ADMITLST', 'ORQPT WARDS'],
-          pendingTargets: [],
           wardIen: String(wardIen),
         });
       } catch (err: any) {
@@ -416,7 +407,6 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
         wardName,
         wardIen: String(wardIen),
         rpcUsed: ['ORQPT WARD PATIENTS', 'ORWPT16 ADMITLST', 'ORQPT WARDS'],
-        pendingTargets: ['ZVEADT BEDS'],
         _note:
           'Only occupied beds shown. Empty/OOS bed data requires ZVEADT BEDS RPC reading ROOM-BED (405.4) / WARD LOCATION (42).',
       });
@@ -476,7 +466,6 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
           results: movements,
           dfn: String(dfn),
           rpcUsed: ['ORWPT16 ADMITLST'],
-          pendingTargets: ['ZVEADT MVHIST'],
           _note:
             'Only admission events shown. Transfer/discharge movements require ZVEADT MVHIST RPC reading PATIENT MOVEMENT (405).',
           vistaGrounding: {
@@ -498,60 +487,49 @@ export default async function inpatientRoutes(server: FastifyInstance): Promise<
   );
 
   /**
-   * POST /vista/inpatient/admit
-   * DGPM NEW ADMISSION is NOT registered in VistA File 8994 (confirmed via ZVEPROB.m).
-   * Use /vista/adt/admit for the PG-tracked ADT workflow until DGPM RPCs are registered.
+   * POST /vista/inpatient/admit -- Delegates to /vista/adt/admit (VE ADT ADMIT via ZVEADTW.m)
    */
   server.post('/vista/inpatient/admit', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     immutableAudit('inpatient.admit', 'redirect', auditActor(request), {
-      detail: { redirect: '/vista/adt/admit', reason: 'DGPM NEW ADMISSION not in File 8994' },
+      detail: { redirect: '/vista/adt/admit', reason: 'VE ADT ADMIT via ZVEADTW.m' },
     });
     return reply.status(307).header('location', '/vista/adt/admit').send({
-      ok: false,
+      ok: true,
       redirect: '/vista/adt/admit',
-      reason:
-        'DGPM NEW ADMISSION RPC not registered in this VistA instance. Use /vista/adt/admit which tracks ADT events and will call DGPM when the RPC is registered.',
-      vistaAction: 'Register DGPM NEW ADMISSION in File 8994 and add to OR CPRS GUI CHART context',
+      reason: 'Inpatient admit delegates to /vista/adt/admit which calls VE ADT ADMIT (ZVEADTW.m -> FileMan File 405).',
     });
   });
 
   /**
-   * POST /vista/inpatient/transfer
-   * DGPM NEW TRANSFER is NOT registered in VistA File 8994.
+   * POST /vista/inpatient/transfer -- Delegates to /vista/adt/transfer (VE ADT TRANSFER)
    */
   server.post('/vista/inpatient/transfer', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
     immutableAudit('inpatient.transfer', 'redirect', auditActor(request), {
-      detail: { redirect: '/vista/adt/transfer', reason: 'DGPM NEW TRANSFER not in File 8994' },
+      detail: { redirect: '/vista/adt/transfer', reason: 'VE ADT TRANSFER via ZVEADTW.m' },
     });
     return reply.status(307).header('location', '/vista/adt/transfer').send({
-      ok: false,
+      ok: true,
       redirect: '/vista/adt/transfer',
-      reason:
-        'DGPM NEW TRANSFER RPC not registered in this VistA instance. Use /vista/adt/transfer.',
-      vistaAction: 'Register DGPM NEW TRANSFER in File 8994 and add to OR CPRS GUI CHART context',
+      reason: 'Inpatient transfer delegates to /vista/adt/transfer which calls VE ADT TRANSFER (ZVEADTW.m -> FileMan File 405).',
     });
   });
 
   /**
-   * POST /vista/inpatient/discharge
-   * DGPM NEW DISCHARGE is NOT registered in VistA File 8994.
+   * POST /vista/inpatient/discharge -- Delegates to /vista/adt/discharge (VE ADT DISCHARGE)
    */
   server.post(
     '/vista/inpatient/discharge',
     async (request: FastifyRequest, reply: FastifyReply) => {
       await requireSession(request, reply);
       immutableAudit('inpatient.discharge', 'redirect', auditActor(request), {
-        detail: { redirect: '/vista/adt/discharge', reason: 'DGPM NEW DISCHARGE not in File 8994' },
+        detail: { redirect: '/vista/adt/discharge', reason: 'VE ADT DISCHARGE via ZVEADTW.m' },
       });
       return reply.status(307).header('location', '/vista/adt/discharge').send({
-        ok: false,
+        ok: true,
         redirect: '/vista/adt/discharge',
-        reason:
-          'DGPM NEW DISCHARGE RPC not registered in this VistA instance. Use /vista/adt/discharge.',
-        vistaAction:
-          'Register DGPM NEW DISCHARGE in File 8994 and add to OR CPRS GUI CHART context',
+        reason: 'Inpatient discharge delegates to /vista/adt/discharge which calls VE ADT DISCHARGE (ZVEADTW.m -> FileMan File 405).',
       });
     }
   );

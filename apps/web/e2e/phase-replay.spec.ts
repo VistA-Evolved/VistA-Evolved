@@ -1,5 +1,5 @@
 /**
- * Phase Replay — QA Flow Execution via Playwright
+ * Phase Replay -- QA Flow Execution via Playwright
  *
  * Phase 96B: QA/Audit OS v1.1
  *
@@ -24,7 +24,7 @@ import { test, expect } from '@playwright/test';
 
 const API = process.env.API_URL || 'http://localhost:3001';
 
-test.describe('Phase Replay — QA Flow Execution', () => {
+test.describe('Phase Replay -- QA Flow Execution', () => {
   test.beforeAll(async ({ request }) => {
     // Ensure QA routes are enabled
     const status = await request.get(`${API}/qa/status`);
@@ -41,7 +41,7 @@ test.describe('Phase Replay — QA Flow Execution', () => {
     expect(body.loaded).toBeGreaterThanOrEqual(15);
   });
 
-  test('list all flows — 15+ with expectedRpcs field', async ({ request }) => {
+  test('list all flows -- 15+ with expectedRpcs field', async ({ request }) => {
     const res = await request.get(`${API}/qa/flows`);
     expect(res.status()).toBe(200);
     const body = await res.json();

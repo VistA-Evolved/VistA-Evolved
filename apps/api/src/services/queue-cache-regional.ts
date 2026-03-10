@@ -10,7 +10,7 @@
 
 import { randomUUID } from "node:crypto";
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+// --- Types ------------------------------------------------------------------
 
 export type JobStatus = "pending" | "processing" | "completed" | "failed" | "dead_letter";
 export type JobPriority = "low" | "normal" | "high" | "critical";
@@ -86,11 +86,11 @@ export interface FailoverTransfer {
   actor: string;
 }
 
-// ─── In-Memory Stores ───────────────────────────────────────────────────────
+// --- In-Memory Stores -------------------------------------------------------
 
 const jobStore = new Map<string, RegionalJob>();
-const jobsByRegionQueue = new Map<string, Set<string>>();    // `${region}:${queue}` → job IDs
-const idempotencyIndex = new Map<string, string>();           // idempotencyKey → job ID
+const jobsByRegionQueue = new Map<string, Set<string>>();    // `${region}:${queue}` -> job IDs
+const idempotencyIndex = new Map<string, string>();           // idempotencyKey -> job ID
 const workerStore = new Map<string, RegionalWorker>();
 const cachePartitionStore = new Map<string, RegionalCachePartition>();
 const transferStore = new Map<string, FailoverTransfer>();
@@ -98,7 +98,7 @@ const transferStore = new Map<string, FailoverTransfer>();
 const auditLog: Array<{ ts: string; action: string; actor: string; detail: Record<string, unknown> }> = [];
 const MAX_AUDIT = 10_000;
 
-// ─── Job Management ─────────────────────────────────────────────────────────
+// --- Job Management ---------------------------------------------------------
 
 function regionQueueKey(region: string, queue: string): string {
   return `${region}:${queue}`;
@@ -270,7 +270,7 @@ export function listJobs(filters?: {
   return results.sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, limit);
 }
 
-// ─── Failover Transfer ──────────────────────────────────────────────────────
+// --- Failover Transfer ------------------------------------------------------
 
 /**
  * Transfer pending/failed jobs from one region to another.
@@ -366,7 +366,7 @@ export function listTransfers(tenantId?: string, limit = 50): FailoverTransfer[]
     .slice(0, limit);
 }
 
-// ─── Worker Management ──────────────────────────────────────────────────────
+// --- Worker Management ------------------------------------------------------
 
 export function registerWorker(input: {
   region: string;
@@ -403,7 +403,7 @@ export function listWorkers(filters?: { region?: string; status?: string }): Reg
   return results;
 }
 
-// ─── Cache Partition Management ─────────────────────────────────────────────
+// --- Cache Partition Management ---------------------------------------------
 
 export function registerCachePartition(input: {
   region: string;
@@ -449,7 +449,7 @@ export function listCachePartitions(filters?: { region?: string }): RegionalCach
   return results.sort((a, b) => a.id.localeCompare(b.id));
 }
 
-// ─── Queue Metrics ──────────────────────────────────────────────────────────
+// --- Queue Metrics ----------------------------------------------------------
 
 export function getQueueMetrics(region?: string, tenantId?: string): QueueMetrics[] {
   const metricsMap = new Map<string, QueueMetrics>();
@@ -478,7 +478,7 @@ export function getQueueMetrics(region?: string, tenantId?: string): QueueMetric
   return Array.from(metricsMap.values()).sort((a, b) => a.region.localeCompare(b.region) || a.queue.localeCompare(b.queue));
 }
 
-// ─── Summary ────────────────────────────────────────────────────────────────
+// --- Summary ----------------------------------------------------------------
 
 export function getRegionalSummary(tenantId?: string): {
   totalJobs: number;
@@ -519,7 +519,7 @@ export function getRegionalSummary(tenantId?: string): {
   };
 }
 
-// ─── Audit ──────────────────────────────────────────────────────────────────
+// --- Audit ------------------------------------------------------------------
 
 function appendAudit(action: string, actor: string, detail: Record<string, unknown>): void {
   auditLog.push({ ts: new Date().toISOString(), action, actor, detail });

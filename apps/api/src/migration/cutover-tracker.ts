@@ -8,7 +8,7 @@
 
 import { randomBytes } from 'crypto';
 
-// ── Types ──────────────────────────────────────────────────────────
+// -- Types ----------------------------------------------------------
 
 export type CutoverPhase =
   | 'planning'
@@ -52,7 +52,7 @@ export interface CutoverPlan {
   rollbackReason?: string;
 }
 
-// ── Phase transitions ──────────────────────────────────────────────
+// -- Phase transitions ----------------------------------------------
 
 const VALID_TRANSITIONS: Record<CutoverPhase, CutoverPhase[]> = {
   planning: ['pre-validation'],
@@ -65,7 +65,7 @@ const VALID_TRANSITIONS: Record<CutoverPhase, CutoverPhase[]> = {
   'rolled-back': ['planning'],
 };
 
-// ── Default gates ──────────────────────────────────────────────────
+// -- Default gates --------------------------------------------------
 
 function createDefaultGates(): CutoverGate[] {
   return [
@@ -156,7 +156,7 @@ function createDefaultGates(): CutoverGate[] {
   ];
 }
 
-// ── Tracker ────────────────────────────────────────────────────────
+// -- Tracker --------------------------------------------------------
 
 const cutoverPlans = new Map<string, CutoverPlan>();
 

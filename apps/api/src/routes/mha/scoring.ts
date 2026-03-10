@@ -1,5 +1,5 @@
 /**
- * MHA Scoring Engine — Phase 535
+ * MHA Scoring Engine -- Phase 535
  *
  * Server-side scoring for standardized MH instruments.
  * Each instrument has a registered scorer that computes total score

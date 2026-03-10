@@ -1,5 +1,5 @@
 /**
- * HL7 v2 MLLP Ingest — Routes
+ * HL7 v2 MLLP Ingest -- Routes
  *
  * Phase 381 (W21-P4): HTTP ingest endpoint that accepts HL7 v2 messages
  * (ORU/ORM), parses them, extracts observations, and stores them in the
@@ -14,6 +14,7 @@ import type { FastifyInstance, FastifyRequest } from 'fastify';
 import { parseHl7Message, generateAck, type Hl7ParseResult } from './hl7v2-parser.js';
 import { storeObservation } from './gateway-store.js';
 import type { DeviceObservation } from './types.js';
+import { requireDeviceServiceKey } from './service-key-guard.js';
 import * as crypto from 'node:crypto';
 
 const DEFAULT_TENANT = 'default';
@@ -47,12 +48,13 @@ function tenantId(request: FastifyRequest): string {
 
 export default async function hl7v2IngestRoutes(server: FastifyInstance): Promise<void> {
   /**
-   * POST /devices/hl7v2/ingest — Ingest an HL7 v2 message
+   * POST /devices/hl7v2/ingest -- Ingest an HL7 v2 message
    *
    * Body: { message: string } or raw HL7 text with Content-Type: x-application/hl7-v2+er7
    * Auth: service (gateway-to-server)
    */
   server.post('/devices/hl7v2/ingest', async (request, reply) => {
+    if (!requireDeviceServiceKey(request, reply)) return reply;
     let rawMessage: string;
 
     const contentType = request.headers['content-type'] || '';
@@ -135,7 +137,7 @@ export default async function hl7v2IngestRoutes(server: FastifyInstance): Promis
   });
 
   /**
-   * POST /devices/hl7v2/parse — Parse without storing (diagnostic)
+   * POST /devices/hl7v2/parse -- Parse without storing (diagnostic)
    * Auth: admin
    */
   server.post('/devices/hl7v2/parse', async (request, reply) => {
@@ -165,7 +167,7 @@ export default async function hl7v2IngestRoutes(server: FastifyInstance): Promis
   });
 
   /**
-   * GET /devices/hl7v2/ingest-log — View ingest history
+   * GET /devices/hl7v2/ingest-log -- View ingest history
    * Auth: admin
    */
   server.get('/devices/hl7v2/ingest-log', async (request, reply) => {

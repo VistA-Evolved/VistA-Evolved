@@ -1,10 +1,10 @@
 /**
- * Store Resolver — PG-only backend
+ * Store Resolver -- PG-only backend
  *
  * Phase 102: Migrate Prototype Stores to PlatformStore
  * Phase 117: STORE_BACKEND env var + session/workqueue resolution
  * Phase 125: Postgres-only data plane enforcement for rc/prod
- * Phase 173: Removed all SQLite code — PG is the sole backend
+ * Phase 173: Removed all SQLite code -- PG is the sole backend
  *
  * PostgreSQL is required. PLATFORM_PG_URL must be set.
  *

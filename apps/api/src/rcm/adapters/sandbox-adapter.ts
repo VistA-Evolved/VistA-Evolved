@@ -1,5 +1,5 @@
 /**
- * Sandbox PayerAdapter — Phase 69
+ * Sandbox PayerAdapter -- Phase 69
  *
  * In-memory simulation for dev/testing. Returns deterministic responses
  * based on input parameters. No external calls. Always available.

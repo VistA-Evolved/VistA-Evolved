@@ -1,5 +1,5 @@
 /**
- * Payer Dossier Routes — Phase 514 (Wave 37 B2)
+ * Payer Dossier Routes -- Phase 514 (Wave 37 B2)
  *
  * REST endpoints for payer dossiers and onboarding tasks.
  * All routes scoped under `/rcm/dossiers` prefix.
@@ -49,7 +49,7 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
     return null;
   }
 
-  /* ── List dossiers ─────────────────────────────────────── */
+  /* -- List dossiers --------------------------------------- */
 
   server.get('/rcm/dossiers', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
@@ -64,7 +64,7 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, ...result };
   });
 
-  /* ── Get dossier by ID ────────────────────────────────── */
+  /* -- Get dossier by ID ---------------------------------- */
 
   server.get('/rcm/dossiers/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
@@ -77,7 +77,7 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, dossier, tasks };
   });
 
-  /* ── Get dossier by payer ID ──────────────────────────── */
+  /* -- Get dossier by payer ID ---------------------------- */
 
   server.get(
     '/rcm/dossiers/by-payer/:payerId',
@@ -94,7 +94,7 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
     }
   );
 
-  /* ── Create dossier ────────────────────────────────────── */
+  /* -- Create dossier -------------------------------------- */
 
   server.post('/rcm/dossiers', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
@@ -144,7 +144,7 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
     return reply.code(201).send({ ok: true, dossier, tasks });
   });
 
-  /* ── Update dossier ────────────────────────────────────── */
+  /* -- Update dossier -------------------------------------- */
 
   server.patch('/rcm/dossiers/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
@@ -171,7 +171,7 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, dossier: updated };
   });
 
-  /* ── List onboarding tasks for dossier ────────────────── */
+  /* -- List onboarding tasks for dossier ------------------ */
 
   server.get('/rcm/dossiers/:id/tasks', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
@@ -184,7 +184,7 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, tasks, completenessScore: dossier.completenessScore };
   });
 
-  /* ── Update onboarding task ────────────────────────────── */
+  /* -- Update onboarding task ------------------------------ */
 
   server.patch(
     '/rcm/dossiers/:dossierId/tasks/:taskId',
@@ -218,7 +218,7 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
     }
   );
 
-  /* ── Complete onboarding task ──────────────────────────── */
+  /* -- Complete onboarding task ---------------------------- */
 
   server.post(
     '/rcm/dossiers/:dossierId/tasks/:taskId/complete',
@@ -261,7 +261,7 @@ export async function dossierRoutes(server: FastifyInstance): Promise<void> {
     }
   );
 
-  /* ── Seed onboarding tasks ─────────────────────────────── */
+  /* -- Seed onboarding tasks ------------------------------- */
 
   server.post(
     '/rcm/dossiers/:id/seed-tasks',

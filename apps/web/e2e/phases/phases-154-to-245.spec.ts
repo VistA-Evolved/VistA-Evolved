@@ -54,7 +54,7 @@ test.describe("Phase 154: CPOE Order Signing + Idempotency (Postgres-Backed)", (
   });
 });
 
-test.describe("Phase 158: 01 — IMPLEMENT: Specialty Template & Workflow Studio", () => {
+test.describe("Phase 158: 01 -- IMPLEMENT: Specialty Template & Workflow Studio", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/admin/templates`);
     expect(r0.status(), "/admin/templates not 500").not.toBe(500);
@@ -96,7 +96,7 @@ test.describe("Phase 158: 01 — IMPLEMENT: Specialty Template & Workflow Studio
   });
 });
 
-test.describe("Phase 159: 01: IMPLEMENT — Patient Queue / Waiting / Numbering / Callin", () => {
+test.describe("Phase 159: 01: IMPLEMENT -- Patient Queue / Waiting / Numbering / Callin", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/cprs/admin/queue`);
     expect(r0.status(), "/cprs/admin/queue not 500").not.toBe(500);
@@ -136,7 +136,7 @@ test.describe("Phase 159: 01: IMPLEMENT — Patient Queue / Waiting / Numbering 
   });
 });
 
-test.describe("Phase 160: 01: IMPLEMENT — Department Workflow Packs", () => {
+test.describe("Phase 160: 01: IMPLEMENT -- Department Workflow Packs", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {

@@ -20,7 +20,7 @@ import {
 } from './or-store.js';
 
 export default async function orRoutes(server: FastifyInstance) {
-  // ── Cases ──────────────────────────────────────────────────────
+  // -- Cases ------------------------------------------------------
 
   server.post('/or/cases', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -66,7 +66,7 @@ export default async function orRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  // ── Anesthesia ─────────────────────────────────────────────────
+  // -- Anesthesia -------------------------------------------------
 
   server.post('/or/cases/:id/anesthesia', async (request, reply) => {
     const { id } = request.params as any;
@@ -95,7 +95,7 @@ export default async function orRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  // ── Rooms ──────────────────────────────────────────────────────
+  // -- Rooms ------------------------------------------------------
 
   server.get('/or/rooms', async () => {
     return { ok: true, rooms: listRooms() };
@@ -117,7 +117,7 @@ export default async function orRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  // ── Blocks ─────────────────────────────────────────────────────
+  // -- Blocks -----------------------------------------------------
 
   server.get('/or/blocks', async (request) => {
     const { roomId } = request.query as any;
@@ -143,7 +143,7 @@ export default async function orRoutes(server: FastifyInstance) {
     return reply.code(201).send({ ok: true, block });
   });
 
-  // ── Board ──────────────────────────────────────────────────────
+  // -- Board ------------------------------------------------------
 
   server.get('/or/board', async () => {
     return { ok: true, metrics: getOrBoardMetrics() };

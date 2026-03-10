@@ -155,7 +155,7 @@ export default function CoverSheetPanel({ dfn }: CoverSheetPanelProps) {
                 <tr key={p.id}>
                   <td>{p.text}</td>
                   <td>{p.status}</td>
-                  <td>{p.onset || '—'}</td>
+                  <td>{p.onset || '--'}</td>
                 </tr>
               ))}
             </tbody>

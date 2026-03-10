@@ -1,5 +1,5 @@
 /**
- * Platform PG Module — Barrel Export
+ * Platform PG Module -- Barrel Export
  *
  * Phase 101+102+103+104: Platform Data Architecture + Registry Migration + DB Performance + Security
  */

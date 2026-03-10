@@ -1,5 +1,5 @@
 /**
- * Facility / Department / Location Routes — Phase 347
+ * Facility / Department / Location Routes -- Phase 347
  *
  * Admin-only CRUD for the multi-facility hierarchy.
  * Follows the Fastify plugin pattern used by all Wave 16+ routes.
@@ -50,7 +50,7 @@ export async function facilityRoutes(server: FastifyInstance): Promise<void> {
     return null;
   }
 
-  // ─── Facilities ──────────────────────────────────────
+  // --- Facilities --------------------------------------
 
   server.get('/facilities', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
@@ -139,7 +139,7 @@ export async function facilityRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, decommissioned: true });
   });
 
-  // ─── Departments ─────────────────────────────────────
+  // --- Departments -------------------------------------
 
   server.get('/departments', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
@@ -217,7 +217,7 @@ export async function facilityRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, decommissioned: true });
   });
 
-  // ─── Locations ───────────────────────────────────────
+  // --- Locations ---------------------------------------
 
   server.get('/locations', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
@@ -296,7 +296,7 @@ export async function facilityRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, decommissioned: true });
   });
 
-  // ─── Provider Facility Assignments ───────────────────
+  // --- Provider Facility Assignments -------------------
 
   server.get('/provider-assignments', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
@@ -349,7 +349,7 @@ export async function facilityRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, removed: true });
   });
 
-  // ─── VistA Mapping Posture ───────────────────────────
+  // --- VistA Mapping Posture ---------------------------
 
   server.get(
     '/facilities/vista/mapping-posture',

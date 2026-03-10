@@ -16,7 +16,7 @@ describe('Server bootstrap (Phase 173 decomposition)', () => {
     expect(typeof server.listen).toBe('function');
     expect(typeof server.close).toBe('function');
 
-    // Inject a request to /health — should return 200 without needing listen()
+    // Inject a request to /health -- should return 200 without needing listen()
     const response = await server.inject({
       method: 'GET',
       url: '/health',

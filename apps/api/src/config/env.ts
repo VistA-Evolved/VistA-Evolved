@@ -6,7 +6,7 @@
  *
  * Usage:
  *   import { ENV } from "./config/env.js";
- *   // ENV.VISTA_HOST, ENV.PORT, etc. — all typed + validated
+ *   // ENV.VISTA_HOST, ENV.PORT, etc. -- all typed + validated
  */
 
 import { z } from 'zod';
@@ -104,7 +104,7 @@ export function getEnv(): EnvConfig {
 }
 
 /**
- * Quick accessor — same as getEnv() but reads cleaner.
+ * Quick accessor -- same as getEnv() but reads cleaner.
  * Import as: import { ENV } from "./config/env.js";
  * Then use ENV.PORT, ENV.VISTA_HOST, etc.
  */

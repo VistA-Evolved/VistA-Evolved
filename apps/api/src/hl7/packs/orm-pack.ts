@@ -1,5 +1,5 @@
 /**
- * HL7v2 Message Packs — ORM (Orders)
+ * HL7v2 Message Packs -- ORM (Orders)
  *
  * Phase 241 (Wave 6 P4): Builders and validators for ORM messages.
  * ORM^O01 is the primary order message used in VistA integration for
@@ -35,7 +35,7 @@ export interface OrderInfo {
   orderControl: string;
   /** Universal service identifier (code^description) */
   universalServiceId: string;
-  /** Order date/time — YYYYMMDDHHMMSS */
+  /** Order date/time -- YYYYMMDDHHMMSS */
   orderDateTime?: string;
   /** Ordering provider ID */
   orderingProviderId?: string;
@@ -188,7 +188,7 @@ export function validateOrmMessage(message: Hl7Message): ValidationResult {
 
 export const ormPack: MessagePack = {
   id: 'orm',
-  name: 'ORM — Orders',
+  name: 'ORM -- Orders',
   messageTypes: ORM_EVENTS,
   description: 'General Order messages (O01) for pharmacy, lab, radiology, dietary',
   validate: validateOrmMessage,

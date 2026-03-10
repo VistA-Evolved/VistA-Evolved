@@ -1,5 +1,5 @@
 /**
- * Phase 79 — UI Preferences Store (in-memory, tenant + user scoped)
+ * Phase 79 -- UI Preferences Store (in-memory, tenant + user scoped)
  *
  * Follows the same in-memory Map<> pattern as imaging-worklist.ts (Phase 23)
  * and room-store.ts (Phase 30). Data resets on API restart.
@@ -20,11 +20,11 @@ import { log } from "../lib/logger.js";
 
 export interface CoverSheetLayoutV1 {
   schemaVersion: 1;
-  /** Ordered panel keys — determines render order */
+  /** Ordered panel keys -- determines render order */
   panelOrder: string[];
-  /** Panel heights in pixels (key → px). 0 = collapsed. */
+  /** Panel heights in pixels (key -> px). 0 = collapsed. */
   panelHeights: Record<string, number>;
-  /** Panel visibility (key → boolean). Hidden panels are not rendered. */
+  /** Panel visibility (key -> boolean). Hidden panels are not rendered. */
   panelVisibility: Record<string, boolean>;
   /** Layout mode when saved */
   layoutMode: "cprs" | "modern";
@@ -234,7 +234,7 @@ export function saveUIPrefs(
   store.set(makeKey(tenantId, duz), doc);
 
   // Phase 146: Write-through to PG
-  prefsDbRepo?.upsert({ id: makeKey(tenantId, duz), tenantId, userDuz: duz, key: 'layout', value: JSON.stringify(layout), createdAt: (doc as any).createdAt ?? new Date().toISOString(), updatedAt: doc.updatedAt }).catch(() => {});
+  prefsDbRepo?.upsert({ id: makeKey(tenantId, duz), tenantId, userDuz: duz, key: 'layout', value: JSON.stringify(layout), createdAt: (doc as any).createdAt ?? new Date().toISOString(), updatedAt: doc.updatedAt }).catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   log.debug("UI prefs saved", { tenantId, duz });
   return doc;
@@ -266,7 +266,7 @@ export function setUserThemePack(
   store.set(key, doc);
 
   // Write-through theme to PG
-  prefsDbRepo?.upsert({ id: `${key}:theme`, tenantId, userDuz: duz, key: 'theme_pack', value: themePack, createdAt: new Date().toISOString(), updatedAt: doc.updatedAt }).catch(() => {});
+  prefsDbRepo?.upsert({ id: `${key}:theme`, tenantId, userDuz: duz, key: 'theme_pack', value: themePack, createdAt: new Date().toISOString(), updatedAt: doc.updatedAt }).catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   log.debug("Theme pack saved", { tenantId, duz, themePack });
   return doc;

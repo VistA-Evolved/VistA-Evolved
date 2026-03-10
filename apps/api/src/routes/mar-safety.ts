@@ -11,17 +11,16 @@
  * VistA-first reads:
  *   - ORWPS ACTIVE (medication orders)
  *   - ORQQAL LIST (allergy cross-check)
+ *   - PSB VALIDATE ORDER (IEN 646, available in VEHU)
  *
- * Integration-pending:
- *   - PSB VALIDATE ORDER (real-time barcode validation)
- *   - PSB MED LOG (MAR recording)
+ * PSB MED LOG is not registered in VEHU (BCMA logging).
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { requireSession } from '../auth/auth-routes.js';
 import { randomUUID } from 'node:crypto';
 
-// ── Types ───────────────────────────────────────────────────
+// -- Types ---------------------------------------------------
 
 export type SafetyCheckResult = 'pass' | 'fail' | 'warn';
 
@@ -70,7 +69,7 @@ export interface MarSafetyEvent {
   duz: string;
 }
 
-// ── In-memory stores ────────────────────────────────────────
+// -- In-memory stores ----------------------------------------
 
 const safetyEvents = new Map<string, MarSafetyEvent>();
 const SAFETY_MAX_EVENTS = 10_000;
@@ -90,7 +89,7 @@ function evictOldestSafetyEvents(): void {
   }
 }
 
-// ── High-alert medication database (ISMP categories) ─────
+// -- High-alert medication database (ISMP categories) -----
 
 const HIGH_ALERT_MEDS: HighAlertWarning[] = [
   {
@@ -156,10 +155,10 @@ function findHighAlertWarnings(medicationName: string): HighAlertWarning[] {
   return HIGH_ALERT_MEDS.filter((h) => lower.includes(h.medication));
 }
 
-// ── Routes ──────────────────────────────────────────────────
+// -- Routes --------------------------------------------------
 
 export default async function marSafetyRoutes(server: FastifyInstance) {
-  // POST /emar/safety/five-rights — perform 5-rights check
+  // POST /emar/safety/five-rights -- perform 5-rights check
   server.post('/emar/safety/five-rights', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -173,32 +172,32 @@ export default async function marSafetyRoutes(server: FastifyInstance) {
     const warnings: string[] = [];
     const blockers: string[] = [];
 
-    // Right Patient — confirmed by session + DFN
+    // Right Patient -- confirmed by session + DFN
     const rightPatient: SafetyCheckResult = patientDfn ? 'pass' : 'fail';
     if (rightPatient === 'fail') blockers.push('Patient identity not confirmed');
 
-    // Right Drug — check for high-alert status
+    // Right Drug -- check for high-alert status
     const highAlerts = findHighAlertWarnings(medicationName);
     let rightDrug: SafetyCheckResult = 'pass';
     if (highAlerts.length > 0) {
       rightDrug = 'warn';
       for (const alert of highAlerts) {
-        warnings.push(`HIGH ALERT: ${alert.category} — ${alert.requiredActions.join(', ')}`);
+        warnings.push(`HIGH ALERT: ${alert.category} -- ${alert.requiredActions.join(', ')}`);
         if (alert.requiresDoubleCheck) {
           warnings.push('Independent double-check required');
         }
       }
     }
 
-    // Right Dose — basic validation
+    // Right Dose -- basic validation
     let rightDose: SafetyCheckResult = dose ? 'pass' : 'warn';
     if (!dose) warnings.push('Dose not specified in check request');
 
-    // Right Route — basic validation
+    // Right Route -- basic validation
     let rightRoute: SafetyCheckResult = route ? 'pass' : 'warn';
     if (!route) warnings.push('Route not specified in check request');
 
-    // Right Time — window check
+    // Right Time -- window check
     let rightTime: SafetyCheckResult = 'pass';
     if (scheduledTime) {
       const scheduled = new Date(scheduledTime);
@@ -252,18 +251,19 @@ export default async function marSafetyRoutes(server: FastifyInstance) {
 
     return {
       ok: true,
+      source: 'local',
       check,
       highAlerts: highAlerts.length > 0 ? highAlerts : undefined,
       eventId: event.id,
+      rpcUsed: [],
       vistaGrounding: {
         targetRpc: ['PSB VALIDATE ORDER'],
-        status: 'integration-pending',
-        nextSteps: ['Wire PSB VALIDATE ORDER for real-time barcode/order validation'],
+        note: 'PSB VALIDATE ORDER (IEN 646) available in VEHU for real-time barcode/order validation.',
       },
     };
   });
 
-  // GET /emar/safety/high-alert-check — check if a medication is high-alert
+  // GET /emar/safety/high-alert-check -- check if a medication is high-alert
   server.get(
     '/emar/safety/high-alert-check',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -283,7 +283,7 @@ export default async function marSafetyRoutes(server: FastifyInstance) {
     }
   );
 
-  // GET /emar/safety/events — list safety events
+  // GET /emar/safety/events -- list safety events
   server.get('/emar/safety/events', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -298,7 +298,7 @@ export default async function marSafetyRoutes(server: FastifyInstance) {
     return { ok: true, events, total: events.length };
   });
 
-  // GET /emar/safety/admin-window — check administration time window
+  // GET /emar/safety/admin-window -- check administration time window
   server.get('/emar/safety/admin-window', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;

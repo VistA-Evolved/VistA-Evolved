@@ -1,5 +1,5 @@
 /**
- * PH HMO Registry — Phase 93: PH HMO Deepening Pack
+ * PH HMO Registry -- Phase 93: PH HMO Deepening Pack
  *
  * Loads and validates the canonical 27-entry PH HMO registry
  * from data/payers/ph-hmo-registry.json.
@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname_resolved =
   typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 export type HmoCapabilityStatus =
   | 'available' // publicly confirmed as available
@@ -98,13 +98,13 @@ export interface PhHmoRegistryData {
   hmos: PhHmo[];
 }
 
-/* ── Store ──────────────────────────────────────────────────── */
+/* -- Store ---------------------------------------------------- */
 
 const hmoStore = new Map<string, PhHmo>();
 let registryMeta: PhHmoRegistryMeta | null = null;
 let initialized = false;
 
-/* ── Validation ─────────────────────────────────────────────── */
+/* -- Validation ----------------------------------------------- */
 
 export interface RegistryValidationResult {
   valid: boolean;
@@ -158,7 +158,7 @@ function validateRegistry(data: PhHmoRegistryData): RegistryValidationResult {
     if (hmo.capabilities) {
       const allUnknown = Object.values(hmo.capabilities).every((v) => v === 'unknown_publicly');
       if (allUnknown) {
-        warnings.push(`${hmo.payerId}: all capabilities are unknown_publicly — research needed`);
+        warnings.push(`${hmo.payerId}: all capabilities are unknown_publicly -- research needed`);
       }
     }
   }
@@ -166,7 +166,7 @@ function validateRegistry(data: PhHmoRegistryData): RegistryValidationResult {
   return { valid: errors.length === 0, errors, warnings, count };
 }
 
-/* ── Loading ────────────────────────────────────────────────── */
+/* -- Loading -------------------------------------------------- */
 
 export function initPhHmoRegistry(): RegistryValidationResult {
   if (initialized) {
@@ -217,7 +217,7 @@ export function initPhHmoRegistry(): RegistryValidationResult {
   }
 }
 
-/* ── Queries ────────────────────────────────────────────────── */
+/* -- Queries -------------------------------------------------- */
 
 export function getPhHmo(payerId: string): PhHmo | undefined {
   return hmoStore.get(payerId);

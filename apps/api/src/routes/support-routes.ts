@@ -4,16 +4,16 @@
  * Phase 244 (Wave 6 P7): Admin endpoints for system diagnostics
  * and support ticket management.
  *
- * All routes under /admin/support/* — caught by admin auth rule.
+ * All routes under /admin/support/* -- caught by admin auth rule.
  *
  * Endpoints:
- *   GET    /admin/support/diagnostics       — Collect live system diagnostics
- *   GET    /admin/support/tickets           — List support tickets
- *   POST   /admin/support/tickets           — Create support ticket
- *   GET    /admin/support/tickets/:id       — Get ticket details
- *   PATCH  /admin/support/tickets/:id       — Update ticket status
- *   POST   /admin/support/tickets/:id/notes — Add note to ticket
- *   GET    /admin/support/stats             — Ticket statistics
+ *   GET    /admin/support/diagnostics       -- Collect live system diagnostics
+ *   GET    /admin/support/tickets           -- List support tickets
+ *   POST   /admin/support/tickets           -- Create support ticket
+ *   GET    /admin/support/tickets/:id       -- Get ticket details
+ *   PATCH  /admin/support/tickets/:id       -- Update ticket status
+ *   POST   /admin/support/tickets/:id/notes -- Add note to ticket
+ *   GET    /admin/support/stats             -- Ticket statistics
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';

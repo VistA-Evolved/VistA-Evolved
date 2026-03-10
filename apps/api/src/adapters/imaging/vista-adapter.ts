@@ -1,5 +1,5 @@
 /**
- * VistA Imaging Adapter — Phase 37C.
+ * VistA Imaging Adapter -- Phase 37C.
  * Delegates to existing imaging-service.ts / imaging-worklist.ts.
  */
 

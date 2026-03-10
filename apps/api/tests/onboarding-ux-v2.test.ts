@@ -23,7 +23,7 @@ describe('Onboarding UX v2 -- Phase 262', () => {
     it('exports all 5 integration kinds', () => {
       const c = fs.readFileSync(storePath, 'utf-8');
       for (const kind of ['hl7v2', 'fhir', 'payer', 'imaging', 'oidc']) {
-        expect(c).toContain(`"${kind}"`);
+        expect(c).toContain(`'${kind}'`);
       }
     });
 
@@ -54,9 +54,9 @@ describe('Onboarding UX v2 -- Phase 262', () => {
 
     it('has 3 integration steps', () => {
       const c = fs.readFileSync(storePath, 'utf-8');
-      expect(c).toContain('"integrations"');
-      expect(c).toContain('"connectivity"');
-      expect(c).toContain('"preflight"');
+      expect(c).toContain("'integrations'");
+      expect(c).toContain("'connectivity'");
+      expect(c).toContain("'preflight'");
     });
 
     it('links to base onboarding session', () => {
@@ -80,7 +80,7 @@ describe('Onboarding UX v2 -- Phase 262', () => {
     it('has create session endpoint', () => {
       const c = fs.readFileSync(routePath, 'utf-8');
       // POST /admin/onboarding/integrations
-      expect(c).toContain('app.post("/admin/onboarding/integrations"');
+      expect(c).toContain("app.post('/admin/onboarding/integrations'");
     });
 
     it('has endpoint upsert route', () => {

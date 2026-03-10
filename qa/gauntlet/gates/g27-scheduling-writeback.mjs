@@ -58,7 +58,7 @@ export async function run(_ctx) {
     }
   }
 
-  // 3. Truth gate enforcement — never return "scheduled" without VistA
+  // 3. Truth gate enforcement -- never return "scheduled" without VistA
   if (guardSrc.includes('enforceTruthGate')) details.push('enforceTruthGate function exists');
   else issues.push('enforceTruthGate not found');
 

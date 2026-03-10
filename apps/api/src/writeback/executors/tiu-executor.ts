@@ -1,14 +1,14 @@
 /**
- * TIU Notes Writeback Executor — Phase 301 (W12-P3)
+ * TIU Notes Writeback Executor -- Phase 301 (W12-P3)
  *
  * Domain executor for TIU (notes) writeback commands.
  * Implements the RpcExecutor interface from the command bus.
  *
  * Supported intents:
- *   CREATE_NOTE_DRAFT  → TIU CREATE RECORD + TIU SET DOCUMENT TEXT
- *   UPDATE_NOTE_TEXT   → TIU SET DOCUMENT TEXT (existing doc)
- *   SIGN_NOTE          → TIU LOCK RECORD + TIU SIGN RECORD + TIU UNLOCK RECORD
- *   CREATE_ADDENDUM    → TIU CREATE ADDENDUM RECORD + TIU SET DOCUMENT TEXT
+ *   CREATE_NOTE_DRAFT  -> TIU CREATE RECORD + TIU SET DOCUMENT TEXT
+ *   UPDATE_NOTE_TEXT   -> TIU SET DOCUMENT TEXT (existing doc)
+ *   SIGN_NOTE          -> TIU LOCK RECORD + TIU SIGN RECORD + TIU UNLOCK RECORD
+ *   CREATE_ADDENDUM    -> TIU CREATE ADDENDUM RECORD + TIU SET DOCUMENT TEXT
  *
  * Safety:
  *   - LOCK before SIGN, always UNLOCK after
@@ -24,7 +24,7 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
-/* Intent → RPC mapping                                                */
+/* Intent -> RPC mapping                                                */
 /* ------------------------------------------------------------------ */
 
 const INTENT_RPC_MAP: Record<string, string[]> = {
@@ -82,7 +82,7 @@ export const tiuExecutor: RpcExecutor = {
     const rpcs = INTENT_RPC_MAP[command.intent] || [];
     const primaryRpc = rpcs[0] || 'UNKNOWN';
 
-    // Build simulated params (no PHI — just structure)
+    // Build simulated params (no PHI -- just structure)
     const params: Record<string, unknown> = {
       intent: command.intent,
       domain: command.domain,

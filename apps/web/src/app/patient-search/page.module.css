@@ -210,7 +210,7 @@
   color: var(--text-primary);
 }
 
-/* ── Phase 5C: Allergies ─────────────────────────── */
+/* -- Phase 5C: Allergies --------------------------- */
 
 .allergiesSection {
   padding: 16px 20px;
@@ -269,7 +269,7 @@
   color: var(--text-secondary);
 }
 
-/* ── Phase 5D: Add Allergy Form ──────────────────── */
+/* -- Phase 5D: Add Allergy Form -------------------- */
 
 .addAllergyForm {
   margin-top: 16px;
@@ -390,7 +390,7 @@
   }
 }
 
-/* ── Phase 6A: Vitals Section ────────────────────── */
+/* -- Phase 6A: Vitals Section ---------------------- */
 
 .vitalsSection {
   padding: 16px 20px;

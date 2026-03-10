@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -22,7 +23,7 @@ export default async function vistaUsersRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE USER LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE USER LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -45,7 +46,7 @@ export default async function vistaUsersRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE USER DETAIL', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE USER DETAIL', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -67,7 +68,7 @@ export default async function vistaUsersRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE KEY LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE KEY LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -92,7 +93,7 @@ export default async function vistaUsersRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE MENU LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE MENU LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -114,7 +115,7 @@ export default async function vistaUsersRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE USER EDIT' };
     } catch (err: any) {
       log.error('Failed to call VE USER EDIT', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -136,7 +137,7 @@ export default async function vistaUsersRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE USER ADD KEY' };
     } catch (err: any) {
       log.error('Failed to call VE USER ADD KEY', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -153,7 +154,7 @@ export default async function vistaUsersRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE USER REMOVE KEY' };
     } catch (err: any) {
       log.error('Failed to call VE USER REMOVE KEY', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -170,7 +171,7 @@ export default async function vistaUsersRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE USER DEACTIVATE' };
     } catch (err: any) {
       log.error('Failed to call VE USER DEACTIVATE', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -187,7 +188,7 @@ export default async function vistaUsersRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE USER REACTIVATE' };
     } catch (err: any) {
       log.error('Failed to call VE USER REACTIVATE', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

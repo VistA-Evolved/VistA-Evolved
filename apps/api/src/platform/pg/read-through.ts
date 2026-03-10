@@ -1,8 +1,8 @@
 /**
- * Read-Through Cache Utilities — Phase 276
+ * Read-Through Cache Utilities -- Phase 276
  *
  * Generic utilities for adding read-through behavior to pg_backed stores.
- * Pattern: Map-first → PG-fallback → cache-fill on miss.
+ * Pattern: Map-first -> PG-fallback -> cache-fill on miss.
  *
  * Usage:
  *   const item = await readThroughGet(localMap, key, () => pgRepo.findById(key));
@@ -82,7 +82,7 @@ export async function readThroughList<T>(
     }
     hydratedRef.value = true;
   } catch {
-    // PG unavailable — serve from Map as-is
+    // PG unavailable -- serve from Map as-is
   }
 
   return Array.from(localMap.values());
@@ -98,7 +98,7 @@ export interface HydrateTask {
 }
 
 /**
- * Run all registered hydration tasks at startup. Non-fatal — each task
+ * Run all registered hydration tasks at startup. Non-fatal -- each task
  * is isolated so one failure doesn't block others.
  *
  * @returns Summary of hydration results

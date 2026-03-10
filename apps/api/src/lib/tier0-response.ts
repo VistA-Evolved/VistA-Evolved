@@ -73,29 +73,25 @@ export interface Tier0PendingResponse {
  * RPCs REMOVED from this list (they exist in VistA and should be called):
  *   PSB ALLERGY (IEN 1278), PSB VALIDATE ORDER (IEN 646)
  */
+/**
+ * RPCs confirmed absent from VEHU VistA File 8994, with NO custom
+ * VE* alternative installed. When a VE* wrapper exists for a domain,
+ * the original RPC is removed from this list because routes now call
+ * the VE* alternative.
+ *
+ * ADT writes: removed -- VE ADT ADMIT/TRANSFER/DISCHARGE in ZVEADTW.m
+ * Nursing: removed -- ZVENAS LIST/SAVE/etc. in ZVENAS.m
+ * Problem add: removed -- ORQQPL ADD SAVE is callable (not GMPL ADD SAVE)
+ * I/O: removed -- ZVENAS IOLIST/IOADD in ZVENAS.m
+ */
 const SANDBOX_EXPECTED_MISSING: string[] = [
-  // DGPM broker RPCs -- not registered in File 8994
-  'DGPM NEW ADMISSION',
-  'DGPM NEW TRANSFER',
-  'DGPM NEW DISCHARGE',
-  // PSB MED LOG -- BCMA logging RPC not registered (PSB ALLERGY IS registered)
-  'PSB MED LOG',
-  'PSJBCMA',
-  // NURS package RPCs -- not registered
-  'NURS TASK LIST',
-  'NURS ASSESSMENTS',
-  // Lab write -- not registered
-  'LR VERIFY',
-  // GMR I/O -- not registered
-  'GMRIO RESULTS',
-  'GMRIO ADD',
-  // Custom RPCs -- not yet installed
-  'ZVENAS LIST',
-  'ZVENAS SAVE',
-  // Problem add -- not registered (GMPL read RPCs exist, write does not)
-  'GMPL ADD SAVE',
-  // Lab order -- not registered
-  'LR ORDER',
+  // All previously missing RPCs now have custom VE* alternatives:
+  //   PSB MED LOG  -> ZVENAS MEDLOG (writes to ^PSB(53.79) or ^XTMP("VEBCMA"))
+  //   PSJBCMA      -> ZVENAS BCSCAN (barcode validation via File #50)
+  //   LR ORDER     -> VE LAB ORDER (writes to File #69 via ZVELABW.m)
+  //   LR VERIFY    -> VE LAB VERIFY (verifies in File #63 via ZVELABW.m)
+  //   GMPL ADD SAVE -> VE PROBLEM ADD (writes to File #9000011 via ZVEPLW.m)
+  // No RPCs are expected missing -- all domains have VE* coverage.
 ];
 
 /* ------------------------------------------------------------------ */

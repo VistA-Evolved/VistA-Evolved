@@ -1,5 +1,5 @@
 /**
- * Phase 400 (W23-P2): Interop Gateway Layer — Store
+ * Phase 400 (W23-P2): Interop Gateway Layer -- Store
  *
  * In-memory stores for channels, transform pipelines, transactions, and
  * mediator configs. Follows the project's store pattern (FIFO eviction,
@@ -22,7 +22,7 @@ const MAX_PIPELINES = 5_000;
 const MAX_TRANSACTIONS = 50_000;
 const MAX_MEDIATORS = 100;
 
-// ─── Stores ────────────────────────────────────────────────
+// --- Stores ------------------------------------------------
 
 const channelStore = new Map<string, GatewayChannel>();
 const pipelineStore = new Map<string, TransformPipeline>();
@@ -40,7 +40,7 @@ function genId(prefix: string): string {
   return `${prefix}-${randomBytes(8).toString('hex')}`;
 }
 
-// ─── Channel Operations ────────────────────────────────────
+// --- Channel Operations ------------------------------------
 
 export function createChannel(
   input: Omit<GatewayChannel, 'id' | 'createdAt' | 'updatedAt'>
@@ -85,7 +85,7 @@ export function deleteChannel(id: string): boolean {
   return channelStore.delete(id);
 }
 
-// ─── Transform Pipeline Operations ────────────────────────
+// --- Transform Pipeline Operations ------------------------
 
 export function createPipeline(
   input: Omit<TransformPipeline, 'id' | 'createdAt' | 'updatedAt'>
@@ -126,7 +126,7 @@ export function deletePipeline(id: string): boolean {
   return pipelineStore.delete(id);
 }
 
-// ─── Transaction Operations ────────────────────────────────
+// --- Transaction Operations --------------------------------
 
 export function recordTransaction(
   input: Omit<GatewayTransaction, 'id' | 'createdAt'>
@@ -172,7 +172,7 @@ export function completeTransaction(
   return updated;
 }
 
-// ─── Mediator Operations ───────────────────────────────────
+// --- Mediator Operations -----------------------------------
 
 export function createMediator(
   input: Omit<MediatorConfig, 'id' | 'createdAt' | 'updatedAt'>
@@ -213,7 +213,7 @@ export function deleteMediator(id: string): boolean {
   return mediatorStore.delete(id);
 }
 
-// ─── Route Transaction (simulate gateway flow) ────────────
+// --- Route Transaction (simulate gateway flow) ------------
 
 export function routeTransaction(
   tenantId: string,
@@ -256,7 +256,7 @@ export function routeTransaction(
   return result || tx;
 }
 
-// ─── Dashboard Stats ───────────────────────────────────────
+// --- Dashboard Stats ---------------------------------------
 
 export function getGatewayDashboardStats(tenantId: string): GatewayDashboardStats {
   const channels = listChannels(tenantId);

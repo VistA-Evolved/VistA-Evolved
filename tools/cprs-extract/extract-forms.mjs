@@ -1,5 +1,5 @@
 /**
- * extract-forms.mjs — Enumerate .dfm files and extract form caption/title.
+ * extract-forms.mjs -- Enumerate .dfm files and extract form caption/title.
  *
  * Sources:
  *   - All .dfm files under CPRS-Chart
@@ -36,7 +36,7 @@ function parseFormFromDfm(src, relPath) {
     const trimmed = line.trim();
     if (trimmed.startsWith('object ') || trimmed.startsWith('inherited ')) {
       if (depth === 0 && !trimmed.startsWith(declaration)) {
-        // First child object — stop looking for top-level properties
+        // First child object -- stop looking for top-level properties
         break;
       }
       if (depth > 0) break; // encountered nested object
@@ -120,7 +120,7 @@ export async function extractForms() {
   await mkdir(OUTPUT_DIR, { recursive: true });
   await writeFile(join(OUTPUT_DIR, 'forms.json'), JSON.stringify(result, null, 2));
   console.log(
-    `  ✓ forms.json — ${result.summary.totalForms} forms (${result.summary.withCaption} with captions)`
+    `  ✓ forms.json -- ${result.summary.totalForms} forms (${result.summary.withCaption} with captions)`
   );
   return result;
 }

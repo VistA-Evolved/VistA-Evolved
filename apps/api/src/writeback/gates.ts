@@ -1,5 +1,5 @@
 /**
- * Clinical Writeback Command Bus — Feature Gates
+ * Clinical Writeback Command Bus -- Feature Gates
  *
  * Phase 300 (W12-P2): Tenant-scoped feature gates for writeback.
  *

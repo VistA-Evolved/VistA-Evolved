@@ -62,7 +62,7 @@ test.describe("Phase 445: IMPLEMENT: Compliance Dashboard UI (W28 P7)", () => {
 
 });
 
-test.describe("Phase 446: IMPLEMENT: W28 Integrity Audit — Capstone (W28 P8)", () => {
+test.describe("Phase 446: IMPLEMENT: W28 Integrity Audit -- Capstone (W28 P8)", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["page.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {

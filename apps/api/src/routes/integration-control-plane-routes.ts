@@ -6,21 +6,21 @@
  * All endpoints are admin-only (enforced by AUTH_RULES pattern /api/platform/).
  *
  * Routes:
- *   POST   /api/platform/integrations/partners           — create partner
- *   GET    /api/platform/integrations/partners           — list partners for tenant
- *   GET    /api/platform/integrations/partners/:id       — get partner
- *   POST   /api/platform/integrations/partners/:id/status — update partner status
- *   POST   /api/platform/integrations/partners/:id/endpoints — add endpoint
- *   GET    /api/platform/integrations/partners/:id/endpoints — list endpoints
- *   POST   /api/platform/integrations/partners/:id/endpoints/:epId/toggle — toggle endpoint
- *   POST   /api/platform/integrations/partners/:id/credentials — add credential ref
- *   GET    /api/platform/integrations/partners/:id/credentials — list credential refs
- *   POST   /api/platform/integrations/partners/:id/credentials/:credId/rotate — rotate credential
- *   POST   /api/platform/integrations/partners/:id/routes — add route
- *   GET    /api/platform/integrations/partners/:id/routes — list routes
- *   POST   /api/platform/integrations/partners/:id/test — run connectivity test
- *   GET    /api/platform/integrations/partners/:id/test-runs — list test runs
- *   GET    /api/platform/integrations/partners/:id/test-runs/:runId — get test run
+ *   POST   /api/platform/integrations/partners           -- create partner
+ *   GET    /api/platform/integrations/partners           -- list partners for tenant
+ *   GET    /api/platform/integrations/partners/:id       -- get partner
+ *   POST   /api/platform/integrations/partners/:id/status -- update partner status
+ *   POST   /api/platform/integrations/partners/:id/endpoints -- add endpoint
+ *   GET    /api/platform/integrations/partners/:id/endpoints -- list endpoints
+ *   POST   /api/platform/integrations/partners/:id/endpoints/:epId/toggle -- toggle endpoint
+ *   POST   /api/platform/integrations/partners/:id/credentials -- add credential ref
+ *   GET    /api/platform/integrations/partners/:id/credentials -- list credential refs
+ *   POST   /api/platform/integrations/partners/:id/credentials/:credId/rotate -- rotate credential
+ *   POST   /api/platform/integrations/partners/:id/routes -- add route
+ *   GET    /api/platform/integrations/partners/:id/routes -- list routes
+ *   POST   /api/platform/integrations/partners/:id/test -- run connectivity test
+ *   GET    /api/platform/integrations/partners/:id/test-runs -- list test runs
+ *   GET    /api/platform/integrations/partners/:id/test-runs/:runId -- get test run
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -81,7 +81,7 @@ function getUserId(request: any): string {
 }
 
 export async function integrationControlPlaneRoutes(app: FastifyInstance): Promise<void> {
-  // ─── Partners ────────────────────────────────────────────────────
+  // --- Partners ----------------------------------------------------
 
   app.post('/api/platform/integrations/partners', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -155,7 +155,7 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
     };
   });
 
-  // ─── Endpoints ───────────────────────────────────────────────────
+  // --- Endpoints ---------------------------------------------------
 
   app.post('/api/platform/integrations/partners/:id/endpoints', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -223,7 +223,7 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
     }
   );
 
-  // ─── Credential Refs ─────────────────────────────────────────────
+  // --- Credential Refs ---------------------------------------------
 
   app.post('/api/platform/integrations/partners/:id/credentials', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -279,7 +279,7 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
     }
   );
 
-  // ─── Routes ──────────────────────────────────────────────────────
+  // --- Routes ------------------------------------------------------
 
   app.post('/api/platform/integrations/partners/:id/routes', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -312,7 +312,7 @@ export async function integrationControlPlaneRoutes(app: FastifyInstance): Promi
     return { ok: true, count: routesList.length, routes: routesList };
   });
 
-  // ─── Test Runs ───────────────────────────────────────────────────
+  // --- Test Runs ---------------------------------------------------
 
   app.post('/api/platform/integrations/partners/:id/test', async (request, reply) => {
     const session = await requireSession(request, reply);

@@ -1,5 +1,5 @@
 /**
- * HL7v2 Engine — Type Definitions
+ * HL7v2 Engine -- Type Definitions
  *
  * Phase 239 (Wave 6 P2): Core types for MLLP framing, HL7v2 message parsing,
  * ACK generation, and connection management.
@@ -52,7 +52,7 @@ export const HL7_ESCAPE_CHAR = '\\';
 /** Standard HL7v2 segment terminator */
 export const HL7_SEGMENT_SEP = '\r';
 
-/** HL7v2 segment — parsed representation */
+/** HL7v2 segment -- parsed representation */
 export interface Hl7Segment {
   /** Segment type identifier (e.g., "MSH", "PID", "OBX") */
   readonly name: string;
@@ -62,7 +62,7 @@ export interface Hl7Segment {
   readonly fields: readonly string[];
 }
 
-/** HL7v2 MSH (Message Header) — extracted header fields */
+/** HL7v2 MSH (Message Header) -- extracted header fields */
 export interface Hl7Msh {
   readonly fieldSeparator: string;
   readonly encodingCharacters: string;

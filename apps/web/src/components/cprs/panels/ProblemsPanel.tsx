@@ -149,7 +149,7 @@ export default function ProblemsPanel({ dfn }: Props) {
               </div>
               <div className={styles.formGroup}>
                 <label>Onset Date</label>
-                <div>{selected.onset || '—'}</div>
+                <div>{selected.onset || '--'}</div>
               </div>
               <div style={{ marginTop: 12 }}>
                 <button

@@ -1,5 +1,5 @@
 /**
- * Task: pg_backup — Phase 118: Go-Live Hardening
+ * Task: pg_backup -- Phase 118: Go-Live Hardening
  *
  * Automated PG backup via pg_dump. Runs as a Graphile Worker task
  * on a cron schedule (default: daily at 1 AM).
@@ -34,7 +34,7 @@ export async function handlePgBackup(payload: Record<string, unknown>): Promise<
   const p = payload as PgBackupPayload;
   const pgUrl = process.env.PLATFORM_PG_URL;
   if (!pgUrl || !isPgConfigured()) {
-    log.warn('pg_backup: skipped — PLATFORM_PG_URL not configured');
+    log.warn('pg_backup: skipped -- PLATFORM_PG_URL not configured');
     return;
   }
 
@@ -53,7 +53,7 @@ export async function handlePgBackup(payload: Record<string, unknown>): Promise<
   log.info('pg_backup: starting', { backupDir, filename, retainCount });
 
   try {
-    // Use pg_dump via execFileSync (no shell injection — BUG-114 per AGENTS.md)
+    // Use pg_dump via execFileSync (no shell injection -- BUG-114 per AGENTS.md)
     const output = execFileSync(
       'pg_dump',
       ['--format=plain', '--no-owner', '--no-privileges', '--clean', '--if-exists', pgUrl],

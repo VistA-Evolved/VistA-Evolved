@@ -1,5 +1,5 @@
 /**
- * Core Enterprise Intake Pack — universal demographics + consent + chief complaint
+ * Core Enterprise Intake Pack -- universal demographics + consent + chief complaint
  *
  * Every intake session loads this pack. It covers the minimum items required
  * regardless of department, specialty, or chief complaint.

@@ -23,7 +23,7 @@ const ROOT = process.cwd();
 const RESERVATIONS_FILE = join(ROOT, 'docs', 'qa', 'prompt-phase-range-reservations.json');
 const PROMPTS_DIR = join(ROOT, 'prompts');
 
-// ── Parse args ─────────────────────────────────────────────────────
+// -- Parse args -----------------------------------------------------
 
 function getArg(name) {
   const idx = process.argv.indexOf(`--${name}`);
@@ -42,7 +42,7 @@ if (!wave || !count || count < 1) {
   process.exit(1);
 }
 
-// ── Compute max used phase ─────────────────────────────────────────
+// -- Compute max used phase -----------------------------------------
 
 function computeMaxUsed() {
   let max = 0;
@@ -89,7 +89,7 @@ function computeMaxUsed() {
   return max;
 }
 
-// ── Load / create reservations ─────────────────────────────────────
+// -- Load / create reservations -------------------------------------
 
 function loadReservations() {
   if (!existsSync(RESERVATIONS_FILE)) return [];
@@ -109,13 +109,13 @@ function saveReservations(reservations) {
   writeFileSync(RESERVATIONS_FILE, JSON.stringify(reservations, null, 2) + '\n', 'utf-8');
 }
 
-// ── Check overlaps ─────────────────────────────────────────────────
+// -- Check overlaps -------------------------------------------------
 
 function rangesOverlap(a, b) {
   return a.start <= b.end && b.start <= a.end;
 }
 
-// ── Main ───────────────────────────────────────────────────────────
+// -- Main -----------------------------------------------------------
 
 const reservations = loadReservations();
 

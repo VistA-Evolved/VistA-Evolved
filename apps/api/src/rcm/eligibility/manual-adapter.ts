@@ -1,5 +1,5 @@
 /**
- * Phase 100 — Manual PayerAdapter
+ * Phase 100 -- Manual PayerAdapter
  *
  * Accepts user-entered eligibility and claim status results directly.
  * No external connectivity. MANUAL provenance on all results.
@@ -30,7 +30,7 @@ const CONFIG: PayerAdapterConfig = {
 };
 
 /**
- * ManualPayerAdapter — returns user-provided results as structured responses.
+ * ManualPayerAdapter -- returns user-provided results as structured responses.
  *
  * The caller passes manual results in the adapter params; this adapter
  * wraps them in the standard response format with MANUAL provenance markers.
@@ -49,7 +49,7 @@ export class ManualPayerAdapter implements PayerAdapter {
     memberId?: string;
     dateOfService?: string;
     tenantId: string;
-    /** Manual entry fields — pass via extended params */
+    /** Manual entry fields -- pass via extended params */
     manualEligible?: boolean;
     manualCoverageType?: string;
     manualNotes?: string;

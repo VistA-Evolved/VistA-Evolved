@@ -40,7 +40,7 @@ function fail(gate, detail) {
   console.log(`  FAIL  ${gate}: ${detail}`);
 }
 
-// ── Collect all supported locales from packs ───────────────────
+// -- Collect all supported locales from packs -------------------
 
 function loadPackLocales() {
   const packDirs = readdirSync(PACKS_DIR).filter((d) => {
@@ -106,7 +106,7 @@ function checkKeyCoverage(enKeys, localeData, locale, appName) {
   }
 }
 
-// ── Main ───────────────────────────────────────────────────────
+// -- Main -------------------------------------------------------
 
 console.log('\n=== i18n Coverage Gate (Phase 497) ===\n');
 
@@ -172,7 +172,7 @@ for (const pack of packs) {
   }
 }
 
-// ── Summary ────────────────────────────────────────────────────
+// -- Summary ----------------------------------------------------
 
 console.log(`\n  --- Summary: ${passed} passed, ${warned} warned, ${failed} failed ---`);
 process.exit(failed > 0 ? 1 : 0);

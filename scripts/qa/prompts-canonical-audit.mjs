@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Phase 274 — Prompt Canonical Audit
+ * Phase 274 -- Prompt Canonical Audit
  *
  * Audits the prompts/ directory for structural issues:
  * 1. Duplicate folder numeric prefixes
@@ -27,7 +27,7 @@ const PROMPTS_DIR = join(ROOT, 'prompts');
 /* Helpers                                                             */
 /* ------------------------------------------------------------------ */
 
-/** Parse a folder name like "99B-PHASE-95-STUFF" → { prefix: "99B", phase: "95", desc: "STUFF" } */
+/** Parse a folder name like "99B-PHASE-95-STUFF" -> { prefix: "99B", phase: "95", desc: "STUFF" } */
 function parseFolder(name) {
   // Match: PREFIX-PHASE-NUMBER-DESCRIPTION or PREFIX-META-NAME
   const phaseMatch = name.match(/^(\d+[A-Z]?)-PHASE-(\d+[A-Z]?)-(.+)$/);

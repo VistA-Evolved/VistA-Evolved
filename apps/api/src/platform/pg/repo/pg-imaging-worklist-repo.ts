@@ -1,5 +1,5 @@
 /**
- * PG Imaging Worklist Repository — Async durable imaging work item state
+ * PG Imaging Worklist Repository -- Async durable imaging work item state
  *
  * Phase 128: Imaging + Scheduling Durability (Map stores -> Postgres)
  *
@@ -13,7 +13,7 @@ import { pgImagingWorkItem } from '../pg-schema.js';
 
 export type ImagingWorkItemRow = typeof pgImagingWorkItem.$inferSelect;
 
-/* ── Create ────────────────────────────────────────────────── */
+/* -- Create -------------------------------------------------- */
 
 export async function insertWorkOrder(data: {
   id: string;
@@ -69,7 +69,7 @@ export async function insertWorkOrder(data: {
   return row!;
 }
 
-/* ── Lookup ────────────────────────────────────────────────── */
+/* -- Lookup -------------------------------------------------- */
 
 export async function findWorkOrderById(id: string): Promise<ImagingWorkItemRow | undefined> {
   const db = getPgDb();
@@ -98,7 +98,7 @@ export async function findAllWorkOrders(): Promise<ImagingWorkItemRow[]> {
   return db.select().from(pgImagingWorkItem);
 }
 
-/* ── Update ────────────────────────────────────────────────── */
+/* -- Update -------------------------------------------------- */
 
 export async function updateWorkOrder(
   id: string,
@@ -118,7 +118,7 @@ export async function updateWorkOrder(
   return findWorkOrderById(id);
 }
 
-/* ── Stats ─────────────────────────────────────────────────── */
+/* -- Stats --------------------------------------------------- */
 
 export async function countWorkOrders(): Promise<{ total: number; active: number }> {
   const db = getPgDb();

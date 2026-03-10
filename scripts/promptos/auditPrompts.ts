@@ -44,7 +44,7 @@ function warn(rule: string, details: string, folder?: string) {
   results.push({ rule, status: 'warn', details, folder });
 }
 
-// ── Collect folders ──────────────────────────────────────────────
+// -- Collect folders ----------------------------------------------
 
 if (!existsSync(PROMPTS_DIR)) {
   fail('dir-exists', 'prompts/ directory not found');
@@ -61,7 +61,7 @@ const PHASE_RE = /^(\d{1,3})-PHASE-(\d+[A-Z]?)-(.+)$/;
 const metaFolders = allEntries.filter((e) => META_RE.test(e));
 const phaseFolders = allEntries.filter((e) => !META_RE.test(e) && /^\d{1,3}-/.test(e));
 
-// ── Rule 1: Unique folder prefixes ──────────────────────────────
+// -- Rule 1: Unique folder prefixes ------------------------------
 
 const prefixMap = new Map<string, string[]>();
 for (const f of phaseFolders) {
@@ -81,7 +81,7 @@ if (dupes.length === 0) {
   }
 }
 
-// ── Rule 2: Contiguous prefix sequence ──────────────────────────
+// -- Rule 2: Contiguous prefix sequence --------------------------
 
 const sortedPrefixes = [...prefixMap.keys()].map(Number).sort((a, b) => a - b);
 const gaps: number[] = [];
@@ -102,7 +102,7 @@ if (gaps.length === 0) {
   warn('contiguous', `Gaps in prefix sequence: ${gaps.join(', ')}`);
 }
 
-// ── Rule 3: IMPLEMENT + VERIFY files per phase ─────────────────
+// -- Rule 3: IMPLEMENT + VERIFY files per phase -----------------
 
 for (const folder of phaseFolders) {
   const m = folder.match(/^(\d{1,3})-/);
@@ -156,7 +156,7 @@ for (const folder of phaseFolders) {
   }
 }
 
-// ── Rule 4: Header matches filename ─────────────────────────────
+// -- Rule 4: Header matches filename -----------------------------
 
 for (const folder of phaseFolders) {
   const folderPath = join(PROMPTS_DIR, folder);
@@ -188,7 +188,7 @@ for (const folder of phaseFolders) {
   }
 }
 
-// ── Emit results ─────────────────────────────────────────────────
+// -- Emit results -------------------------------------------------
 
 function emitAndExit() {
   const passCount = results.filter((r) => r.status === 'pass').length;

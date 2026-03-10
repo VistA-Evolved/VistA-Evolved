@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Scheduling RPC Inventory — Phase 139
+ * Scheduling RPC Inventory -- Phase 139
  *
  * Reads the RPC registry + capabilities.json and outputs a JSON artifact
  * showing which scheduling RPCs are registered, their status, and gaps.

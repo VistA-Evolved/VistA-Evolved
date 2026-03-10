@@ -1,14 +1,14 @@
 /**
- * Connector State — Phase 82: RCM Adapter Expansion v2
+ * Connector State -- Phase 82: RCM Adapter Expansion v2
  *
  * Provides an honest, normalized view of every connector's health
- * and readiness. No fake "connected" state — connectors are probed
+ * and readiness. No fake "connected" state -- connectors are probed
  * and the result is one of:
  *
- *   connected   — health check passed recently
- *   degraded    — health check slow or partial success
- *   disconnected — health check failed or connector not configured
- *   pending     — never probed / first boot
+ *   connected   -- health check passed recently
+ *   degraded    -- health check slow or partial success
+ *   disconnected -- health check failed or connector not configured
+ *   pending     -- never probed / first boot
  *
  * Probes are rate-limited (max 1/minute per connector) to avoid
  * hammering external payer endpoints.
@@ -18,7 +18,7 @@ import { getAllConnectors, type RcmConnector } from './types.js';
 import { getAllPayerAdapters, type PayerAdapter } from '../adapters/payer-adapter.js';
 import { log } from '../../lib/logger.js';
 
-/* ── State Model ───────────────────────────────────────────── */
+/* -- State Model --------------------------------------------- */
 
 export type ConnectorHealthState = 'connected' | 'degraded' | 'disconnected' | 'pending';
 
@@ -58,7 +58,7 @@ export interface AdapterStateEntry {
   };
 }
 
-/* ── Probe Cache ───────────────────────────────────────────── */
+/* -- Probe Cache --------------------------------------------- */
 
 const PROBE_COOLDOWN_MS = 60_000; // 1 minute between probes per connector
 const DEGRADED_LATENCY_MS = 5_000; // >5s = degraded
@@ -73,7 +73,7 @@ const probeCache = new Map<
   }
 >();
 
-/* ── Probe Functions ───────────────────────────────────────── */
+/* -- Probe Functions ----------------------------------------- */
 
 async function probeConnector(connector: RcmConnector): Promise<ConnectorStateEntry> {
   const cached = probeCache.get(connector.id);
@@ -246,7 +246,7 @@ async function probeAdapter(adapter: PayerAdapter): Promise<AdapterStateEntry> {
   }
 }
 
-/* ── Public API ────────────────────────────────────────────── */
+/* -- Public API ---------------------------------------------- */
 
 /**
  * Get the honest state of all registered connectors.

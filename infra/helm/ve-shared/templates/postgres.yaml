@@ -10,7 +10,7 @@ metadata:
 type: Opaque
 data:
   {{- if .Values.postgres.existingSecret }}
-  # Using existing secret — this placeholder is overridden by existingSecret reference
+  # Using existing secret -- this placeholder is overridden by existingSecret reference
   {{- else }}
   password: {{ "changeme-in-production" | b64enc | quote }}
   {{- end }}

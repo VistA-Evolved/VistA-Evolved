@@ -1,5 +1,5 @@
 /**
- * HL7v2 Engine Baseline Certification — Phase 258
+ * HL7v2 Engine Baseline Certification -- Phase 258
  *
  * Validates the HL7v2 engine infrastructure: MLLP server/client,
  * parser, ACK generator, message packs, routing layer, tenant
@@ -21,7 +21,7 @@ function fileContains(rel: string, pattern: string | RegExp): boolean {
   return typeof pattern === 'string' ? content.includes(pattern) : pattern.test(content);
 }
 
-/* ── MLLP Engine Core ───────────────────────────────────────────── */
+/* -- MLLP Engine Core --------------------------------------------- */
 
 describe('MLLP Engine Core', () => {
   it('has MLLP server', () => {
@@ -54,7 +54,7 @@ describe('MLLP Engine Core', () => {
   });
 });
 
-/* ── Message Packs ──────────────────────────────────────────────── */
+/* -- Message Packs ------------------------------------------------ */
 
 describe('HL7v2 Message Packs', () => {
   const packs = ['adt-pack.ts', 'orm-pack.ts', 'oru-pack.ts', 'siu-pack.ts'];
@@ -70,7 +70,7 @@ describe('HL7v2 Message Packs', () => {
   });
 });
 
-/* ── Routing Layer ──────────────────────────────────────────────── */
+/* -- Routing Layer ------------------------------------------------ */
 
 describe('HL7v2 Routing Layer', () => {
   const routingFiles = ['dispatcher.ts', 'matcher.ts', 'registry.ts', 'transform.ts', 'types.ts'];
@@ -86,7 +86,7 @@ describe('HL7v2 Routing Layer', () => {
   });
 });
 
-/* ── Tenant Endpoint Configuration (Phase 258) ──────────────────── */
+/* -- Tenant Endpoint Configuration (Phase 258) -------------------- */
 
 describe('Tenant Endpoint Configuration', () => {
   it('has tenant-endpoints module', () => {
@@ -117,7 +117,7 @@ describe('Tenant Endpoint Configuration', () => {
   });
 });
 
-/* ── API Routes ─────────────────────────────────────────────────── */
+/* -- API Routes --------------------------------------------------- */
 
 describe('HL7 API Routes', () => {
   it('has engine health route', () => {
@@ -133,7 +133,7 @@ describe('HL7 API Routes', () => {
   });
 });
 
-/* ── Docker Support ─────────────────────────────────────────────── */
+/* -- Docker Support ----------------------------------------------- */
 
 describe('Docker Support', () => {
   it('has HL7 docker-compose', () => {
@@ -145,7 +145,7 @@ describe('Docker Support', () => {
   });
 });
 
-/* ── PHI Safety ─────────────────────────────────────────────────── */
+/* -- PHI Safety --------------------------------------------------- */
 
 describe('PHI Safety', () => {
   it('no raw HL7 in application log calls', () => {
@@ -165,7 +165,7 @@ describe('PHI Safety', () => {
   });
 });
 
-/* ── ADR Reference ──────────────────────────────────────────────── */
+/* -- ADR Reference ------------------------------------------------ */
 
 describe('ADR Reference', () => {
   it('HL7 engine ADR exists', () => {

@@ -1,13 +1,13 @@
 /**
- * EDI Core Types — X12 Transaction Set Definitions
+ * EDI Core Types -- X12 Transaction Set Definitions
  *
  * Maps all standard HIPAA EDI transaction sets used in US healthcare billing.
- * Provides typed internal representations that bridge X12 wire format ↔ VistA domain.
+ * Provides typed internal representations that bridge X12 wire format <-> VistA domain.
  *
- * Phase 38 — RCM + Payer Connectivity
+ * Phase 38 -- RCM + Payer Connectivity
  */
 
-/* ─── X12 Transaction Set identifiers ──────────────────────────────── */
+/* --- X12 Transaction Set identifiers -------------------------------- */
 
 export type X12TransactionSet =
   | '837P' // Professional claim
@@ -23,7 +23,7 @@ export type X12TransactionSet =
   | '997' // Functional acknowledgment (legacy)
   | 'TA1'; // Interchange acknowledgment
 
-/* ─── Envelope types ─────────────────────────────────────────────── */
+/* --- Envelope types ----------------------------------------------- */
 
 export interface IsaEnvelope {
   senderId: string; // ISA06 - Interchange sender ID
@@ -45,7 +45,7 @@ export interface GsEnvelope {
   versionCode: string; // GS08 - '005010X222A1' for 837P, etc.
 }
 
-/* ─── Claims (837P / 837I) ──────────────────────────────────────── */
+/* --- Claims (837P / 837I) ---------------------------------------- */
 
 export interface EdiClaim837 {
   transactionSet: '837P' | '837I';
@@ -131,7 +131,7 @@ export interface EdiServiceLine {
   ndcCode?: string; // National Drug Code (for drug claims)
 }
 
-/* ─── Remittance Advice (835) ─────────────────────────────────────── */
+/* --- Remittance Advice (835) --------------------------------------- */
 
 export interface EdiRemittance835 {
   transactionSet: '835';
@@ -180,7 +180,7 @@ export interface EdiRemitServiceLine {
   units?: number;
 }
 
-/* ─── Eligibility (270/271) ───────────────────────────────────────── */
+/* --- Eligibility (270/271) ----------------------------------------- */
 
 export interface EdiEligibilityInquiry270 {
   transactionSet: '270';
@@ -218,7 +218,7 @@ export interface EdiBenefitInfo {
   authRequired?: boolean;
 }
 
-/* ─── Claim Status (276/277) ──────────────────────────────────────── */
+/* --- Claim Status (276/277) ---------------------------------------- */
 
 export interface EdiClaimStatusInquiry276 {
   transactionSet: '276';
@@ -243,7 +243,7 @@ export interface EdiClaimStatusResponse277 {
   errors?: EdiResponseError[];
 }
 
-/* ─── Prior Authorization (278) ──────────────────────────────────── */
+/* --- Prior Authorization (278) ------------------------------------ */
 
 export interface EdiPriorAuth278 {
   transactionSet: '278';
@@ -271,7 +271,7 @@ export interface EdiPriorAuth278 {
   };
 }
 
-/* ─── Attachments (275) ───────────────────────────────────────────── */
+/* --- Attachments (275) --------------------------------------------- */
 
 export interface EdiAttachment275 {
   transactionSet: '275';
@@ -284,7 +284,7 @@ export interface EdiAttachment275 {
   description?: string;
 }
 
-/* ─── Acknowledgments (999/997/TA1) ──────────────────────────────── */
+/* --- Acknowledgments (999/997/TA1) -------------------------------- */
 
 export interface EdiAcknowledgment {
   transactionSet: '999' | '997' | 'TA1';
@@ -294,7 +294,7 @@ export interface EdiAcknowledgment {
   errors?: EdiResponseError[];
 }
 
-/* ─── Shared types ───────────────────────────────────────────────── */
+/* --- Shared types ------------------------------------------------- */
 
 export interface EdiResponseError {
   code: string;
@@ -314,10 +314,10 @@ export type EdiTransaction =
   | EdiAttachment275
   | EdiAcknowledgment;
 
-/* ─── Pipeline tracking ──────────────────────────────────────────── */
+/* --- Pipeline tracking -------------------------------------------- */
 
 export type PipelineStage =
-  | 'build' // Internal claim → EDI representation
+  | 'build' // Internal claim -> EDI representation
   | 'validate' // Syntax + business rule validation
   | 'enqueue' // Placed in outbound queue
   | 'transmit' // Sent to payer/clearinghouse

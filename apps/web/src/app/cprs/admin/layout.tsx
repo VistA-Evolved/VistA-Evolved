@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Admin Layout — Phase 76, enhanced Phase 135 (deep-link protection).
+ * Admin Layout -- Phase 76, enhanced Phase 135 (deep-link protection).
  *
  * Shared layout for all /cprs/admin/* pages. Provides a sidebar
  * navigation linking to admin consoles. Module-gated: links to
@@ -70,7 +70,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     return isModuleEnabled(item.moduleId);
   });
 
-  // Phase 135: Deep-link protection — if the current page belongs to a
+  // Phase 135: Deep-link protection -- if the current page belongs to a
   // disabled module, show the module-disabled page instead of the content.
   const matchingItem = ADMIN_NAV.find(
     (item) =>

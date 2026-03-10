@@ -16,7 +16,7 @@ import { createHash } from 'node:crypto';
 
 const ROOT = new URL('../../', import.meta.url).pathname.replace(/^\/([A-Z]:)/, '$1');
 
-/* ── Helpers ─────────────────────────────────────────────────── */
+/* -- Helpers --------------------------------------------------- */
 
 function readSafe(p) {
   try {
@@ -38,7 +38,7 @@ function listDir(p) {
   }
 }
 
-/* ── Scan connectors ─────────────────────────────────────────── */
+/* -- Scan connectors ------------------------------------------- */
 
 function scanConnectors() {
   const dir = join(ROOT, 'apps/api/src/rcm/connectors');
@@ -103,7 +103,7 @@ function scanConnectors() {
   return connectors;
 }
 
-/* ── Scan payer data ─────────────────────────────────────────── */
+/* -- Scan payer data ------------------------------------------- */
 
 function scanPayerData() {
   const dir = join(ROOT, 'data/payers');
@@ -132,7 +132,7 @@ function scanPayerData() {
   return payers;
 }
 
-/* ── Scan country packs ──────────────────────────────────────── */
+/* -- Scan country packs ---------------------------------------- */
 
 function scanCountryPacks() {
   const dir = join(ROOT, 'country-packs');
@@ -163,7 +163,7 @@ function scanCountryPacks() {
   return packs;
 }
 
-/* ── Cross-reference analysis ────────────────────────────────── */
+/* -- Cross-reference analysis ---------------------------------- */
 
 function analyzeReadiness(connectors, payers, packs) {
   const issues = [];
@@ -206,7 +206,7 @@ function analyzeReadiness(connectors, payers, packs) {
   return issues;
 }
 
-/* ── Generate matrix ─────────────────────────────────────────── */
+/* -- Generate matrix ------------------------------------------- */
 
 function generateMatrix() {
   console.log('=== RCM Readiness Scan (Phase 513) ===\n');

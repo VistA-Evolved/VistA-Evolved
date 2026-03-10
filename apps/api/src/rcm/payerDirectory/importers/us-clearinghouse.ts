@@ -19,7 +19,7 @@ import type { PayerImporter, ImportResult, DirectoryPayer } from '../types.js';
 
 const NOW = () => new Date().toISOString();
 
-/* ── Network Entity Seeds ───────────────────────────────────── */
+/* -- Network Entity Seeds ------------------------------------- */
 
 function buildNetworkEntities(now: string): DirectoryPayer[] {
   return [
@@ -33,7 +33,7 @@ function buildNetworkEntities(now: string): DirectoryPayer[] {
           type: 'EDI_CLEARINGHOUSE',
           connectorId: 'availity',
           endpoint: 'https://apps.availity.com',
-          notes: 'Availity EDI gateway — routes to 2000+ US payers',
+          notes: 'Availity EDI gateway -- routes to 2000+ US payers',
         },
       ],
       supportedTransactions: ['837P', '837I', '835', '270', '271', '276', '277', '278', '999'],
@@ -56,7 +56,7 @@ function buildNetworkEntities(now: string): DirectoryPayer[] {
           type: 'EDI_CLEARINGHOUSE',
           connectorId: 'officeally',
           endpoint: 'https://pm.officeally.com',
-          notes: 'Office Ally EDI — free-tier clearinghouse for small practices',
+          notes: 'Office Ally EDI -- free-tier clearinghouse for small practices',
         },
       ],
       supportedTransactions: ['837P', '837I', '835', '270', '271', '276', '277', '999'],
@@ -93,7 +93,7 @@ function buildNetworkEntities(now: string): DirectoryPayer[] {
   ];
 }
 
-/* ── US Federal Payers ──────────────────────────────────────── */
+/* -- US Federal Payers ---------------------------------------- */
 
 function buildFederalPayers(now: string): DirectoryPayer[] {
   return [
@@ -170,7 +170,7 @@ function buildFederalPayers(now: string): DirectoryPayer[] {
   ];
 }
 
-/* ── CSV/JSON File Drop Parser ──────────────────────────────── */
+/* -- CSV/JSON File Drop Parser -------------------------------- */
 
 interface ClearinghousePayerRow {
   payerId?: string;
@@ -234,7 +234,7 @@ function rowToDirectoryPayer(
   };
 }
 
-/* ── Generic Clearinghouse Importer ─────────────────────────── */
+/* -- Generic Clearinghouse Importer --------------------------- */
 
 export const usClearinghouseImporter: PayerImporter = {
   id: 'US_Clearinghouse_Generic',
@@ -291,7 +291,7 @@ export const usClearinghouseImporter: PayerImporter = {
   },
 };
 
-/* ── Availity Importer ──────────────────────────────────────── */
+/* -- Availity Importer ---------------------------------------- */
 
 export const usAvailityImporter: PayerImporter = {
   id: 'US_Availity_Directory',
@@ -345,7 +345,7 @@ export const usAvailityImporter: PayerImporter = {
   },
 };
 
-/* ── Office Ally Importer ───────────────────────────────────── */
+/* -- Office Ally Importer ------------------------------------- */
 
 export const usOfficeAllyImporter: PayerImporter = {
   id: 'US_OfficeAlly_Directory',

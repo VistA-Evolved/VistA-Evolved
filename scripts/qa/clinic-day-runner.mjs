@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Phase 166: Clinic Day Simulator — CLI Runner
+ * Phase 166: Clinic Day Simulator -- CLI Runner
  * Usage: node scripts/qa/clinic-day-runner.mjs [--base-url URL] [--journey J1]
  *
  * Runs all 6 A-Z proof journeys against the live API and prints results.

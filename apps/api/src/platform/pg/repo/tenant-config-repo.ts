@@ -1,5 +1,5 @@
 /**
- * Tenant Config — PostgreSQL Repository (Phase 275)
+ * Tenant Config -- PostgreSQL Repository (Phase 275)
  *
  * DB-backed CRUD for tenant_config table with in-memory TTL cache.
  * Falls back to in-memory-only mode when PG is not configured.

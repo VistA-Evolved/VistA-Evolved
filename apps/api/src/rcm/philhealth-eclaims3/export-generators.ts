@@ -1,12 +1,12 @@
 /**
- * PhilHealth eClaims 3.0 — Export Generators
+ * PhilHealth eClaims 3.0 -- Export Generators
  *
  * Phase 96: Generate export artifacts from a ClaimPacket.
  *
  * Three export formats:
- *   1. JSON canonical — complete ClaimPacket as pretty-printed JSON
- *   2. PDF text — human-readable text summary for print-ready manual submission
- *   3. XML placeholder — delegated to xml-generator.ts
+ *   1. JSON canonical -- complete ClaimPacket as pretty-printed JSON
+ *   2. PDF text -- human-readable text summary for print-ready manual submission
+ *   3. XML placeholder -- delegated to xml-generator.ts
  *
  * The PDF text format is a plain-text representation suitable for rendering
  * as a printable document. It contains all the data a billing clerk needs
@@ -18,13 +18,13 @@ import { randomBytes } from 'node:crypto';
 import type { ClaimPacket, ExportBundle, ExportArtifact, ExportFormat } from './types.js';
 import { generatePlaceholderXml } from './xml-generator.js';
 
-/* ── Bundle ID ──────────────────────────────────────────────── */
+/* -- Bundle ID ------------------------------------------------ */
 
 function newBundleId(): string {
   return `bndl-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
-/* ── JSON Canonical Export ──────────────────────────────────── */
+/* -- JSON Canonical Export ------------------------------------ */
 
 function generateJsonExport(packet: ClaimPacket): ExportArtifact {
   const content = JSON.stringify(packet, null, 2);
@@ -39,7 +39,7 @@ function generateJsonExport(packet: ClaimPacket): ExportArtifact {
   };
 }
 
-/* ── PDF Text Export (print-ready) ──────────────────────────── */
+/* -- PDF Text Export (print-ready) ---------------------------- */
 
 function pad(s: string, len: number): string {
   return s.padEnd(len);
@@ -50,7 +50,7 @@ function line(label: string, value: string | undefined): string {
 }
 
 function separator(): string {
-  return '─'.repeat(72);
+  return '-'.repeat(72);
 }
 
 function generatePdfTextExport(packet: ClaimPacket): ExportArtifact {
@@ -58,7 +58,7 @@ function generatePdfTextExport(packet: ClaimPacket): ExportArtifact {
   const lines: string[] = [];
 
   lines.push(separator());
-  lines.push('  PHILHEALTH eCLAIMS 3.0 — CLAIM SUMMARY FOR MANUAL SUBMISSION');
+  lines.push('  PHILHEALTH eCLAIMS 3.0 -- CLAIM SUMMARY FOR MANUAL SUBMISSION');
   lines.push(separator());
   lines.push('');
   lines.push(`  Packet ID:     ${packet.packetId}`);
@@ -158,7 +158,7 @@ function generatePdfTextExport(packet: ClaimPacket): ExportArtifact {
     lines.push(
       `  ${'Category'.padEnd(20)} ${'Description'.padEnd(25)} ${'Qty'.padStart(4)} ${'Net Amt'.padStart(12)}`
     );
-    lines.push(`  ${'─'.repeat(20)} ${'─'.repeat(25)} ${'─'.repeat(4)} ${'─'.repeat(12)}`);
+    lines.push(`  ${'-'.repeat(20)} ${'-'.repeat(25)} ${'-'.repeat(4)} ${'-'.repeat(12)}`);
     for (const c of packet.charges) {
       lines.push(
         `  ${c.category.padEnd(20)} ${c.description.slice(0, 25).padEnd(25)} ${String(c.quantity).padStart(4)} ${('PHP ' + c.netAmount.toFixed(2)).padStart(12)}`
@@ -195,7 +195,7 @@ function generatePdfTextExport(packet: ClaimPacket): ExportArtifact {
   };
 }
 
-/* ── Generate Full Export Bundle ─────────────────────────────── */
+/* -- Generate Full Export Bundle ------------------------------- */
 
 export interface ExportOptions {
   formats?: ExportFormat[];

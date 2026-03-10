@@ -1,6 +1,6 @@
 /**
- * Clinical Invariant Tests — Encounter Linkage Rules
- * Phase 268 — W8-P3
+ * Clinical Invariant Tests -- Encounter Linkage Rules
+ * Phase 268 -- W8-P3
  *
  * Validates that clinical records maintain proper linkage:
  * - Orders belong to encounters

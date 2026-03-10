@@ -1,5 +1,5 @@
 # Performance Acceptance Gate CI
-# Phase 253 — Wave 7 P6
+# Phase 253 -- Wave 7 P6
 #
 # Runs k6 smoke-tier tests as acceptance gates.
 # Requires: API + VistA Docker running (uses service containers).

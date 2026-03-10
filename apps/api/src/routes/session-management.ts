@@ -1,16 +1,16 @@
 /**
- * Session Management Routes — Phase 338 (W16-P2).
+ * Session Management Routes -- Phase 338 (W16-P2).
  *
  * Provides endpoints for users to list/revoke their own sessions
  * and for admins to view security events.
  *
  * Routes:
- *   GET    /auth/sessions             — list current user's active sessions
- *   DELETE /auth/sessions/:id         — revoke a specific session (own sessions only)
- *   POST   /auth/sessions/revoke-all  — revoke ALL sessions except current
- *   GET    /auth/security-events      — session security event log (admin only)
- *   GET    /auth/step-up/status       — get current assurance level
- *   GET    /auth/mfa/status           — get MFA enrollment/verification status
+ *   GET    /auth/sessions             -- list current user's active sessions
+ *   DELETE /auth/sessions/:id         -- revoke a specific session (own sessions only)
+ *   POST   /auth/sessions/revoke-all  -- revoke ALL sessions except current
+ *   GET    /auth/security-events      -- session security event log (admin only)
+ *   GET    /auth/step-up/status       -- get current assurance level
+ *   GET    /auth/mfa/status           -- get MFA enrollment/verification status
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -42,7 +42,7 @@ function extractToken(request: any): string | null {
 
 export default async function sessionManagementRoutes(server: FastifyInstance): Promise<void> {
   /**
-   * GET /auth/sessions — List active sessions for the current user.
+   * GET /auth/sessions -- List active sessions for the current user.
    * Returns device fingerprint info, creation time, and MFA status.
    */
   server.get('/auth/sessions', async (request, reply) => {
@@ -73,7 +73,7 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
   });
 
   /**
-   * POST /auth/sessions/revoke-all — Revoke all sessions except current.
+   * POST /auth/sessions/revoke-all -- Revoke all sessions except current.
    */
   server.post('/auth/sessions/revoke-all', async (request, reply) => {
     const token = extractToken(request);
@@ -94,7 +94,7 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
   });
 
   /**
-   * GET /auth/security-events — Session security event log.
+   * GET /auth/security-events -- Session security event log.
    * Admin only.
    */
   server.get('/auth/security-events', async (request, reply) => {
@@ -135,7 +135,7 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
   });
 
   /**
-   * GET /auth/step-up/status — Get current assurance level and required actions.
+   * GET /auth/step-up/status -- Get current assurance level and required actions.
    */
   server.get('/auth/step-up/status', async (request, reply) => {
     const token = extractToken(request);
@@ -168,7 +168,7 @@ export default async function sessionManagementRoutes(server: FastifyInstance): 
   });
 
   /**
-   * GET /auth/mfa/status — Get MFA enrollment and enforcement status.
+   * GET /auth/mfa/status -- Get MFA enrollment and enforcement status.
    */
   server.get('/auth/mfa/status', async (request, reply) => {
     const token = extractToken(request);

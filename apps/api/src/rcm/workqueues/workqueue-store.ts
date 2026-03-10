@@ -12,7 +12,7 @@
  * Public API unchanged from Phase 43.
  */
 
-/* ── Workqueue Types (unchanged) ───────────────────────────── */
+/* -- Workqueue Types (unchanged) ----------------------------- */
 
 export type WorkqueueType = 'rejection' | 'denial' | 'missing_info';
 
@@ -60,7 +60,7 @@ export interface WorkqueueItem {
   updatedAt: string;
 }
 
-/* ── DB repo -- lazy-wired after initPlatformDb() ──────────── */
+/* -- DB repo -- lazy-wired after initPlatformDb() ------------ */
 
 /**
  * WorkqueueRepoLike: accepts both sync (SQLite) and async (PG) repos.
@@ -90,7 +90,7 @@ export function initWorkqueueRepo(repo: WorkqueueRepoLike): void {
   _repo = repo;
 }
 
-/* ── Row → WorkqueueItem mapper ────────────────────────────── */
+/* -- Row -> WorkqueueItem mapper ------------------------------ */
 
 function rowToItem(row: any): WorkqueueItem {
   return {
@@ -122,7 +122,7 @@ function rowToItem(row: any): WorkqueueItem {
   };
 }
 
-/* ── CRUD (same signatures as Phase 43, now async for PG) ──── */
+/* -- CRUD (same signatures as Phase 43, now async for PG) ---- */
 
 export async function createWorkqueueItem(params: {
   type: WorkqueueType;

@@ -1,5 +1,5 @@
 /**
- * PG Telehealth Room Repository — Async durable room state
+ * PG Telehealth Room Repository -- Async durable room state
  *
  * Phase 127: Portal + Telehealth Durability (Map stores -> Postgres)
  *
@@ -13,7 +13,7 @@ import { pgTelehealthRoom } from '../pg-schema.js';
 
 export type TelehealthRoomRow = typeof pgTelehealthRoom.$inferSelect;
 
-/* ── Create ────────────────────────────────────────────────── */
+/* -- Create -------------------------------------------------- */
 
 export async function insertRoom(data: {
   id: string;
@@ -55,7 +55,7 @@ export async function insertRoom(data: {
   return row!;
 }
 
-/* ── Lookup ────────────────────────────────────────────────── */
+/* -- Lookup -------------------------------------------------- */
 
 export async function findRoomByAppointment(
   appointmentId: string,
@@ -114,7 +114,7 @@ export async function findRoomById(
   return rows[0];
 }
 
-/* ── Update ────────────────────────────────────────────────── */
+/* -- Update -------------------------------------------------- */
 
 export async function updateRoom(
   id: string,
@@ -137,7 +137,7 @@ export async function updateRoom(
   return findRoomById(id);
 }
 
-/* ── Expire / End ──────────────────────────────────────────── */
+/* -- Expire / End -------------------------------------------- */
 
 export async function expireRoom(id: string): Promise<boolean> {
   const db = getPgDb();
@@ -169,7 +169,7 @@ export async function cleanupExpiredRooms(): Promise<number> {
   return (result as any)?.rowCount ?? 0;
 }
 
-/* ── Stats ─────────────────────────────────────────────────── */
+/* -- Stats --------------------------------------------------- */
 
 export async function countRooms(): Promise<{ total: number; active: number }> {
   const db = getPgDb();

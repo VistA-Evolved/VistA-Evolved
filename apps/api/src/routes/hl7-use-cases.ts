@@ -1,10 +1,10 @@
 /**
- * HL7v2 Use-Case Routes — Phase 260 (Wave 8 P4)
+ * HL7v2 Use-Case Routes -- Phase 260 (Wave 8 P4)
  *
  * Endpoints for HL7v2 use-case operations:
- * - POST /hl7/ingest — Accept raw HL7 and map to domain event
- * - GET /hl7/use-cases — List supported message type → domain event mappings
- * - GET /hl7/use-cases/fixtures — List available test fixtures
+ * - POST /hl7/ingest -- Accept raw HL7 and map to domain event
+ * - GET /hl7/use-cases -- List supported message type -> domain event mappings
+ * - GET /hl7/use-cases/fixtures -- List available test fixtures
  */
 import type { FastifyInstance } from 'fastify';
 import { requireSession } from '../auth/auth-routes.js';
@@ -40,7 +40,7 @@ export async function hl7UseCaseRoutes(server: FastifyInstance): Promise<void> {
   }
 
   /**
-   * POST /hl7/ingest — Accept raw HL7 message, parse, map to domain event.
+   * POST /hl7/ingest -- Accept raw HL7 message, parse, map to domain event.
    * Body: { rawMessage: string, tenantId?: string }
    */
   server.post('/hl7/ingest', async (request, reply) => {
@@ -117,7 +117,7 @@ export async function hl7UseCaseRoutes(server: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /hl7/use-cases — List supported HL7 → domain event mappings
+   * GET /hl7/use-cases -- List supported HL7 -> domain event mappings
    */
   server.get('/hl7/use-cases', async (_request, reply) => {
     const mappings = listSupportedMappings();
@@ -129,7 +129,7 @@ export async function hl7UseCaseRoutes(server: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /hl7/use-cases/fixtures — List available HL7 test fixture files
+   * GET /hl7/use-cases/fixtures -- List available HL7 test fixture files
    */
   server.get('/hl7/use-cases/fixtures', async (_request, reply) => {
     const fixturesDir = path.resolve(process.cwd(), '../../services/hl7/fixtures');

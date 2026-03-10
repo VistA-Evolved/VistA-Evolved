@@ -1,14 +1,14 @@
 /**
- * Phase 171: Ops Admin Center — Unified operations API
+ * Phase 171: Ops Admin Center -- Unified operations API
  *
  * Aggregates all posture/health/provisioning data into a single
  * ops overview suitable for SaaS + hospital IT visibility.
  *
  * Endpoints:
- *   GET /admin/ops/overview          — Unified ops health snapshot
- *   GET /admin/ops/alerts            — Active alert conditions
- *   GET /admin/ops/runbooks          — Runbook index with deep links
- *   GET /admin/ops/store-inventory   — In-memory store summary
+ *   GET /admin/ops/overview          -- Unified ops health snapshot
+ *   GET /admin/ops/alerts            -- Active alert conditions
+ *   GET /admin/ops/runbooks          -- Runbook index with deep links
+ *   GET /admin/ops/store-inventory   -- In-memory store summary
  *
  * All endpoints require admin role (AUTH_RULES /admin/*).
  */
@@ -18,7 +18,7 @@ import { requireSession } from '../auth/auth-routes.js';
 import { existsSync, readdirSync } from 'node:fs';
 import { resolve } from 'node:path';
 
-// ── Types ───────────────────────────────────────────────────
+// -- Types ---------------------------------------------------
 
 export type AlertSeverity = 'critical' | 'warning' | 'info';
 
@@ -51,7 +51,7 @@ export interface OpsOverview {
   timestamp: string;
 }
 
-// ── Runbook index ───────────────────────────────────────────
+// -- Runbook index -------------------------------------------
 
 interface RunbookEntry {
   name: string;
@@ -83,7 +83,7 @@ function indexRunbooks(): RunbookEntry[] {
   }
 }
 
-// ── Alert generation ────────────────────────────────────────
+// -- Alert generation ----------------------------------------
 
 function generateAlerts(domains: OpsDomainStatus[]): OpsAlert[] {
   const alerts: OpsAlert[] = [];
@@ -113,10 +113,10 @@ function generateAlerts(domains: OpsDomainStatus[]): OpsAlert[] {
   return alerts;
 }
 
-// ── Routes ──────────────────────────────────────────────────
+// -- Routes --------------------------------------------------
 
 export default async function opsAdminRoutes(server: FastifyInstance) {
-  // GET /admin/ops/overview — unified ops health snapshot
+  // GET /admin/ops/overview -- unified ops health snapshot
   server.get('/admin/ops/overview', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -234,7 +234,7 @@ export default async function opsAdminRoutes(server: FastifyInstance) {
     return { ok: true, overview };
   });
 
-  // GET /admin/ops/alerts — active alert conditions
+  // GET /admin/ops/alerts -- active alert conditions
   server.get('/admin/ops/alerts', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -291,7 +291,7 @@ export default async function opsAdminRoutes(server: FastifyInstance) {
     };
   });
 
-  // GET /admin/ops/runbooks — runbook index
+  // GET /admin/ops/runbooks -- runbook index
   server.get('/admin/ops/runbooks', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -311,7 +311,7 @@ export default async function opsAdminRoutes(server: FastifyInstance) {
     };
   });
 
-  // GET /admin/ops/store-inventory — in-memory store summary
+  // GET /admin/ops/store-inventory -- in-memory store summary
   server.get('/admin/ops/store-inventory', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;

@@ -1,5 +1,5 @@
 /**
- * Polling Scheduler — Phase 69: RCM Ops Excellence v1
+ * Polling Scheduler -- Phase 69: RCM Ops Excellence v1
  *
  * Rate-limited, tenant-scoped polling framework on top of the
  * existing InMemoryJobQueue (Phase 40).
@@ -18,7 +18,7 @@
 import { getJobQueue, type RcmJobType } from './queue.js';
 import { log } from '../../lib/logger.js';
 
-/* ── Rate Limiter ──────────────────────────────────────────── */
+/* -- Rate Limiter -------------------------------------------- */
 
 interface RateBucket {
   tokens: number;
@@ -72,7 +72,7 @@ class SlidingWindowRateLimiter {
   }
 }
 
-/* ── Scheduler Configuration ───────────────────────────────── */
+/* -- Scheduler Configuration --------------------------------- */
 
 export interface PollingJobConfig {
   type: RcmJobType;
@@ -104,7 +104,7 @@ export interface SchedulerStatus {
   };
 }
 
-/* ── Polling Scheduler ─────────────────────────────────────── */
+/* -- Polling Scheduler --------------------------------------- */
 
 const HOUR_MS = 3_600_000;
 
@@ -135,7 +135,9 @@ export class PollingScheduler {
       if (!config.enabled) continue;
 
       const timer = setInterval(() => {
-        void this.pollOnce(type);
+        void this.pollOnce(type).catch((e) =>
+          log.warn(`Polling scheduler error: ${config.label}`, { error: String(e) })
+        );
       }, config.intervalMs);
 
       // unref so timer doesn't keep process alive during shutdown
@@ -172,16 +174,23 @@ export class PollingScheduler {
     }
 
     const queue = getJobQueue();
-    // Peek through ready jobs for matching type — never fail wrong-type jobs
-    const { jobs: ready } = await queue.listJobs({ status: 'queued', type, limit: 1 });
-    if (!ready || ready.length === 0) return;
+    let job: Awaited<ReturnType<typeof queue.dequeue>> | undefined;
+    try {
+      // Peek through ready jobs for matching type -- never fail wrong-type jobs
+      const { jobs: ready } = await queue.listJobs({ status: 'queued', type, limit: 1 });
+      if (!ready || ready.length === 0) return;
 
-    const job = await queue.dequeue();
-    if (!job) return;
-    // Safety: if dequeued job is wrong type (race condition), re-queue it
-    if (job.type !== type) {
-      // Reset to queued so another poller can pick it up
-      await queue.fail(job.id, '__RETYPE__');
+      job = await queue.dequeue();
+      if (!job) return;
+      // Safety: if dequeued job is wrong type (race condition), re-queue it
+      if (job.type !== type) {
+        // Reset to queued so another poller can pick it up
+        await queue.fail(job.id, '__RETYPE__');
+        return;
+      }
+    } catch (err) {
+      const errMsg = err instanceof Error ? err.message : String(err);
+      log.warn(`Polling job queue error: ${config.label}`, { error: errMsg });
       return;
     }
 
@@ -231,7 +240,7 @@ export class PollingScheduler {
   }
 }
 
-/* ── Singleton ─────────────────────────────────────────────── */
+/* -- Singleton ----------------------------------------------- */
 
 let _scheduler: PollingScheduler | null = null;
 

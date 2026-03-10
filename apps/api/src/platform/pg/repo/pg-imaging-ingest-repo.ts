@@ -1,5 +1,5 @@
 /**
- * PG Imaging Ingest Repository — Async durable study linkage + unmatched state
+ * PG Imaging Ingest Repository -- Async durable study linkage + unmatched state
  *
  * Phase 128: Imaging + Scheduling Durability (Map stores -> Postgres)
  *
@@ -13,7 +13,7 @@ import { pgImagingIngestEvent } from '../pg-schema.js';
 
 export type ImagingIngestEventRow = typeof pgImagingIngestEvent.$inferSelect;
 
-/* ── Create (linkage) ──────────────────────────────────────── */
+/* -- Create (linkage) ---------------------------------------- */
 
 export async function insertStudyLink(data: {
   id: string;
@@ -60,7 +60,7 @@ export async function insertStudyLink(data: {
   return row!;
 }
 
-/* ── Create (unmatched / quarantined) ─────────────────────── */
+/* -- Create (unmatched / quarantined) ----------------------- */
 
 export async function insertUnmatched(data: {
   id: string;
@@ -106,7 +106,7 @@ export async function insertUnmatched(data: {
   return row!;
 }
 
-/* ── Lookup ────────────────────────────────────────────────── */
+/* -- Lookup -------------------------------------------------- */
 
 export async function findEventById(id: string): Promise<ImagingIngestEventRow | undefined> {
   const db = getPgDb();
@@ -191,7 +191,7 @@ export async function findAllLinkages(): Promise<ImagingIngestEventRow[]> {
     .where(eq(pgImagingIngestEvent.eventType, 'linkage'));
 }
 
-/* ── Update ────────────────────────────────────────────────── */
+/* -- Update -------------------------------------------------- */
 
 export async function markResolved(id: string): Promise<boolean> {
   const db = getPgDb();
@@ -202,7 +202,7 @@ export async function markResolved(id: string): Promise<boolean> {
   return (result as any)?.rowCount > 0;
 }
 
-/* ── Stats ─────────────────────────────────────────────────── */
+/* -- Stats --------------------------------------------------- */
 
 export async function countEvents(): Promise<{ linkages: number; unmatched: number }> {
   const db = getPgDb();
@@ -222,7 +222,7 @@ export async function countEvents(): Promise<{ linkages: number; unmatched: numb
   };
 }
 
-/* ── Aliases matching IngestRepo interface (imaging-ingest.ts) ────── */
+/* -- Aliases matching IngestRepo interface (imaging-ingest.ts) ------ */
 
 export const findStudyLinksForPatient = findLinkagesByPatient;
 export const findStudyLinkByStudyUid = findLinkageByStudyUid;

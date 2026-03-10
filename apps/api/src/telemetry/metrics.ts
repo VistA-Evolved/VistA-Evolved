@@ -118,7 +118,7 @@ export const auditChainLength = new client.Gauge({
 });
 
 /* ------------------------------------------------------------------ */
-/* RCM / Connector metrics — Phase 48                                  */
+/* RCM / Connector metrics -- Phase 48                                  */
 /* ------------------------------------------------------------------ */
 
 /** Total RCM claims by current lifecycle status */
@@ -171,7 +171,7 @@ export const unifiedAuditEntries = new client.Gauge({
 });
 
 /* ------------------------------------------------------------------ */
-/* Database pool metrics — Phase 133                                    */
+/* Database pool metrics -- Phase 133                                    */
 /* ------------------------------------------------------------------ */
 
 /** DB pool connections currently in use (totalCount - idleCount) */
@@ -205,7 +205,7 @@ export const dbQueryDuration = new client.Histogram({
 });
 
 /* ------------------------------------------------------------------ */
-/* Audit metrics — Phase 133                                            */
+/* Audit metrics -- Phase 133                                            */
 /* ------------------------------------------------------------------ */
 
 /** Total audit events recorded (counter, not gauge) */
@@ -240,11 +240,11 @@ export function sanitizeRoute(url: string): string {
 }
 
 /* ------------------------------------------------------------------ */
-/* SLO tracking — Phase 77                                             */
+/* SLO tracking -- Phase 77                                             */
 /* ------------------------------------------------------------------ */
 
 /**
- * SLO latency gauge — tracks percentage of requests within p95 budget per category.
+ * SLO latency gauge -- tracks percentage of requests within p95 budget per category.
  * Value 1.0 = 100% within budget, 0.0 = 0% within budget.
  */
 export const sloLatencyWithinBudget = new client.Gauge({
@@ -255,7 +255,7 @@ export const sloLatencyWithinBudget = new client.Gauge({
 });
 
 /**
- * SLO error budget remaining gauge — tracks remaining error budget.
+ * SLO error budget remaining gauge -- tracks remaining error budget.
  * Value 1.0 = full budget remaining, 0.0 = budget exhausted.
  */
 export const sloErrorBudgetRemaining = new client.Gauge({
@@ -274,6 +274,8 @@ interface SloSample {
 const sloWindows: Map<string, SloSample[]> = new Map();
 const SLO_WINDOW_MS = parseInt(process.env.SLO_WINDOW_MS ?? '3600000', 10);
 const SLO_ERROR_BUDGET = parseFloat(process.env.SLO_ERROR_BUDGET ?? '0.001');
+const MAX_SLO_SAMPLES_PER_CATEGORY = 50000;
+const MAX_SLO_CATEGORIES = 500;
 
 /**
  * Record an SLO sample for a route category.
@@ -286,13 +288,18 @@ export function recordSloSample(
   p95Budget?: number
 ): void {
   const now = Date.now();
-  if (!sloWindows.has(category)) sloWindows.set(category, []);
+  if (!sloWindows.has(category)) {
+    if (sloWindows.size >= MAX_SLO_CATEGORIES) return;
+    sloWindows.set(category, []);
+  }
   const window = sloWindows.get(category)!;
   window.push({ durationMs, isError, timestamp: now });
 
   // Prune old samples outside the window
   const cutoff = now - SLO_WINDOW_MS;
   while (window.length > 0 && window[0].timestamp < cutoff) window.shift();
+  // Hard cap in case window is very large
+  while (window.length > MAX_SLO_SAMPLES_PER_CATEGORY) window.shift();
 
   // Compute and update gauges
   if (window.length > 0) {

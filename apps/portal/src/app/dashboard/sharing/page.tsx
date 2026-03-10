@@ -1,5 +1,5 @@
 /**
- * Share Records Page — Phase 31
+ * Share Records Page -- Phase 31
  *
  * Allows portal users to:
  * - Create time-limited share links for health record sections
@@ -217,7 +217,7 @@ export default function ShareRecordsPage() {
             </code>
           </p>
           <p style={{ margin: '8px 0 0', fontSize: 12, color: '#856404', fontWeight: 600 }}>
-            Save these now — the access code will not be shown again.
+            Save these now -- the access code will not be shown again.
           </p>
           <button
             onClick={() => setNewShareResult(null)}

@@ -32,7 +32,7 @@ export async function run(opts = {}) {
   const details = [];
   let status = 'pass';
 
-  // ── 1. runtime-mode.ts exists with required exports ──────
+  // -- 1. runtime-mode.ts exists with required exports ------
   const runtimeModePath = resolve(API_SRC, 'platform/runtime-mode.ts');
   if (!existsSync(runtimeModePath)) {
     details.push('runtime-mode.ts: MISSING');
@@ -58,7 +58,7 @@ export async function run(opts = {}) {
     );
   }
 
-  // ── 2. store-resolver.ts imports runtime-mode and blocks sqlite in rc/prod ──
+  // -- 2. store-resolver.ts imports runtime-mode and blocks sqlite in rc/prod --
   const resolverPath = resolve(API_SRC, 'platform/store-resolver.ts');
   if (!existsSync(resolverPath)) {
     details.push('store-resolver.ts: MISSING');
@@ -78,7 +78,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 3. data-plane-posture.ts exists ───────────────────────
+  // -- 3. data-plane-posture.ts exists -----------------------
   const posturePath = resolve(API_SRC, 'posture/data-plane-posture.ts');
   if (!existsSync(posturePath)) {
     details.push('data-plane-posture.ts: MISSING');
@@ -93,7 +93,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 4. payer-persistence.ts guards JSON writes ────────────
+  // -- 4. payer-persistence.ts guards JSON writes ------------
   const payerPersistPath = resolve(API_SRC, 'rcm/payers/payer-persistence.ts');
   if (!existsSync(payerPersistPath)) {
     details.push('payer-persistence.ts: MISSING (non-fatal)');
@@ -107,7 +107,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 5. pg-migrate.ts auto-enables RLS for rc/prod ────────
+  // -- 5. pg-migrate.ts auto-enables RLS for rc/prod --------
   const pgMigratePath = resolve(API_SRC, 'platform/pg/pg-migrate.ts');
   if (!existsSync(pgMigratePath)) {
     details.push('pg-migrate.ts: MISSING');
@@ -123,7 +123,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 6. Migration script exists ────────────────────────────
+  // -- 6. Migration script exists ----------------------------
   const migrationScript = resolve(ROOT, 'scripts/migrations/sqlite-to-pg.mjs');
   if (!existsSync(migrationScript)) {
     details.push('scripts/migrations/sqlite-to-pg.mjs: MISSING');
@@ -132,7 +132,7 @@ export async function run(opts = {}) {
     details.push('scripts/migrations/sqlite-to-pg.mjs: present');
   }
 
-  // ── 7. OIDC enforcement in rc/prod (Phase 150) ───────────
+  // -- 7. OIDC enforcement in rc/prod (Phase 150) -----------
   if (existsSync(runtimeModePath)) {
     const rtSrc = readFileSync(runtimeModePath, 'utf8');
     const hasRequiresOidc = rtSrc.includes('export function requiresOidc');
@@ -148,7 +148,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 8. Portal session token hashing (Phase 150) ──────────
+  // -- 8. Portal session token hashing (Phase 150) ----------
   const portalSessionRepoPath = resolve(API_SRC, 'platform/pg/repo/pg-portal-session-repo.ts');
   if (!existsSync(portalSessionRepoPath)) {
     details.push('pg-portal-session-repo.ts: MISSING (Phase 150)');
@@ -163,7 +163,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 9. OIDC config depth: auth-mode-policy.ts enforces oidc in rc/prod (Phase 153) ──
+  // -- 9. OIDC config depth: auth-mode-policy.ts enforces oidc in rc/prod (Phase 153) --
   const authModePolicyPath = resolve(API_SRC, 'auth/auth-mode-policy.ts');
   if (!existsSync(authModePolicyPath)) {
     details.push('auth-mode-policy.ts: MISSING (Phase 141/153)');
@@ -180,7 +180,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 10. OIDC provider has validateOidcConfig (Phase 153) ──
+  // -- 10. OIDC provider has validateOidcConfig (Phase 153) --
   const oidcProviderPath = resolve(API_SRC, 'auth/oidc-provider.ts');
   if (!existsSync(oidcProviderPath)) {
     details.push('oidc-provider.ts: MISSING');
@@ -202,7 +202,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 11. tenant_oidc_mapping migration exists (Phase 153) ──
+  // -- 11. tenant_oidc_mapping migration exists (Phase 153) --
   if (existsSync(pgMigratePath)) {
     const migSrc = readFileSync(pgMigratePath, 'utf8');
     if (!migSrc.includes('tenant_oidc_mapping')) {

@@ -1,28 +1,28 @@
 /**
- * SCIM Connector Interface — Phase 141: Enterprise IAM Posture.
+ * SCIM Connector Interface -- Phase 141: Enterprise IAM Posture.
  *
  * System for Cross-domain Identity Management (SCIM 2.0) placeholder.
  * This interface defines the contract for future SCIM integration,
  * enabling automated user provisioning/deprovisioning from identity
  * providers like Azure AD, Okta, or OneLogin.
  *
- * Current status: PLACEHOLDER — no implementation.
+ * Current status: PLACEHOLDER -- no implementation.
  * The interface is ready for implementation when the organization
  * deploys an IdP with SCIM 2.0 support.
  *
  * SCIM 2.0 spec: RFC 7643 (Core Schema) + RFC 7644 (Protocol)
  *
  * Future implementation targets:
- *   - POST /scim/v2/Users — Create user
- *   - GET  /scim/v2/Users/:id — Read user
- *   - PUT  /scim/v2/Users/:id — Replace user
- *   - PATCH /scim/v2/Users/:id — Update user attributes
- *   - DELETE /scim/v2/Users/:id — Deactivate user
- *   - GET  /scim/v2/Users — List/filter users
- *   - POST /scim/v2/Bulk — Bulk operations
- *   - GET  /scim/v2/ServiceProviderConfig — Capability discovery
- *   - GET  /scim/v2/Schemas — Schema discovery
- *   - GET  /scim/v2/ResourceTypes — Resource type discovery
+ *   - POST /scim/v2/Users -- Create user
+ *   - GET  /scim/v2/Users/:id -- Read user
+ *   - PUT  /scim/v2/Users/:id -- Replace user
+ *   - PATCH /scim/v2/Users/:id -- Update user attributes
+ *   - DELETE /scim/v2/Users/:id -- Deactivate user
+ *   - GET  /scim/v2/Users -- List/filter users
+ *   - POST /scim/v2/Bulk -- Bulk operations
+ *   - GET  /scim/v2/ServiceProviderConfig -- Capability discovery
+ *   - GET  /scim/v2/Schemas -- Schema discovery
+ *   - GET  /scim/v2/ResourceTypes -- Resource type discovery
  */
 
 import type { UserRole } from './session-store.js';
@@ -118,14 +118,14 @@ export interface ScimPatchOp {
 /* ================================================================== */
 
 /**
- * SCIM Connector interface — contract for SCIM 2.0 integration.
+ * SCIM Connector interface -- contract for SCIM 2.0 integration.
  *
  * Implementations should:
  *   1. Map SCIM users to VistA user accounts (via DUZ binding)
  *   2. Support group-based role assignment (via IdP role mapper)
  *   3. Enforce tenant isolation on all operations
  *   4. Audit all provisioning changes via immutable audit
- *   5. Never create VistA accounts directly — SCIM maps to platform sessions
+ *   5. Never create VistA accounts directly -- SCIM maps to platform sessions
  */
 export interface ScimConnector {
   /** Get SCIM service provider configuration */
@@ -177,7 +177,7 @@ export interface ScimServiceProviderConfig {
 /* ================================================================== */
 
 /**
- * Stub SCIM connector — returns "not implemented" for all operations.
+ * Stub SCIM connector -- returns "not implemented" for all operations.
  * Used as the default until a real SCIM integration is configured.
  */
 export class StubScimConnector implements ScimConnector {
@@ -250,6 +250,6 @@ export function getScimReadinessStatus(): {
     ready: false,
     connector: 'stub',
     interfaceDefined: true,
-    implementation: 'placeholder — awaiting IdP SCIM 2.0 integration',
+    implementation: 'placeholder -- awaiting IdP SCIM 2.0 integration',
   };
 }

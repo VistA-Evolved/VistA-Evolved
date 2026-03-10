@@ -1,15 +1,15 @@
 /**
- * Device Observation Pipeline — PG-backed durable observation processing
+ * Device Observation Pipeline -- PG-backed durable observation processing
  *
  * Phase 527 (W38-C6): Bridges the device observation ingest path to the
  * PG-backed device registry. Observations flow through 4 stages:
  *
- *   1. INGEST   — Raw observation arrives from gateway uplink
- *   2. VALIDATE — Device exists, patient association active, schema check
- *   3. ENRICH   — Lookup patient DFN from device association, add metadata
- *   4. PERSIST  — Write to PG audit log + emit for downstream consumers
+ *   1. INGEST   -- Raw observation arrives from gateway uplink
+ *   2. VALIDATE -- Device exists, patient association active, schema check
+ *   3. ENRICH   -- Lookup patient DFN from device association, add metadata
+ *   4. PERSIST  -- Write to PG audit log + emit for downstream consumers
  *
- * The pipeline is stateless — each call processes one observation.
+ * The pipeline is stateless -- each call processes one observation.
  * State (device registry, associations) is read from PG repos when available,
  * with fallback to in-memory stores.
  *
@@ -21,7 +21,7 @@
 
 import type { DeviceObservation } from './types.js';
 
-// ── Pipeline types ─────────────────────────────────────────────
+// -- Pipeline types ---------------------------------------------
 
 export type PipelineStage = 'ingest' | 'validate' | 'enrich' | 'persist';
 
@@ -42,7 +42,7 @@ export interface PipelineStats {
   lastProcessedAt: string | null;
 }
 
-// ── In-memory stats ────────────────────────────────────────────
+// -- In-memory stats --------------------------------------------
 
 const stats: PipelineStats = {
   total: 0,
@@ -64,7 +64,7 @@ export function resetPipelineStats(): void {
   stats.lastProcessedAt = null;
 }
 
-// ── Stage implementations ──────────────────────────────────────
+// -- Stage implementations --------------------------------------
 
 function stageIngest(obs: Partial<DeviceObservation>): { ok: boolean; errors: string[] } {
   const errors: string[] = [];
@@ -132,7 +132,7 @@ function stageEnrich(
   return { enrichments };
 }
 
-// ── Main pipeline entry point ──────────────────────────────────
+// -- Main pipeline entry point ----------------------------------
 
 /**
  * Process a single device observation through the 4-stage pipeline.

@@ -1,5 +1,5 @@
 /**
- * Observability Configuration — Phase 77.
+ * Observability Configuration -- Phase 77.
  *
  * Centralizes all observability settings: sampling, label/attribute allowlists,
  * PHI redaction mode, and SLO targets. Reads from env vars and
@@ -115,13 +115,13 @@ export const OBSERVABILITY_CONFIG = {
   tracingEnabled: process.env.OTEL_ENABLED === 'true',
 
   /**
-   * PHI redaction mode — ALWAYS ON. Cannot be disabled.
+   * PHI redaction mode -- ALWAYS ON. Cannot be disabled.
    * This ensures no PHI appears in traces, metrics, or logs.
    */
   phiRedactionEnabled: true as const,
 
   /**
-   * Metric label allowlist — only these labels are permitted on Prometheus metrics.
+   * Metric label allowlist -- only these labels are permitted on Prometheus metrics.
    * Adding patient-identifying labels (dfn, patientName, ssn) is forbidden.
    */
   metricLabelAllowlist: [
@@ -139,7 +139,7 @@ export const OBSERVABILITY_CONFIG = {
   ] as readonly string[],
 
   /**
-   * Span attribute allowlist — only these attribute keys are permitted on OTel spans.
+   * Span attribute allowlist -- only these attribute keys are permitted on OTel spans.
    * PHI-carrying attributes are structurally excluded.
    */
   spanAttributeAllowlist: [
@@ -162,7 +162,7 @@ export const OBSERVABILITY_CONFIG = {
   ] as readonly string[],
 
   /**
-   * SLO error budget — maximum error rate before alerting.
+   * SLO error budget -- maximum error rate before alerting.
    * Default 0.1% (99.9% availability target).
    */
   sloErrorBudget: parseFloat(process.env.SLO_ERROR_BUDGET ?? '0.001'),

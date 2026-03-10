@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Denials Workbench — Phase 91
+ * Denials Workbench -- Phase 91
  *
  * Admin page for managing claim denials:
  *  - List all denials with filter (resolved/unresolved, source)
@@ -16,7 +16,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ────────────────────────────────────────────────────── */
+/* -- Types ------------------------------------------------------ */
 
 interface DenialItem {
   id: string;
@@ -46,7 +46,7 @@ interface DenialItem {
   };
 }
 
-/* ── Source Colors ─────────────────────────────────────────────── */
+/* -- Source Colors ----------------------------------------------- */
 
 const SOURCE_COLORS: Record<string, string> = {
   payer_remit: '#dc2626',
@@ -56,7 +56,7 @@ const SOURCE_COLORS: Record<string, string> = {
   manual: '#6b7280',
 };
 
-/* ── Component ────────────────────────────────────────────────── */
+/* -- Component -------------------------------------------------- */
 
 export default function DenialsWorkbenchPage() {
   const [denials, setDenials] = useState<DenialItem[]>([]);

@@ -1,25 +1,25 @@
 /**
- * Store Policy â€” Phase 136: Store Policy Gate + Durability Sweep
+ * Store Policy â€" Phase 136: Store Policy Gate + Durability Sweep
  *
  * Machine-readable registry of ALL in-memory stores in the API.
  * Covers Map stores, array buffers, and ring buffers.
  * Each store is classified by risk level and durability status.
  *
  * Classifications:
- *   critical   â€” Domain data that MUST survive restart in rc/prod (claims, sessions, etc.)
- *   cache      â€” TTL/size-limited read cache; loss = performance hit only
- *   rate_limiter â€” Security rate-limit buckets; loss = briefly unprotected
- *   registry   â€” Loaded from config/files at startup; auto-repopulated
- *   audit      â€” Append-only audit chains (typically also have JSONL file sink)
- *   dev_only   â€” QA/debug stores gated by env vars
+ *   critical   â€" Domain data that MUST survive restart in rc/prod (claims, sessions, etc.)
+ *   cache      â€" TTL/size-limited read cache; loss = performance hit only
+ *   rate_limiter â€" Security rate-limit buckets; loss = briefly unprotected
+ *   registry   â€" Loaded from config/files at startup; auto-repopulated
+ *   audit      â€" Append-only audit chains (typically also have JSONL file sink)
+ *   dev_only   â€" QA/debug stores gated by env vars
  *
  * Durability status:
- *   pg_backed       â€” Has a PG repo via store-resolver; Map is write-through cache
- *   jsonl_backed    â€” Append-only with JSONL file sink (audit trails)
- *   file_seeded     â€” Loaded from JSON seed files at startup
- *   vista_passthrough â€” Data comes from VistA RPC calls; not locally persisted
- *   in_memory_only  â€” No durable backing; lost on restart
- *   env_gated       â€” Only active when specific env var is set
+ *   pg_backed       â€" Has a PG repo via store-resolver; Map is write-through cache
+ *   jsonl_backed    â€" Append-only with JSONL file sink (audit trails)
+ *   file_seeded     â€" Loaded from JSON seed files at startup
+ *   vista_passthrough â€" Data comes from VistA RPC calls; not locally persisted
+ *   in_memory_only  â€" No durable backing; lost on restart
+ *   env_gated       â€" Only active when specific env var is set
  *
  * In rc/prod mode, any `critical` + `in_memory_only` store is a policy violation.
  */
@@ -76,9 +76,9 @@ export interface StoreEntry {
  * in source files that are not in this inventory.
  */
 export const STORE_INVENTORY: StoreEntry[] = [
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // AUTH / SESSIONS
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'session-cache',
     file: 'auth/session-store.ts',
@@ -170,9 +170,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 136: classified as critical. User mappings lost on restart.',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
-  // RCM â€” CLAIMS & BILLING
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
+  // RCM â€" CLAIMS & BILLING
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'rcm-claims',
     file: 'rcm/domain/claim-store.ts',
@@ -424,9 +424,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 136: rulepack records lost on restart.',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // PORTAL
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'portal-refills',
     file: 'services/portal-refills.ts',
@@ -550,9 +550,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Read-through cache from VistA scheduling RPCs. Loss = refetch from VistA.',
   },
 
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   // FHIR
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   {
     id: 'fhir-response-cache',
     file: 'fhir/fhir-cache.ts',
@@ -568,9 +568,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
       'SHA-256 content hash drives ETag/If-None-Match 304 responses. ' +
       'Loss on restart = next request refetches from VistA via clinical-engine adapter.',
   },
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // IMAGING
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'imaging-worklist',
     file: 'services/imaging-worklist.ts',
@@ -617,9 +617,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Time-limited break-glass sessions. Loss = users re-request. Acceptable as cache.',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // TELEHEALTH
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'telehealth-rooms',
     file: 'telehealth/room-store.ts',
@@ -632,9 +632,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 30: explicitly in-memory with 4h TTL. Active sessions lost on restart.',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // SCHEDULING
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'scheduling-requests',
     file: 'adapters/scheduling/vista-adapter.ts',
@@ -660,9 +660,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Short-lived locks; stale locks auto-expire. Loss = double-booking risk for 5min.',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // CLINICAL / ORDERS / NOTES
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'adapter-write-audit',
     file: 'adapters/adapter-audit.ts',
@@ -749,9 +749,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Fallback when VistA MailMan unavailable. Loss = refetch from VistA.',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // INTAKE
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'intake-sessions',
     file: 'intake/intake-store.ts',
@@ -925,9 +925,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     maxSize: 1,
     migrationTarget: 'n/a (cache only)',
     notes: 'Phase 541: Single JSON blob cached in memory.',
-  }, // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  }, // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // MIGRATION
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'migration-jobs',
     file: 'migration/migration-store.ts',
@@ -940,9 +940,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 136: migration state lost on restart.',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // UI PREFS
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'ui-prefs',
     file: 'services/ui-prefs-store.ts',
@@ -955,9 +955,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 136: user UI preferences lost on restart.',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // HANDOFF
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'handoff-reports',
     file: 'routes/handoff/handoff-store.ts',
@@ -1081,9 +1081,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 239: transient. Connections re-established by remote senders.',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // EXPORT GOVERNANCE
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'export-jobs',
     file: 'lib/export-governance.ts',
@@ -1096,9 +1096,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 136: export job state lost on restart.',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // CACHES (TTL/size-limited, loss = perf hit only)
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'rpc-cache',
     file: 'lib/rpc-resilience.ts',
@@ -1255,9 +1255,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'SLO sliding window metrics. Size-limited.',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // RATE LIMITERS (loss = briefly unprotected, acceptable)
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'global-rate-buckets',
     file: 'middleware/security.ts',
@@ -1349,9 +1349,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: 'rcm',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // REGISTRIES (loaded from config files, not user data)
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'tenant-config',
     file: 'config/tenant-config.ts',
@@ -1642,9 +1642,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: 'intake',
   },
 
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   // AUDIT TRAILS (array-based, append-only, often with JSONL file sink)
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'iam-audit-ring',
     file: 'lib/immutable-audit.ts',
@@ -1687,7 +1687,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: 'portal',
     maxSize: 5_000,
     migrationTarget: 'jsonl or pg: portal_audit table',
-    notes: 'Phase 136: portal audit has no file sink â€” only in-memory.',
+    notes: 'Phase 136: portal audit has no file sink â€" only in-memory.',
   },
   {
     id: 'portal-pending-docs',
@@ -1903,7 +1903,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     domain: 'modules',
   },
   // DEV/QA ONLY
-  // â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•â•
+  // â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*â*
   {
     id: 'dead-click-tracker',
     file: 'routes/qa-routes.ts',
@@ -1980,7 +1980,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 165: specialty coverage scoring cache',
   },
 
-  // ── Phase 166: Clinic Day Simulator ─────────────────────
+  // -- Phase 166: Clinic Day Simulator ---------------------
   {
     id: 'journey-results-store',
     file: 'qa/clinic-day-journeys.ts',
@@ -1993,7 +1993,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 166: clinic day journey cached results',
   },
 
-  // ── Phase 168: Inpatient Depth ────────────────────────
+  // -- Phase 168: Inpatient Depth ------------------------
   {
     id: 'med-rec-sessions',
     file: 'routes/med-reconciliation.ts',
@@ -2042,7 +2042,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     id: 'identity-links',
     file: 'routes/identity-linking.ts',
     variable: 'identityLinks',
-    description: 'Verified patient identity links (user → patient DFN)',
+    description: 'Verified patient identity links (user -> patient DFN)',
     classification: 'critical',
     durability: 'in_memory_only',
     domain: 'clinical',
@@ -2072,7 +2072,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 170: mode cache for writeback policy resolution',
   },
 
-  // ─── Wave 8: Enterprise Integrations + Customer Ops (Phases 258-265) ───
+  // --- Wave 8: Enterprise Integrations + Customer Ops (Phases 258-265) ---
 
   {
     id: 'adapter-rate-limiter-windows',
@@ -2203,7 +2203,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 265: seeded with 8 default mitigations at module load; append-only',
   },
 
-  // ─── SaaS Billing / Metering (Phase 284) ───────────────────────
+  // --- SaaS Billing / Metering (Phase 284) -----------------------
   {
     id: 'billing-subscriptions',
     file: 'billing/mock-provider.ts',
@@ -2237,7 +2237,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
       'Phase 284: accumulated between flushes; billing provider is durable store. Max 10K tenants.',
   },
 
-  // ─── Feature Flags (Phase 285) ─────────────────────────────────
+  // --- Feature Flags (Phase 285) ---------------------------------
   {
     id: 'unleash-toggle-cache',
     file: 'flags/unleash-provider.ts',
@@ -2251,7 +2251,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
       'Phase 285: only active when FEATURE_FLAG_PROVIDER=unleash. Falls back to DB provider on miss.',
   },
 
-  // ─── Writeback Command Bus (Phase 300) ─────────────────────────
+  // --- Writeback Command Bus (Phase 300) -------------------------
   {
     id: 'writeback-commands',
     file: 'writeback/command-store.ts',
@@ -2307,7 +2307,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 300: Runtime-only adapter registry, populated at startup.',
   },
 
-  // ─── Telehealth Hardening (Phase 307) ──────────────────────────
+  // --- Telehealth Hardening (Phase 307) --------------------------
   {
     id: 'telehealth-encounter-links',
     file: 'telehealth/encounter-link.ts',
@@ -2345,9 +2345,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 307: Ephemeral heartbeat data, no persistence needed.',
   },
 
-  // ─── Wave 13: Regulatory/Compliance + Multi-Country (Phases 311-315) ───
+  // --- Wave 13: Regulatory/Compliance + Multi-Country (Phases 311-315) ---
 
-  // ─── W28: Regulatory/Compliance Phase 440 ───
+  // --- W28: Regulatory/Compliance Phase 440 ---
   {
     id: 'compliance-attestation-store',
     file: 'regulatory/attestation-store.ts',
@@ -2365,7 +2365,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     id: 'tenant-country-assignments',
     file: 'regulatory/country-config.ts',
     variable: 'activeAssignments',
-    description: 'Active tenant → country code assignments',
+    description: 'Active tenant -> country code assignments',
     classification: 'critical',
     durability: 'in_memory_only',
     domain: 'compliance',
@@ -2466,9 +2466,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     ttlMs: 300_000,
     notes: 'Phase 314: 5-min cache TTL. Auto-refreshes on next request after expiry.',
   },
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   // INTEGRATION CONTROL PLANE (Phase 318)
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   {
     id: 'integration-partners',
     file: 'services/integration-control-plane.ts',
@@ -2525,9 +2525,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: integration_test_run table (v31)',
     notes: 'Phase 318: Test runs with 4 checks. Results are transient.',
   },
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   // HL7v2 MESSAGE TEMPLATES (Phase 319)
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   {
     id: 'hl7-message-templates',
     file: 'hl7/templates/template-store.ts',
@@ -2540,9 +2540,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 319: Templates with segment/field constraints, IHE profiles, versioning.',
   },
 
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   // HL7v2 OPS MATURITY (Phase 320)
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   {
     id: 'hl7-throughput-buckets',
     file: 'hl7/hl7-ops-monitor.ts',
@@ -2588,9 +2588,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 320: Exponential backoff, max 3 retries. References DLQ entry IDs.',
   },
 
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   // X12 GATEWAY SERVICE (Phase 321)
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   {
     id: 'x12-control-number-store',
     file: 'rcm/edi/x12-gateway.ts',
@@ -2614,9 +2614,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 321: Pluggable handler per TX set (837, 835, 999, etc.).',
   },
 
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   // CLEARINGHOUSE TRANSPORT (Phase 322)
-  // ═══════════════════════════════════════════════════════
+  // =======================================================
   {
     id: 'ch-transport-registry',
     file: 'rcm/connectors/clearinghouse-transport.ts',
@@ -2662,7 +2662,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: ch_transport_profile table',
     notes: 'Phase 322: Connects connectorId to TransportConfig + RateLimitConfig.',
   },
-  // ── Phase 323: Certification Pipeline ────────────────────────────────
+  // -- Phase 323: Certification Pipeline --------------------------------
   {
     id: 'certification-suites',
     file: 'services/certification-pipeline.ts',
@@ -2696,7 +2696,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: integration_certificate table',
     notes: 'Phase 323: Certificate validity resets on restart. Needs PG for production.',
   },
-  // ── Phase 324: Integration Marketplace ───────────────────────────────
+  // -- Phase 324: Integration Marketplace -------------------------------
   {
     id: 'marketplace-categories',
     file: 'services/integration-marketplace.ts',
@@ -2741,7 +2741,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: listing_install table',
     notes: 'Phase 324: Install state lost on restart. Needs PG for production.',
   },
-  // ── Phase 325: Integration Onboarding ───────────────────────────────
+  // -- Phase 325: Integration Onboarding -------------------------------
   {
     id: 'onboarding-templates',
     file: 'services/integration-onboarding.ts',
@@ -2921,7 +2921,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: sharding_audit_log or JSONL',
     notes: 'Phase 330: 10K ring buffer.',
   },
-  // ── Phase 331: Queue & Cache Regionalization ────────────────────
+  // -- Phase 331: Queue & Cache Regionalization --------------------
   {
     id: 'regional-jobs',
     file: 'services/queue-cache-regional.ts',
@@ -2977,7 +2977,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: queue_audit_log or JSONL',
     notes: 'Phase 331: 10K ring buffer.',
   },
-  // ── Phase 332: Cost Attribution & Budgets ───────────────────────
+  // -- Phase 332: Cost Attribution & Budgets -----------------------
   {
     id: 'cost-records',
     file: 'services/cost-attribution.ts',
@@ -3033,7 +3033,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: cost_audit_log or JSONL',
     notes: 'Phase 332: 10K ring buffer.',
   },
-  // ── Phase 333: Multi-Region DR & GameDay ───────────────────────
+  // -- Phase 333: Multi-Region DR & GameDay -----------------------
   {
     id: 'dr-drills',
     file: 'services/dr-gameday.ts',
@@ -3089,7 +3089,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: dr_audit_log or JSONL',
     notes: 'Phase 333: 10K ring buffer.',
   },
-  // ── Phase 334: Scale Performance Campaign ─────────────────────
+  // -- Phase 334: Scale Performance Campaign ---------------------
   {
     id: 'load-test-profiles',
     file: 'services/scale-performance.ts',
@@ -3157,7 +3157,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 334: 10K ring buffer.',
   },
 
-  // ── Phase 335: Enterprise SRE / Support Posture ─────────────────
+  // -- Phase 335: Enterprise SRE / Support Posture -----------------
   {
     id: 'sre-incidents',
     file: 'services/sre-support-posture.ts',
@@ -3528,7 +3528,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'none (ephemeral by design)',
     notes: 'Phase 344: Cleared after trigger to avoid repeated alerts.',
   },
-  // ─── Wave 17: Multi-Facility + Dept Packs (Phases 346-353) ───
+  // --- Wave 17: Multi-Facility + Dept Packs (Phases 346-353) ---
   {
     id: 'facility-store',
     file: 'services/facility-service.ts',
@@ -3639,7 +3639,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: workflow_task_event (v41)',
     notes: 'Phase 350: Append-only event log for task transitions.',
   },
-  // ── Phase 351: Patient Communications ──
+  // -- Phase 351: Patient Communications --
   {
     id: 'patient-consent-store',
     file: 'services/patient-comms-service.ts',
@@ -3740,7 +3740,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: cross_dept_referral (v43)',
     notes: 'Phase 352: Referral FSM with urgency tracking.',
   },
-  // ── Phase 355: Event Bus ──
+  // -- Phase 355: Event Bus --
   {
     id: 'event-bus-outbox',
     file: 'services/event-bus.ts',
@@ -3785,7 +3785,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: event_bus_delivery_log (v44)',
     notes: 'W41-P3: PG write-through wired via initEventBusRepos.',
   },
-  // ── Phase 356: Webhooks ──
+  // -- Phase 356: Webhooks --
   {
     id: 'webhook-subscriptions',
     file: 'services/webhook-service.ts',
@@ -3820,7 +3820,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 356: Max 5K entries; failed deliveries.',
   },
 
-  // ── Phase 357: FHIR Subscriptions ──
+  // -- Phase 357: FHIR Subscriptions --
   {
     id: 'fhir-subscriptions',
     file: 'services/fhir-subscription-service.ts',
@@ -3855,7 +3855,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 357: Maps subscription IDs to event bus consumer IDs.',
   },
 
-  // ── Phase 358: Plugin SDK ──
+  // -- Phase 358: Plugin SDK --
   {
     id: 'plugin-registry',
     file: 'services/plugin-sdk.ts',
@@ -3901,7 +3901,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 358: Key-keyed transformer pipeline.',
   },
 
-  // ── Phase 359: UI Extension Slots ──
+  // -- Phase 359: UI Extension Slots --
   {
     id: 'ui-extensions',
     file: 'services/ui-extension-service.ts',
@@ -3925,9 +3925,9 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 359: Per-slot max extensions and approval policies.',
   },
 
-  // ── Phase 360: Plugin Marketplace ──
+  // -- Phase 360: Plugin Marketplace --
   {
-    id: 'marketplace-listings',
+    id: 'plugin-marketplace-listings',
     file: 'services/marketplace-service.ts',
     variable: 'listings',
     description: 'In-memory marketplace listing catalog',
@@ -3938,7 +3938,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 360: Plugin listings with approval FSM.',
   },
   {
-    id: 'marketplace-installs',
+    id: 'plugin-marketplace-installs',
     file: 'services/marketplace-service.ts',
     variable: 'installs',
     description: 'In-memory marketplace install records',
@@ -3949,7 +3949,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 360: Tenant-scoped install/uninstall tracking.',
   },
   {
-    id: 'marketplace-reviews',
+    id: 'plugin-marketplace-reviews',
     file: 'services/marketplace-service.ts',
     variable: 'reviews',
     description: 'In-memory marketplace reviews',
@@ -3971,7 +3971,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 360: Max 10K entries; listing lifecycle audit.',
   },
 
-  // ── Wave 19: Data Platform + Analytics + De-Id + Reporting (Phases 362-369) ──
+  // -- Wave 19: Data Platform + Analytics + De-Id + Reporting (Phases 362-369) --
   {
     id: 'analytics-extract-runs',
     file: 'analytics/extract-layer.ts',
@@ -4060,7 +4060,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: analytics_export_audit (v50)',
     notes: 'Phase 368: Max 5K entries; FIFO eviction.',
   },
-  // ── Phase 371: Release Train Governance ──
+  // -- Phase 371: Release Train Governance --
   {
     id: 'release-train-change-windows',
     file: 'services/release-train-service.ts',
@@ -4254,7 +4254,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     notes: 'Phase 377: Trust center export packs for external sharing.',
   },
 
-  // ── Wave 21: Device + Modality Integration (Phases 378-388) ──
+  // -- Wave 21: Device + Modality Integration (Phases 378-388) --
   {
     id: 'edge-gateways',
     file: 'devices/gateway-store.ts',
@@ -4522,7 +4522,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: imaging_modality_audit (v70)',
     notes: 'Phase 386: Imaging modality audit trail (20K max, FIFO).',
   },
-  // ── Wave 22: Specialty Clinical Content + CDS + Deep VistA Writeback (Phases 389-398) ──
+  // -- Wave 22: Specialty Clinical Content + CDS + Deep VistA Writeback (Phases 389-398) --
   {
     id: 'content-pack-order-sets',
     file: 'content-packs/pack-store.ts',
@@ -4600,7 +4600,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: content_pack_installed (future)',
     notes: 'Phase 390: Tracks which packs are installed per tenant.',
   },
-  // ── Phase 391: Inpatient Core (W22-P3) ────────────────────
+  // -- Phase 391: Inpatient Core (W22-P3) --------------------
   {
     id: 'inpatient-bed-assignments',
     file: 'inpatient/inpatient-store.ts',
@@ -4645,7 +4645,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: inpatient_vitals (future)',
     notes: 'Phase 391: Vitals with VistA writeback status tracking.',
   },
-  // ── Phase 392: Pharmacy Deep Workflows (W22-P4) ───────────
+  // -- Phase 392: Pharmacy Deep Workflows (W22-P4) -----------
   {
     id: 'pharmacy-orders',
     file: 'pharmacy/pharmacy-store.ts',
@@ -4679,7 +4679,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: pharmacy_admin_record (future)',
     notes: 'Phase 392: Admin records with BCMA session linking and writeback tracking.',
   },
-  // ── Phase 393: Lab Deep Workflows (W22-P5) ────────────────
+  // -- Phase 393: Lab Deep Workflows (W22-P5) ----------------
   {
     id: 'lab-orders',
     file: 'lab/lab-store.ts',
@@ -4724,7 +4724,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: lab_critical_alert (future)',
     notes: 'Phase 393: Joint Commission NPSG-aligned critical result alerting.',
   },
-  // ── Phase 394: Imaging/Radiology Deep Workflows (W22-P6) ───
+  // -- Phase 394: Imaging/Radiology Deep Workflows (W22-P6) ---
   {
     id: 'radiology-orders',
     file: 'radiology/radiology-store.ts',
@@ -4791,7 +4791,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: peer_review (v57)',
     notes: 'Phase 528 (W38-C7): PG-backed via pg-radiology-repo.ts.',
   },
-  // ── Phase 395: CDS Hooks + SMART Launch (W22-P7) ───
+  // -- Phase 395: CDS Hooks + SMART Launch (W22-P7) ---
   {
     id: 'cds-services',
     file: 'cds/cds-store.ts',
@@ -4847,7 +4847,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: cds_invocation_log (future)',
     notes: 'Phase 395: Tracks all CDS hook invocations for analytics.',
   },
-  // ── Phase 396: Clinical Reasoning + Quality Measures (W22-P8) ───
+  // -- Phase 396: Clinical Reasoning + Quality Measures (W22-P8) ---
   {
     id: 'cql-libraries',
     file: 'clinical-reasoning/reasoning-store.ts',
@@ -4925,7 +4925,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: measure_report (future)',
     notes: 'Phase 396: Quality reporting pipeline output.',
   },
-  // ── Phase 397: Localization + Multi-Country Packs + Theming (W22-P9) ───
+  // -- Phase 397: Localization + Multi-Country Packs + Theming (W22-P9) ---
   {
     id: 'locales',
     file: 'localization/localization-store.ts',
@@ -4992,7 +4992,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: tenant_locale_config (future)',
     notes: 'Phase 397: Per-tenant locale, theme, unit profile selection.',
   },
-  // ── Wave 23: Longitudinal Interop + HIE + Multi-Country Exchange Packs (Phases 399-408) ──
+  // -- Wave 23: Longitudinal Interop + HIE + Multi-Country Exchange Packs (Phases 399-408) --
   {
     id: 'interop-gateway-channels',
     file: 'interop-gateway/gateway-store.ts',
@@ -5215,7 +5215,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
     migrationTarget: 'pg: sre_slo_snapshots (future)',
     notes: 'Phase 416: Keyed by SloId (6 canonical SLOs).',
   },
-  // ── Wave 31: Service-Line Expansion (Phases 464-471) ──────────
+  // -- Wave 31: Service-Line Expansion (Phases 464-471) ----------
   // ED stores (Phase 464)
   {
     id: 'ed-visits',
@@ -5399,7 +5399,7 @@ export const STORE_INVENTORY: StoreEntry[] = [
   },
 ];
 
-// â”€â”€â”€ Query helpers â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€â"€ Query helpers â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
 /** Get all stores matching a classification */
 export function getStoresByClassification(classification: StoreClassification): StoreEntry[] {

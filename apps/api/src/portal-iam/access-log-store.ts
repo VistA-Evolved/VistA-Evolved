@@ -1,5 +1,5 @@
 /**
- * Access Log Store — Phase 29 (DB-hybrid Phase 121)
+ * Access Log Store -- Phase 29 (DB-hybrid Phase 121)
  *
  * Patient-visible activity log: "events performed by you or your proxy"
  *
@@ -9,7 +9,7 @@
  * PHI-safe: No SSN, DOB, or clinical content in log entries.
  * Only stores event type, actor name, timestamp, and generic metadata.
  *
- * Phase 121: DB-backed hybrid — writes go to both cache + DB,
+ * Phase 121: DB-backed hybrid -- writes go to both cache + DB,
  * reads try cache first then fall back to DB on miss.
  */
 
@@ -219,7 +219,7 @@ export async function getAccessLog(
   // Phase 121: If cache is empty for this user, try DB
   if (userLog.length === 0 && dbRepo) {
     try {
-      // BUG #13 fix: Single DB round-trip for rehydration — fetch up to MAX
+      // BUG #13 fix: Single DB round-trip for rehydration -- fetch up to MAX
       // entries (newest-first) and extract the requested page from that set.
       const all = await Promise.resolve(
         dbRepo.findAccessLogsByUser(userId, { limit: MAX_ENTRIES_PER_USER })

@@ -1,13 +1,13 @@
 'use client';
 
 /**
- * AIAssistPanel — Phase 33
+ * AIAssistPanel -- Phase 33
  *
  * Clinician-side AI assist panel in CPRS chart view.
  * Three tabs:
- * 1. Intake Summary — Draft clinician-ready note from intake data
- * 2. Lab Education — Generate patient education for lab results
- * 3. AI Audit — View AI usage audit trail (admin)
+ * 1. Intake Summary -- Draft clinician-ready note from intake data
+ * 2. Lab Education -- Generate patient education for lab results
+ * 3. AI Audit -- View AI usage audit trail (admin)
  *
  * All AI outputs require clinician confirmation before clinical use.
  * No diagnosis, treatment plans, prescribing guidance, or autonomous ordering.
@@ -365,7 +365,7 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
                   <li key={i}>
                     <strong>{c.source}</strong> ({c.category})
                     {c.snippet && (
-                      <span style={{ color: '#666' }}> — {c.snippet.slice(0, 100)}</span>
+                      <span style={{ color: '#666' }}> -- {c.snippet.slice(0, 100)}</span>
                     )}
                   </li>
                 ))}
@@ -407,7 +407,7 @@ function IntakeSummaryTab({ dfn }: { dfn: string }) {
           )}
           {confirmed === true && (
             <div style={{ marginTop: 8, color: '#16a34a', fontSize: 13 }}>
-              ✓ Draft accepted — ready for clinical use
+              ✓ Draft accepted -- ready for clinical use
             </div>
           )}
           {confirmed === false && (
@@ -720,7 +720,7 @@ function AuditTab() {
                 </td>
                 <td style={{ padding: 4 }}>{e.latencyMs}ms</td>
                 <td style={{ padding: 4 }}>
-                  {e.clinicianConfirmed === null ? '—' : e.clinicianConfirmed ? '✓' : '✗'}
+                  {e.clinicianConfirmed === null ? '--' : e.clinicianConfirmed ? '✓' : '✗'}
                 </td>
               </tr>
             ))}
@@ -778,7 +778,7 @@ export default function AIAssistPanel({ dfn }: { dfn: string }) {
           color: '#1e40af',
         }}
       >
-        AI Assist — Governed | No diagnosis, treatment plans, or prescribing guidance | All outputs
+        AI Assist -- Governed | No diagnosis, treatment plans, or prescribing guidance | All outputs
         audited | Clinician confirmation required for clinical drafts
       </div>
 

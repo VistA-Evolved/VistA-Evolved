@@ -1,7 +1,7 @@
 /**
- * Phase 37 — E2E: Every CPRS tab loads with non-empty content.
+ * Phase 37 -- E2E: Every CPRS tab loads with non-empty content.
  *
- * Navigates through all 15 chart tabs for patient DFN=3 and verifies:
+ * Navigates through all 15 chart tabs for patient DFN=46 and verifies:
  * 1. Tab navigates successfully (URL changes)
  * 2. Main content area is non-empty
  * 3. No console errors
@@ -10,7 +10,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { setupConsoleGate } from './helpers/auth';
+import { TEST_DFN, chartRoute, setupConsoleGate } from './helpers/auth';
 
 const TABS = [
   { slug: 'cover', label: 'Cover Sheet' },
@@ -39,13 +39,13 @@ test.describe('CPRS Tab Loading', () => {
 
     for (const tab of TABS) {
       errors.length = 0; // reset per tab
-      await page.goto(`/cprs/chart/3/${tab.slug}`);
+      await page.goto(chartRoute(tab.slug));
       await page.waitForLoadState('domcontentloaded');
       await page.waitForTimeout(1000);
 
       // URL should match
       const url = page.url();
-      if (!url.includes(`/cprs/chart/3/${tab.slug}`)) {
+      if (!url.includes(chartRoute(tab.slug, TEST_DFN))) {
         tabErrors[tab.slug] = `URL mismatch: ${url}`;
         continue;
       }

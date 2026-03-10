@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Capability Matrix Admin — Phase 88: Evidence-backed integration matrix
+ * Capability Matrix Admin -- Phase 88: Evidence-backed integration matrix
  *
  * Grid: payer rows x capability columns (Eligibility, LOA, Claims Submit, Claim Status, Remittance)
  * Cell shows mode + maturity badge + evidence link count.
@@ -224,7 +224,7 @@ export default function CapabilityMatrixPage() {
   );
 }
 
-/* ── Cell Editor Drawer ──────────────────────────────────────── */
+/* -- Cell Editor Drawer ---------------------------------------- */
 
 function CellEditor({ cell, onClose }: { cell: SelectedCell; onClose: () => void }) {
   const [detail, setDetail] = useState<any>(null);
@@ -493,7 +493,7 @@ function CellEditor({ cell, onClose }: { cell: SelectedCell; onClose: () => void
   );
 }
 
-/* ── Shared Components ──────────────────────────────────────── */
+/* -- Shared Components ---------------------------------------- */
 
 function MaturityBadge({ maturity }: { maturity: string }) {
   const colors: Record<string, { bg: string; fg: string }> = {

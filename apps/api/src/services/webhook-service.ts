@@ -15,7 +15,7 @@ import { randomUUID } from "node:crypto";
 import { createHmac } from "node:crypto";
 import { registerConsumer, type DomainEvent } from "./event-bus.js";
 
-// ─── Types ───────────────────────────────────────────────
+// --- Types -----------------------------------------------
 
 export interface WebhookSubscription {
   id: string;
@@ -61,23 +61,24 @@ export interface WebhookSignature {
   nonce: string;
 }
 
-// ─── Default Retry Policy ────────────────────────────────
+// --- Default Retry Policy --------------------------------
 
 const DEFAULT_RETRY_POLICY: RetryPolicy = {
   maxRetries: 3,
   backoffMs: [5_000, 30_000, 120_000], // 5s, 30s, 2min
 };
 
-// ─── Stores ──────────────────────────────────────────────
+// --- Stores ----------------------------------------------
 
 const subscriptions: Map<string, WebhookSubscription> = new Map();
 const deliveries: WebhookDelivery[] = [];
 const webhookDlq: WebhookDelivery[] = [];
 
+const MAX_SUBSCRIPTIONS = 5_000;
 const MAX_DELIVERIES = 10_000;
 const MAX_DLQ = 5_000;
 
-// ─── HMAC Signing ────────────────────────────────────────
+// --- HMAC Signing ----------------------------------------
 
 /**
  * Generate HMAC-SHA256 signature per ADR-WEBHOOK-SECURITY.md
@@ -122,7 +123,7 @@ export function verifyWebhookSignature(
   return diff === 0 ? { valid: true } : { valid: false, error: "Signature mismatch" };
 }
 
-// ─── Subscription CRUD ───────────────────────────────────
+// --- Subscription CRUD -----------------------------------
 
 export function createSubscription(
   tenantId: string,
@@ -148,6 +149,10 @@ export function createSubscription(
     metadata: data.metadata || {},
   };
   subscriptions.set(sub.id, sub);
+  while (subscriptions.size > MAX_SUBSCRIPTIONS) {
+    const oldest = subscriptions.keys().next().value as string;
+    subscriptions.delete(oldest);
+  }
   // Register as event bus consumer
   registerWebhookConsumer(sub);
   return sub;
@@ -181,7 +186,7 @@ export function deleteSubscription(tenantId: string, id: string): boolean {
   return subscriptions.delete(id);
 }
 
-// ─── Delivery ────────────────────────────────────────────
+// --- Delivery --------------------------------------------
 
 /**
  * Deliver an event to a webhook subscription.
@@ -259,7 +264,7 @@ function registerWebhookConsumer(sub: WebhookSubscription): void {
   });
 }
 
-// ─── Test Webhook ────────────────────────────────────────
+// --- Test Webhook ----------------------------------------
 
 /**
  * Send a test event to a webhook subscription to verify delivery.
@@ -294,7 +299,7 @@ export async function testWebhook(subscriptionId: string, tenantId?: string): Pr
   };
 }
 
-// ─── Query ───────────────────────────────────────────────
+// --- Query -----------------------------------------------
 
 export function getWebhookDeliveries(opts?: {
   subscriptionId?: string;
@@ -340,7 +345,7 @@ export function getWebhookStats(tenantId?: string): {
   };
 }
 
-// ─── Reset (testing) ─────────────────────────────────────
+// --- Reset (testing) -------------------------------------
 
 export function _resetWebhookService(): void {
   subscriptions.clear();

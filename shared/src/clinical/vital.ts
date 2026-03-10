@@ -1,10 +1,10 @@
 /**
- * Canonical Vital type — single source of truth.
+ * Canonical Vital type -- single source of truth.
  *
  * Consolidates duplicates from:
  *   - apps/web/src/lib/chart-types.ts
  *   - apps/web/src/stores/data-cache.tsx
- *   - apps/api/src/adapters/types.ts (VitalRecord — richer shape)
+ *   - apps/api/src/adapters/types.ts (VitalRecord -- richer shape)
  */
 
 /** Lightweight vital sign for display in chart panels and cover sheets. */

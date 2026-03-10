@@ -1,5 +1,5 @@
 /**
- * DataSourceBadge — Shows where data comes from.
+ * DataSourceBadge -- Shows where data comes from.
  * Every panel must display one of these badges per contract.
  *
  * No VA-specific terminology in badge text.
@@ -14,11 +14,11 @@ export function DataSourceBadge({ source, label }: DataSourceBadgeProps) {
   const config = {
     ehr: {
       className: 'badge badge-ehr',
-      text: label || 'Live — Health System',
+      text: label || 'Live -- Health System',
     },
     pending: {
       className: 'badge badge-pending',
-      text: label || 'Integration Pending',
+      text: label || 'Pending',
     },
     local: {
       className: 'badge badge-skeleton',

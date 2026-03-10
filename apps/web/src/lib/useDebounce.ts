@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Debounce hook — Phase 15E.
+ * Debounce hook -- Phase 15E.
  *
  * Returns a debounced version of the input value that only updates
  * after the specified delay. Useful for search inputs.

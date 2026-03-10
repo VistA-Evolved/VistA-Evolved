@@ -1,25 +1,32 @@
-ZVECHK2 ; Dump ZVE MAIL RPC raw globals
- Q
-EN ;
- N IEN,NM,I,SUB
- S NM="ZVE MAIL FOLDERS"
- S IEN=$O(^XWB(8994,"B",NM,""))
- I IEN="" W "NOT FOUND: "_NM,! Q
- W "=== "_NM_" IEN="_IEN_" ===",!
- ; dump ALL nodes
- S SUB="" F  S SUB=$O(^XWB(8994,IEN,SUB)) Q:SUB=""  D
- . W "  ^XWB(8994,"_IEN_","_SUB_") = "_$G(^XWB(8994,IEN,SUB)),!
- . ; check sub-sub nodes
- . N SS S SS="" F  S SS=$O(^XWB(8994,IEN,SUB,SS)) Q:SS=""  D
- . . W "  ^XWB(8994,"_IEN_","_SUB_","_SS_") = "_$G(^XWB(8994,IEN,SUB,SS)),!
- W !
- ; Also check a known working RPC for comparison (ORQQAL LIST)
- N IEN2
- S IEN2=$O(^XWB(8994,"B","ORQQAL LIST",""))
- I IEN2="" W "ORQQAL LIST NOT FOUND",! Q
- W "=== ORQQAL LIST IEN="_IEN2_" ===",!
- S SUB="" F  S SUB=$O(^XWB(8994,IEN2,SUB)) Q:SUB=""  D
- . W "  ^XWB(8994,"_IEN2_","_SUB_") = "_$G(^XWB(8994,IEN2,SUB)),!
- . N SS S SS="" F  S SS=$O(^XWB(8994,IEN2,SUB,SS)) Q:SS=""  D
- . . W "  ^XWB(8994,"_IEN2_","_SUB_","_SS_") = "_$G(^XWB(8994,IEN2,SUB,SS)),!
+ZVECHK2 ;VistA-Evolved -- Deep auth check for DUZ=1 ;2026
+ ;
+CHECK ;
+ N DUZ,U S U="^",DUZ=1
+ W "=== Deep Auth Check for DUZ=1 ===",!
+ W "NODE 0: ",$G(^VA(200,DUZ,0)),!
+ W "NODE .1: ",$G(^VA(200,DUZ,.1)),!
+ W "NODE 3: ",$G(^VA(200,DUZ,3)),!
+ W "NODE 7: ",$G(^VA(200,DUZ,7)),!
+ W "NODE 201: ",$G(^VA(200,DUZ,201)),!
+ W "DIVISION(0): ",$G(^VA(200,DUZ,"DIVISION",0)),!
+ N I S I=0
+ F  S I=$O(^VA(200,DUZ,"DIVISION",I)) Q:I=""  D
+ . W "DIVISION(",I,"): ",$G(^VA(200,DUZ,"DIVISION",I)),!
+ W "TERMINATION DATE (7p2): ",$P($G(^VA(200,DUZ,7)),U,2),!
+ W "DISUSER (7p4): ",$P($G(^VA(200,DUZ,7)),U,4),!
+ W "FM ACCESS CODE (3p1): ",$P($G(^VA(200,DUZ,3)),U,1),!
+ W "VC NEVER EXPIRES (.1p3): ",$P($G(^VA(200,DUZ,.1)),U,3),!
+ W "DATE LAST SIGN-ON (.1p4): ",$P($G(^VA(200,DUZ,.1)),U,4),!
+ W "PERSON CLASS: ",$G(^VA(200,DUZ,"USC")),!
+ W "XUS SIGNON SETUP IEN: ",$G(^XWB(8994,"B","XUS SIGNON SETUP")),!
+ W "XUS AV CODE IEN: ",$G(^XWB(8994,"B","XUS AV CODE")),!
+ W "XUS GET USER INFO IEN: ",$G(^XWB(8994,"B","XUS GET USER INFO")),!
+ N AC S AC=$P($G(^VA(200,DUZ,.1)),U,1)
+ W "Access Code stored: ",AC,!
+ ; Check A xref for access code lookup
+ W "A xref (first 5):",!
+ N K,CT S K="",CT=0
+ F  S K=$O(^VA(200,"A",K)) Q:K=""  Q:CT>4  D
+ . W "  A(",K,")=",$G(^VA(200,"A",K)),!
+ . S CT=CT+1
  Q

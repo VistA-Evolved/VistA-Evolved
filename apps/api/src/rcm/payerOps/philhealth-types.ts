@@ -1,5 +1,5 @@
 /**
- * PhilHealth eClaims 3.0 Posture — Domain Types
+ * PhilHealth eClaims 3.0 Posture -- Domain Types
  *
  * Phase 90: Claim draft lifecycle, facility setup, export pipeline.
  *
@@ -9,14 +9,14 @@
  *   - Electronic SOA (structured XML/JSON) mandatory
  *   - TCN (Transmittal Control Number) issued after successful test upload
  *
- * Honest statuses — never claims real submission unless certified:
- *   draft → ready_for_submission → exported → test_uploaded → submitted_pending
- *   → returned_to_hospital | paid | denied
+ * Honest statuses -- never claims real submission unless certified:
+ *   draft -> ready_for_submission -> exported -> test_uploaded -> submitted_pending
+ *   -> returned_to_hospital | paid | denied
  *
  * If we cannot truly submit, status MUST NOT advance beyond exported/test_uploaded.
  */
 
-/* ── Claim Draft Status ─────────────────────────────────────── */
+/* -- Claim Draft Status --------------------------------------- */
 
 export type PhilHealthClaimStatus =
   | 'draft'
@@ -49,7 +49,7 @@ export function requiresRealIntegration(to: PhilHealthClaimStatus): boolean {
   return ['submitted_pending', 'returned_to_hospital', 'paid', 'denied'].includes(to);
 }
 
-/* ── Charge Line Item ───────────────────────────────────────── */
+/* -- Charge Line Item ----------------------------------------- */
 
 export interface PhilHealthChargeItem {
   category:
@@ -70,7 +70,7 @@ export interface PhilHealthChargeItem {
   patientShare: number;
 }
 
-/* ── Diagnosis Code ─────────────────────────────────────────── */
+/* -- Diagnosis Code ------------------------------------------- */
 
 export interface PhilHealthDiagnosis {
   icdCode: string;
@@ -78,7 +78,7 @@ export interface PhilHealthDiagnosis {
   type: 'primary' | 'secondary';
 }
 
-/* ── Procedure Code ─────────────────────────────────────────── */
+/* -- Procedure Code ------------------------------------------- */
 
 export interface PhilHealthProcedure {
   code: string; // RVS or CPT
@@ -86,7 +86,7 @@ export interface PhilHealthProcedure {
   laterality?: 'L' | 'R' | 'B';
 }
 
-/* ── Professional Fee Line ──────────────────────────────────── */
+/* -- Professional Fee Line ------------------------------------ */
 
 export interface PhilHealthProfessionalFee {
   physicianName: string;
@@ -97,7 +97,7 @@ export interface PhilHealthProfessionalFee {
   procedureCode?: string;
 }
 
-/* ── Electronic SOA (Structured) ────────────────────────────── */
+/* -- Electronic SOA (Structured) ------------------------------ */
 
 export interface PhilHealthElectronicSoa {
   soaId: string;
@@ -118,13 +118,13 @@ export interface PhilHealthElectronicSoa {
   signatureMethod?: 'hmac-sha256';
 }
 
-/* ── Claim Draft ────────────────────────────────────────────── */
+/* -- Claim Draft ---------------------------------------------- */
 
 export interface PhilHealthClaimDraft {
   id: string;
   tenantId: string;
   facilityId: string;
-  /** Patient DFN — clinical data from VistA at render time */
+  /** Patient DFN -- clinical data from VistA at render time */
   patientDfn: string;
   patientLastName: string;
   patientFirstName: string;
@@ -172,7 +172,7 @@ export interface PhilHealthClaimDraft {
   updatedAt: string;
 }
 
-/* ── Export Manifest ────────────────────────────────────────── */
+/* -- Export Manifest ------------------------------------------ */
 
 export interface PhilHealthExportManifest {
   exportId: string;
@@ -198,12 +198,12 @@ export interface PhilHealthExportManifest {
   };
 }
 
-/* ── Test Upload Result ─────────────────────────────────────── */
+/* -- Test Upload Result --------------------------------------- */
 
 export interface PhilHealthTestUploadResult {
   /** Always true for simulated uploads */
   simulated: boolean;
-  /** "SIMULATED-TCN-XXXX" — clearly fake */
+  /** "SIMULATED-TCN-XXXX" -- clearly fake */
   transmittalControlNumber: string;
   uploadedAt: string;
   validationPassed: boolean;
@@ -213,7 +213,7 @@ export interface PhilHealthTestUploadResult {
   nextSteps: string[];
 }
 
-/* ── Timeline Event ─────────────────────────────────────────── */
+/* -- Timeline Event ------------------------------------------- */
 
 export interface PhilHealthTimelineEvent {
   timestamp: string;
@@ -224,7 +224,7 @@ export interface PhilHealthTimelineEvent {
   detail?: string;
 }
 
-/* ── Facility Setup ─────────────────────────────────────────── */
+/* -- Facility Setup ------------------------------------------- */
 
 export interface PhilHealthFacilitySetup {
   id: string;
@@ -267,7 +267,7 @@ export interface PhilHealthReadinessItem {
   completedBy?: string;
 }
 
-/* ── Validation Error ───────────────────────────────────────── */
+/* -- Validation Error ----------------------------------------- */
 
 export interface PhilHealthValidationError {
   field: string;
@@ -289,7 +289,7 @@ export interface PhilHealthValidationResult {
   };
 }
 
-/* ── Default Readiness Checklist ────────────────────────────── */
+/* -- Default Readiness Checklist ------------------------------ */
 
 export const DEFAULT_READINESS_CHECKLIST: Omit<
   PhilHealthReadinessItem,

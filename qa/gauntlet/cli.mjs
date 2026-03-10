@@ -29,7 +29,7 @@ const ROOT = resolve(__dirname, '../..');
 const ARTIFACTS_DIR = resolve(ROOT, 'artifacts');
 const MANIFEST_PATH = resolve(__dirname, 'phase-manifest.json');
 
-// ── Parse CLI args ──────────────────────────────────────────
+// -- Parse CLI args ------------------------------------------
 
 const args = process.argv.slice(2);
 
@@ -45,7 +45,7 @@ const tagFilter = getArg('tag');
 const strict = args.includes('--strict');
 const ciMode = args.includes('--ci');
 
-// ── Suite definitions ───────────────────────────────────────
+// -- Suite definitions ---------------------------------------
 
 const SUITE_GATES = {
   fast: [
@@ -124,7 +124,7 @@ if (!SUITE_GATES[suiteName]) {
   process.exit(1);
 }
 
-// ── Gate module registry ────────────────────────────────────
+// -- Gate module registry ------------------------------------
 
 const GATE_MODULES = {
   G0_prompts_integrity: 'gates/g0-prompts-integrity.mjs',
@@ -159,7 +159,7 @@ const GATE_MODULES = {
   G29_certification_evidence: 'gates/g29-certification-evidence.mjs',
 };
 
-// ── Resolve which gates to run ──────────────────────────────
+// -- Resolve which gates to run ------------------------------
 
 let gateIds = [...SUITE_GATES[suiteName]];
 
@@ -205,7 +205,7 @@ gateIds = [...new Set(gateIds)].sort((a, b) => {
   return na - nb;
 });
 
-// ── Run gates ───────────────────────────────────────────────
+// -- Run gates -----------------------------------------------
 
 const results = [];
 let totalPass = 0;
@@ -286,7 +286,7 @@ for (const gateId of gateIds) {
 
 const totalDuration = Date.now() - runStart;
 
-// ── Summary ─────────────────────────────────────────────────
+// -- Summary -------------------------------------------------
 
 if (!ciMode) {
   console.log(`\n${'='.repeat(60)}`);
@@ -313,7 +313,7 @@ if (!ciMode) {
   }
 }
 
-// ── Machine output ──────────────────────────────────────────
+// -- Machine output ------------------------------------------
 
 const machineOutput = {
   generatedAt: new Date().toISOString(),
@@ -338,13 +338,13 @@ try {
   if (!ciMode) console.warn(`Could not write artifacts: ${err.message}`);
 }
 
-// ── CI output ───────────────────────────────────────────────
+// -- CI output -----------------------------------------------
 
 if (ciMode) {
   // Print JSON to stdout for CI consumption
   console.log(JSON.stringify(machineOutput));
 }
 
-// ── Exit code ───────────────────────────────────────────────
+// -- Exit code -----------------------------------------------
 // Allow event loop to drain before exiting (Node 24 UV_HANDLE_CLOSING)
 setTimeout(() => process.exit(totalFail > 0 ? 1 : 0), 50);

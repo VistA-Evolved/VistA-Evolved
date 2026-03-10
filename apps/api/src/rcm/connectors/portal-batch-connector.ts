@@ -1,5 +1,5 @@
 /**
- * Portal/Batch Connector — Web Portal Claim Submission
+ * Portal/Batch Connector -- Web Portal Claim Submission
  *
  * Handles payers that accept claims via a web portal or batch upload
  * rather than X12 EDI or direct API. Common for many commercial HMOs,
@@ -8,7 +8,7 @@
  * Generates formatted claim files (CSV, XML, or payer-specific format)
  * for manual or automated portal upload.
  *
- * Phase 38 — RCM + Payer Connectivity
+ * Phase 38 -- RCM + Payer Connectivity
  */
 
 import type { X12TransactionSet } from '../edi/types.js';
@@ -34,7 +34,7 @@ export class PortalBatchConnector implements RcmConnector {
   private batches = new Map<string, BatchEntry>();
 
   async initialize(): Promise<void> {
-    // No external initialization needed — portal credentials are per-payer
+    // No external initialization needed -- portal credentials are per-payer
   }
 
   async submit(
@@ -61,7 +61,7 @@ export class PortalBatchConnector implements RcmConnector {
         connector: this.id,
         action: 'queued_for_portal_upload',
         portalUrl: metadata.portalUrl ?? 'not_configured',
-        note: 'Batch file generated — upload to payer portal manually or via RPA',
+        note: 'Batch file generated -- upload to payer portal manually or via RPA',
       },
     };
   }
@@ -108,7 +108,7 @@ export class PortalBatchConnector implements RcmConnector {
     this.batches.clear();
   }
 
-  /* ─── Portal-specific operations ───────────────────────────────── */
+  /* --- Portal-specific operations --------------------------------- */
 
   /** Mark a batch as uploaded (called after manual/RPA upload) */
   markUploaded(transactionId: string): boolean {

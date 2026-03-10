@@ -12,6 +12,7 @@
  */
 
 import { randomBytes, createHash } from 'node:crypto';
+import { log } from '../lib/logger.js';
 import type {
   IntakeSession,
   IntakeEvent,
@@ -136,7 +137,7 @@ export function createSession(opts: {
       createdAt: session.createdAt,
       updatedAt: (session as any).updatedAt ?? session.createdAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   appendEvent({
     sessionId: session.id,

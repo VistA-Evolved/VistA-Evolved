@@ -8,7 +8,7 @@ export default defineConfig({
     testTimeout: 60_000,
     hookTimeout: 15_000,
     include: ['tests/**/*.test.ts'],
-    exclude: ['src/**/*.test.ts'], // node:test files (logger, redaction) — run via `node --test`
+    exclude: ['src/**/*.test.ts'], // node:test files (logger, redaction) -- run via `node --test`
     sequence: { concurrent: false },
     fileParallelism: false,
     reporters: ['verbose', 'json'],

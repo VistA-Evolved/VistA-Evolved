@@ -1,5 +1,5 @@
 /**
- * Writeback Executor Bootstrap — Phase 300+ (W12)
+ * Writeback Executor Bootstrap -- Phase 300+ (W12)
  *
  * Registers all domain executors with the command bus at startup.
  * Called from server lifecycle after route registration.

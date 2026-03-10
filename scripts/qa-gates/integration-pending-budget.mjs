@@ -17,9 +17,9 @@
  *   --tolerance N  Allow N more than baseline before failing (default: 0)
  *
  * Exit codes:
- *   0 — count <= baseline (+ tolerance)
- *   1 — count > baseline (+ tolerance)
- *   2 — baseline file missing (run with --update first)
+ *   0 -- count <= baseline (+ tolerance)
+ *   1 -- count > baseline (+ tolerance)
+ *   2 -- baseline file missing (run with --update first)
  */
 
 import { readFileSync, writeFileSync, existsSync, readdirSync, statSync } from 'node:fs';
@@ -32,7 +32,7 @@ const SRC_DIR = join(ROOT, 'apps', 'api', 'src');
 const BASELINE_PATH = join(ROOT, 'docs', 'qa', 'integration-pending-baseline.json');
 const BACKLOG_PATH = join(ROOT, 'docs', 'qa', 'integration-pending-backlog.md');
 
-/* ── CLI ──────────────────────────────────────────────────── */
+/* -- CLI ---------------------------------------------------- */
 
 const args = process.argv.slice(2);
 function flag(name) {
@@ -47,7 +47,7 @@ const UPDATE_MODE = flag('--update');
 const REPORT_MODE = flag('--report');
 const TOLERANCE = Number(opt('--tolerance', '0'));
 
-/* ── File Scanner ─────────────────────────────────────────── */
+/* -- File Scanner ------------------------------------------- */
 
 const PATTERN = /integration[._-]pending/gi;
 const EXTENSIONS = new Set(['.ts', '.tsx']);
@@ -90,7 +90,7 @@ function scanAll() {
   return { total, files: results };
 }
 
-/* ── Baseline I/O ─────────────────────────────────────────── */
+/* -- Baseline I/O ------------------------------------------- */
 
 function loadBaseline() {
   if (!existsSync(BASELINE_PATH)) return null;
@@ -115,7 +115,7 @@ function saveBaseline(scan) {
   return baseline;
 }
 
-/* ── Main ─────────────────────────────────────────────────── */
+/* -- Main --------------------------------------------------- */
 
 function main() {
   console.log('Integration-Pending Budget Gate (Phase 480)\n');

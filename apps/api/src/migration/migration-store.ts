@@ -94,7 +94,7 @@ export function createJob(params: {
       status: job.status,
       createdAt: job.createdAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   log.info('Migration job created', {
     jobId: job.id,
@@ -115,7 +115,7 @@ export function updateJob(id: string, updates: Partial<MigrationJob>): Migration
   const updated = {
     ...job,
     ...updates,
-    // Pin immutable fields — cannot be overwritten by updates
+    // Pin immutable fields -- cannot be overwritten by updates
     id: job.id,
     createdAt: job.createdAt,
     updatedAt: new Date().toISOString(),

@@ -1,5 +1,5 @@
 /**
- * lib/paths.mjs — Shared paths and file-globbing utilities for CPRS extraction.
+ * lib/paths.mjs -- Shared paths and file-globbing utilities for CPRS extraction.
  */
 
 import { readdir } from 'node:fs/promises';
@@ -7,7 +7,7 @@ import { join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const __dirname = fileURLToPath(new URL('.', import.meta.url));
-// __dirname = tools/cprs-extract/lib/ → go up 3 levels to repo root
+// __dirname = tools/cprs-extract/lib/ -> go up 3 levels to repo root
 const ROOT = resolve(__dirname, '..', '..', '..');
 
 export const CPRS_CHART_DIR = join(

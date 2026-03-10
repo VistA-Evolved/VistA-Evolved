@@ -1,5 +1,5 @@
 /**
- * Safe Error Sanitizer — Shared utility for API error responses.
+ * Safe Error Sanitizer -- Shared utility for API error responses.
  *
  * Prevents leaking internal details (file paths, MUMPS global refs,
  * credential fragments, stack traces) in HTTP/WebSocket responses.
@@ -33,7 +33,7 @@ export function safeErr(err: unknown): string {
     return 'Configuration error';
   }
 
-  // Connection errors — user-friendly
+  // Connection errors -- user-friendly
   if (m.includes('ECONNREFUSED') || m.includes('ECONNRESET') || m.includes('ETIMEDOUT')) {
     return 'VistA service unavailable';
   }
@@ -45,6 +45,10 @@ export function safeErr(err: unknown): string {
   let s = m
     .replace(/\^[A-Z][A-Z0-9]*/g, '') // MUMPS globals (^GLOBAL)
     .replace(/%[A-Z][A-Z0-9]*/g, '') // MUMPS % routines
+    .replace(/%YDB-E-[A-Z]+/g, '') // YottaDB error codes (%YDB-E-LVUNDEF etc.)
+    .replace(/\b[A-Z]{2,}UNDEF\b/g, '') // MUMPS undefined errors (LVUNDEF, UNDEF)
+    .replace(/\bNULSUBSC\b/g, '') // MUMPS null subscript errors
+    .replace(/\bGTM-[A-Z]-[A-Z]+/g, '') // GT.M error codes
     .replace(/[A-Z]:\\[^\s]+/g, '') // Windows file paths
     .replace(/\/[^\s]*\/[^\s]*/g, '') // Unix file paths
     .replace(/at\s+\S+\s+\([^)]+\)/g, '') // Stack trace frames

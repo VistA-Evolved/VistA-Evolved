@@ -1,5 +1,5 @@
 /**
- * Step-Up Authentication Policy — Phase 338 (W16-P2).
+ * Step-Up Authentication Policy -- Phase 338 (W16-P2).
  *
  * Defines a 3-tier assurance model for actions:
  *   - standard:  normal session auth sufficient
@@ -159,7 +159,7 @@ export function evaluateStepUp(
   const currentLevel = computeAssuranceLevel(lastAuthAt, mfaState, ts);
   const requirement = getStepUpRequirement(action);
 
-  // No step-up needed — standard is fine
+  // No step-up needed -- standard is fine
   if (!requirement) {
     return { allowed: true, currentLevel };
   }

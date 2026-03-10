@@ -1,5 +1,5 @@
 /**
- * HMO Portal Routes — Phase 97
+ * HMO Portal Routes -- Phase 97
  *
  * Fastify plugin for HMO LOA + Claim Packet + Portal Adapter endpoints.
  *
@@ -7,24 +7,24 @@
  * Auth: session-level via /rcm/ catch-all in security.ts AUTH_RULES.
  *
  * Endpoints:
- *   GET  /rcm/hmo-portal/status                   — Adapter overview + registered adapters
- *   GET  /rcm/hmo-portal/adapters                  — List registered portal adapters
- *   GET  /rcm/hmo-portal/adapters/:payerId         — Single adapter detail
- *   GET  /rcm/hmo-portal/adapters/:payerId/health  — Adapter health check
- *   GET  /rcm/hmo-portal/specialties               — List specialty templates
- *   POST /rcm/hmo-portal/loa/build                 — Build LOA packet from LOA request
- *   POST /rcm/hmo-portal/loa/export                — Export LOA packet (JSON/text)
- *   POST /rcm/hmo-portal/loa/submit                — Submit LOA via adapter (manual-assisted)
- *   POST /rcm/hmo-portal/claims/build              — Build HMO claim packet from claim
- *   POST /rcm/hmo-portal/claims/export             — Export HMO claim packet
- *   POST /rcm/hmo-portal/claims/submit             — Submit claim via adapter (manual-assisted)
- *   POST /rcm/hmo-portal/status-check              — Check portal status (manual)
- *   POST /rcm/hmo-portal/remit-check               — Check remittance (manual)
- *   GET  /rcm/hmo-portal/submissions               — List submission records
- *   GET  /rcm/hmo-portal/submissions/:id           — Get submission detail
- *   PUT  /rcm/hmo-portal/submissions/:id/status    — Transition status
- *   POST /rcm/hmo-portal/submissions/:id/note      — Add staff note
- *   GET  /rcm/hmo-portal/submissions/stats         — Submission stats
+ *   GET  /rcm/hmo-portal/status                   -- Adapter overview + registered adapters
+ *   GET  /rcm/hmo-portal/adapters                  -- List registered portal adapters
+ *   GET  /rcm/hmo-portal/adapters/:payerId         -- Single adapter detail
+ *   GET  /rcm/hmo-portal/adapters/:payerId/health  -- Adapter health check
+ *   GET  /rcm/hmo-portal/specialties               -- List specialty templates
+ *   POST /rcm/hmo-portal/loa/build                 -- Build LOA packet from LOA request
+ *   POST /rcm/hmo-portal/loa/export                -- Export LOA packet (JSON/text)
+ *   POST /rcm/hmo-portal/loa/submit                -- Submit LOA via adapter (manual-assisted)
+ *   POST /rcm/hmo-portal/claims/build              -- Build HMO claim packet from claim
+ *   POST /rcm/hmo-portal/claims/export             -- Export HMO claim packet
+ *   POST /rcm/hmo-portal/claims/submit             -- Submit claim via adapter (manual-assisted)
+ *   POST /rcm/hmo-portal/status-check              -- Check portal status (manual)
+ *   POST /rcm/hmo-portal/remit-check               -- Check remittance (manual)
+ *   GET  /rcm/hmo-portal/submissions               -- List submission records
+ *   GET  /rcm/hmo-portal/submissions/:id           -- Get submission detail
+ *   PUT  /rcm/hmo-portal/submissions/:id/status    -- Transition status
+ *   POST /rcm/hmo-portal/submissions/:id/note      -- Add staff note
+ *   GET  /rcm/hmo-portal/submissions/stats         -- Submission stats
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -54,7 +54,7 @@ import {
   getSubmissionStats,
 } from './submission-tracker.js';
 
-/* ── In-Memory Packet Caches ────────────────────────────────── */
+/* -- In-Memory Packet Caches ---------------------------------- */
 
 const loaPacketCache = new Map<string, LoaPacket>();
 const claimPacketCache = new Map<string, HmoClaimPacket>();
@@ -82,10 +82,10 @@ function requireTenantId(request: FastifyRequest, reply: FastifyReply): string |
   return null;
 }
 
-/* ── Plugin ─────────────────────────────────────────────────── */
+/* -- Plugin --------------------------------------------------- */
 
 export default async function hmoPortalRoutes(server: FastifyInstance): Promise<void> {
-  /* ── GET /rcm/hmo-portal/status ───────────────────────────── */
+  /* -- GET /rcm/hmo-portal/status ----------------------------- */
   server.get('/rcm/hmo-portal/status', async () => {
     const adapters = listPortalAdapters();
     return {
@@ -99,12 +99,12 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     };
   });
 
-  /* ── GET /rcm/hmo-portal/adapters ─────────────────────────── */
+  /* -- GET /rcm/hmo-portal/adapters --------------------------- */
   server.get('/rcm/hmo-portal/adapters', async () => {
     return { ok: true, adapters: listPortalAdapters() };
   });
 
-  /* ── GET /rcm/hmo-portal/adapters/:payerId ────────────────── */
+  /* -- GET /rcm/hmo-portal/adapters/:payerId ------------------ */
   server.get(
     '/rcm/hmo-portal/adapters/:payerId',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -124,7 +124,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     }
   );
 
-  /* ── GET /rcm/hmo-portal/adapters/:payerId/health ─────────── */
+  /* -- GET /rcm/hmo-portal/adapters/:payerId/health ----------- */
   server.get(
     '/rcm/hmo-portal/adapters/:payerId/health',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -139,12 +139,12 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     }
   );
 
-  /* ── GET /rcm/hmo-portal/specialties ──────────────────────── */
+  /* -- GET /rcm/hmo-portal/specialties ------------------------ */
   server.get('/rcm/hmo-portal/specialties', async () => {
     return { ok: true, templates: listSpecialtyTemplates() };
   });
 
-  /* ── POST /rcm/hmo-portal/loa/build ──────────────────────── */
+  /* -- POST /rcm/hmo-portal/loa/build ------------------------ */
   server.post('/rcm/hmo-portal/loa/build', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const {
@@ -191,7 +191,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     return { ok: true, packet: result.packet };
   });
 
-  /* ── POST /rcm/hmo-portal/loa/export ─────────────────────── */
+  /* -- POST /rcm/hmo-portal/loa/export ----------------------- */
   server.post('/rcm/hmo-portal/loa/export', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { packetId, formats } = body;
@@ -211,7 +211,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     return { ok: true, exports };
   });
 
-  /* ── POST /rcm/hmo-portal/loa/submit ─────────────────────── */
+  /* -- POST /rcm/hmo-portal/loa/submit ----------------------- */
   server.post('/rcm/hmo-portal/loa/submit', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { packetId } = body;
@@ -267,7 +267,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     return { ok: true, submissionId: sub.id, result };
   });
 
-  /* ── POST /rcm/hmo-portal/claims/build ───────────────────── */
+  /* -- POST /rcm/hmo-portal/claims/build --------------------- */
   server.post('/rcm/hmo-portal/claims/build', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const {
@@ -320,7 +320,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     return { ok: true, packet: result.packet };
   });
 
-  /* ── POST /rcm/hmo-portal/claims/export ──────────────────── */
+  /* -- POST /rcm/hmo-portal/claims/export -------------------- */
   server.post('/rcm/hmo-portal/claims/export', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { packetId, format } = body;
@@ -341,7 +341,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     return { ok: true, export: exported };
   });
 
-  /* ── POST /rcm/hmo-portal/claims/submit ──────────────────── */
+  /* -- POST /rcm/hmo-portal/claims/submit -------------------- */
   server.post('/rcm/hmo-portal/claims/submit', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { packetId } = body;
@@ -400,7 +400,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     return { ok: true, submissionId: sub.id, result };
   });
 
-  /* ── POST /rcm/hmo-portal/status-check ───────────────────── */
+  /* -- POST /rcm/hmo-portal/status-check --------------------- */
   server.post('/rcm/hmo-portal/status-check', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { payerId, claimId } = body;
@@ -420,7 +420,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     return { ok: true, result };
   });
 
-  /* ── POST /rcm/hmo-portal/remit-check ────────────────────── */
+  /* -- POST /rcm/hmo-portal/remit-check ---------------------- */
   server.post('/rcm/hmo-portal/remit-check', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     const { payerId, claimId } = body;
@@ -440,7 +440,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     return { ok: true, result };
   });
 
-  /* ── GET /rcm/hmo-portal/submissions ──────────────────────── */
+  /* -- GET /rcm/hmo-portal/submissions ------------------------ */
   server.get('/rcm/hmo-portal/submissions', async (req: FastifyRequest, reply: FastifyReply) => {
     const q = req.query as any;
     const tenantId = requireTenantId(req, reply);
@@ -457,14 +457,14 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     };
   });
 
-  /* ── GET /rcm/hmo-portal/submissions/stats ────────────────── */
+  /* -- GET /rcm/hmo-portal/submissions/stats ------------------ */
   server.get('/rcm/hmo-portal/submissions/stats', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
     return { ok: true, stats: getSubmissionStats(tenantId) };
   });
 
-  /* ── GET /rcm/hmo-portal/submissions/:id ──────────────────── */
+  /* -- GET /rcm/hmo-portal/submissions/:id -------------------- */
   server.get(
     '/rcm/hmo-portal/submissions/:id',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -480,7 +480,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     }
   );
 
-  /* ── PUT /rcm/hmo-portal/submissions/:id/status ───────────── */
+  /* -- PUT /rcm/hmo-portal/submissions/:id/status ------------- */
   server.put(
     '/rcm/hmo-portal/submissions/:id/status',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -508,7 +508,7 @@ export default async function hmoPortalRoutes(server: FastifyInstance): Promise<
     }
   );
 
-  /* ── POST /rcm/hmo-portal/submissions/:id/note ───────────── */
+  /* -- POST /rcm/hmo-portal/submissions/:id/note ------------- */
   server.post(
     '/rcm/hmo-portal/submissions/:id/note',
     async (req: FastifyRequest, reply: FastifyReply) => {

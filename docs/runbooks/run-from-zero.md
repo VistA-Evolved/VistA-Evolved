@@ -117,6 +117,10 @@ Expected results:
 
 This runs the RC verification gates. Use `-SkipDocker` to skip live VistA tests.
 
+If you need to run the source-level dead-click tripwire directly from the repo
+root, use `pnpm qa:tripwire:source`. The workspace root does not carry its own
+`tsx` binary; the script delegates to the app-local runner under `apps/api`.
+
 ## Optional Services
 
 ### Imaging (Orthanc + OHIF)
@@ -187,6 +191,11 @@ Jaeger: http://localhost:16686, Prometheus: http://localhost:9090
 - **PG connection refused**: Ensure platform-db container is running on 5433.
 - **Migration errors**: Check API startup log for `migration_failed`. Fix
   before proceeding.
+- **Added or renamed a prompt phase and verifier freshness fails**: Rebuild the
+  canonical phase index with `pnpm qa:phase-index`, then rerun
+  `./scripts/verify-latest.ps1`.
+- **`G09` fails on TypeScript Web compile**: Isolate the exact frontend error
+  with `pnpm -C apps/web exec tsc --noEmit` before rerunning the full verifier.
 - **pnpm install fails**: Delete `node_modules` and `pnpm-lock.yaml`, then
   `pnpm install` again.
 

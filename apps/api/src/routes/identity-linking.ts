@@ -14,7 +14,7 @@
  *   - ORWPT SELECT (lookup patient by name)
  *   - ORWPT ID INFO (demographics for verification)
  *
- * VistA data accessed for verification only — never stored in link record.
+ * VistA data accessed for verification only -- never stored in link record.
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -24,13 +24,13 @@ import { immutableAudit } from '../lib/immutable-audit.js';
 import { log } from '../lib/logger.js';
 import { randomUUID, createHash } from 'node:crypto';
 
-// ── Types ───────────────────────────────────────────────────
+// -- Types ---------------------------------------------------
 
 /**
  * Status constants (double-quoted for gate compatibility):
- *   "pending"  — Awaiting staff review
- *   "verified" — Staff approved, link established
- *   "rejected" — Staff denied the link request
+ *   "pending"  -- Awaiting staff review
+ *   "verified" -- Staff approved, link established
+ *   "rejected" -- Staff denied the link request
  */
 export type LinkRequestStatus = 'pending' | 'verified' | 'rejected' | 'expired' | 'revoked';
 
@@ -77,7 +77,7 @@ export interface IdentityLink {
   revokedAt?: string;
 }
 
-// ── In-memory stores (PG table portal_patient_identity exists for links) ──
+// -- In-memory stores (PG table portal_patient_identity exists for links) --
 
 const linkRequests = new Map<string, IdentityLinkRequest>();
 const identityLinks = new Map<string, IdentityLink>();
@@ -90,7 +90,7 @@ export function getIdentityLinkCount(): number {
   return identityLinks.size;
 }
 
-// ── Helpers ─────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------
 
 function hashSensitive(value: string): string {
   return createHash('sha256').update(value).digest('hex').slice(0, 16);
@@ -131,11 +131,11 @@ export function stopLinkRequestCleanup(): void {
   }
 }
 
-// ── Routes ──────────────────────────────────────────────────
+// -- Routes --------------------------------------------------
 
 export default async function identityLinkingRoutes(server: FastifyInstance) {
   startLinkRequestCleanup();
-  // POST /portal/identity/request-link — patient initiates link request
+  // POST /portal/identity/request-link -- patient initiates link request
   server.post(
     '/portal/identity/request-link',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -219,7 +219,7 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
     }
   );
 
-  // GET /admin/identity/pending-requests — staff views pending link requests
+  // GET /admin/identity/pending-requests -- staff views pending link requests
   server.get(
     '/admin/identity/pending-requests',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -242,7 +242,7 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
     }
   );
 
-  // GET /admin/identity/request/:id — staff views link request detail + VistA demographics
+  // GET /admin/identity/request/:id -- staff views link request detail + VistA demographics
   server.get(
     '/admin/identity/request/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -287,7 +287,7 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
     }
   );
 
-  // POST /admin/identity/request/:id/verify — staff approves link
+  // POST /admin/identity/request/:id/verify -- staff approves link
   server.post(
     '/admin/identity/request/:id/verify',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -334,7 +334,7 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
       // Persist to PG portal_patient_identity table
       let persisted = false;
       try {
-        const { isPgConfigured, getPgPool } = await import('../../platform/pg/pg-db.js');
+        const { isPgConfigured, getPgPool } = await import('../platform/pg/pg-db.js');
         if (isPgConfigured()) {
           const pool = getPgPool();
           await pool.query(
@@ -368,7 +368,7 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
     }
   );
 
-  // POST /admin/identity/request/:id/reject — staff rejects link
+  // POST /admin/identity/request/:id/reject -- staff rejects link
   server.post(
     '/admin/identity/request/:id/reject',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -408,7 +408,7 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
     }
   );
 
-  // GET /portal/identity/my-links — user views their identity links
+  // GET /portal/identity/my-links -- user views their identity links
   server.get('/portal/identity/my-links', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -440,7 +440,7 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
     };
   });
 
-  // DELETE /portal/identity/link/:id — revoke a link
+  // DELETE /portal/identity/link/:id -- revoke a link
   server.delete(
     '/portal/identity/link/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -473,7 +473,7 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
     }
   );
 
-  // GET /admin/identity/links — staff views all identity links
+  // GET /admin/identity/links -- staff views all identity links
   server.get('/admin/identity/links', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -501,7 +501,7 @@ export default async function identityLinkingRoutes(server: FastifyInstance) {
   });
 }
 
-// ── VistA ID info parser ────────────────────────────────────
+// -- VistA ID info parser ------------------------------------
 
 function parseIdInfo(lines: string[]): Record<string, string> {
   const result: Record<string, string> = {};

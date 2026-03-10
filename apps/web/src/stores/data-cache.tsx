@@ -7,7 +7,7 @@ import { csrfHeaders } from '../lib/csrf';
 import type { Allergy, Problem, Vital, Note, Medication } from '@vista-evolved/shared-types';
 
 /* ------------------------------------------------------------------ */
-/* Types — canonical clinical types re-exported from shared-types      */
+/* Types -- canonical clinical types re-exported from shared-types      */
 /* ------------------------------------------------------------------ */
 
 export type { Allergy, Problem, Vital, Note, Medication };
@@ -25,7 +25,7 @@ export interface DraftOrder {
   releasedAt?: string;
 }
 
-/* Phase 12 — 5 new clinical domains */
+/* Phase 12 -- 5 new clinical domains */
 export interface Consult {
   id: string;
   date: string;
@@ -136,15 +136,15 @@ export interface DataCacheValue {
   addDraftOrder: (dfn: string, order: DraftOrder) => void;
   /** Update order status */
   updateOrderStatus: (dfn: string, orderId: string, status: DraftOrder['status']) => void;
-  /** Sign an order (Draft/Unsigned → Signed) — calls server-side write-back */
+  /** Sign an order (Draft/Unsigned -> Signed) -- calls server-side write-back */
   signOrder: (
     dfn: string,
     orderId: string,
     signedBy: string
   ) => Promise<{ mode: string; draftId?: string }>;
-  /** Release a signed order (Signed → Released) — calls server-side write-back */
+  /** Release a signed order (Signed -> Released) -- calls server-side write-back */
   releaseOrder: (dfn: string, orderId: string) => Promise<{ mode: string; draftId?: string }>;
-  /** Acknowledge lab results — calls server-side write-back */
+  /** Acknowledge lab results -- calls server-side write-back */
   acknowledgeLabs: (
     dfn: string,
     labIds: string[],
@@ -223,7 +223,6 @@ function buildPendingTargets(response: FetchEnvelope, fallbackTargets: string[])
 
   const shouldFallback =
     response.ok !== true ||
-    response.status === 'integration-pending' ||
     response._integration === 'pending';
   return shouldFallback ? fallbackTargets : [];
 }
@@ -241,7 +240,6 @@ function normalizeFetchMeta(response: FetchEnvelope, fallbackTargets: string[]):
     ok: response.ok === true,
     pending:
       response.ok !== true ||
-      response.status === 'integration-pending' ||
       response._integration === 'pending' ||
       pendingTargets.length > 0,
     status: response.status,

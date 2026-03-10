@@ -1,14 +1,14 @@
 'use client';
 
 /**
- * RCM Reconciliation — Phase 99
+ * RCM Reconciliation -- Phase 99
  *
  * Tabbed interface for payment reconciliation:
- *   - Upload — Import remittance batch (835 JSON or manual)
- *   - Payments — Paginated payment list with match status
- *   - Matches — Review queue for matches needing confirmation
- *   - Underpayments — Cases with shortfall, bridge to denials
- *   - Dashboard — Reconciliation stats
+ *   - Upload -- Import remittance batch (835 JSON or manual)
+ *   - Payments -- Paginated payment list with match status
+ *   - Matches -- Review queue for matches needing confirmation
+ *   - Underpayments -- Cases with shortfall, bridge to denials
+ *   - Dashboard -- Reconciliation stats
  *
  * Accessible at /cprs/admin/reconciliation. Requires session.
  */
@@ -45,7 +45,7 @@ async function apiPatch(path: string, body: unknown) {
   });
 }
 
-/* ── Status colors ───────────────────────────────────────────── */
+/* -- Status colors --------------------------------------------- */
 
 const PAYMENT_STATUS_COLORS: Record<string, string> = {
   IMPORTED: '#0d6efd',
@@ -71,7 +71,7 @@ const MATCH_STATUS_COLORS: Record<string, string> = {
   REJECTED: '#dc3545',
 };
 
-/* ── Helpers ─────────────────────────────────────────────────── */
+/* -- Helpers --------------------------------------------------- */
 
 function cents(c: number): string {
   return `$${(c / 100).toFixed(2)}`;
@@ -94,7 +94,7 @@ function badge(text: string, color: string): React.ReactElement {
   );
 }
 
-/* ── Main Page ───────────────────────────────────────────────── */
+/* -- Main Page ------------------------------------------------- */
 
 export default function ReconciliationPage() {
   const [tab, setTab] = useState<Tab>('upload');
@@ -127,7 +127,7 @@ export default function ReconciliationPage() {
   // Imports history
   const [imports, setImports] = useState<any[]>([]);
 
-  /* ── Data loaders ────────────────────────────────────────── */
+  /* -- Data loaders ------------------------------------------ */
 
   const loadPayments = useCallback(async () => {
     setLoading(true);
@@ -172,7 +172,7 @@ export default function ReconciliationPage() {
     if (data.ok) setImports(data.imports ?? []);
   }, []);
 
-  /* ── Tab data loading ────────────────────────────────────── */
+  /* -- Tab data loading -------------------------------------- */
 
   useEffect(() => {
     if (tab === 'upload') loadImports();
@@ -182,7 +182,7 @@ export default function ReconciliationPage() {
     if (tab === 'dashboard') loadStats();
   }, [tab, loadPayments, loadReviewMatches, loadUnderpayments, loadStats, loadImports]);
 
-  /* ── Handlers ────────────────────────────────────────────── */
+  /* -- Handlers ---------------------------------------------- */
 
   async function handleImport() {
     if (!jsonInput.trim()) {
@@ -243,7 +243,7 @@ export default function ReconciliationPage() {
     }
   }
 
-  /* ── Tab bar ─────────────────────────────────────────────── */
+  /* -- Tab bar ----------------------------------------------- */
 
   const tabs: { key: Tab; label: string }[] = [
     { key: 'upload', label: 'Upload Remittance' },
@@ -304,7 +304,7 @@ export default function ReconciliationPage() {
 
       {loading && <div style={{ marginBottom: '8px', color: '#666' }}>Loading...</div>}
 
-      {/* ── Upload Tab ────────────────────────────────────── */}
+      {/* -- Upload Tab -------------------------------------- */}
       {tab === 'upload' && (
         <div>
           <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
@@ -399,7 +399,7 @@ export default function ReconciliationPage() {
         </div>
       )}
 
-      {/* ── Payments Tab ──────────────────────────────────── */}
+      {/* -- Payments Tab ------------------------------------ */}
       {tab === 'payments' && (
         <div>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', alignItems: 'center' }}>
@@ -492,7 +492,7 @@ export default function ReconciliationPage() {
         </div>
       )}
 
-      {/* ── Matches Review Tab ────────────────────────────── */}
+      {/* -- Matches Review Tab ------------------------------ */}
       {tab === 'matches' && (
         <div>
           <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '8px' }}>
@@ -563,7 +563,7 @@ export default function ReconciliationPage() {
         </div>
       )}
 
-      {/* ── Underpayments Tab ─────────────────────────────── */}
+      {/* -- Underpayments Tab ------------------------------- */}
       {tab === 'underpayments' && (
         <div>
           <div style={{ display: 'flex', gap: '8px', marginBottom: '12px', alignItems: 'center' }}>
@@ -686,7 +686,7 @@ export default function ReconciliationPage() {
         </div>
       )}
 
-      {/* ── Dashboard Tab ─────────────────────────────────── */}
+      {/* -- Dashboard Tab ----------------------------------- */}
       {tab === 'dashboard' && stats && (
         <div>
           <h2 style={{ fontSize: '16px', fontWeight: 600, marginBottom: '12px' }}>

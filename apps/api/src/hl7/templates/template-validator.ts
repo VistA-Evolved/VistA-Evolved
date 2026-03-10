@@ -1,5 +1,5 @@
 /**
- * HL7v2 Message Template Library — Template Validator
+ * HL7v2 Message Template Library -- Template Validator
  *
  * Phase 319 (W14-P3): Validates HL7v2 messages against templates.
  * Checks segment structure, field constraints, and conformance profiles.

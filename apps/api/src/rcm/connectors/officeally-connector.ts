@@ -1,5 +1,5 @@
 /**
- * Office Ally Connector — US EDI Clearinghouse
+ * Office Ally Connector -- US EDI Clearinghouse
  *
  * Phase 40 (Superseding): Integration-ready connector for Office Ally.
  * Office Ally is a major US clearinghouse offering:

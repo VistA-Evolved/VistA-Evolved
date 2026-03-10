@@ -2,6 +2,7 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
+import { csrfHeaders } from '@/lib/csrf';
 
 /* ------------------------------------------------------------------ */
 /*  Types                                                              */
@@ -75,7 +76,7 @@ async function apiFetch<T>(path: string, opts?: RequestInit): Promise<T> {
   const res = await fetch(`${API}${path}`, {
     credentials: 'include',
     ...opts,
-    headers: { 'Content-Type': 'application/json', ...(opts?.headers ?? {}) },
+    headers: { 'Content-Type': 'application/json', ...csrfHeaders(), ...(opts?.headers ?? {}) },
   });
   if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
   return res.json() as Promise<T>;

@@ -1,8 +1,8 @@
 /**
- * Portal PDF Export — Phase 27 → Phase 31 enhancements
+ * Portal PDF Export -- Phase 27 -> Phase 31 enhancements
  *
  * Server-side PDF generation for health record sections.
- * No external dependencies — builds simple text-based PDF manually.
+ * No external dependencies -- builds simple text-based PDF manually.
  * Each export is audited. No PHI leaks to client logs.
  *
  * Phase 31: added immunizations + labs formatters, structured JSON export
@@ -16,7 +16,7 @@
 
 /**
  * Build a minimal valid PDF document from text content.
- * Uses PDF 1.4 spec — plaintext stream, no images/fonts embedded.
+ * Uses PDF 1.4 spec -- plaintext stream, no images/fonts embedded.
  * Sufficient for health record text exports.
  */
 export function buildTextPdf(title: string, sections: { heading: string; lines: string[] }[]): Buffer {
@@ -46,7 +46,7 @@ export function buildTextPdf(title: string, sections: { heading: string; lines: 
   const marginBottom = 50;
 
   for (const section of sections) {
-    if (y < marginBottom + 40) { y = 780; } // simple page overflow — single page for now
+    if (y < marginBottom + 40) { y = 780; } // simple page overflow -- single page for now
     y -= 20;
     contentLines.push(`50 ${y} Td`);
     contentLines.push(`/F1 12 Tf`);
@@ -131,7 +131,7 @@ export function formatAllergiesForPdf(data: any[]): { heading: string; lines: st
   return {
     heading: "Allergies",
     lines: data.length > 0
-      ? data.map(a => `${a.allergen || "Unknown"} — Severity: ${a.severity || "N/A"} | Reactions: ${a.reactions || "None noted"}`)
+      ? data.map(a => `${a.allergen || "Unknown"} -- Severity: ${a.severity || "N/A"} | Reactions: ${a.reactions || "None noted"}`)
       : ["No allergy data available"],
   };
 }
@@ -140,7 +140,7 @@ export function formatProblemsForPdf(data: any[]): { heading: string; lines: str
   return {
     heading: "Active Problems",
     lines: data.length > 0
-      ? data.map(p => `${p.text || "Unknown"} [${p.status || "N/A"}]${p.onset ? ` — Onset: ${p.onset}` : ""}`)
+      ? data.map(p => `${p.text || "Unknown"} [${p.status || "N/A"}]${p.onset ? ` -- Onset: ${p.onset}` : ""}`)
       : ["No problem data available"],
   };
 }
@@ -192,7 +192,7 @@ export function formatImmunizationsForPdf(
   return {
     heading: "Immunizations",
     lines: data.length > 0
-      ? data.map(i => `${i.name || i.vaccine || "Unknown"} — Date: ${i.dateTime || i.date || "N/A"}${i.reaction ? ` | Reaction: ${i.reaction}` : ""}${i.series ? ` | Series: ${i.series}` : ""}${i.facility ? ` | Facility: ${i.facility}` : ""}`)
+      ? data.map(i => `${i.name || i.vaccine || "Unknown"} -- Date: ${i.dateTime || i.date || "N/A"}${i.reaction ? ` | Reaction: ${i.reaction}` : ""}${i.series ? ` | Series: ${i.series}` : ""}${i.facility ? ` | Facility: ${i.facility}` : ""}`)
       : formatEmptyOrPending("No immunizations on file", options?.pendingTargets),
   };
 }
@@ -204,7 +204,7 @@ export function formatLabsForPdf(
   return {
     heading: "Lab Results",
     lines: data.length > 0
-      ? data.map(l => `${l.testName || "Unknown"}: ${l.result || "N/A"} ${l.units || ""} [${l.flag || ""}] — ${l.collectedAt || ""}`)
+      ? data.map(l => `${l.testName || "Unknown"}: ${l.result || "N/A"} ${l.units || ""} [${l.flag || ""}] -- ${l.collectedAt || ""}`)
       : formatEmptyOrPending("No lab results on file", options?.pendingTargets),
   };
 }
@@ -226,7 +226,7 @@ export interface StructuredJsonExport {
   generatedAt: string;
   patient: {
     name: string;
-    /** DOB intentionally omitted in export metadata — present only in demographics section */
+    /** DOB intentionally omitted in export metadata -- present only in demographics section */
   };
   sections: StructuredExportSection[];
   metadata: {

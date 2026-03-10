@@ -1,11 +1,11 @@
 'use client';
 
 /**
- * Inpatient Operations — Phase 83
+ * Inpatient Operations -- Phase 83
  *
  * 4 tabs: Census | Bedboard | ADT Workflow | Movement Timeline
  * Data: VistA ORQPT WARDS + ORQPT WARD PATIENTS + ORWPT16 ADMITLST
- * Write RPCs (DGPM) are capability-probed — UI shows structured blockers.
+ * Write RPCs (DGPM) are capability-probed -- UI shows structured blockers.
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -146,7 +146,7 @@ interface DischargeChecklistItem {
   completedBy?: string;
   completedAt?: string;
   vistaRpc?: string;
-  vistaStatus?: 'live' | 'integration-pending';
+  vistaStatus?: 'live' | 'requires_config';
 }
 
 interface DischargePlan {
@@ -1398,7 +1398,7 @@ function ADTWorkflowTab() {
           <div>
             <h3 style={S.sectionTitle}>Discharge Preparation Workspace</h3>
             <div style={S.helperText}>
-              This workflow is live for medication reconciliation reads and TIU draft creation. DG ADT discharge movement and PSO/PSJ med-rec writeback remain truthful integration-pending items in VEHU.
+              This workflow is live for medication reconciliation reads and TIU draft creation. DG ADT discharge movement and PSO/PSJ med-rec writeback require additional VistA package configuration in VEHU.
             </div>
           </div>
           <span style={S.sourceTag}>Live: ORWPS ACTIVE + TIU CREATE RECORD</span>
@@ -1436,7 +1436,7 @@ function ADTWorkflowTab() {
               </div>
             </div>
             <div style={{ display: 'flex', gap: '8px', alignItems: 'center', flexWrap: 'wrap' }}>
-              {recoveryLoading && <span style={S.pendingTag}>Refreshing…</span>}
+              {recoveryLoading && <span style={S.pendingTag}>Refreshing...</span>}
               <button
                 style={S.secondaryBtn(recoveryLoading || busyAction !== '')}
                 disabled={recoveryLoading || busyAction !== ''}
@@ -1816,8 +1816,8 @@ function ADTWorkflowTab() {
                   <div style={S.pendingTitle}>
                     {pendingInfo.status === 'unsupported-in-sandbox'
                       ? 'Unsupported in Sandbox'
-                      : pendingInfo.status === 'integration-pending'
-                        ? 'Integration Pending'
+                      : pendingInfo.status === 'requires_config'
+                        ? 'Additional Configuration Required'
                         : 'Error'}
                   </div>
                   <div style={S.pendingText}>{pendingInfo.message}</div>

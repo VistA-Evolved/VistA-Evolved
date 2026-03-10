@@ -1,5 +1,5 @@
 /**
- * Analytics Aggregation Engine — Phase 25.
+ * Analytics Aggregation Engine -- Phase 25.
  *
  * Produces hourly and daily metric summaries from the analytics event stream.
  * All output is aggregated (no individual-level data, no PHI).
@@ -404,6 +404,7 @@ export function startAggregationJob(): void {
       log.error("Analytics: periodic aggregation failed", { error: String(err) });
     }
   }, interval);
+  aggregationTimer.unref();
 
   log.info("Analytics aggregation job started", { intervalMs: interval });
 }

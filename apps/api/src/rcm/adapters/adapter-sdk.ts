@@ -1,15 +1,15 @@
 /**
- * Payer Adapter SDK — Phase 261 (Wave 8 P5)
+ * Payer Adapter SDK -- Phase 261 (Wave 8 P5)
  *
  * Provides a base class with common concerns (rate limiting, idempotency,
  * metrics, health tracking) so individual adapters don't duplicate logic.
  *
  * Extends the existing PayerAdapter interface from Phase 69.
- * Does NOT replace existing adapters — they can optionally extend this.
+ * Does NOT replace existing adapters -- they can optionally extend this.
  */
 import { createHash } from 'crypto';
 
-/* ── Rate Limiter ──────────────────────────────────────── */
+/* -- Rate Limiter ---------------------------------------- */
 
 interface RateLimitWindow {
   count: number;
@@ -58,7 +58,7 @@ export class AdapterRateLimiter {
   }
 }
 
-/* ── Idempotency Store ─────────────────────────────────── */
+/* -- Idempotency Store ----------------------------------- */
 
 interface IdempotencyEntry {
   key: string;
@@ -114,7 +114,7 @@ export class AdapterIdempotencyStore {
   }
 }
 
-/* ── Adapter Metrics ───────────────────────────────────── */
+/* -- Adapter Metrics ------------------------------------- */
 
 export interface AdapterMetrics {
   totalCalls: number;
@@ -160,7 +160,7 @@ export class AdapterMetricsCollector {
   }
 }
 
-/* ── Base Adapter ──────────────────────────────────────── */
+/* -- Base Adapter ---------------------------------------- */
 
 export interface AdapterSdkConfig {
   id: string;
@@ -173,7 +173,7 @@ export interface AdapterSdkConfig {
 /**
  * Base class providing rate limiting, idempotency, and metrics.
  * Existing adapters can extend this or continue implementing
- * PayerAdapter directly — this is opt-in, not mandatory.
+ * PayerAdapter directly -- this is opt-in, not mandatory.
  */
 export abstract class BasePayerAdapter {
   readonly config: AdapterSdkConfig;
@@ -251,7 +251,7 @@ export abstract class BasePayerAdapter {
   }
 }
 
-/* ── Sandbox Test Harness ──────────────────────────────── */
+/* -- Sandbox Test Harness -------------------------------- */
 
 export interface SandboxTestCase {
   name: string;

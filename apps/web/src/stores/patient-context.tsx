@@ -5,7 +5,7 @@ import { API_BASE } from '@/lib/api-config';
 import type { PatientDemographics } from '@vista-evolved/shared-types';
 
 /* ------------------------------------------------------------------ */
-/* Types — PatientDemographics now imported from shared-types          */
+/* Types -- PatientDemographics now imported from shared-types          */
 /* ------------------------------------------------------------------ */
 
 export type { PatientDemographics };
@@ -24,7 +24,7 @@ export interface PatientContextValue {
   /** Current encounter location */
   locationIen: string;
   locationName: string;
-  /** Select a patient by DFN — triggers demographics fetch */
+  /** Select a patient by DFN -- triggers demographics fetch */
   selectPatient: (dfn: string) => void;
   /** Clear patient selection */
   clearPatient: () => void;

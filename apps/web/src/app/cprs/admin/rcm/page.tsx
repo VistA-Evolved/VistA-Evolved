@@ -7,7 +7,7 @@
  *   - Claim Workqueue -- list claims by status, create/validate/submit/export
  *   - Payer Registry -- browse/search payers, CSV import, view integration mode
  *   - Connectors -- view connector health and EDI pipeline
- *   - VistA Billing -- live VistA encounter/insurance data + integration-pending surfaces
+ *   - VistA Billing -- live VistA encounter/insurance data + configuration-required surfaces
  *   - Audit -- hash-chained claim lifecycle audit trail
  *
  * Accessible at /cprs/admin/rcm. Requires session.
@@ -207,7 +207,7 @@ export default function RcmPage() {
   );
 }
 
-/* ─── Claims Tab ──────────────────────────────────────────────────── */
+/* --- Claims Tab ---------------------------------------------------- */
 
 function ClaimsTab() {
   const [claims, setClaims] = useState<any[]>([]);
@@ -388,7 +388,7 @@ function ClaimsTab() {
   );
 }
 
-/* ─── Payers Tab ──────────────────────────────────────────────────── */
+/* --- Payers Tab ---------------------------------------------------- */
 
 function PayersTab() {
   const [payers, setPayers] = useState<any[]>([]);
@@ -549,7 +549,7 @@ function PayersTab() {
   );
 }
 
-/* ─── Connectors Tab ──────────────────────────────────────────────── */
+/* --- Connectors Tab ------------------------------------------------ */
 
 function ConnectorsTab() {
   const [connectors, setConnectors] = useState<any[]>([]);
@@ -703,7 +703,7 @@ function ConnectorsTab() {
   );
 }
 
-/* ─── Durable Jobs Tab (Phase 142) ──────────────────────────────── */
+/* --- Durable Jobs Tab (Phase 142) -------------------------------- */
 
 function DurableJobsTab() {
   const [data, setData] = useState<any>(null);
@@ -924,7 +924,7 @@ function DurableJobsTab() {
   );
 }
 
-/* ─── Evidence Gate Tab (Phase 142) ─────────────────────────────── */
+/* --- Evidence Gate Tab (Phase 142) ------------------------------- */
 
 function EvidenceGateTab() {
   const [payerId, setPayerId] = useState('');
@@ -1094,7 +1094,7 @@ function EvidenceGateTab() {
   );
 }
 
-/* ─── Audit Tab ───────────────────────────────────────────────────── */
+/* --- Audit Tab ----------------------------------------------------- */
 
 function AuditTab() {
   const [entries, setEntries] = useState<any[]>([]);
@@ -1218,7 +1218,7 @@ function AuditTab() {
   );
 }
 
-/* ─── Draft from VistA Tab (Phase 42) ─────────────────────────────── */
+/* --- Draft from VistA Tab (Phase 42) ------------------------------- */
 
 function DraftFromVistaTab() {
   const [patientIen, setPatientIen] = useState('3');
@@ -1715,7 +1715,7 @@ function DraftFromVistaTab() {
   );
 }
 
-/* ─── VistA Billing Tab (Phase 39) ────────────────────────────────── */
+/* --- VistA Billing Tab (Phase 39) ---------------------------------- */
 
 function VistaBillingTab() {
   const [dfn, setDfn] = useState('3');
@@ -1763,7 +1763,7 @@ function VistaBillingTab() {
 
   const statusBadge = (status: string) => {
     const color =
-      status === 'live' ? '#198754' : status === 'integration-pending' ? '#fd7e14' : '#6c757d';
+      status === 'live' ? '#198754' : status === 'requires_config' ? '#fd7e14' : '#6c757d';
     return (
       <span
         style={{
@@ -1796,7 +1796,7 @@ function VistaBillingTab() {
       >
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 8 }}>
           <strong style={{ fontSize: 13 }}>{title}</strong>
-          {statusBadge('integration-pending')}
+          {statusBadge('requires_config')}
         </div>
         <div style={{ fontSize: 12, color: '#856404' }}>
           <p style={{ margin: '4px 0' }}>
@@ -1862,7 +1862,7 @@ function VistaBillingTab() {
           }}
         >
           <strong>Capability Summary:</strong> {capMap.summary.liveEndpoints} live endpoints,{' '}
-          {capMap.summary.pendingEndpoints} integration-pending | {capMap.summary.totalRpcsProbed}{' '}
+          {capMap.summary.pendingEndpoints} awaiting configuration | {capMap.summary.totalRpcsProbed}{' '}
           billing RPCs probed
         </div>
       )}
@@ -2022,7 +2022,7 @@ function VistaBillingTab() {
         )}
       </div>
 
-      {/* INTEGRATION-PENDING panels */}
+      {/* Configuration-required panels */}
       {pendingPanel(charges, 'IB Charges')}
       {pendingPanel(claimsStatus, 'Claims Tracking')}
       {pendingPanel(arStatus, 'Accounts Receivable')}
@@ -2030,7 +2030,7 @@ function VistaBillingTab() {
   );
 }
 
-/* ─── Denial Workqueues Tab (Phase 43) ────────────────────────────── */
+/* --- Denial Workqueues Tab (Phase 43) ------------------------------ */
 
 function WorkqueuesTab() {
   const [items, setItems] = useState<any[]>([]);
@@ -2280,7 +2280,7 @@ function WorkqueuesTab() {
   );
 }
 
-/* ─── Payer Rules Tab (Phase 43) ──────────────────────────────────── */
+/* --- Payer Rules Tab (Phase 43) ------------------------------------ */
 
 function RulesTab() {
   const [rules, setRules] = useState<any[]>([]);
@@ -2481,7 +2481,7 @@ function RulesTab() {
   );
 }
 
-/* ─── Payer Directory Tab (Phase 44) ──────────────────────────────── */
+/* --- Payer Directory Tab (Phase 44) -------------------------------- */
 
 function DirectoryTab() {
   const [stats, setStats] = useState<any>(null);
@@ -2917,7 +2917,7 @@ function DirectoryTab() {
   );
 }
 
-/* ─── Transactions Tab (Phase 45) ────────────────────────────────── */
+/* --- Transactions Tab (Phase 45) ---------------------------------- */
 
 function TransactionsTab() {
   const [txns, setTxns] = useState<any[]>([]);
@@ -3310,9 +3310,9 @@ function TransactionsTab() {
   );
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
  * Gateway Readiness Tab (Phase 46)
- * ═══════════════════════════════════════════════════════════════════ */
+ * =================================================================== */
 
 function GatewaysTab() {
   const [gateways, setGateways] = useState<any[]>([]);
@@ -3572,7 +3572,7 @@ function GatewaysTab() {
   );
 }
 
-/* ─── Phase 69: Payer Adapters Tab ──────────────────────────────── */
+/* --- Phase 69: Payer Adapters Tab -------------------------------- */
 
 function AdaptersTab() {
   const [adapters, setAdapters] = useState<any[]>([]);
@@ -3675,7 +3675,7 @@ function AdaptersTab() {
   );
 }
 
-/* ─── Phase 69: Jobs & Polling Tab ──────────────────────────────── */
+/* --- Phase 69: Jobs & Polling Tab -------------------------------- */
 
 function JobsTab() {
   const [scheduler, setScheduler] = useState<any>(null);
@@ -3837,7 +3837,7 @@ function JobsTab() {
   );
 }
 
-/* ─── Phase 82: Ops Dashboard Tab ───────────────────────────────── */
+/* --- Phase 82: Ops Dashboard Tab --------------------------------- */
 
 function OpsDashboardTab() {
   const [dashboard, setDashboard] = useState<any>(null);
@@ -4265,7 +4265,7 @@ function OpsDashboardTab() {
           color: '#084298',
         }}
       >
-        <strong>Phase 82 — Honest State:</strong> Connector and adapter states are probed in
+        <strong>Phase 82 -- Honest State:</strong> Connector and adapter states are probed in
         real-time. If a connector shows &ldquo;disconnected&rdquo; or &ldquo;pending&rdquo;, it
         means the external service is not configured or not reachable. No fake eligibility/status
         results are generated. The pending target shows what configuration is needed.
@@ -4274,7 +4274,7 @@ function OpsDashboardTab() {
   );
 }
 
-/* ─── Phase 69: Eligibility Status Tab ──────────────────────────── */
+/* --- Phase 69: Eligibility Status Tab ---------------------------- */
 
 function EligibilityTab() {
   const [results, setResults] = useState<any[]>([]);
@@ -4606,7 +4606,7 @@ function EligibilityTab() {
                           ? '#d1e7dd'
                           : r.status === 'failed'
                             ? '#f8d7da'
-                            : r.status === 'integration_pending'
+                            : r.status === 'requires_config'
                               ? '#fff3cd'
                               : '#e2e3e5',
                       color:
@@ -4614,7 +4614,7 @@ function EligibilityTab() {
                           ? '#0f5132'
                           : r.status === 'failed'
                             ? '#842029'
-                            : r.status === 'integration_pending'
+                            : r.status === 'requires_config'
                               ? '#664d03'
                               : '#41464b',
                     }}
@@ -4641,7 +4641,7 @@ function EligibilityTab() {
   );
 }
 
-/* ─── Claim Status Tab (Phase 100) ────────────────────────────────── */
+/* --- Claim Status Tab (Phase 100) ---------------------------------- */
 
 function ClaimStatusTab() {
   const [results, setResults] = useState<any[]>([]);
@@ -5027,7 +5027,7 @@ function ClaimStatusTab() {
                           ? '#d1e7dd'
                           : r.status === 'failed'
                             ? '#f8d7da'
-                            : r.status === 'integration_pending'
+                            : r.status === 'requires_config'
                               ? '#fff3cd'
                               : '#e2e3e5',
                       color:
@@ -5035,7 +5035,7 @@ function ClaimStatusTab() {
                           ? '#0f5132'
                           : r.status === 'failed'
                             ? '#842029'
-                            : r.status === 'integration_pending'
+                            : r.status === 'requires_config'
                               ? '#664d03'
                               : '#41464b',
                     }}
@@ -5062,7 +5062,7 @@ function ClaimStatusTab() {
   );
 }
 
-/* ─── Credential Vault Tab (Phase 110) ──────────────────────────── */
+/* --- Credential Vault Tab (Phase 110) ---------------------------- */
 
 function CredentialVaultTab() {
   const [credentials, setCredentials] = useState<any[]>([]);
@@ -5451,7 +5451,7 @@ function CredentialVaultTab() {
   );
 }
 
-/* ─── Accreditation Tab (Phase 110) ─────────────────────────────── */
+/* --- Accreditation Tab (Phase 110) ------------------------------- */
 
 function AccreditationTab() {
   const [accreditations, setAccreditations] = useState<any[]>([]);
@@ -6947,9 +6947,9 @@ function AgingSubTab() {
   );
 }
 
-/* ══════════════════════════════════════════════════════════════════════
+/* ======================================================================
    Phase 112: Evidence Registry Tab
-   ══════════════════════════════════════════════════════════════════════ */
+   ====================================================================== */
 
 function EvidenceRegistryTab() {
   const [evidence, setEvidence] = useState<any[]>([]);

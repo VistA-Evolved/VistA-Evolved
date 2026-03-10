@@ -36,7 +36,7 @@ const result = {
   error: null,
 };
 
-// ── TCP probe ───────────────────────────────────────────────────────
+// -- TCP probe -------------------------------------------------------
 const start = Date.now();
 
 const probe = new Promise((resolve) => {

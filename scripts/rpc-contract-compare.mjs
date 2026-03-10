@@ -19,9 +19,9 @@
  *   --strict         Fail on any diff (default: only fail on missing/extra RPCs)
  *
  * Exit codes:
- *   0 — all comparisons passed
- *   1 — one or more comparisons failed
- *   2 — no golden baseline found
+ *   0 -- all comparisons passed
+ *   1 -- one or more comparisons failed
+ *   2 -- no golden baseline found
  */
 
 import { readFileSync, readdirSync, existsSync } from 'node:fs';
@@ -33,7 +33,7 @@ const ROOT = join(__dirname, '..');
 const DEFAULT_TRACE_DIR = join(ROOT, 'data', 'rpc-traces');
 const DEFAULT_GOLDEN_DIR = join(DEFAULT_TRACE_DIR, 'golden');
 
-/* ── CLI ──────────────────────────────────────────────────── */
+/* -- CLI ---------------------------------------------------- */
 
 const args = process.argv.slice(2);
 function flag(name) {
@@ -51,7 +51,7 @@ const GOLDEN_DIR = opt('--golden', DEFAULT_GOLDEN_DIR);
 const TRACE_FILE = opt('--trace', null);
 const WORKFLOW = args.find((a) => !a.startsWith('-'));
 
-/* ── Helpers ──────────────────────────────────────────────── */
+/* -- Helpers ------------------------------------------------ */
 
 function loadJsonl(filepath) {
   let raw = readFileSync(filepath, 'utf-8').trim();
@@ -116,7 +116,7 @@ function compare(actual, golden) {
   };
 }
 
-/* ── Main ─────────────────────────────────────────────────── */
+/* -- Main --------------------------------------------------- */
 
 function main() {
   console.log('RPC Contract Trace Comparator (Phase 479)\n');

@@ -20,7 +20,7 @@ const LOCK_FILE = join(ROOT, 'vendor', 'worldvista', 'LOCK.json');
 const EVIDENCE_DIR = join(ROOT, 'evidence', 'wave-29', '448-upstream-mirror');
 const OUTPUT_FILE = join(EVIDENCE_DIR, 'licenses.json');
 
-// ── Read LOCK.json ──────────────────────────────────────────────────
+// -- Read LOCK.json --------------------------------------------------
 
 if (!existsSync(LOCK_FILE)) {
   console.error('ERROR: vendor/worldvista/LOCK.json not found. Run worldvista-sync.ps1 first.');
@@ -36,7 +36,7 @@ console.log(`\n=== License Snapshot ===`);
 console.log(`Lock file: ${LOCK_FILE}`);
 console.log(`Repos: ${repos.length}`);
 
-// ── Process each repo ──────────────────────────────────────────────
+// -- Process each repo ----------------------------------------------
 
 const licenses = [];
 
@@ -83,7 +83,7 @@ for (const entry of repos) {
   licenses.push(result);
 }
 
-// ── Write output ────────────────────────────────────────────────────
+// -- Write output ----------------------------------------------------
 
 if (!existsSync(EVIDENCE_DIR)) {
   mkdirSync(EVIDENCE_DIR, { recursive: true });

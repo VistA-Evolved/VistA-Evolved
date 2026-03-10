@@ -1,5 +1,5 @@
 /**
- * Payer Directory — Normalization Pipeline + Diff Engine
+ * Payer Directory -- Normalization Pipeline + Diff Engine
  *
  * Phase 44: rawSource -> normalizedPayers.json -> runtime registry cache
  *
@@ -18,11 +18,12 @@ import type {
   PayerDiffEntry,
   EnrollmentPacket,
 } from './types.js';
+import { log } from '../../lib/logger.js';
 import type { Payer, PayerCountry } from '../domain/payer.js';
 import { upsertPayer } from '../payer-registry/registry.js';
 import { appendRcmAudit } from '../audit/rcm-audit.js';
 
-/* ── In-memory Directory Store ──────────────────────────────── */
+/* -- In-memory Directory Store -------------------------------- */
 
 const directoryStore = new Map<string, DirectoryPayer>();
 const enrollmentStore = new Map<string, EnrollmentPacket>();
@@ -38,7 +39,7 @@ const refreshHistory: Array<{
   diff: DirectoryDiffResult;
 }> = [];
 
-/* ── Normalization ──────────────────────────────────────────── */
+/* -- Normalization -------------------------------------------- */
 
 /**
  * Normalize raw import results into canonical DirectoryPayer entries.
@@ -78,7 +79,7 @@ export function normalizeImportResults(results: ImportResult[]): DirectoryPayer[
   return Array.from(merged.values());
 }
 
-/* ── Diff Engine ────────────────────────────────────────────── */
+/* -- Diff Engine ---------------------------------------------- */
 
 /**
  * Compare new payer set against current directory store.
@@ -151,7 +152,7 @@ function diffFields(a: DirectoryPayer, b: DirectoryPayer): string[] {
   return fields;
 }
 
-/* ── Apply to Registry ──────────────────────────────────────── */
+/* -- Apply to Registry ---------------------------------------- */
 
 /**
  * Apply normalized directory payers to the runtime payer registry.
@@ -175,7 +176,7 @@ export function applyDirectoryToRegistry(payers: DirectoryPayer[]): number {
         source: 'import',
         createdAt: new Date().toISOString(),
       })
-      .catch(() => {});
+      .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
     count++;
   }
@@ -228,7 +229,7 @@ function channelToProtocol(type: string): 'edi_sftp' | 'edi_https' | 'soap' | 'r
   }
 }
 
-/* ── Full Refresh Pipeline ──────────────────────────────────── */
+/* -- Full Refresh Pipeline ------------------------------------ */
 
 /**
  * Run a full directory refresh:
@@ -270,7 +271,7 @@ export function runDirectoryRefresh(
   return { normalized, diff, applied };
 }
 
-/* ── Directory Queries ──────────────────────────────────────── */
+/* -- Directory Queries ---------------------------------------- */
 
 export function getDirectoryPayer(payerId: string): DirectoryPayer | undefined {
   return directoryStore.get(payerId);
@@ -331,7 +332,7 @@ export function getRefreshHistory(): typeof refreshHistory {
   return [...refreshHistory];
 }
 
-/* ── Enrollment Store ───────────────────────────────────────── */
+/* -- Enrollment Store ----------------------------------------- */
 
 export function getEnrollmentPacket(payerId: string): EnrollmentPacket | undefined {
   return enrollmentStore.get(payerId);
@@ -358,7 +359,7 @@ export function listEnrollmentPackets(filter?: {
   return { packets: result.slice(offset, offset + limit), total };
 }
 
-/* ── Reset (for tests) ──────────────────────────────────────── */
+/* -- Reset (for tests) ---------------------------------------- */
 
 export function resetDirectoryStore(): void {
   directoryStore.clear();

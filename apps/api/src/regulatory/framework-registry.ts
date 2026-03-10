@@ -1,5 +1,5 @@
 /**
- * Regulatory Framework Registry — Phase 439.
+ * Regulatory Framework Registry -- Phase 439.
  *
  * Extensible registry of regulatory framework definitions.
  * Pre-populated with HIPAA, DPA_PH, DPA_GH, and stub entries
@@ -99,7 +99,7 @@ frameworks.set('DPA_GH', {
 });
 
 /* ------------------------------------------------------------------ */
-/* NIST 800-53 (US Federal — supplementary)                             */
+/* NIST 800-53 (US Federal -- supplementary)                             */
 /* ------------------------------------------------------------------ */
 
 frameworks.set('NIST_800_53', {
@@ -154,7 +154,7 @@ export function getAllFrameworks(): FrameworkDefinition[] {
 
 /**
  * Resolve applicable frameworks for a country code.
- * US → [HIPAA], PH → [DPA_PH], GH → [DPA_GH].
+ * US -> [HIPAA], PH -> [DPA_PH], GH -> [DPA_GH].
  * NIST/OWASP are supplementary and not auto-resolved.
  */
 export function resolveFrameworksByCountry(countryCode: string): RegulatoryFramework[] {

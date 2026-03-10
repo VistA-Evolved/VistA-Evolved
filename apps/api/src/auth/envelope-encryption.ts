@@ -1,5 +1,5 @@
 /**
- * Envelope Encryption — Phase 341 (W16-P5).
+ * Envelope Encryption -- Phase 341 (W16-P5).
  *
  * Implements envelope encryption pattern:
  *   1. Generate random Data Encryption Key (DEK)
@@ -8,7 +8,7 @@
  *   4. Return { encryptedData, encryptedDek, iv, authTag, kekId, kekVersion }
  *
  * Decryption reverses: KEK decrypts DEK, DEK decrypts data.
- * Pure Node.js crypto — no external dependencies.
+ * Pure Node.js crypto -- no external dependencies.
  */
 
 import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';

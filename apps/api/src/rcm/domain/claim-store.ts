@@ -1,8 +1,8 @@
 /**
- * RCM — Claim Store (Hybrid: In-Memory Cache + DB)
+ * RCM -- Claim Store (Hybrid: In-Memory Cache + DB)
  *
  * Phase 38: In-memory claim lifecycle store.
- * Phase 121: Durability Wave 1 — hybrid cache + DB persistence.
+ * Phase 121: Durability Wave 1 -- hybrid cache + DB persistence.
  *
  * Pattern: In-memory Map as hot cache, DB as durable backing store.
  * Write-through: every mutation writes to both cache and DB.
@@ -10,9 +10,9 @@
  * Graceful degradation: if DB not wired, falls back to cache-only.
  *
  * Migration plan:
- * 1. Current: Hybrid — SQLite (or PG) + in-memory cache
+ * 1. Current: Hybrid -- SQLite (or PG) + in-memory cache
  * 2. Next: Persist to VistA ^IB / ^PRCA globals via custom M routine
- * 3. Future: Hybrid — VistA for charges/AR, overlay store for EDI lifecycle
+ * 3. Future: Hybrid -- VistA for charges/AR, overlay store for EDI lifecycle
  * 4. Production: PostgreSQL or VistA-native with EDI gateway integration
  */
 
@@ -20,7 +20,7 @@ import type { Claim, ClaimStatus } from './claim.js';
 import type { Remittance } from './remit.js';
 import { log } from '../../lib/logger.js';
 
-/* ── DB repo interface (lazy-wired at startup) ──────────────── */
+/* -- DB repo interface (lazy-wired at startup) ---------------- */
 
 interface ClaimRepo {
   insertClaim(data: any): any;
@@ -44,9 +44,9 @@ export function initClaimStoreRepo(repo: ClaimRepo): void {
   dbRepo = repo;
   // Hydrate cache from DB on init
   try {
-    // We don't hydrate the full cache here — we rely on cache-miss → DB fallback
+    // We don't hydrate the full cache here -- we rely on cache-miss -> DB fallback
   } catch (_) {
-    // DB read failed — cache-only mode
+    // DB read failed -- cache-only mode
   }
 }
 
@@ -56,15 +56,15 @@ function dbWarn(op: string, err: any): void {
   }
 }
 
-/* ── Claim Store ────────────────────────────────────────────── */
+/* -- Claim Store ---------------------------------------------- */
 
 const claims = new Map<string, Claim>();
 const remittances = new Map<string, Remittance>();
 
-// Index: tenantId → claim IDs
+// Index: tenantId -> claim IDs
 const tenantClaimIndex = new Map<string, Set<string>>();
 
-/* ── Helper: Claim → DB row conversion ──────────────────────── */
+/* -- Helper: Claim -> DB row conversion ------------------------ */
 
 function claimToDbRow(claim: Claim): Record<string, unknown> {
   return {
@@ -128,7 +128,7 @@ function dbRowToClaim(row: any): Claim {
   } as Claim;
 }
 
-/* ── Claims CRUD ────────────────────────────────────────────── */
+/* -- Claims CRUD ---------------------------------------------- */
 
 export function storeClaim(claim: Claim): void {
   claims.set(claim.id, claim);
@@ -137,17 +137,13 @@ export function storeClaim(claim: Claim): void {
   }
   tenantClaimIndex.get(claim.tenantId)!.add(claim.id);
 
-  // Write-through to DB
+  // Write-through to DB (fire-and-forget, .catch for async rejection handling)
   if (dbRepo) {
-    try {
-      dbRepo.insertClaim(claimToDbRow(claim));
-    } catch (e) {
-      dbWarn('insertClaim', e);
-    }
+    void dbRepo.insertClaim(claimToDbRow(claim)).catch((e: unknown) => dbWarn('insertClaim', e));
   }
 }
 
-export function getClaim(id: string, tenantId?: string): Claim | undefined {
+export async function getClaim(id: string, tenantId?: string): Promise<Claim | undefined> {
   // Cache-first
   const cached = claims.get(id);
   if (cached) {
@@ -158,7 +154,7 @@ export function getClaim(id: string, tenantId?: string): Claim | undefined {
   // DB fallback
   if (dbRepo) {
     try {
-      const row = dbRepo.findClaimById(id);
+      const row = await dbRepo.findClaimById(id);
       if (row) {
         const claim = dbRowToClaim(row);
         if (tenantId && claim.tenantId !== tenantId) return undefined;
@@ -180,38 +176,34 @@ export function getClaim(id: string, tenantId?: string): Claim | undefined {
 export function updateClaim(claim: Claim): void {
   claims.set(claim.id, claim);
 
-  // Write-through to DB
+  // Write-through to DB (fire-and-forget, .catch for async rejection handling)
   if (dbRepo) {
-    try {
-      dbRepo.updateClaim(claim.id, {
-        status: claim.status,
-        payerClaimId: claim.payerClaimId,
-        ediTransactionId: claim.ediTransactionId,
-        connectorId: claim.connectorId,
-        submittedAt: claim.submittedAt,
-        responseReceivedAt: claim.responseReceivedAt,
-        paidAmount: claim.paidAmount,
-        adjustmentAmount: claim.adjustmentAmount,
-        patientResponsibility: claim.patientResponsibility,
-        remitDate: claim.remitDate,
-        validationResultJson: claim.validationResult
-          ? JSON.stringify(claim.validationResult)
-          : undefined,
-        pipelineEntryId: claim.pipelineEntryId,
-        exportArtifactPath: claim.exportArtifactPath,
-        submissionSafetyMode: claim.submissionSafetyMode,
-        auditTrailJson: JSON.stringify(claim.auditTrail ?? []),
-        diagnosesJson: JSON.stringify(claim.diagnoses ?? []),
-        linesJson: JSON.stringify(claim.lines ?? []),
-        totalCharge: claim.totalCharge,
-      });
-    } catch (e) {
-      dbWarn('updateClaim', e);
-    }
+    void dbRepo.updateClaim(claim.id, {
+      status: claim.status,
+      payerClaimId: claim.payerClaimId,
+      ediTransactionId: claim.ediTransactionId,
+      connectorId: claim.connectorId,
+      submittedAt: claim.submittedAt,
+      responseReceivedAt: claim.responseReceivedAt,
+      paidAmount: claim.paidAmount,
+      adjustmentAmount: claim.adjustmentAmount,
+      patientResponsibility: claim.patientResponsibility,
+      remitDate: claim.remitDate,
+      validationResultJson: claim.validationResult
+        ? JSON.stringify(claim.validationResult)
+        : undefined,
+      pipelineEntryId: claim.pipelineEntryId,
+      exportArtifactPath: claim.exportArtifactPath,
+      submissionSafetyMode: claim.submissionSafetyMode,
+      auditTrailJson: JSON.stringify(claim.auditTrail ?? []),
+      diagnosesJson: JSON.stringify(claim.diagnoses ?? []),
+      linesJson: JSON.stringify(claim.lines ?? []),
+      totalCharge: claim.totalCharge,
+    }).catch((e: unknown) => dbWarn('updateClaim', e));
   }
 }
 
-export function listClaims(
+export async function listClaims(
   tenantId: string,
   filters?: {
     status?: ClaimStatus;
@@ -220,21 +212,22 @@ export function listClaims(
     limit?: number;
     offset?: number;
   }
-): { claims: Claim[]; total: number } {
+): Promise<{ claims: Claim[]; total: number }> {
   const ids = tenantClaimIndex.get(tenantId);
   if (!ids || ids.size === 0) {
     // Try DB if cache is empty
     if (dbRepo) {
       try {
-        const rows = dbRepo.findClaimsByTenant(tenantId, {
+        const rows = await dbRepo.findClaimsByTenant(tenantId, {
           status: filters?.status,
           patientDfn: filters?.patientDfn,
           payerId: filters?.payerId,
           limit: filters?.limit ?? 50,
           offset: filters?.offset ?? 0,
         });
-        const total = dbRepo.countClaimsByTenant(tenantId);
-        const claimsResult = rows.map(dbRowToClaim);
+        const total = await dbRepo.countClaimsByTenant(tenantId);
+        const rowsArr = Array.isArray(rows) ? rows : [];
+        const claimsResult = rowsArr.map(dbRowToClaim);
         // Rehydrate cache
         for (const c of claimsResult) {
           claims.set(c.id, c);
@@ -277,7 +270,7 @@ export function getClaimStats(tenantId: string): Record<ClaimStatus, number> {
   return stats as Record<ClaimStatus, number>;
 }
 
-/* ── Remittances ────────────────────────────────────────────── */
+/* -- Remittances ---------------------------------------------- */
 
 function remitToDbRow(remit: Remittance): Record<string, unknown> {
   return {
@@ -311,21 +304,17 @@ export function storeRemittance(remit: Remittance): void {
   remittances.set(remit.id, remit);
 
   if (dbRepo) {
-    try {
-      dbRepo.insertRemittance(remitToDbRow(remit));
-    } catch (e) {
-      dbWarn('insertRemittance', e);
-    }
+    void dbRepo.insertRemittance(remitToDbRow(remit)).catch((e: unknown) => dbWarn('insertRemittance', e));
   }
 }
 
-export function getRemittance(id: string): Remittance | undefined {
+export async function getRemittance(id: string): Promise<Remittance | undefined> {
   const cached = remittances.get(id);
   if (cached) return cached;
 
   if (dbRepo) {
     try {
-      const row = dbRepo.findRemittanceById(id);
+      const row = await dbRepo.findRemittanceById(id);
       if (row) {
         const { serviceLinesJson, ...rest } = row;
         const remit = {
@@ -343,19 +332,20 @@ export function getRemittance(id: string): Remittance | undefined {
   return undefined;
 }
 
-export function listRemittances(
+export async function listRemittances(
   tenantId: string,
   limit = 50,
   offset = 0
-): { remittances: Remittance[]; total: number } {
+): Promise<{ remittances: Remittance[]; total: number }> {
   const all = Array.from(remittances.values())
     .filter((r) => r.tenantId === tenantId)
     .sort((a, b) => b.importedAt.localeCompare(a.importedAt));
 
   if (all.length === 0 && dbRepo) {
     try {
-      const rows = dbRepo.findRemittancesByTenant(tenantId, limit, offset);
-      const result = rows.map((r: any) => {
+      const rows = await dbRepo.findRemittancesByTenant(tenantId, limit, offset);
+      const rowsArr = Array.isArray(rows) ? rows : [];
+      const result = rowsArr.map((r: any) => {
         const { serviceLinesJson, ...rest } = r;
         return {
           ...rest,
@@ -368,9 +358,10 @@ export function listRemittances(
       let dbTotal = result.length;
       if (dbRepo) {
         try {
-          dbTotal = dbRepo.countRemittancesByTenant
+          const ct = await (dbRepo.countRemittancesByTenant
             ? dbRepo.countRemittancesByTenant(tenantId)
-            : result.length;
+            : Promise.resolve(result.length));
+          dbTotal = Number(ct) || result.length;
         } catch (_) {
           /* fallback to result.length */
         }
@@ -388,9 +379,9 @@ export function listRemittances(
 }
 
 /** Link a remittance to a claim by matching payerClaimId */
-export function matchRemittanceToClaim(remitId: string, claimId: string, tenantId?: string): boolean {
-  const remit = getRemittance(remitId);
-  const claim = getClaim(claimId, tenantId);
+export async function matchRemittanceToClaim(remitId: string, claimId: string, tenantId?: string): Promise<boolean> {
+  const remit = await getRemittance(remitId);
+  const claim = await getClaim(claimId, tenantId);
   if (!remit || !claim) return false;
   if (tenantId && remit.tenantId !== tenantId) return false;
 
@@ -400,21 +391,17 @@ export function matchRemittanceToClaim(remitId: string, claimId: string, tenantI
   remittances.set(remitId, remit);
 
   if (dbRepo) {
-    try {
-      dbRepo.updateRemittance(remitId, {
-        claimId,
-        matchedAt: remit.matchedAt,
-        status: 'matched',
-      });
-    } catch (e) {
-      dbWarn('updateRemittance', e);
-    }
+    void dbRepo.updateRemittance(remitId, {
+      claimId,
+      matchedAt: remit.matchedAt,
+      status: 'matched',
+    }).catch((e: unknown) => dbWarn('updateRemittance', e));
   }
 
   return true;
 }
 
-/* ── Store stats ────────────────────────────────────────────── */
+/* -- Store stats ---------------------------------------------- */
 
 export function getStoreStats(): {
   totalClaims: number;
@@ -428,7 +415,7 @@ export function getStoreStats(): {
   };
 }
 
-/** Reset all stores — used in tests */
+/** Reset all stores -- used in tests */
 export function resetClaimStore(): void {
   claims.clear();
   remittances.clear();

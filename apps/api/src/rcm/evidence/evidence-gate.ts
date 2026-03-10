@@ -1,13 +1,13 @@
 /**
- * Evidence Gate — Phase 142: RCM Operational Excellence
+ * Evidence Gate -- Phase 142: RCM Operational Excellence
  *
  * Checks the integration_evidence registry before allowing payer API calls.
  * If no verified evidence exists, the call is routed to manual workflow
  * and an audit event is logged.
  *
  * Evidence freshness:
- *   - last_verified_at > 90 days ago → stale warning
- *   - RCM_EVIDENCE_STRICT=true → stale evidence blocks the call
+ *   - last_verified_at > 90 days ago -> stale warning
+ *   - RCM_EVIDENCE_STRICT=true -> stale evidence blocks the call
  *
  * Non-negotiable: Never fabricate payer API calls. If evidence is missing,
  * produce print-ready packets and route to manual/contracting_needed.
@@ -17,18 +17,18 @@ import { findByPayerAndMethod, listByPayer } from "./evidence-registry-repo.js";
 import { appendRcmAudit } from "../audit/rcm-audit.js";
 import { log } from "../../lib/logger.js";
 
-/* ── Config ────────────────────────────────────────────────── */
+/* -- Config -------------------------------------------------- */
 
 const STALENESS_DAYS = parseInt(process.env.RCM_EVIDENCE_STALENESS_DAYS ?? "90", 10) || 90;
 const STRICT_MODE = process.env.RCM_EVIDENCE_STRICT === "true";
 
-/* ── Types ─────────────────────────────────────────────────── */
+/* -- Types --------------------------------------------------- */
 
 export type EvidenceGateResult =
   | { allowed: true; status: "verified"; payerId: string; method: string; evidenceId: string; staleWarning: boolean; lastVerified: string | null }
   | { allowed: false; status: "missing" | "stale" | "unverified"; payerId: string; method: string; reason: string; recommendation: string };
 
-/* ── Gate Check ────────────────────────────────────────────── */
+/* -- Gate Check ---------------------------------------------- */
 
 /**
  * Check whether a payer + method combination has verified evidence.
@@ -102,7 +102,7 @@ export async function checkEvidenceGate(
       status: "stale",
       payerId,
       method,
-      reason: `Evidence last verified ${evidence.lastVerifiedAt ?? "never"} — exceeds ${STALENESS_DAYS}-day threshold (strict mode)`,
+      reason: `Evidence last verified ${evidence.lastVerifiedAt ?? "never"} -- exceeds ${STALENESS_DAYS}-day threshold (strict mode)`,
       recommendation: "Re-verify evidence or disable strict mode (RCM_EVIDENCE_STRICT=false).",
     };
 
@@ -196,7 +196,7 @@ export async function checkPayerEvidenceOverview(tenantId: string, payerId: stri
   };
 }
 
-/* ── Helpers ────────────────────────────────────────────────── */
+/* -- Helpers -------------------------------------------------- */
 
 function isStale(lastVerifiedAt: string | null | undefined): boolean {
   if (!lastVerifiedAt) return true;

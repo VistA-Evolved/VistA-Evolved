@@ -1,13 +1,14 @@
 /**
  * VistA Operational Dashboard
  *
- * GET /admin/vista/dashboard/operational — aggregates operational metrics
+ * GET /admin/vista/dashboard/operational -- aggregates operational metrics
  * from multiple VistA RPCs for admin dashboard display.
  */
 
 import type { FastifyInstance } from 'fastify';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
+import { safeErr } from '../../lib/safe-error.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
 
 /** Filter out numeric-only lines (count headers) from RPC results. */
@@ -118,7 +119,7 @@ export default async function vistaDashboardRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', data };
     } catch (err: unknown) {
       log.error('Failed to build operational dashboard', { err });
-      return reply.code(500).send({ ok: false, error: (err as Error).message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

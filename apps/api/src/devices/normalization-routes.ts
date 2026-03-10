@@ -1,17 +1,17 @@
 /**
- * LOINC / UCUM Normalization — Routes
+ * LOINC / UCUM Normalization -- Routes
  *
  * Phase 387 (W21-P10): REST endpoints for observation normalization,
  * mapping table queries, and QA validation.
  *
  * Endpoints:
- *   POST /devices/normalize                — Normalize single observation
- *   POST /devices/normalize/batch          — Normalize batch of observations
- *   GET  /devices/normalize/mappings       — List available mapping tables
- *   GET  /devices/normalize/mappings/loinc — List LOINC mappings
- *   GET  /devices/normalize/mappings/ucum  — List UCUM unit mappings
- *   POST /devices/normalize/validate       — QA validation (check mapping coverage)
- *   GET  /devices/normalize/stats          — Mapping statistics
+ *   POST /devices/normalize                -- Normalize single observation
+ *   POST /devices/normalize/batch          -- Normalize batch of observations
+ *   GET  /devices/normalize/mappings       -- List available mapping tables
+ *   GET  /devices/normalize/mappings/loinc -- List LOINC mappings
+ *   GET  /devices/normalize/mappings/ucum  -- List UCUM unit mappings
+ *   POST /devices/normalize/validate       -- QA validation (check mapping coverage)
+ *   GET  /devices/normalize/stats          -- Mapping statistics
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -25,7 +25,7 @@ import {
 } from './normalization-engine.js';
 
 export default async function normalizationRoutes(server: FastifyInstance): Promise<void> {
-  /** POST /devices/normalize — normalize single observation */
+  /** POST /devices/normalize -- normalize single observation */
   server.post('/devices/normalize', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     if (!body.sourceCode) {
@@ -40,7 +40,7 @@ export default async function normalizationRoutes(server: FastifyInstance): Prom
     return { ok: true, normalization: result };
   });
 
-  /** POST /devices/normalize/batch — normalize multiple observations */
+  /** POST /devices/normalize/batch -- normalize multiple observations */
   server.post('/devices/normalize/batch', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     if (!Array.isArray(body.observations)) {
@@ -59,7 +59,7 @@ export default async function normalizationRoutes(server: FastifyInstance): Prom
     };
   });
 
-  /** GET /devices/normalize/mappings — list available mapping tables */
+  /** GET /devices/normalize/mappings -- list available mapping tables */
   server.get('/devices/normalize/mappings', async () => {
     return {
       ok: true,
@@ -83,7 +83,7 @@ export default async function normalizationRoutes(server: FastifyInstance): Prom
     };
   });
 
-  /** GET /devices/normalize/mappings/loinc — list LOINC mappings */
+  /** GET /devices/normalize/mappings/loinc -- list LOINC mappings */
   server.get('/devices/normalize/mappings/loinc', async (req: FastifyRequest) => {
     const q = req.query as any;
     let mappings = [...MDC_TO_LOINC, ...LAB_TO_LOINC];
@@ -98,12 +98,12 @@ export default async function normalizationRoutes(server: FastifyInstance): Prom
     return { ok: true, count: mappings.length, mappings };
   });
 
-  /** GET /devices/normalize/mappings/ucum — list UCUM unit mappings */
+  /** GET /devices/normalize/mappings/ucum -- list UCUM unit mappings */
   server.get('/devices/normalize/mappings/ucum', async () => {
     return { ok: true, count: UNIT_TO_UCUM.length, mappings: UNIT_TO_UCUM };
   });
 
-  /** POST /devices/normalize/validate — QA validation */
+  /** POST /devices/normalize/validate -- QA validation */
   server.post('/devices/normalize/validate', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     if (!Array.isArray(body.observations)) {
@@ -133,7 +133,7 @@ export default async function normalizationRoutes(server: FastifyInstance): Prom
     };
   });
 
-  /** GET /devices/normalize/stats — mapping statistics */
+  /** GET /devices/normalize/stats -- mapping statistics */
   server.get('/devices/normalize/stats', async () => {
     return { ok: true, stats: getMappingStats() };
   });

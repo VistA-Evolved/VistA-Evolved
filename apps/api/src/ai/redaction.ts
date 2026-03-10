@@ -1,5 +1,5 @@
 /**
- * AI Gateway — PHI Redaction Engine (Phase 33)
+ * AI Gateway -- PHI Redaction Engine (Phase 33)
  *
  * Minimizes PHI leaving the environment. Applies before sending
  * context to cloud models. On-premises models with phiAllowed=true

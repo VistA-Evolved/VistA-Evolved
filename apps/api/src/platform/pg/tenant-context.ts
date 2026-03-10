@@ -1,11 +1,11 @@
 /**
- * Platform DB — Tenant Context Manager
+ * Platform DB -- Tenant Context Manager
  *
  * Phase 101: Platform Data Architecture Convergence
  *
  * Provides tenant-scoped query helpers that automatically inject
  * tenant_id into all operations. This is the PRIMARY enforcement
- * mechanism for data isolation — RLS is defense-in-depth.
+ * mechanism for data isolation -- RLS is defense-in-depth.
  *
  * Usage:
  *   const ctx = createTenantContext('tenant-abc');

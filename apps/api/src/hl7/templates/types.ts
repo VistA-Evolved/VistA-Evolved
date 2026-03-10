@@ -1,5 +1,5 @@
 /**
- * HL7v2 Message Template Library — Types
+ * HL7v2 Message Template Library -- Types
  *
  * Phase 319 (W14-P3): Versioned message templates with conformance profiles.
  *

@@ -1,5 +1,5 @@
 /**
- * Imaging Modality Connectivity — Routes
+ * Imaging Modality Connectivity -- Routes
  *
  * Phase 386 (W21-P9): REST endpoints for modality worklist (MWL),
  * MPPS tracking, modality AE configuration, and DICOMweb bridge.
@@ -7,27 +7,27 @@
  * Endpoints:
  *
  * Worklist (MWL):
- *   POST /devices/imaging/worklist            — Create worklist item
- *   GET  /devices/imaging/worklist            — List worklist items
- *   GET  /devices/imaging/worklist/:id        — Get worklist item
- *   PATCH /devices/imaging/worklist/:id/status — Update status
+ *   POST /devices/imaging/worklist            -- Create worklist item
+ *   GET  /devices/imaging/worklist            -- List worklist items
+ *   GET  /devices/imaging/worklist/:id        -- Get worklist item
+ *   PATCH /devices/imaging/worklist/:id/status -- Update status
  *
  * MPPS:
- *   POST /devices/imaging/mpps                — Create MPPS record (N-CREATE)
- *   GET  /devices/imaging/mpps                — List MPPS records
- *   GET  /devices/imaging/mpps/:id            — Get MPPS record
- *   PATCH /devices/imaging/mpps/:id/status    — Update MPPS status (N-SET)
+ *   POST /devices/imaging/mpps                -- Create MPPS record (N-CREATE)
+ *   GET  /devices/imaging/mpps                -- List MPPS records
+ *   GET  /devices/imaging/mpps/:id            -- Get MPPS record
+ *   PATCH /devices/imaging/mpps/:id/status    -- Update MPPS status (N-SET)
  *
  * Modalities:
- *   POST /devices/imaging/modalities          — Register modality AE
- *   GET  /devices/imaging/modalities          — List modalities
- *   GET  /devices/imaging/modalities/:id      — Get modality
- *   PATCH /devices/imaging/modalities/:id/status — Update modality status
- *   POST /devices/imaging/modalities/:id/echo — Record C-ECHO success
+ *   POST /devices/imaging/modalities          -- Register modality AE
+ *   GET  /devices/imaging/modalities          -- List modalities
+ *   GET  /devices/imaging/modalities/:id      -- Get modality
+ *   PATCH /devices/imaging/modalities/:id/status -- Update modality status
+ *   POST /devices/imaging/modalities/:id/echo -- Record C-ECHO success
  *
  * Stats & Audit:
- *   GET  /devices/imaging/stats               — Imaging modality statistics
- *   GET  /devices/imaging/audit               — Audit log
+ *   GET  /devices/imaging/stats               -- Imaging modality statistics
+ *   GET  /devices/imaging/audit               -- Audit log
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -135,7 +135,7 @@ export default async function imagingModalityRoutes(server: FastifyInstance): Pr
   // MPPS
   // -----------------------------------------------------------------------
 
-  /** POST /devices/imaging/mpps — N-CREATE equivalent */
+  /** POST /devices/imaging/mpps -- N-CREATE equivalent */
   server.post('/devices/imaging/mpps', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     if (
@@ -187,7 +187,7 @@ export default async function imagingModalityRoutes(server: FastifyInstance): Pr
     return { ok: true, mppsRecord: rec };
   });
 
-  /** PATCH /devices/imaging/mpps/:id/status — N-SET equivalent */
+  /** PATCH /devices/imaging/mpps/:id/status -- N-SET equivalent */
   server.patch(
     '/devices/imaging/mpps/:id/status',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -265,7 +265,7 @@ export default async function imagingModalityRoutes(server: FastifyInstance): Pr
     }
   );
 
-  /** POST /devices/imaging/modalities/:id/echo — record C-ECHO success */
+  /** POST /devices/imaging/modalities/:id/echo -- record C-ECHO success */
   server.post(
     '/devices/imaging/modalities/:id/echo',
     async (req: FastifyRequest, reply: FastifyReply) => {

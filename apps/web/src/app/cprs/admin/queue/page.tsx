@@ -1,10 +1,10 @@
 'use client';
 
-import { useEffect, useState, useCallback } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
 
 /**
- * Phase 159: Patient Queue Management — Front Desk Dashboard
+ * Phase 159: Patient Queue Management -- Front Desk Dashboard
  * Manage tickets, call patients, view department queues, display board.
  */
 
@@ -488,7 +488,7 @@ export default function QueueAdminPage() {
                       marginBottom: 8,
                     }}
                   >
-                    {s.ticketNumber} → {s.windowNumber}
+                    {s.ticketNumber}{' -> '}{s.windowNumber}
                   </div>
                 ))
               )}
@@ -509,7 +509,7 @@ export default function QueueAdminPage() {
                       animation: 'blink 1s infinite',
                     }}
                   >
-                    {c.ticketNumber} → {c.windowNumber}
+                    {c.ticketNumber}{' -> '}{c.windowNumber}
                   </div>
                 ))
               )}

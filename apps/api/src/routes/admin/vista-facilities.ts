@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -22,7 +23,7 @@ export default async function vistaFacilitiesRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE INST LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE INST LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -43,7 +44,7 @@ export default async function vistaFacilitiesRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE DIV LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE DIV LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -64,7 +65,7 @@ export default async function vistaFacilitiesRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE SVC LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE SVC LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -86,7 +87,7 @@ export default async function vistaFacilitiesRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE STOP LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE STOP LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -107,7 +108,7 @@ export default async function vistaFacilitiesRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE SPEC LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE SPEC LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -129,7 +130,7 @@ export default async function vistaFacilitiesRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE SITE PARM', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE SITE PARM', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -150,7 +151,7 @@ export default async function vistaFacilitiesRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE SVC CREATE' };
     } catch (err: any) {
       log.error('Failed to call VE SVC CREATE', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -172,7 +173,7 @@ export default async function vistaFacilitiesRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE SVC EDIT' };
     } catch (err: any) {
       log.error('Failed to call VE SVC EDIT', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

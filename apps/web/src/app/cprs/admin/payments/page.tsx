@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Payments Dashboard — Phase 92
+ * Payments Dashboard -- Phase 92
  *
  * Admin page for payment tracking, remittance batch management, and reconciliation:
  *  - Upload remittance files (CSV/portal export)
@@ -19,7 +19,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ────────────────────────────────────────────────────── */
+/* -- Types ------------------------------------------------------ */
 
 interface Batch {
   id: string;
@@ -77,7 +77,7 @@ interface Underpayment {
   createdAt: string;
 }
 
-/* ── Status Colors ────────────────────────────────────────────── */
+/* -- Status Colors ---------------------------------------------- */
 
 const BATCH_COLORS: Record<string, string> = {
   created: '#6b7280',
@@ -96,11 +96,11 @@ const MATCH_COLORS: Record<string, string> = {
   manually_linked: '#2563eb',
 };
 
-/* ── Tabs ──────────────────────────────────────────────────────── */
+/* -- Tabs -------------------------------------------------------- */
 
 type Tab = 'batches' | 'reconciliation' | 'aging' | 'underpayments';
 
-/* ── Component ────────────────────────────────────────────────── */
+/* -- Component -------------------------------------------------- */
 
 export default function PaymentsDashboardPage() {
   const [tab, setTab] = useState<Tab>('batches');
@@ -143,7 +143,7 @@ export default function PaymentsDashboardPage() {
   );
 }
 
-/* ── Batches Tab ───────────────────────────────────────────── */
+/* -- Batches Tab --------------------------------------------- */
 
 function BatchesTab() {
   const [batches, setBatches] = useState<Batch[]>([]);
@@ -540,7 +540,7 @@ function BatchesTab() {
   );
 }
 
-/* ── Reconciliation Tab ────────────────────────────────────── */
+/* -- Reconciliation Tab -------------------------------------- */
 
 function ReconciliationTab() {
   const [items, setItems] = useState<any[]>([]);
@@ -718,7 +718,7 @@ function ReconciliationTab() {
   );
 }
 
-/* ── Aging Tab ─────────────────────────────────────────────── */
+/* -- Aging Tab ----------------------------------------------- */
 
 function AgingTab() {
   const [report, setReport] = useState<{
@@ -803,7 +803,7 @@ function AgingTab() {
   );
 }
 
-/* ── Underpayment Tab ──────────────────────────────────────── */
+/* -- Underpayment Tab ---------------------------------------- */
 
 function UnderpaymentTab() {
   const [items, setItems] = useState<Underpayment[]>([]);
@@ -906,7 +906,7 @@ function UnderpaymentTab() {
   );
 }
 
-/* ── Sub-Components ────────────────────────────────────────── */
+/* -- Sub-Components ------------------------------------------ */
 
 function Badge({ label, color }: { label: string; color: string }) {
   return (

@@ -1,5 +1,5 @@
 /**
- * Phase 404 (W23-P6): Bulk Data — Routes
+ * Phase 404 (W23-P6): Bulk Data -- Routes
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -15,7 +15,7 @@ import {
 import { log } from '../lib/logger.js';
 
 export default async function bulkDataRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Jobs ──────────────────────────────────────────────────
+  // --- Jobs --------------------------------------------------
 
   server.get('/bulk-data/jobs', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -99,7 +99,7 @@ export default async function bulkDataRoutes(server: FastifyInstance): Promise<v
     return { ok: true, job: rec };
   });
 
-  // ─── Dashboard ─────────────────────────────────────────────
+  // --- Dashboard ---------------------------------------------
 
   server.get('/bulk-data/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);

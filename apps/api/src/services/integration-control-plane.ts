@@ -9,7 +9,7 @@
 
 import { randomUUID } from "node:crypto";
 
-// ─── Types ───────────────────────────────────────────────────────────
+// --- Types -----------------------------------------------------------
 
 export type IntegrationPartnerType = "HL7" | "X12" | "FHIR" | "PACS" | "OTHER";
 export type PartnerStatus = "draft" | "testing" | "certified" | "active" | "suspended" | "decommissioned";
@@ -62,7 +62,7 @@ export interface IntegrationCredentialRef {
   id: string;
   partnerId: string;
   tenantId: string;
-  secretRef: string;     // pointer to KMS/vault — NEVER raw credentials
+  secretRef: string;     // pointer to KMS/vault -- NEVER raw credentials
   label: string;
   rotatedAt: string;
   createdAt: string;
@@ -98,7 +98,7 @@ export interface TestRunResult {
   durationMs: number;
 }
 
-// ─── State Transition Validation ─────────────────────────────────────
+// --- State Transition Validation -------------------------------------
 
 export function isValidTransition(from: PartnerStatus, to: PartnerStatus): boolean {
   return VALID_TRANSITIONS[from]?.includes(to) ?? false;
@@ -108,7 +108,7 @@ export function getValidTransitions(status: PartnerStatus): PartnerStatus[] {
   return VALID_TRANSITIONS[status] ?? [];
 }
 
-// ─── In-Memory Stores ────────────────────────────────────────────────
+// --- In-Memory Stores ------------------------------------------------
 
 const partners = new Map<string, IntegrationPartner>();
 const endpoints = new Map<string, IntegrationEndpoint>();
@@ -116,7 +116,7 @@ const credentialRefs = new Map<string, IntegrationCredentialRef>();
 const routes = new Map<string, IntegrationRoute>();
 const testRuns = new Map<string, IntegrationTestRun>();
 
-// ─── Partner CRUD ────────────────────────────────────────────────────
+// --- Partner CRUD ----------------------------------------------------
 
 export function createPartner(
   tenantId: string,
@@ -166,7 +166,7 @@ export function updatePartnerStatus(
   return { ok: true, partner };
 }
 
-// ─── Endpoint CRUD ───────────────────────────────────────────────────
+// --- Endpoint CRUD ---------------------------------------------------
 
 export function addEndpoint(
   tenantId: string,
@@ -248,7 +248,7 @@ export function rotateCredential(
   return true;
 }
 
-// ─── Credential Refs ─────────────────────────────────────────────────
+// --- Credential Refs -------------------------------------------------
 
 export function addCredentialRef(
   tenantId: string,
@@ -275,7 +275,7 @@ export function listCredentialRefs(tenantId: string, partnerId: string): Integra
   return [...credentialRefs.values()].filter((c) => c.tenantId === tenantId && c.partnerId === partnerId);
 }
 
-// ─── Routing Rules ───────────────────────────────────────────────────
+// --- Routing Rules ---------------------------------------------------
 
 export function addRoute(
   tenantId: string,
@@ -304,7 +304,7 @@ export function listRoutes(tenantId: string, partnerId: string): IntegrationRout
     .sort((a, b) => a.priority - b.priority);
 }
 
-// ─── Test Runs ───────────────────────────────────────────────────────
+// --- Test Runs -------------------------------------------------------
 
 export function startTestRun(
   tenantId: string,
@@ -400,7 +400,7 @@ export function listTestRuns(tenantId: string, partnerId: string): IntegrationTe
     .sort((a, b) => b.startedAt.localeCompare(a.startedAt));
 }
 
-// ─── Store Stats (for store-policy) ──────────────────────────────────
+// --- Store Stats (for store-policy) ----------------------------------
 
 export function getControlPlaneStats() {
   return {

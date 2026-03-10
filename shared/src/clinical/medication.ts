@@ -1,10 +1,10 @@
 /**
- * Canonical Medication type — single source of truth.
+ * Canonical Medication type -- single source of truth.
  *
  * Consolidates duplicates from:
  *   - apps/web/src/lib/chart-types.ts
  *   - apps/web/src/stores/data-cache.tsx
- *   - apps/api/src/adapters/types.ts (MedicationRecord — richer shape)
+ *   - apps/api/src/adapters/types.ts (MedicationRecord -- richer shape)
  */
 
 /** Medication for display in chart panels. */

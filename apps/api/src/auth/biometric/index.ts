@@ -1,14 +1,14 @@
 /**
- * Biometric Provider Registry — Phase 35.
+ * Biometric Provider Registry -- Phase 35.
  *
  * Factory for biometric authentication providers.
  * Default: PasskeysProvider (Keycloak WebAuthn).
  * Optional: FaceVerificationProvider (disabled by default).
  *
  * Environment variables:
- *   PASSKEYS_ENABLED            — "true" to enable passkeys
- *   FACE_VERIFICATION_ENABLED   — "true" to enable face (requires vendor)
- *   FACE_VERIFICATION_VENDOR    — vendor identifier (e.g., "aws-rekognition")
+ *   PASSKEYS_ENABLED            -- "true" to enable passkeys
+ *   FACE_VERIFICATION_ENABLED   -- "true" to enable face (requires vendor)
+ *   FACE_VERIFICATION_VENDOR    -- vendor identifier (e.g., "aws-rekognition")
  */
 
 import type { BiometricAuthProvider, BiometricMethod } from './types.js';
@@ -27,7 +27,7 @@ const providers = new Map<BiometricMethod, BiometricAuthProvider>();
  * Called once at server startup.
  */
 export async function initBiometricProviders(): Promise<void> {
-  // Passkeys (WebAuthn) — primary
+  // Passkeys (WebAuthn) -- primary
   const passkeys = new PasskeysProvider();
   const passkeysReady = await passkeys.initialize();
   if (passkeysReady) {
@@ -35,7 +35,7 @@ export async function initBiometricProviders(): Promise<void> {
     log.info('Biometric: Passkeys provider registered');
   }
 
-  // Face verification — optional, OFF by default
+  // Face verification -- optional, OFF by default
   const face = new FaceVerificationProvider();
   const faceReady = await face.initialize();
   if (faceReady) {

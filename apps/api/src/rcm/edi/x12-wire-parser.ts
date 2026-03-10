@@ -1,5 +1,5 @@
 /**
- * X12 Wire Format Parser — Phase 518 (Wave 37 B6)
+ * X12 Wire Format Parser -- Phase 518 (Wave 37 B6)
  *
  * Zero-dependency X12 parser that handles raw ANSI X12 wire format
  * for 835 (Payment/Remittance), 277 (Claim Status), 999 (Acknowledgement),
@@ -11,10 +11,10 @@
  *   - Transaction router: dispatches to format-specific normalizer
  *   - Normalizer outputs: deterministic JSON matching existing types
  *
- * No external deps — Node.js built-ins only.
+ * No external deps -- Node.js built-ins only.
  */
 
-/* ── Types ───────────────────────────────────────────────── */
+/* -- Types ------------------------------------------------- */
 
 export interface X12Delimiters {
   element: string; // Usually '*'
@@ -47,7 +47,7 @@ export interface X12ParseResult {
   errors: string[];
 }
 
-/* ── Segment-level types for 835 ─────────────────────────── */
+/* -- Segment-level types for 835 --------------------------- */
 
 export interface Parsed835Line {
   claimRef: string;
@@ -74,7 +74,7 @@ export interface Parsed835 {
   parseErrors: string[];
 }
 
-/* ── Segment-level types for 277 ─────────────────────────── */
+/* -- Segment-level types for 277 --------------------------- */
 
 export interface Parsed277Status {
   claimRef: string;
@@ -91,7 +91,7 @@ export interface Parsed277 {
   parseErrors: string[];
 }
 
-/* ── Tokenizer ───────────────────────────────────────────── */
+/* -- Tokenizer --------------------------------------------- */
 
 /**
  * Detect X12 delimiters from the ISA segment header.
@@ -148,7 +148,7 @@ export function tokenize(
   return { segments, delimiters };
 }
 
-/* ── Envelope parser ─────────────────────────────────────── */
+/* -- Envelope parser --------------------------------------- */
 
 /**
  * Parse one or more transaction set envelopes from tokenized segments.
@@ -212,7 +212,7 @@ export function parseEnvelopes(raw: string): X12ParseResult {
   return { ok: envelopes.length > 0, envelopes, errors };
 }
 
-/* ── 835 Normalizer ──────────────────────────────────────── */
+/* -- 835 Normalizer ---------------------------------------- */
 
 function findElement(seg: X12Segment, idx: number): string {
   return seg.elements[idx] ?? '';
@@ -345,7 +345,7 @@ export function normalize835(envelope: X12ParsedEnvelope): Parsed835 {
   };
 }
 
-/* ── 277 Normalizer ──────────────────────────────────────── */
+/* -- 277 Normalizer ---------------------------------------- */
 
 export function normalize277(envelope: X12ParsedEnvelope): Parsed277 {
   const errors: string[] = [];
@@ -394,7 +394,7 @@ export function normalize277(envelope: X12ParsedEnvelope): Parsed277 {
   return { statuses, parseErrors: errors };
 }
 
-/* ── High-level parse API ────────────────────────────────── */
+/* -- High-level parse API ---------------------------------- */
 
 export interface X12IngestResult {
   transactionSet: string;
@@ -432,7 +432,7 @@ export function parseX12Wire(raw: string): {
       case '277':
         base.parsed277 = normalize277(env);
         break;
-      // 837, 999, 270, 271 — return raw envelope for now
+      // 837, 999, 270, 271 -- return raw envelope for now
     }
 
     results.push(base);

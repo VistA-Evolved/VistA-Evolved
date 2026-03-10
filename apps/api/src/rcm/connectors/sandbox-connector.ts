@@ -1,11 +1,11 @@
 /**
- * Sandbox Connector — Simulated Transport for Development/Testing
+ * Sandbox Connector -- Simulated Transport for Development/Testing
  *
  * Accepts all transactions, generates realistic acknowledgments and
  * simulated responses (835, 271, 277) after configurable delay.
  * Used when no real clearinghouse or payer portal is configured.
  *
- * Phase 38 — RCM + Payer Connectivity
+ * Phase 38 -- RCM + Payer Connectivity
  */
 
 import type { X12TransactionSet } from '../edi/types.js';
@@ -56,7 +56,7 @@ export class SandboxConnector implements RcmConnector {
     receivedAt: string;
   }> = [];
   private exportedBundles: ExportBundleResult[] = [];
-  /** Configurable rejection rate for testing error handling (0.0 – 1.0) */
+  /** Configurable rejection rate for testing error handling (0.0 - 1.0) */
   private rejectionRate: number;
 
   constructor(rejectionRate = 0.1) {
@@ -93,7 +93,7 @@ export class SandboxConnector implements RcmConnector {
         errors: [
           {
             code: 'SBX-REJECT',
-            description: 'Sandbox simulated rejection (random) — retry or adjust claim',
+            description: 'Sandbox simulated rejection (random) -- retry or adjust claim',
             severity: 'error',
           },
         ],
@@ -167,7 +167,7 @@ export class SandboxConnector implements RcmConnector {
     this.simulatedResponses = [];
   }
 
-  /* ─── Response generators ──────────────────────────────────────── */
+  /* --- Response generators ---------------------------------------- */
 
   private generateSimulated835(claimTxId: string, metadata: Record<string, string>): void {
     const chargeAmount = parseFloat(metadata.chargeAmount ?? '100.00');
@@ -253,7 +253,7 @@ export class SandboxConnector implements RcmConnector {
     });
   }
 
-  /* ─── Export-only mode (Phase 40) ────────────────────────────────── */
+  /* --- Export-only mode (Phase 40) ---------------------------------- */
 
   /**
    * When CLAIM_SUBMISSION_ENABLED=false, serialize and export to filesystem
@@ -273,7 +273,7 @@ export class SandboxConnector implements RcmConnector {
     return [...this.exportedBundles];
   }
 
-  /* ─── Test helpers ─────────────────────────────────────────────── */
+  /* --- Test helpers ----------------------------------------------- */
 
   getSubmissionCount(): number {
     return this.submissions.size;

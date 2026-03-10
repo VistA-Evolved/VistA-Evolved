@@ -104,13 +104,13 @@ function encryptForStorage(plaintext: string): string {
 /** Decrypt a credential value from storage. Handles legacy plaintext gracefully. */
 function decryptFromStorage(stored: string): string {
   if (!stored.startsWith(ENCRYPTED_PREFIX)) {
-    // Legacy plaintext row — return as-is (gradual migration)
+    // Legacy plaintext row -- return as-is (gradual migration)
     return stored;
   }
   const envelope = stored.slice(ENCRYPTED_PREFIX.length);
   const decrypted = decryptCredential(envelope);
   if (decrypted === null) {
-    log.error('Credential decryption failed — key mismatch or corrupted data');
+    log.error('Credential decryption failed -- key mismatch or corrupted data');
     return '[DECRYPTION_FAILED]';
   }
   return decrypted;

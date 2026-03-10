@@ -1,16 +1,16 @@
 /**
- * compliance-routes.ts — REST endpoints for compliance evidence mapping.
+ * compliance-routes.ts -- REST endpoints for compliance evidence mapping.
  *
  * Phase 315 (W13-P7)
  *
  * Endpoints:
- *   GET  /compliance/matrix           — Full compliance matrix
- *   GET  /compliance/summary          — Per-framework summary
- *   GET  /compliance/summary/:fw      — Single framework summary
- *   GET  /compliance/requirements     — Filter requirements by category/status
- *   GET  /compliance/categories       — List unique categories
- *   GET  /compliance/evidence         — All evidence artifacts
- *   GET  /compliance/gaps             — Planned/partial requirements (gaps)
+ *   GET  /compliance/matrix           -- Full compliance matrix
+ *   GET  /compliance/summary          -- Per-framework summary
+ *   GET  /compliance/summary/:fw      -- Single framework summary
+ *   GET  /compliance/requirements     -- Filter requirements by category/status
+ *   GET  /compliance/categories       -- List unique categories
+ *   GET  /compliance/evidence         -- All evidence artifacts
+ *   GET  /compliance/gaps             -- Planned/partial requirements (gaps)
  */
 
 import { FastifyInstance } from 'fastify';

@@ -1,5 +1,5 @@
 /**
- * Server — Start
+ * Server -- Start
  *
  * Phase 173: Entry point that builds the server, starts listening,
  * and runs the full lifecycle (DB init, repo wiring, background jobs).

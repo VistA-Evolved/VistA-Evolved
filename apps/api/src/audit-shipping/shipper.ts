@@ -1,5 +1,5 @@
 /**
- * Audit JSONL Shipper — Phase 157
+ * Audit JSONL Shipper -- Phase 157
  *
  * Periodically ships new immutable audit JSONL entries to S3/MinIO
  * object storage. Tracks offsets in-memory (PG/SQLite tables exist
@@ -58,7 +58,7 @@ const AUDIT_FILE_PATH = process.env.IMMUTABLE_AUDIT_FILE_PATH || 'logs/immutable
 /** Offset tracking per tenant+source. Persisted to DB when PG available. */
 const offsets = new Map<string, AuditShipOffset>();
 
-/** Manifests — most recent per tenant for status reporting. Max 500. */
+/** Manifests -- most recent per tenant for status reporting. Max 500. */
 const manifests: AuditShipManifest[] = [];
 const MAX_MANIFESTS = 500;
 
@@ -67,7 +67,7 @@ let shipperRunning = false;
 let lastShipResult: { ok: boolean; entriesShipped: number; error?: string } | null = null;
 
 /* ------------------------------------------------------------------ */
-/* DB persistence (optional — works in-memory if no PG)                */
+/* DB persistence (optional -- works in-memory if no PG)                */
 /* ------------------------------------------------------------------ */
 
 type DbRepo = {
@@ -122,8 +122,8 @@ function saveOffset(tenantId: string, source: string, offset: number, hash: stri
   if (dbRepo) {
     try {
       dbRepo.setOffset(entry);
-    } catch {
-      /* non-fatal */
+    } catch (err) {
+      log.debug('Audit ship: offset save to DB failed', { error: String(err) });
     }
   }
 }
@@ -164,7 +164,7 @@ function readNewLines(config: AuditShipConfig): Map<string, IndexedLine[]> {
       }
       tenantLines.get(tenantId)!.push({ lineIdx: i, raw: allLines[i] });
     } catch {
-      // Malformed line — skip
+      // Malformed JSONL line -- skip (expected for partial writes)
     }
   }
 
@@ -278,8 +278,8 @@ export async function shipOneCycle(): Promise<{
     if (dbRepo) {
       try {
         dbRepo.insertManifest(manifest);
-      } catch {
-        /* non-fatal */
+      } catch (err) {
+        log.debug('Audit ship: manifest save to DB failed', { error: String(err) });
       }
     }
 

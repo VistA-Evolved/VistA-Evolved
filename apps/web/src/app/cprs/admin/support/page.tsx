@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Admin — Support Tooling
+ * Admin -- Support Tooling
  *
  * Phase 244 (Wave 6 P7): System diagnostics and support ticket management.
  * Tabs: Diagnostics | Tickets

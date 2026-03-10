@@ -1,5 +1,5 @@
 /**
- * AI Gateway — Provider Registry (Phase 33)
+ * AI Gateway -- Provider Registry (Phase 33)
  *
  * Pluggable model backends. Only registered providers may be used.
  * The stub provider is always available for development.

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * LOA Work Queue — Phase 89: LOA Engine v1
+ * LOA Work Queue -- Phase 89: LOA Engine v1
  *
  * Staff work queue for managing LOA cases with SLA tracking.
  * Filters: status, payer, SLA risk, priority, assignee.
@@ -319,7 +319,7 @@ export default function LOAQueuePage() {
   );
 }
 
-/* ── LOA Detail Modal ───────────────────────────────────────── */
+/* -- LOA Detail Modal ----------------------------------------- */
 
 function LOADetailModal({
   loaCase,
@@ -559,7 +559,7 @@ function LOADetailModal({
   );
 }
 
-/* ── Pack Modal ─────────────────────────────────────────────── */
+/* -- Pack Modal ----------------------------------------------- */
 
 function PackModal({ pack, onClose }: { pack: any; onClose: () => void }) {
   return (
@@ -664,7 +664,7 @@ function PackModal({ pack, onClose }: { pack: any; onClose: () => void }) {
   );
 }
 
-/* ── Shared Components ──────────────────────────────────────── */
+/* -- Shared Components ---------------------------------------- */
 
 function SLABadge({
   risk,
@@ -801,7 +801,7 @@ function formatAge(iso: string): string {
   return `${Math.round(hours / 24)}d`;
 }
 
-/* ── Styles ─────────────────────────────────────────────────── */
+/* -- Styles --------------------------------------------------- */
 
 const filterStyle: React.CSSProperties = {
   padding: '4px 8px',

@@ -61,7 +61,16 @@ export interface CreateTicketInput {
 /*  Store                                                              */
 /* ------------------------------------------------------------------ */
 
+const MAX_TICKETS = 5000;
 const tickets = new Map<string, SupportTicket>();
+
+function enforceTicketLimit(): void {
+  while (tickets.size > MAX_TICKETS) {
+    const oldest = tickets.keys().next().value;
+    if (oldest) tickets.delete(oldest);
+    else break;
+  }
+}
 
 function genId(prefix: string): string {
   return `${prefix}-${Date.now()}-${crypto.randomBytes(4).toString('hex')}`;
@@ -87,6 +96,7 @@ export function createTicket(input: CreateTicketInput, createdBy: string): Suppo
     updatedAt: now,
   };
   tickets.set(ticket.id, ticket);
+  enforceTicketLimit();
   log.info('Support ticket created', {
     ticketId: ticket.id,
     category: input.category,

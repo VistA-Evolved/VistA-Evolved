@@ -1,25 +1,25 @@
 /**
- * Phase 165 — Specialty Coverage Score + QA Ladder Extension
+ * Phase 165 -- Specialty Coverage Score + QA Ladder Extension
  *
  * Per-specialty scoring engine. Scores each of the 45 specialties on:
- *   1. Pack existence  (does a specialty pack exist?)         — 25 pts
- *   2. Template count  (≥3 templates in the pack)             — 25 pts
- *   3. Field coverage  (avg fields-per-template ≥ 5)          — 25 pts
- *   4. Section depth   (avg sections-per-template ≥ 3)        — 25 pts
+ *   1. Pack existence  (does a specialty pack exist?)         -- 25 pts
+ *   2. Template count  (>=3 templates in the pack)             -- 25 pts
+ *   3. Field coverage  (avg fields-per-template >= 5)          -- 25 pts
+ *   4. Section depth   (avg sections-per-template >= 3)        -- 25 pts
  *
- * Produces a 0–100 numeric score per specialty plus an aggregate.
+ * Produces a 0-100 numeric score per specialty plus an aggregate.
  */
 
 import { SPECIALTY_TAGS, type SpecialtyTag } from './types.js';
 import { getAllSpecialtyPacks } from './specialty-packs.js';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+// --- Types -------------------------------------------------------------------
 
 export type LetterGrade = 'A' | 'B' | 'C' | 'D' | 'F';
 
 export interface SpecialtyScore {
   specialty: SpecialtyTag;
-  score: number; // 0–100
+  score: number; // 0-100
   grade: LetterGrade;
   packExists: boolean;
   templateCount: number;
@@ -27,9 +27,9 @@ export interface SpecialtyScore {
   avgSectionsPerTemplate: number;
   breakdown: {
     packExistence: number; // 0 | 25
-    templateCount: number; // 0–25
-    fieldCoverage: number; // 0–25
-    sectionDepth: number; // 0–25
+    templateCount: number; // 0-25
+    fieldCoverage: number; // 0-25
+    sectionDepth: number; // 0-25
   };
 }
 
@@ -37,14 +37,14 @@ export interface CoverageReport {
   generatedAt: string;
   totalSpecialties: number;
   scoredSpecialties: number;
-  overallScore: number; // weighted average 0–100
+  overallScore: number; // weighted average 0-100
   overallGrade: LetterGrade;
   distribution: Record<LetterGrade, number>;
   specialties: SpecialtyScore[];
   gaps: SpecialtyScore[]; // specialties scoring < 50
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// --- Helpers -----------------------------------------------------------------
 
 export function scoreToGrade(score: number): LetterGrade {
   if (score >= 90) return 'A';
@@ -58,7 +58,7 @@ function clamp(v: number, min: number, max: number): number {
   return Math.max(min, Math.min(max, v));
 }
 
-// ─── Core Scorer ─────────────────────────────────────────────────────────────
+// --- Core Scorer -------------------------------------------------------------
 
 /**
  * Score a single specialty based on its pack data.
@@ -86,10 +86,10 @@ export function scoreSpecialty(
   // Dimension 1: pack existence (binary)
   const packExistence = 25;
 
-  // Dimension 2: template count (linear 1–3 → 0–25)
+  // Dimension 2: template count (linear 1-3 -> 0-25)
   const templateCountScore = clamp(Math.round((templateCount / 3) * 25), 0, 25);
 
-  // Dimension 3: avg fields per template (linear 1–5 → 0–25)
+  // Dimension 3: avg fields per template (linear 1-5 -> 0-25)
   const totalFields = templates.reduce((sum, t) => {
     const sections = t.sections ?? [];
     return sum + sections.reduce((s, sec) => s + (sec.fields?.length ?? 0), 0);
@@ -97,7 +97,7 @@ export function scoreSpecialty(
   const avgFields = templateCount > 0 ? totalFields / templateCount : 0;
   const fieldCoverage = clamp(Math.round((avgFields / 5) * 25), 0, 25);
 
-  // Dimension 4: avg sections per template (linear 1–3 → 0–25)
+  // Dimension 4: avg sections per template (linear 1-3 -> 0-25)
   const totalSections = templates.reduce((sum, t) => sum + (t.sections?.length ?? 0), 0);
   const avgSections = templateCount > 0 ? totalSections / templateCount : 0;
   const sectionDepth = clamp(Math.round((avgSections / 3) * 25), 0, 25);
@@ -115,7 +115,7 @@ export function scoreSpecialty(
   };
 }
 
-// ─── Report Builder ──────────────────────────────────────────────────────────
+// --- Report Builder ----------------------------------------------------------
 
 let cachedReport: CoverageReport | null = null;
 let cachedAt = 0;

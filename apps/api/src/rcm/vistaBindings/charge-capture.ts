@@ -6,21 +6,21 @@
  * list for the billing workflow.
  *
  * Target RPCs:
- *   ORWPCE PCE4NOTE    — PCE data for a note
- *   IBD FIND CHARGES   — Find IB charges for a patient
- *   ORWCV VST          — Visit list for a patient
+ *   ORWPCE PCE4NOTE    -- PCE data for a note
+ *   IBD FIND CHARGES   -- Find IB charges for a patient
+ *   ORWCV VST          -- Visit list for a patient
  *
  * Target VistA files:
- *   ^AUPNVSIT(9000010) — Visit file
- *   ^AUPNVCPT(9000010.18) — V CPT file
- *   ^IB(350)            — IB Action file
+ *   ^AUPNVSIT(9000010) -- Visit file
+ *   ^AUPNVCPT(9000010.18) -- V CPT file
+ *   ^IB(350)            -- IB Action file
  *
  * VistA-first: returns integration-pending in sandbox with exact targets.
  *
- * Phase 40 (Superseding) — VistA-first binding points
+ * Phase 40 (Superseding) -- VistA-first binding points
  */
 
-/* ─── Types ──────────────────────────────────────────────────── */
+/* --- Types ---------------------------------------------------- */
 
 export interface ChargeCaptureCandidate {
   visitIen: string;
@@ -49,7 +49,7 @@ export interface ChargeCaptureResult {
   errors?: string[];
 }
 
-/* ─── VistA RPC imports ──────────────────────────────────────── */
+/* --- VistA RPC imports ---------------------------------------- */
 
 let safeCallRpc: ((rpc: string, params: string[]) => Promise<string[]>) | null = null;
 
@@ -63,7 +63,7 @@ export function wireChargeCaptureRpc(
   safeCallRpc = caller;
 }
 
-/* ─── RPC response parsers ──────────────────────────────────── */
+/* --- RPC response parsers ------------------------------------ */
 
 function parseVisitList(lines: string[]): Array<{ ien: string; date: string; location: string }> {
   return lines
@@ -95,7 +95,7 @@ function parsePceData(lines: string[]): { cptCodes: string[]; diagnosisCodes: st
   return { cptCodes, diagnosisCodes };
 }
 
-/* ─── Charge capture candidate lookup ────────────────────────── */
+/* --- Charge capture candidate lookup -------------------------- */
 
 /**
  * Find encounters that have CPT codes but no IB charge record,

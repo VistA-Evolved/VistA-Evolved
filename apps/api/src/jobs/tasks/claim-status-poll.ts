@@ -1,5 +1,5 @@
 /**
- * Task: claim_status_poll — Phase 116
+ * Task: claim_status_poll -- Phase 116
  *
  * Polls pending claim status checks from the store and
  * processes them via the appropriate payer adapter.
@@ -7,7 +7,7 @@
  * Payload (no PHI):
  *   { tenantId, payerId?, claimRef?, batchSize }
  *
- * At-least-once semantics: duplicate status polls are safe —
+ * At-least-once semantics: duplicate status polls are safe --
  * the adapter returns current status which is idempotent.
  */
 
@@ -44,7 +44,7 @@ export async function handleClaimStatusPoll(payload: Record<string, unknown>): P
     return;
   }
 
-  // 2. Get adapter — use sandbox mode for now (mode derived from payer config in future)
+  // 2. Get adapter -- use sandbox mode for now (mode derived from payer config in future)
   const adapter = getPayerAdapterForMode('sandbox');
   if (!adapter) {
     log.warn('claim_status_poll: no adapter for sandbox mode');

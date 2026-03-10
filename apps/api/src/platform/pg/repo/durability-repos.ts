@@ -1,5 +1,5 @@
 /**
- * Phase 146 Durability Repos — All critical domain stores
+ * Phase 146 Durability Repos -- All critical domain stores
  *
  * Provides initialized PG repos for every domain covered by Phase 146.
  * Uses the generic repo factory for uniform CRUD pattern.
@@ -8,7 +8,7 @@
 
 import { createPgRepo, type GenericPgRepo } from './generic-pg-repo.js';
 
-/* ── Portal Domain ────────────────────────────────────────── */
+/* -- Portal Domain ------------------------------------------ */
 
 export function createPortalUserRepo(): GenericPgRepo<any> {
   return createPgRepo('portal_user');
@@ -46,13 +46,13 @@ export function createPortalProxyInvitationRepo(): GenericPgRepo<any> {
   return createPgRepo('portal_proxy_invitation');
 }
 
-/* ── Imaging Domain ───────────────────────────────────────── */
+/* -- Imaging Domain ----------------------------------------- */
 
 export function createImagingDeviceRepo(): GenericPgRepo<any> {
   return createPgRepo('imaging_device');
 }
 
-/* ── Auth / IAM Domain ────────────────────────────────────── */
+/* -- Auth / IAM Domain -------------------------------------- */
 
 export function createVistaBindingRepo(): GenericPgRepo<any> {
   return createPgRepo('idp_vista_binding');
@@ -62,7 +62,7 @@ export function createBreakGlassSessionRepo(): GenericPgRepo<any> {
   return createPgRepo('iam_break_glass_session');
 }
 
-/* ── RCM Domain ───────────────────────────────────────────── */
+/* -- RCM Domain --------------------------------------------- */
 
 export function createPaymentBatchRepo(): GenericPgRepo<any> {
   return createPgRepo('rcm_payment_batch');
@@ -140,7 +140,7 @@ export function createJobQueueEntryRepo(): GenericPgRepo<any> {
   return createPgRepo('rcm_job_queue_entry');
 }
 
-/* ── Clinical Domain ──────────────────────────────────────── */
+/* -- Clinical Domain ---------------------------------------- */
 
 export function createClinicalDraftRepo(): GenericPgRepo<any> {
   return createPgRepo('clinical_draft');
@@ -154,7 +154,7 @@ export function createHandoffReportRepo(): GenericPgRepo<any> {
   return createPgRepo('handoff_report');
 }
 
-/* ── Other Domains ────────────────────────────────────────── */
+/* -- Other Domains ------------------------------------------ */
 
 export function createIntakeSessionRepo(): GenericPgRepo<any> {
   return createPgRepo('intake_session');

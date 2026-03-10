@@ -1,5 +1,5 @@
 /**
- * Device Registry — Store
+ * Device Registry -- Store
  *
  * Phase 380 (W21-P3): In-memory store for managed device inventory,
  * patient associations, location mappings, and audit trail.
@@ -8,7 +8,7 @@
  *
  * Migration plan:
  * 1. In-memory Map (current)
- * 2. PG-backed via device repo (v60) — Phase 526 (W38) write-through wired
+ * 2. PG-backed via device repo (v60) -- Phase 526 (W38) write-through wired
  * 3. VistA Equipment file (File 6914) integration (future)
  */
 
@@ -25,7 +25,7 @@ import type {
   DeviceAuditAction,
 } from './device-registry.types.js';
 
-// ── PG Write-Through (Phase 526 / W38) ────────────────────────────
+// -- PG Write-Through (Phase 526 / W38) ----------------------------
 
 interface DeviceDbRepo {
   insertManagedDevice(data: any): Promise<any>;

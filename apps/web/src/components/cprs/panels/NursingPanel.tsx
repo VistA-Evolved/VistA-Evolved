@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * NursingPanel — Phase 68 + Phase 84 + Phase 138 (hardened)
+ * NursingPanel -- Phase 68 + Phase 84 + Phase 138 (hardened)
  *
  * 6 sub-tabs: Tasks, Vitals, Notes, Flowsheet, MAR, Handoff
  * Phase 138 additions:
@@ -165,39 +165,6 @@ async function apiFetchRaw<T = any>(path: string, init?: RequestInit): Promise<T
 /* Shared Components                                                    */
 /* ------------------------------------------------------------------ */
 
-function IntegrationPendingBanner({
-  targets,
-  status,
-}: {
-  targets: PendingTarget[];
-  status?: string;
-}) {
-  if (!targets?.length) return null;
-  const title =
-    status === 'unsupported-in-sandbox' ? 'Unsupported in Sandbox' : 'Integration Pending';
-  return (
-    <div
-      style={{
-        padding: '8px 12px',
-        margin: '8px 0',
-        borderRadius: 4,
-        background: status === 'unsupported-in-sandbox' ? '#e8f4f8' : '#fff3cd',
-        border: `1px solid ${status === 'unsupported-in-sandbox' ? '#90cdf4' : '#ffc107'}`,
-        fontSize: 12,
-      }}
-    >
-      <strong>{title}</strong>
-      <ul style={{ margin: '4px 0 0', paddingLeft: 18 }}>
-        {targets.map((t, i) => (
-          <li key={i}>
-            <code>{t.rpc}</code> ({t.package}) -- {t.reason}
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
 function LoadingSpinner() {
   return (
     <div style={{ padding: 24, color: 'var(--cprs-text-muted, #888)', fontSize: 13 }}>
@@ -241,13 +208,11 @@ function TaskListTab({ dfn }: { dfn: string }) {
   if (error) return <ErrorBanner message={error} />;
   if (!data) return <LoadingSpinner />;
 
-  const hasPending = data.pendingTargets?.length > 0;
   const hasItems = data.items.length > 0;
   const note = data._note || data.note;
 
   return (
     <div>
-      <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />
       {hasItems && (
         <div style={{ overflowX: 'auto' }}>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>
@@ -272,15 +237,9 @@ function TaskListTab({ dfn }: { dfn: string }) {
           </table>
         </div>
       )}
-      {!hasItems && !hasPending && (
+      {!hasItems && (
         <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
-          {note || 'No active medication-derived nursing tasks are available for this patient.'}
-        </p>
-      )}
-      {hasPending && (
-        <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
-          {note ||
-            'BCMA/PSB-specific nursing tasks are still pending in this sandbox. When available, tasks are derived from active orders, scheduled medications, nursing protocols, and provider instructions.'}
+          {note || 'No active nursing tasks for this patient.'}
         </p>
       )}
       <div style={{ fontSize: 12, color: 'var(--cprs-text-muted, #888)', padding: '0 8px 8px' }}>
@@ -318,14 +277,11 @@ function VitalsTab({ dfn }: { dfn: string }) {
       </div>
     );
   }
-  if (data.pendingTargets?.length)
-    return <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />;
-
   return (
     <div>
       {data.items.length === 0 ? (
         <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
-          No vitals on file for this patient. Source: {data.source}
+          No vitals on file for this patient.
         </p>
       ) : (
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
@@ -374,9 +330,6 @@ function NotesTab({ dfn }: { dfn: string }) {
 
   if (error) return <ErrorBanner message={error} />;
   if (!data) return <LoadingSpinner />;
-  if (data.pendingTargets?.length)
-    return <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />;
-
   return (
     <div>
       {data.note && (
@@ -395,7 +348,7 @@ function NotesTab({ dfn }: { dfn: string }) {
       )}
       {data.items.length === 0 ? (
         <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
-          No nursing notes on file. Source: {data.source}
+          No nursing notes on file.
         </p>
       ) : (
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
@@ -541,8 +494,6 @@ function MARTab({ dfn }: { dfn: string }) {
 
   return (
     <div>
-      <IntegrationPendingBanner targets={pendingTargets} status="unsupported-in-sandbox" />
-
       <div
         style={{
           display: 'flex',
@@ -909,7 +860,7 @@ function MARTab({ dfn }: { dfn: string }) {
               {history.map((item) => (
                 <tr key={item.id} style={{ borderBottom: '1px solid var(--cprs-border, #eee)' }}>
                   <td style={{ padding: '4px 8px' }}>{item.medication}</td>
-                  <td style={{ padding: '4px 8px' }}>{item.sig || '—'}</td>
+                  <td style={{ padding: '4px 8px' }}>{item.sig || '--'}</td>
                   <td style={{ padding: '4px 8px' }}>{item.status}</td>
                   <td style={{ padding: '4px 8px' }}>{item.lastAction}</td>
                   <td style={{ padding: '4px 8px' }}>{item.timestamp || 'Not available in sandbox'}</td>
@@ -941,13 +892,9 @@ function FlowsheetTab({ dfn }: { dfn: string }) {
   if (!data) return <LoadingSpinner />;
   return (
     <div>
-      <IntegrationPendingBanner targets={data.pendingTargets} status={data.status} />
       {data.items.length === 0 ? (
         <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
-          No flowsheet data found.
-          {(data.status === 'integration-pending' || data.status === 'unsupported-in-sandbox') &&
-            ' Flowsheet aggregation will populate when I/O and assessment RPCs are wired.'}
-          {data.source && ` Source: ${data.source}`}
+          No flowsheet data available.
         </p>
       ) : (
         <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
@@ -1047,10 +994,249 @@ function HandoffTab({ dfn }: { dfn: string }) {
 }
 
 /* ------------------------------------------------------------------ */
+/* Sub-tab: Intake / Output                                              */
+/* ------------------------------------------------------------------ */
+
+interface IOEntry {
+  id: string;
+  type: string;
+  route: string;
+  amount: string;
+  units: string;
+  date: string;
+}
+
+function IOTab({ dfn }: { dfn: string }) {
+  const [data, setData] = useState<NursingResponse<IOEntry> | null>(null);
+  const [error, setError] = useState('');
+  const [ioType, setIoType] = useState<'intake' | 'output'>('intake');
+  const [ioRoute, setIoRoute] = useState('');
+  const [ioAmount, setIoAmount] = useState('');
+  const [ioUnits, setIoUnits] = useState('mL');
+  const [submitting, setSubmitting] = useState(false);
+  const [submitMsg, setSubmitMsg] = useState<string | null>(null);
+
+  const loadIO = useCallback(() => {
+    apiFetch<IOEntry>(`/vista/nursing/io?dfn=${dfn}`)
+      .then(setData)
+      .catch((e) => setError(e.message));
+  }, [dfn]);
+
+  useEffect(() => { loadIO(); }, [loadIO]);
+
+  const handleAddIO = async () => {
+    if (!ioRoute.trim() || !ioAmount.trim()) return;
+    setSubmitting(true);
+    setSubmitMsg(null);
+    try {
+      const result = await apiFetchRaw<{ ok: boolean; message?: string; error?: string }>(
+        '/vista/nursing/io/add',
+        {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ dfn, type: ioType, route: ioRoute.trim(), amount: ioAmount.trim(), units: ioUnits }),
+        }
+      );
+      if (result.ok) {
+        setSubmitMsg(result.message || 'I/O entry recorded.');
+        setIoRoute('');
+        setIoAmount('');
+        loadIO();
+      } else {
+        setSubmitMsg(result.error || 'Failed to record I/O entry.');
+      }
+    } catch (e: any) {
+      setSubmitMsg(e.message || 'Failed to record I/O entry.');
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
+  if (error) return <ErrorBanner message={error} />;
+  if (!data) return <LoadingSpinner />;
+
+  return (
+    <div>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
+        <div>
+          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>
+            I/O Records ({data.items.length})
+          </div>
+          {data.items.length === 0 ? (
+            <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
+              No intake/output records available.
+            </p>
+          ) : (
+            <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+              <thead>
+                <tr style={{ borderBottom: '1px solid var(--cprs-border, #ccc)', textAlign: 'left' }}>
+                  <th style={{ padding: '4px 8px' }}>Date</th>
+                  <th style={{ padding: '4px 8px' }}>Type</th>
+                  <th style={{ padding: '4px 8px' }}>Route</th>
+                  <th style={{ padding: '4px 8px' }}>Amount</th>
+                </tr>
+              </thead>
+              <tbody>
+                {data.items.map((entry, i) => (
+                  <tr key={entry.id || i} style={{ borderBottom: '1px solid var(--cprs-border-soft, #eee)' }}>
+                    <td style={{ padding: '4px 8px' }}>{entry.date}</td>
+                    <td style={{ padding: '4px 8px', textTransform: 'capitalize' }}>{entry.type}</td>
+                    <td style={{ padding: '4px 8px' }}>{entry.route}</td>
+                    <td style={{ padding: '4px 8px' }}>{entry.amount} {entry.units}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+          {data.rpcUsed?.length > 0 && (
+            <div style={{ fontSize: 11, color: '#999', marginTop: 8 }}>
+              RPC: {data.rpcUsed.join(', ')} | Source: {data.source}
+            </div>
+          )}
+        </div>
+
+        <div>
+          <div style={{ fontSize: 13, fontWeight: 600, marginBottom: 8 }}>Add I/O Entry</div>
+          <div style={{ border: '1px solid var(--cprs-border, #ddd)', borderRadius: 6, padding: 12, background: '#f7fafc' }}>
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600 }}>Type</label>
+            <select
+              value={ioType}
+              onChange={(e) => setIoType(e.target.value as 'intake' | 'output')}
+              style={{ width: '100%', marginTop: 4, padding: '6px 8px', borderRadius: 4, border: '1px solid var(--cprs-border, #ccc)', fontSize: 12 }}
+            >
+              <option value="intake">Intake</option>
+              <option value="output">Output</option>
+            </select>
+
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginTop: 10 }}>Route</label>
+            <input
+              value={ioRoute}
+              onChange={(e) => setIoRoute(e.target.value)}
+              placeholder={ioType === 'intake' ? 'e.g. Oral, IV, NG Tube' : 'e.g. Urine, Emesis, Drain'}
+              style={{ width: '100%', marginTop: 4, padding: '6px 8px', borderRadius: 4, border: '1px solid var(--cprs-border, #ccc)', fontSize: 12 }}
+            />
+
+            <label style={{ display: 'block', fontSize: 12, fontWeight: 600, marginTop: 10 }}>Amount</label>
+            <div style={{ display: 'flex', gap: 8, marginTop: 4 }}>
+              <input
+                value={ioAmount}
+                onChange={(e) => setIoAmount(e.target.value)}
+                placeholder="e.g. 250"
+                style={{ flex: 1, padding: '6px 8px', borderRadius: 4, border: '1px solid var(--cprs-border, #ccc)', fontSize: 12 }}
+              />
+              <select
+                value={ioUnits}
+                onChange={(e) => setIoUnits(e.target.value)}
+                style={{ width: 80, padding: '6px 8px', borderRadius: 4, border: '1px solid var(--cprs-border, #ccc)', fontSize: 12 }}
+              >
+                <option value="mL">mL</option>
+                <option value="cc">cc</option>
+                <option value="oz">oz</option>
+              </select>
+            </div>
+
+            <button
+              type="button"
+              onClick={handleAddIO}
+              disabled={submitting || !ioRoute.trim() || !ioAmount.trim()}
+              style={{
+                marginTop: 12,
+                padding: '8px 12px',
+                border: 'none',
+                borderRadius: 4,
+                background: 'var(--cprs-accent, #2563eb)',
+                color: '#fff',
+                cursor: submitting ? 'default' : 'pointer',
+                opacity: submitting || !ioRoute.trim() || !ioAmount.trim() ? 0.7 : 1,
+                fontSize: 12,
+                fontWeight: 600,
+              }}
+            >
+              {submitting ? 'Recording...' : 'Record I/O Entry'}
+            </button>
+
+            {submitMsg && (
+              <div style={{ marginTop: 8, fontSize: 12, color: submitMsg.includes('Failed') ? '#c53030' : '#22543d' }}>
+                {submitMsg}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
+/* Sub-tab: Assessments                                                  */
+/* ------------------------------------------------------------------ */
+
+interface AssessmentEntry {
+  id: string;
+  type: string;
+  date: string;
+  score: string;
+  notes: string;
+  assessor: string;
+}
+
+function AssessmentsTab({ dfn }: { dfn: string }) {
+  const [data, setData] = useState<NursingResponse<AssessmentEntry> | null>(null);
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    apiFetch<AssessmentEntry>(`/vista/nursing/assessments?dfn=${dfn}`)
+      .then(setData)
+      .catch((e) => setError(e.message));
+  }, [dfn]);
+
+  if (error) return <ErrorBanner message={error} />;
+  if (!data) return <LoadingSpinner />;
+
+  return (
+    <div>
+      {data.items.length === 0 ? (
+        <p style={{ fontSize: 13, color: 'var(--cprs-text-muted, #888)', padding: 8 }}>
+          No nursing assessments available.
+        </p>
+      ) : (
+        <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 12 }}>
+          <thead>
+            <tr style={{ borderBottom: '1px solid var(--cprs-border, #ccc)', textAlign: 'left' }}>
+              <th style={{ padding: '4px 8px' }}>Date</th>
+              <th style={{ padding: '4px 8px' }}>Type</th>
+              <th style={{ padding: '4px 8px' }}>Score</th>
+              <th style={{ padding: '4px 8px' }}>Assessor</th>
+              <th style={{ padding: '4px 8px' }}>Notes</th>
+            </tr>
+          </thead>
+          <tbody>
+            {data.items.map((a, i) => (
+              <tr key={a.id || i} style={{ borderBottom: '1px solid var(--cprs-border-soft, #eee)' }}>
+                <td style={{ padding: '4px 8px' }}>{a.date}</td>
+                <td style={{ padding: '4px 8px' }}>{a.type}</td>
+                <td style={{ padding: '4px 8px' }}>{a.score || '--'}</td>
+                <td style={{ padding: '4px 8px' }}>{a.assessor || '--'}</td>
+                <td style={{ padding: '4px 8px' }}>{a.notes || '--'}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      )}
+      {data.rpcUsed?.length > 0 && (
+        <div style={{ fontSize: 11, color: '#999', marginTop: 8 }}>
+          RPC: {data.rpcUsed.join(', ')} | Source: {data.source}
+        </div>
+      )}
+    </div>
+  );
+}
+
+/* ------------------------------------------------------------------ */
 /* Main Panel                                                            */
 /* ------------------------------------------------------------------ */
 
-type NursingSubTab = 'tasks' | 'vitals' | 'notes' | 'flowsheet' | 'mar' | 'handoff';
+type NursingSubTab = 'tasks' | 'vitals' | 'notes' | 'io' | 'assessments' | 'flowsheet' | 'mar' | 'handoff';
 
 export default function NursingPanel({ dfn }: { dfn: string }) {
   const [activeTab, setActiveTab] = useState<NursingSubTab>('tasks');
@@ -1059,6 +1245,8 @@ export default function NursingPanel({ dfn }: { dfn: string }) {
     { key: 'tasks', label: 'Task List' },
     { key: 'vitals', label: 'Vitals' },
     { key: 'notes', label: 'Notes' },
+    { key: 'io', label: 'I/O' },
+    { key: 'assessments', label: 'Assessments' },
     { key: 'flowsheet', label: 'Flowsheet' },
     { key: 'mar', label: 'MAR' },
     { key: 'handoff', label: 'Handoff' },
@@ -1101,6 +1289,8 @@ export default function NursingPanel({ dfn }: { dfn: string }) {
       {activeTab === 'tasks' && <TaskListTab dfn={dfn} />}
       {activeTab === 'vitals' && <VitalsTab dfn={dfn} />}
       {activeTab === 'notes' && <NotesTab dfn={dfn} />}
+      {activeTab === 'io' && <IOTab dfn={dfn} />}
+      {activeTab === 'assessments' && <AssessmentsTab dfn={dfn} />}
       {activeTab === 'flowsheet' && <FlowsheetTab dfn={dfn} />}
       {activeTab === 'mar' && <MARTab dfn={dfn} />}
       {activeTab === 'handoff' && <HandoffTab dfn={dfn} />}

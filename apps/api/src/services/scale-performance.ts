@@ -9,7 +9,7 @@
 
 import { randomUUID } from "node:crypto";
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+// --- Types ------------------------------------------------------------------
 
 export type LoadTestStatus = "pending" | "running" | "completed" | "failed" | "cancelled";
 export type SloStatus = "met" | "at_risk" | "breached" | "unknown";
@@ -126,7 +126,7 @@ export interface PerformanceRegression {
   detectedAt: string;
 }
 
-// ─── In-Memory Stores ───────────────────────────────────────────────────────
+// --- In-Memory Stores -------------------------------------------------------
 
 const profileStore = new Map<string, LoadTestProfile>();
 const runStore = new Map<string, LoadTestRun>();
@@ -137,7 +137,7 @@ const regressionStore = new Map<string, PerformanceRegression>();
 const auditLog: Array<{ ts: string; action: string; actor: string; detail: Record<string, unknown> }> = [];
 const MAX_AUDIT = 10_000;
 
-// ─── Load Test Profiles ─────────────────────────────────────────────────────
+// --- Load Test Profiles -----------------------------------------------------
 
 export function createProfile(input: {
   name: string;
@@ -181,7 +181,7 @@ export function listProfiles(): LoadTestProfile[] {
   return Array.from(profileStore.values()).sort((a, b) => a.name.localeCompare(b.name));
 }
 
-// ─── Load Test Runs ─────────────────────────────────────────────────────────
+// --- Load Test Runs ---------------------------------------------------------
 
 export function startRun(profileId: string, region: string, actor: string): LoadTestRun {
   const profile = profileStore.get(profileId);
@@ -273,7 +273,7 @@ export function listRuns(filters?: {
   return results.sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, limit);
 }
 
-// ─── Regression Detection ───────────────────────────────────────────────────
+// --- Regression Detection ---------------------------------------------------
 
 function detectRegressions(run: LoadTestRun): void {
   if (!run.results) return;
@@ -320,7 +320,7 @@ export function listRegressions(filters?: { runId?: string; severity?: string },
   return results.sort((a, b) => b.detectedAt.localeCompare(a.detectedAt)).slice(0, limit);
 }
 
-// ─── SLO Management ─────────────────────────────────────────────────────────
+// --- SLO Management ---------------------------------------------------------
 
 export function defineSlo(input: {
   name: string;
@@ -399,7 +399,7 @@ export function listSlos(filters?: { service?: string; status?: SloStatus }): Sl
   return results.sort((a, b) => a.name.localeCompare(b.name));
 }
 
-// ─── Campaigns ──────────────────────────────────────────────────────────────
+// --- Campaigns --------------------------------------------------------------
 
 export function createCampaign(input: {
   name: string;
@@ -453,7 +453,7 @@ export function listCampaigns(): PerformanceCampaign[] {
   return Array.from(campaignStore.values()).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-// ─── Summary ────────────────────────────────────────────────────────────────
+// --- Summary ----------------------------------------------------------------
 
 export function getPerformanceSummary(): {
   profiles: number;
@@ -496,7 +496,7 @@ export function getPerformanceSummary(): {
   };
 }
 
-// ─── Audit ──────────────────────────────────────────────────────────────────
+// --- Audit ------------------------------------------------------------------
 
 function appendAudit(action: string, actor: string, detail: Record<string, unknown>): void {
   auditLog.push({ ts: new Date().toISOString(), action, actor, detail });

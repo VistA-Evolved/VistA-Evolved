@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Phase 277 — VistA Container Modernization QA Gate
+ * Phase 277 -- VistA Container Modernization QA Gate
  *
  * Validates that docker-compose files meet modernization standards:
  * healthcheck, resource limits, named volumes.

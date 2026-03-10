@@ -8,7 +8,7 @@
 
 import { randomBytes } from 'crypto';
 
-// ── Types ──────────────────────────────────────────────────────────
+// -- Types ----------------------------------------------------------
 
 export type RollbackStepStatus = 'pending' | 'running' | 'completed' | 'failed' | 'skipped';
 
@@ -47,11 +47,11 @@ export interface RollbackReport {
   stepTimings: Array<{ name: string; durationMs: number }>;
 }
 
-// ── In-memory store ────────────────────────────────────────────────
+// -- In-memory store ------------------------------------------------
 
 const drills = new Map<string, RollbackDrill>();
 
-// ── Default rollback steps ─────────────────────────────────────────
+// -- Default rollback steps -----------------------------------------
 
 function createDefaultSteps(): RollbackStep[] {
   return [
@@ -114,7 +114,7 @@ function createDefaultSteps(): RollbackStep[] {
   ];
 }
 
-// ── Executor ───────────────────────────────────────────────────────
+// -- Executor -------------------------------------------------------
 
 const RTO_TARGET_MS = 30 * 60 * 1000; // 30 minutes default RTO
 

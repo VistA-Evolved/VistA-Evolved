@@ -31,7 +31,7 @@ describe("Phase 392: W22-P4 Pharmacy Deep Workflows: IMPLEMENT", () => {
   });
 });
 
-describe("Phase 393: W22-P5: Lab Deep Workflows — IMPLEMENT", () => {
+describe("Phase 393: W22-P5: Lab Deep Workflows -- IMPLEMENT", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/lab/`);
     expect(r0.status, "/lab/").not.toBe(500);
@@ -48,7 +48,7 @@ describe("Phase 394: W22-P6: Imaging/Radiology Deep Workflows -- IMPLEMENT", () 
   });
 });
 
-describe("Phase 395: W22-P7: CDS Hooks + SMART Launch — IMPLEMENT", () => {
+describe("Phase 395: W22-P7: CDS Hooks + SMART Launch -- IMPLEMENT", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/cds/cqf/config`);
     expect(r0.status, "/cds/cqf/config").not.toBe(500);

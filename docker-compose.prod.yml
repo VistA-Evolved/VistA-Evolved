@@ -1,4 +1,4 @@
-# VistA-Evolved — Production Docker Compose
+# VistA-Evolved -- Production Docker Compose
 #
 # Usage:
 #   docker compose -f docker-compose.prod.yml up -d
@@ -11,8 +11,8 @@
 #   - VistA sandbox must be accessible (either via services/vista or remote)
 #
 # Architecture:
-#   nginx (reverse proxy, TLS termination) → api-1, api-2 (Fastify) + web (Next.js)
-#   api → platform-db (PostgreSQL 16) + VistA RPC Broker (port 9430)
+#   nginx (reverse proxy, TLS termination) -> api-1, api-2 (Fastify) + web (Next.js)
+#   api -> platform-db (PostgreSQL 16) + VistA RPC Broker (port 9430)
 #
 # Phase 117: All durable state uses PostgreSQL in prod. SQLite is NOT used.
 
@@ -67,7 +67,7 @@ services:
     networks:
       - frontend
 
-  # ---------- API server (Fastify) — scalable: --scale api=2 ----------
+  # ---------- API server (Fastify) -- scalable: --scale api=2 ----------
   api:
     build:
       context: .

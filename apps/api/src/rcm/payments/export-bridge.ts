@@ -1,5 +1,5 @@
 /**
- * Payment Export Bridge — Pluggable (Phase 92)
+ * Payment Export Bridge -- Pluggable (Phase 92)
  *
  * Defines the PaymentExportBridge interface and two default implementations:
  *   - CSV export (for spreadsheet/ERP import)
@@ -16,7 +16,7 @@
 import type { ExportFormat, ExportResult, PaymentExportBridge } from './payment-types.js';
 import { getBatch, getAllLinesForBatch } from './payment-store.js';
 
-/* ── Bridge Registry ───────────────────────────────────────── */
+/* -- Bridge Registry ----------------------------------------- */
 
 const bridges = new Map<ExportFormat, PaymentExportBridge>();
 
@@ -38,7 +38,7 @@ export function exportBatch(
   return bridge.exportBatch(batchId, tenantId);
 }
 
-/* ── CSV Bridge ────────────────────────────────────────────── */
+/* -- CSV Bridge ---------------------------------------------- */
 
 const csvBridge: PaymentExportBridge = {
   name: 'Generic CSV',
@@ -94,7 +94,7 @@ const csvBridge: PaymentExportBridge = {
   },
 };
 
-/* ── JSON Bridge ───────────────────────────────────────────── */
+/* -- JSON Bridge --------------------------------------------- */
 
 const jsonBridge: PaymentExportBridge = {
   name: 'Generic JSON (ERPNext/Odoo compatible)',
@@ -152,7 +152,7 @@ const jsonBridge: PaymentExportBridge = {
   },
 };
 
-/* ── Register defaults ─────────────────────────────────────── */
+/* -- Register defaults --------------------------------------- */
 
 registerExportBridge(csvBridge);
 registerExportBridge(jsonBridge);

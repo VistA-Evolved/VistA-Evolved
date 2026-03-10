@@ -1,5 +1,5 @@
 /**
- * X12 Clearinghouse PayerAdapter — Phase 69
+ * X12 Clearinghouse PayerAdapter -- Phase 69
  *
  * Skeleton adapter for US EDI clearinghouse connectivity.
  * Wraps existing clearinghouse-connector.ts (Phase 38) with

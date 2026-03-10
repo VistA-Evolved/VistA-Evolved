@@ -1,7 +1,7 @@
 /**
- * Generic PG Repository — SQL-based CRUD for Phase 146 durability stores
+ * Generic PG Repository -- SQL-based CRUD for Phase 146 durability stores
  *
- * Phase 146: Durability Wave 3 — Critical Map Stores to PG
+ * Phase 146: Durability Wave 3 -- Critical Map Stores to PG
  *
  * Instead of creating individual Drizzle ORM schemas for each of the 30+ new
  * tables, this module provides a generic SQL repo factory. Each store gets a
@@ -19,7 +19,7 @@
 import { getPgPool } from '../pg-db.js';
 import { log } from '../../../lib/logger.js';
 
-/* ── Helpers ──────────────────────────────────────────────── */
+/* -- Helpers ------------------------------------------------ */
 
 function camelToSnake(s: string): string {
   return s.replace(/[A-Z]/g, (c) => '_' + c.toLowerCase());
@@ -55,7 +55,7 @@ function objToRow(data: Record<string, unknown>): Record<string, unknown> {
   return row;
 }
 
-/* ── Generic Repo Interface ──────────────────────────────── */
+/* -- Generic Repo Interface -------------------------------- */
 
 export interface GenericPgRepo<T extends { id: string }> {
   insert(data: Partial<T> & { id: string }): Promise<T | null>;
@@ -69,7 +69,7 @@ export interface GenericPgRepo<T extends { id: string }> {
   query(sql: string, params: unknown[]): Promise<T[]>;
 }
 
-/* ── Factory ─────────────────────────────────────────────── */
+/* -- Factory ----------------------------------------------- */
 
 export function createPgRepo<T extends { id: string }>(tableName: string): GenericPgRepo<T> {
   assertSafeIdentifier(tableName, 'tableName');

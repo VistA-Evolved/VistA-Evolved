@@ -21,7 +21,7 @@
  */
 
 import { test, expect, type Page, type Locator } from '@playwright/test';
-import { setupConsoleGate } from './helpers/auth';
+import { chartRoute, setupConsoleGate } from './helpers/auth';
 import { NetworkEvidence } from './helpers/network-evidence';
 import * as path from 'path';
 
@@ -83,7 +83,7 @@ const TOAST_SELECTOR = [
   "[class*='Snackbar']",
 ].join(', ');
 
-const SKIP_LABELS = /^(Theme|Density|Layout|Help|Tools|File|Edit|View|Window)[\s:]*$/i;
+const SKIP_LABELS = /^(Theme|Density|Layout|Help|Tools|File|Edit|View|Window|🌐\s*[A-Z]{2})[\s:]*$/iu;
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
@@ -283,21 +283,21 @@ async function auditScreen(
 }
 
 /* ------------------------------------------------------------------ */
-/* Screen targets — v2 extends Phase 72 with scheduling, messaging,    */
+/* Screen targets -- v2 extends Phase 72 with scheduling, messaging,    */
 /* portal basics                                                       */
 /* ------------------------------------------------------------------ */
 
 const CHART_SCREENS: ScreenTarget[] = [
-  { name: 'Cover Sheet', url: '/cprs/chart/3/cover', maxElements: 12 },
-  { name: 'Problems', url: '/cprs/chart/3/problems', maxElements: 10 },
-  { name: 'Meds', url: '/cprs/chart/3/meds', maxElements: 10 },
-  { name: 'Orders', url: '/cprs/chart/3/orders', maxElements: 10 },
-  { name: 'Notes', url: '/cprs/chart/3/notes', maxElements: 10 },
-  { name: 'Labs', url: '/cprs/chart/3/labs', maxElements: 8 },
-  { name: 'Imaging', url: '/cprs/chart/3/imaging', maxElements: 8 },
-  { name: 'Consults', url: '/cprs/chart/3/consults', maxElements: 8 },
-  { name: 'Surgery', url: '/cprs/chart/3/surgery', maxElements: 8 },
-  { name: 'DC Summaries', url: '/cprs/chart/3/dcsumm', maxElements: 8 },
+  { name: 'Cover Sheet', url: chartRoute('cover'), maxElements: 12 },
+  { name: 'Problems', url: chartRoute('problems'), maxElements: 10 },
+  { name: 'Meds', url: chartRoute('meds'), maxElements: 10 },
+  { name: 'Orders', url: chartRoute('orders'), maxElements: 10 },
+  { name: 'Notes', url: chartRoute('notes'), maxElements: 10 },
+  { name: 'Labs', url: chartRoute('labs'), maxElements: 8 },
+  { name: 'Imaging', url: chartRoute('imaging'), maxElements: 8 },
+  { name: 'Consults', url: chartRoute('consults'), maxElements: 8 },
+  { name: 'Surgery', url: chartRoute('surgery'), maxElements: 8 },
+  { name: 'DC Summaries', url: chartRoute('dcsumm'), maxElements: 8 },
 ];
 
 const NAV_SCREENS: ScreenTarget[] = [
@@ -426,16 +426,22 @@ test.describe('Phase 74 -- Click Audit v2 (E2E Evidence)', () => {
     const deadEnds: string[] = [];
 
     for (const slug of tabSlugs) {
-      await page.goto(`/cprs/chart/3/${slug}`);
+      await page.goto(chartRoute(slug));
       await page.waitForLoadState('domcontentloaded');
-      await page.waitForTimeout(1500);
+      await page.waitForFunction(
+        () => !document.body.textContent?.includes('Checking session...'),
+        { timeout: 10_000 }
+      ).catch(() => {});
+      await page.waitForTimeout(1000);
 
       const text = await page
         .locator('body')
         .first()
         .textContent()
         .catch(() => '');
-      if (!text?.trim().length || (text?.trim().length || 0) < 10) {
+      if ((text || '').includes('Checking session...')) {
+        deadEnds.push(`${slug}: session check did not settle`);
+      } else if (!text?.trim().length || (text?.trim().length || 0) < 10) {
         deadEnds.push(`${slug}: blank or near-empty (${text?.length ?? 0} chars)`);
       }
     }
@@ -451,11 +457,11 @@ test.describe('Phase 74 -- Click Audit v2 (E2E Evidence)', () => {
     const errors = setupConsoleGate(page);
 
     const urls = [
-      '/cprs/chart/3/cover',
-      '/cprs/chart/3/problems',
-      '/cprs/chart/3/meds',
-      '/cprs/chart/3/orders',
-      '/cprs/chart/3/imaging',
+      chartRoute('cover'),
+      chartRoute('problems'),
+      chartRoute('meds'),
+      chartRoute('orders'),
+      chartRoute('imaging'),
       '/cprs/scheduling',
       '/cprs/messages',
     ];
@@ -502,9 +508,9 @@ test.describe('Phase 74 -- Click Audit v2 (E2E Evidence)', () => {
 
     // Hit a few core routes to generate evidence
     const coreUrls = [
-      '/cprs/chart/3/cover',
-      '/cprs/chart/3/problems',
-      '/cprs/chart/3/meds',
+      chartRoute('cover'),
+      chartRoute('problems'),
+      chartRoute('meds'),
       '/cprs/scheduling',
       '/cprs/messages',
       '/cprs/admin/modules',

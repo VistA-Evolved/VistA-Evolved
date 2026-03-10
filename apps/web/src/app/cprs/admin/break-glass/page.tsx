@@ -282,7 +282,7 @@ export default function BreakGlassPage() {
     <div className={styles.panel} style={{ padding: 24 }}>
       <h2 style={{ marginBottom: 8 }}>Enterprise Break-Glass Management</h2>
       <p style={{ color: '#888', fontSize: 13, marginBottom: 16 }}>
-        Phase 141 — Manage break-glass access requests, approvals, and revocations.
+        Phase 141 -- Manage break-glass access requests, approvals, and revocations.
       </p>
 
       {/* Tabs */}

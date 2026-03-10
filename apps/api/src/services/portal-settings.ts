@@ -1,5 +1,5 @@
 /**
- * Portal Settings — Phase 27
+ * Portal Settings -- Phase 27
  *
  * Patient-facing settings: language preference, notification preferences,
  * MFA stub/roadmap, display preferences.
@@ -86,7 +86,7 @@ export interface DisplayPrefs {
 export interface MfaStatus {
   enabled: boolean;
   method: "none" | "totp" | "sms";
-  /** MFA is not yet implemented — this is the roadmap stub */
+  /** MFA is not yet implemented -- this is the roadmap stub */
   roadmap: string;
 }
 
@@ -213,7 +213,7 @@ export async function updateSettings(
     }
     if (settings.language !== patch.language) {
       settings.language = patch.language;
-      changes.push(`language→${patch.language}`);
+      changes.push(`language->${patch.language}`);
     }
   }
 
@@ -223,7 +223,7 @@ export async function updateSettings(
         const k = key as keyof NotificationPrefs;
         if (settings.notifications[k] !== val) {
           settings.notifications[k] = val;
-          changes.push(`notifications.${k}→${val}`);
+          changes.push(`notifications.${k}->${val}`);
         }
       }
     }
@@ -236,16 +236,16 @@ export async function updateSettings(
       }
       if (settings.display.fontSize !== patch.display.fontSize) {
         settings.display.fontSize = patch.display.fontSize;
-        changes.push(`display.fontSize→${patch.display.fontSize}`);
+        changes.push(`display.fontSize->${patch.display.fontSize}`);
       }
     }
     if (patch.display.highContrast !== undefined && typeof patch.display.highContrast === "boolean") {
       settings.display.highContrast = patch.display.highContrast;
-      changes.push(`display.highContrast→${patch.display.highContrast}`);
+      changes.push(`display.highContrast->${patch.display.highContrast}`);
     }
     if (patch.display.compactView !== undefined && typeof patch.display.compactView === "boolean") {
       settings.display.compactView = patch.display.compactView;
-      changes.push(`display.compactView→${patch.display.compactView}`);
+      changes.push(`display.compactView->${patch.display.compactView}`);
     }
   }
 

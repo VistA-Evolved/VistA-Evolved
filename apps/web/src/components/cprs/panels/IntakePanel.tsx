@@ -6,7 +6,7 @@ import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
 /* ------------------------------------------------------------------ */
-/* Types (mirror API shapes — no shared package in monorepo)            */
+/* Types (mirror API shapes -- no shared package in monorepo)            */
 /* ------------------------------------------------------------------ */
 
 interface IntakeSession {
@@ -660,11 +660,11 @@ export default function IntakePanel({ dfn }: Props) {
                   </button>
                 )}
                 {review.session.status === 'clinician_reviewed' && (
-                  <button className={styles.btnPrimary} onClick={handleFile} disabled={actionBusy}>
+                  <button className={styles.btnPrimary} onClick={handleFile} disabled={actionBusy} title={actionBusy ? 'Another intake action is already in progress.' : undefined}>
                     {actionBusy ? 'Filing...' : 'File to VistA'}
                   </button>
                 )}
-                <button className={styles.btn} onClick={handleExport} disabled={actionBusy}>
+                <button className={styles.btn} onClick={handleExport} disabled={actionBusy} title={actionBusy ? 'Another intake action is already in progress.' : undefined}>
                   Export Draft Note
                 </button>
                 <button

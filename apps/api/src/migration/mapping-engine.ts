@@ -6,7 +6,7 @@
  *
  * Design:
  *   - Pure functions, no side effects
- *   - Each transform is a simple string→string function
+ *   - Each transform is a simple string->string function
  *   - Validation uses regex patterns from the mapping config
  *   - Templates are composable: base template + per-job overrides
  */

@@ -1,5 +1,5 @@
 /**
- * SIEM Management Routes — Phase 344 (W16-P8).
+ * SIEM Management Routes -- Phase 344 (W16-P8).
  *
  * Admin-only endpoints for SIEM configuration, alert rules, and triggers.
  */
@@ -15,7 +15,7 @@ import {
 
 export async function siemRoutes(app: FastifyInstance): Promise<void> {
   /**
-   * GET /siem/status — SIEM sink status.
+   * GET /siem/status -- SIEM sink status.
    */
   app.get('/siem/status', async (_request: FastifyRequest, reply: FastifyReply) => {
     const status = getSiemStatus();
@@ -24,7 +24,7 @@ export async function siemRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * POST /siem/flush — Force flush event buffer.
+   * POST /siem/flush -- Force flush event buffer.
    */
   app.post('/siem/flush', async (_request: FastifyRequest, reply: FastifyReply) => {
     const result = await flushEvents();
@@ -32,7 +32,7 @@ export async function siemRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /siem/rules — List alert rules.
+   * GET /siem/rules -- List alert rules.
    */
   app.get('/siem/rules', async (_request: FastifyRequest, reply: FastifyReply) => {
     const rules = getAlertRules();
@@ -54,7 +54,7 @@ export async function siemRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * PUT /siem/rules/:id/toggle — Enable/disable an alert rule.
+   * PUT /siem/rules/:id/toggle -- Enable/disable an alert rule.
    */
   app.put('/siem/rules/:id/toggle', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
@@ -68,7 +68,7 @@ export async function siemRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /siem/triggers — List alert triggers.
+   * GET /siem/triggers -- List alert triggers.
    */
   app.get('/siem/triggers', async (request: FastifyRequest, reply: FastifyReply) => {
     const query = request.query as {
@@ -85,7 +85,7 @@ export async function siemRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /siem/stats — Alert statistics.
+   * GET /siem/stats -- Alert statistics.
    */
   app.get('/siem/stats', async (_request: FastifyRequest, reply: FastifyReply) => {
     const stats = getAlertStats();

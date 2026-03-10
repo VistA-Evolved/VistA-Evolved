@@ -2,7 +2,7 @@
  * Importer: SG / NZ National Gateway Payers
  *
  * Phase 44: National rails for Singapore and New Zealand.
- * These are not "payer lists" — they are national gateway entries.
+ * These are not "payer lists" -- they are national gateway entries.
  *
  * SG: NPHC (MediSave/MediShield claims platform)
  * NZ: ACC (Accident Compensation Corporation Claim API)

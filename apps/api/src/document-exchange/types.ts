@@ -1,5 +1,5 @@
 /**
- * Phase 403 (W23-P5): Document Exchange — Types
+ * Phase 403 (W23-P5): Document Exchange -- Types
  */
 
 export type DocumentStatus = 'current' | 'superseded' | 'entered-in-error';

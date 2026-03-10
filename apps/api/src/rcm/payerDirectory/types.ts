@@ -1,5 +1,5 @@
 /**
- * Payer Directory — Canonical Types & Interfaces
+ * Payer Directory -- Canonical Types & Interfaces
  *
  * Phase 44: Global Payer Directory Engine + Jurisdiction Packs
  *
@@ -10,11 +10,11 @@
 
 import type { IntegrationMode, PayerCountry, PayerStatus } from '../domain/payer.js';
 
-/* ── Payer Type ─────────────────────────────────────────────── */
+/* -- Payer Type ----------------------------------------------- */
 
 export type PayerType = 'NATIONAL' | 'PRIVATE' | 'NETWORK' | 'CLEARINGHOUSE' | 'GOVERNMENT';
 
-/* ── Channel ────────────────────────────────────────────────── */
+/* -- Channel -------------------------------------------------- */
 
 export interface PayerChannel {
   type: 'EDI_CLEARINGHOUSE' | 'DIRECT_API' | 'PORTAL_BATCH' | 'NATIONAL_GATEWAY' | 'FHIR_R4';
@@ -24,7 +24,7 @@ export interface PayerChannel {
   notes?: string;
 }
 
-/* ── Supported Transactions ─────────────────────────────────── */
+/* -- Supported Transactions ----------------------------------- */
 
 export type TransactionType =
   | '837P'
@@ -47,7 +47,7 @@ export type TransactionType =
   | 'ECLIPSE_CLAIM'
   | 'ECLIPSE_REMIT'; // AU Medicare
 
-/* ── Regulatory Source ──────────────────────────────────────── */
+/* -- Regulatory Source ---------------------------------------- */
 
 export interface RegulatorySource {
   authority: string; // e.g. "Insurance Commission", "APRA", "CMS"
@@ -58,7 +58,7 @@ export interface RegulatorySource {
   snapshotPath?: string; // path in repo (reference/payer-sources/...)
 }
 
-/* ── Network IDs ────────────────────────────────────────────── */
+/* -- Network IDs ---------------------------------------------- */
 
 export interface NetworkIds {
   availityPayerId?: string;
@@ -70,7 +70,7 @@ export interface NetworkIds {
   apraCode?: string; // APRA registration number
 }
 
-/* ── Canonical Directory Payer ──────────────────────────────── */
+/* -- Canonical Directory Payer -------------------------------- */
 
 export interface DirectoryPayer {
   payerId: string; // stable, format: "{CC}-{CODE}" e.g. "PH-MAXICARE"
@@ -98,7 +98,7 @@ export interface DirectoryPayer {
   updatedAt: string;
 }
 
-/* ── Importer Interface ─────────────────────────────────────── */
+/* -- Importer Interface --------------------------------------- */
 
 export interface ImportResult {
   importerId: string;
@@ -122,7 +122,7 @@ export interface PayerImporter {
   importFromFile?(data: string, format: 'csv' | 'json'): ImportResult;
 }
 
-/* ── Diff Result ────────────────────────────────────────────── */
+/* -- Diff Result ---------------------------------------------- */
 
 export interface PayerDiffEntry {
   payerId: string;
@@ -140,7 +140,7 @@ export interface DirectoryDiffResult {
   unchanged: number;
 }
 
-/* ── Enrollment Packet ──────────────────────────────────────── */
+/* -- Enrollment Packet ---------------------------------------- */
 
 export type EnrollmentStatus = 'NOT_STARTED' | 'IN_PROGRESS' | 'TESTING' | 'LIVE' | 'SUSPENDED';
 
@@ -179,7 +179,7 @@ export interface EnrollmentPacket {
   updatedAt: string;
 }
 
-/* ── Routing ────────────────────────────────────────────────── */
+/* -- Routing -------------------------------------------------- */
 
 export interface RouteSelection {
   payerId: string;

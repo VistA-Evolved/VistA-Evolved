@@ -1,7 +1,7 @@
 /**
- * Server — Register Routes
+ * Server -- Register Routes
  *
- * Phase 173: Extracted from index.ts — registers all Fastify route plugins
+ * Phase 173: Extracted from index.ts -- registers all Fastify route plugins
  * in the exact same order as the original monolithic file.
  * NO behavior change. NO route changes.
  */
@@ -123,6 +123,7 @@ import tiuNotesRoutes from '../routes/cprs/tiu-notes.js';
 import schedulingRoutes from '../routes/scheduling/index.js';
 import messagingRoutes from '../routes/messaging/index.js';
 import vistaMailmanRoutes from '../routes/vista-mailman.js';
+import vistaMessagesRoutes from '../routes/vista-messages.js';
 import portalMailmanRoutes, { initPortalMailman } from '../routes/portal-mailman.js';
 
 // Portal documents
@@ -168,6 +169,7 @@ import vistaWorkforceRoutes from '../routes/admin/vista-workforce.js';
 import vistaQualityRoutes from '../routes/admin/vista-quality.js';
 import vistaClinicalSetupRoutes from '../routes/admin/vista-clinical-setup.js';
 import provisioningRoutes from '../routes/admin/provisioning.js';
+import signupRoutes from '../routes/signup.js';
 
 // FHIR R4 gateway (Phase 178)
 import fhirRoutes from '../fhir/fhir-routes.js';
@@ -245,6 +247,14 @@ import identityLinkingRoutes from '../routes/identity-linking.js';
 import opsAdminRoutes from '../routes/ops-admin.js';
 import certificationEvidenceRoutes from '../routes/certification-evidence.js';
 import vistaProvisionRoutes from '../routes/vista-provision.js';
+import patientRegistrationRoutes from '../routes/patient-registration.js';
+
+// E-Prescribing + PCE/Encounters
+import ePrescribingRoutes from '../routes/e-prescribing.js';
+import pceEncounterRoutes from '../routes/pce-encounters.js';
+
+// Unified VistA admin routes (Phase 700: all VE* admin RPCs under /vista/admin/*)
+import vistaAdminUnifiedRoutes from '../routes/vista-admin.js';
 
 // Wave 21: Device + Modality Integration (Phases 378-388)
 import {
@@ -408,6 +418,10 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   // SaaS Billing/Metering (Phase 284)
   server.register(billingRoutes);
 
+  // Billing gate middleware (Phase D) -- disabled by default, enable with BILLING_GATE_ENABLED=true
+  const { billingGateHook } = await import('../middleware/billing-gate.js');
+  server.addHook('onRequest', billingGateHook);
+
   // Feature Flag Evaluation (Phase 285)
   server.register(flagEvalRoutes);
 
@@ -432,6 +446,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
 
   // SaaS provisioning (tenant signup wizard)
   server.register(provisioningRoutes);
+  server.register(signupRoutes);
 
   // Interop routes (Phase 18B/D, 21)
   server.register(interopRoutes);
@@ -446,7 +461,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   // Portal auth (Phase 26)
   server.register(portalAuthRoutes);
 
-  // Portal core — messaging, appointments, sharing, settings, export (Phase 27)
+  // Portal core -- messaging, appointments, sharing, settings, export (Phase 27)
   initPortalCore(getPortalSession);
   initPortalMailman(getPortalSession);
   initPortalDocuments(getPortalSession);
@@ -563,6 +578,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(schedulingRoutes);
   server.register(messagingRoutes);
   server.register(vistaMailmanRoutes);
+  server.register(vistaMessagesRoutes);
   server.register(portalMailmanRoutes);
 
   // Portal documents (Phase 140)
@@ -652,6 +668,16 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   // VistA provisioning (Phase 155)
   server.register(vistaProvisionRoutes);
 
+  // Patient registration (VE PAT* RPCs)
+  server.register(patientRegistrationRoutes);
+
+  // E-Prescribing (VE ERX RPCs) + PCE/Encounters (VE PCE RPCs)
+  server.register(ePrescribingRoutes);
+  server.register(pceEncounterRoutes);
+
+  // Unified VistA admin (Phase 700: /vista/admin/* endpoints for all VE* RPCs)
+  server.register(vistaAdminUnifiedRoutes);
+
   // HL7v2 Engine (Phase 239)
   server.register(hl7EngineRoutes);
 
@@ -704,7 +730,7 @@ export async function registerRoutes(server: FastifyInstance): Promise<void> {
   server.register(terminologyRoutes);
   server.register(countryPackRoutes);
 
-  // Phase 493 (W34-P3): Country policy spine — resolves pack per request
+  // Phase 493 (W34-P3): Country policy spine -- resolves pack per request
   server.register(countryPolicyHook);
 
   // Phase 496 (W34-P6): DSAR + Retention workflows

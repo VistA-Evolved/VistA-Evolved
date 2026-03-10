@@ -7,7 +7,7 @@
  * Shows:
  * - All actions for the current location
  * - Their endpoint, status, and RPC assignments
- * - Integration-pending items highlighted
+ * - Items requiring configuration highlighted
  *
  * Only renders when NODE_ENV !== 'production'.
  */
@@ -158,7 +158,7 @@ export default function ActionInspector({ location }: ActionInspectorProps) {
               style={{
                 borderBottom: '1px solid #222',
                 background:
-                  a.status === 'integration-pending'
+                  a.status === 'requires_config'
                     ? '#2a2518'
                     : a.status === 'unsupported-in-sandbox'
                       ? '#182a2a'
@@ -198,7 +198,7 @@ export default function ActionInspector({ location }: ActionInspectorProps) {
 function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, { bg: string; text: string }> = {
     wired: { bg: '#2d4a2d', text: '#a3d9a3' },
-    'integration-pending': { bg: '#4a3d2d', text: '#d9c9a3' },
+    requires_config: { bg: '#4a3d2d', text: '#d9c9a3' },
     'unsupported-in-sandbox': { bg: '#2d3d4a', text: '#a3c4d9' },
     stub: { bg: '#4a2d2d', text: '#d9a3a3' },
   };

@@ -1,5 +1,5 @@
 /**
- * Transaction Correctness Engine — Barrel Export
+ * Transaction Correctness Engine -- Barrel Export
  *
  * Phase 45: Central export for all transaction engine modules.
  * Initializes translators on import.
@@ -66,7 +66,7 @@ export {
 // Reconciliation
 export { buildReconciliationSummary, buildReconciliationStats } from './reconciliation.js';
 
-/* ── Auto-register translators ───────────────────────────────── */
+/* -- Auto-register translators --------------------------------- */
 
 import { registerTranslator } from './translator.js';
 import { localScaffoldTranslator } from './local-scaffold-translator.js';

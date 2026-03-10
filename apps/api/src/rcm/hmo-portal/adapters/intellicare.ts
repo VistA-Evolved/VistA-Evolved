@@ -1,5 +1,5 @@
 /**
- * Intellicare Portal Adapter — Phase 97
+ * Intellicare Portal Adapter -- Phase 97
  *
  * Manual-assisted adapter for Intellicare.
  * Portal: https://provider.intellicare.com.ph/

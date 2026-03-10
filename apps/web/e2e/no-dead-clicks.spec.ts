@@ -1,5 +1,5 @@
 /**
- * Phase 52 — No Dead Click Contract
+ * Phase 52 -- No Dead Click Contract
  *
  * Automated contract test that crawls key UI screens and asserts:
  *   - Every clickable element either:
@@ -14,7 +14,7 @@
  */
 
 import { test, expect, type Page, type Locator } from '@playwright/test';
-import { setupConsoleGate } from './helpers/auth';
+import { chartRoute, setupConsoleGate } from './helpers/auth';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                             */
@@ -120,13 +120,13 @@ interface ScreenDef {
 }
 
 const CPRS_SCREENS: ScreenDef[] = [
-  { name: 'Cover Sheet', url: '/cprs/chart/3/cover', maxButtons: 10 },
-  { name: 'Problems', url: '/cprs/chart/3/problems', maxButtons: 8 },
-  { name: 'Meds', url: '/cprs/chart/3/meds', maxButtons: 8 },
-  { name: 'Orders', url: '/cprs/chart/3/orders', maxButtons: 8 },
-  { name: 'Notes', url: '/cprs/chart/3/notes', maxButtons: 8 },
-  { name: 'Labs', url: '/cprs/chart/3/labs', maxButtons: 8 },
-  { name: 'Imaging', url: '/cprs/chart/3/imaging', maxButtons: 8 },
+  { name: 'Cover Sheet', url: chartRoute('cover'), maxButtons: 10 },
+  { name: 'Problems', url: chartRoute('problems'), maxButtons: 8 },
+  { name: 'Meds', url: chartRoute('meds'), maxButtons: 8 },
+  { name: 'Orders', url: chartRoute('orders'), maxButtons: 8 },
+  { name: 'Notes', url: chartRoute('notes'), maxButtons: 8 },
+  { name: 'Labs', url: chartRoute('labs'), maxButtons: 8 },
+  { name: 'Imaging', url: chartRoute('imaging'), maxButtons: 8 },
 ];
 
 const ADMIN_SCREENS: ScreenDef[] = [
@@ -172,6 +172,7 @@ test.describe('No Dead Click Contract', () => {
 
           // Skip known meta-buttons (theme toggles, menu bar items are tested elsewhere)
           if (trimmed.match(/^(Theme|Density|Layout):/)) continue;
+          if (trimmed.match(/^🌐\s*[A-Z]{2}$/u)) continue;
           if (trimmed.match(/^(Help|Tools|File|Edit|View|Window)$/i)) continue;
 
           const result = await testButtonClick(page, btn, trimmed);
@@ -264,19 +265,20 @@ test.describe('No Dead Click Contract', () => {
     const deadEnds: string[] = [];
 
     for (const slug of tabSlugs) {
-      await page.goto(`/cprs/chart/3/${slug}`);
+      await page.goto(chartRoute(slug));
       await page.waitForLoadState('domcontentloaded');
-      await page.waitForTimeout(1500);
+      await page.waitForFunction(
+        () => !document.body.textContent?.includes('Checking session...'),
+        { timeout: 10_000 }
+      ).catch(() => {});
+      await page.waitForTimeout(1000);
 
-      // Page should not be blank
-      const bodyEl = page.locator('body').first();
-      const visible = await bodyEl.isVisible({ timeout: 5000 }).catch(() => false);
-      if (!visible) {
-        deadEnds.push(`${slug}: body not visible`);
+      // Page should not be blank and should resolve past the session-check shell.
+      const text = await page.locator('body').first().textContent().catch(() => '');
+      if ((text || '').includes('Checking session...')) {
+        deadEnds.push(`${slug}: session check did not settle`);
         continue;
       }
-
-      const text = await bodyEl.textContent();
       if (!text?.trim().length || (text?.trim().length || 0) < 10) {
         deadEnds.push(`${slug}: blank or near-empty content (${text?.length} chars)`);
       }
@@ -294,10 +296,10 @@ test.describe('No Dead Click Contract', () => {
 
     // Crawl pages that might show integration-pending
     const pages = [
-      '/cprs/chart/3/cover',
-      '/cprs/chart/3/problems',
-      '/cprs/chart/3/meds',
-      '/cprs/chart/3/imaging',
+      chartRoute('cover'),
+      chartRoute('problems'),
+      chartRoute('meds'),
+      chartRoute('imaging'),
     ];
 
     for (const url of pages) {

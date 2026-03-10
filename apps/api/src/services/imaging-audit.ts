@@ -1,5 +1,5 @@
 /**
- * Imaging Audit Trail — Phase 24.
+ * Imaging Audit Trail -- Phase 24.
  *
  * Append-only, hash-chained audit log for imaging compliance.
  * Each entry includes a SHA-256 hash of the previous entry,
@@ -67,7 +67,7 @@ export interface ImagingAuditEntry {
   tenantId: string;
   /** Patient scope (optional) */
   patientDfn?: string;
-  /** Study UID (optional — NEVER pixel data) */
+  /** Study UID (optional -- NEVER pixel data) */
   studyInstanceUid?: string;
   /** Request ID for correlation */
   requestId?: string;
@@ -133,7 +133,7 @@ let lastRecoveredHash = _recovered.hash;
 /** Max in-memory entries before we start evicting old ones (keep last N). */
 const MAX_MEMORY_ENTRIES = Number(process.env.IMAGING_AUDIT_MAX_ENTRIES || 10000);
 
-/** File path for JSONL persistence (default: logs/imaging-audit.jsonl — Phase 118). */
+/** File path for JSONL persistence (default: logs/imaging-audit.jsonl -- Phase 118). */
 const AUDIT_JSONL_PATH = process.env.IMAGING_AUDIT_FILE || "logs/imaging-audit.jsonl";
 
 /**
@@ -373,7 +373,7 @@ export function verifyChain(): boolean {
 
     // Verify prevHash linkage
     if (i === 0) {
-      // First entry in memory — may not start from genesis if evicted
+      // First entry in memory -- may not start from genesis if evicted
       // Can only verify hash integrity, not chain continuity from genesis
     } else {
       if (entry.prevHash !== auditChain[i - 1].hash) return false;

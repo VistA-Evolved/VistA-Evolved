@@ -1,5 +1,5 @@
 /**
- * HL7v2 Routing — Destination Dispatcher
+ * HL7v2 Routing -- Destination Dispatcher
  *
  * Phase 240 (Wave 6 P3): Dispatches transformed HL7v2 messages to their
  * configured destinations (MLLP forward, VistA RPC, HTTP, dead-letter).
@@ -133,7 +133,7 @@ export function shutdownDispatcher(): void {
 }
 
 /* ------------------------------------------------------------------ */
-/*  Private — Dispatch by Type                                         */
+/*  Private -- Dispatch by Type                                         */
 /* ------------------------------------------------------------------ */
 
 async function dispatchMllp(messageText: string, dest: RouteDestination): Promise<DispatchResult> {
@@ -197,7 +197,7 @@ async function dispatchHttp(messageText: string, dest: RouteDestination): Promis
 }
 
 function dispatchVistaRpc(_messageText: string, dest: RouteDestination): DispatchResult {
-  // VistA RPC bridge — integration pending
+  // VistA RPC bridge -- integration pending
   // Will be wired in Phase 241 (P4) with message pack handlers
   return {
     ok: false,

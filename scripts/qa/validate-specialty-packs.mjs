@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Phase 167: Specialty Pack Validator — CLI
+ * Phase 167: Specialty Pack Validator -- CLI
  * Usage: node scripts/qa/validate-specialty-packs.mjs
  *
  * Validates all specialty packs against the minimum artifact rubrics.

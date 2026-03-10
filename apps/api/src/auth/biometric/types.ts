@@ -1,5 +1,5 @@
 /**
- * Biometric Authentication Types — Phase 35.
+ * Biometric Authentication Types -- Phase 35.
  *
  * Provider-agnostic interfaces for biometric authentication.
  * Supports passkeys (WebAuthn) as primary, face verification as optional.
@@ -149,7 +149,7 @@ export interface BiometricCredential {
 /* ------------------------------------------------------------------ */
 
 export interface FaceVerificationConfig {
-  /** Feature flag — must be explicitly enabled */
+  /** Feature flag -- must be explicitly enabled */
   enabled: boolean;
   /** Tenant-level admin setting required */
   requireTenantApproval: boolean;
@@ -185,7 +185,7 @@ export interface BiometricAuditEvent {
   outcome: 'success' | 'failure';
   /** User ID involved */
   userId: string;
-  /** No raw biometric data — only metadata */
+  /** No raw biometric data -- only metadata */
   credentialId?: string;
   /** Error message if failed */
   error?: string;

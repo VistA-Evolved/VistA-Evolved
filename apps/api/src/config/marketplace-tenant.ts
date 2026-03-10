@@ -1,5 +1,5 @@
 /**
- * Marketplace Tenant Configuration — Phase 51.
+ * Marketplace Tenant Configuration -- Phase 51.
  *
  * Enhanced tenant configuration for marketplace-ready module packaging.
  * Layers on top of the existing Phase 17A tenant-config.ts (tab-level)
@@ -9,7 +9,7 @@
  *   - Per-tenant enabled system modules (marketplace toggle)
  *   - Connector settings per tenant (e.g., which clearinghouse, which PACS)
  *   - Jurisdiction pack selection (US, PH, etc.)
- *   - Safe defaults — no secrets stored in config; secrets via env vars
+ *   - Safe defaults -- no secrets stored in config; secrets via env vars
  *
  * Production would swap the in-memory store for a database or config service.
  */
@@ -28,12 +28,12 @@ import {
 
 /** Supported jurisdiction packs (determines regulatory defaults). */
 export type JurisdictionPack =
-  | 'us' // United States — HIPAA, CMS, X12 EDI
-  | 'ph' // Philippines — PhilHealth, DOH
-  | 'global' // Generic — minimal regulatory assumptions
-  | 'sandbox'; // Development/testing — all features, relaxed validation
+  | 'us' // United States -- HIPAA, CMS, X12 EDI
+  | 'ph' // Philippines -- PhilHealth, DOH
+  | 'global' // Generic -- minimal regulatory assumptions
+  | 'sandbox'; // Development/testing -- all features, relaxed validation
 
-/** Connector configuration (no secrets — secrets come from env vars). */
+/** Connector configuration (no secrets -- secrets come from env vars). */
 export interface ConnectorConfig {
   /** Connector type identifier (e.g., "clearinghouse", "pacs", "ehr") */
   type: string;

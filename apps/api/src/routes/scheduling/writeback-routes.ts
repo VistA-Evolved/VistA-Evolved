@@ -28,7 +28,7 @@ import {
 } from './writeback-guard.js';
 
 export default async function writebackRoutes(server: FastifyInstance) {
-  // GET /scheduling/writeback/policy — current writeback policy
+  // GET /scheduling/writeback/policy -- current writeback policy
   server.get(
     '/scheduling/writeback/policy',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -41,7 +41,7 @@ export default async function writebackRoutes(server: FastifyInstance) {
         policy,
         enforcementRules: [
           "UI must NEVER display 'scheduled' unless truth gate passed",
-          "Staff approve → status stays 'approved' until VistA confirmation",
+          "Staff approve -> status stays 'approved' until VistA confirmation",
           "All approve paths must call enforceTruthGate before returning 'scheduled'",
           'request_only mode: all bookings flow through staff approval queue',
         ],
@@ -56,7 +56,7 @@ export default async function writebackRoutes(server: FastifyInstance) {
     }
   );
 
-  // GET /scheduling/writeback/entries — tracked writeback entries
+  // GET /scheduling/writeback/entries -- tracked writeback entries
   server.get(
     '/scheduling/writeback/entries',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -81,7 +81,7 @@ export default async function writebackRoutes(server: FastifyInstance) {
     }
   );
 
-  // POST /scheduling/writeback/verify/:ref — enforce truth gate on an approved appointment
+  // POST /scheduling/writeback/verify/:ref -- enforce truth gate on an approved appointment
   server.post(
     '/scheduling/writeback/verify/:ref',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -111,12 +111,12 @@ export default async function writebackRoutes(server: FastifyInstance) {
         nextSteps: result.nextSteps,
         enforcementNote: result.ok
           ? "VistA confirmed: appointment may be displayed as 'scheduled'"
-          : "VistA did NOT confirm: appointment must stay 'approved' in UI — NEVER show 'scheduled'",
+          : "VistA did NOT confirm: appointment must stay 'approved' in UI -- NEVER show 'scheduled'",
       };
     }
   );
 
-  // GET /scheduling/writeback/readiness — RPC availability + writeback readiness
+  // GET /scheduling/writeback/readiness -- RPC availability + writeback readiness
   server.get(
     '/scheduling/writeback/readiness',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -164,7 +164,7 @@ export default async function writebackRoutes(server: FastifyInstance) {
           never: "UI must NEVER display 'scheduled' without truth gate pass",
           approve: "'approved' means staff approved, not VistA confirmed",
           scheduled: "'scheduled' requires VistA round-trip confirmation",
-          integration_pending: 'VistA writeback infra not available',
+          failed: 'VistA writeback attempted but RPC returned error',
         },
       };
     }

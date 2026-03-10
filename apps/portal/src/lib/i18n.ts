@@ -1,7 +1,7 @@
 import { API_BASE } from '@/lib/api-config';
 import { SUPPORTED_LOCALES, type SupportedLocale } from '@vista-evolved/locale-utils';
 /**
- * i18n configuration for the Patient Portal — Phase 132.
+ * i18n configuration for the Patient Portal -- Phase 132.
  *
  * Uses next-intl with client-side provider.
  * Locale persisted via portal_patient_setting.language (existing endpoint).

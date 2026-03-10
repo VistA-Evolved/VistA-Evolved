@@ -1,5 +1,5 @@
 /**
- * RPC Context Wiring Tests — Phase 573B
+ * RPC Context Wiring Tests -- Phase 573B
  *
  * Verifies that:
  *   1. AsyncLocalStorage-based RPC context is accessible within run scope
@@ -42,7 +42,7 @@ describe('RPC Context AsyncLocalStorage', () => {
     });
   });
 
-  it('context is scoped — not visible after run completes', () => {
+  it('context is scoped -- not visible after run completes', () => {
     runWithRpcContext(MOCK_CTX, () => {
       expect(getCurrentRpcContext()).not.toBeNull();
     });
@@ -61,7 +61,7 @@ describe('RPC Context AsyncLocalStorage', () => {
   });
 
   it('enterRpcContext patches the current context', () => {
-    // enterRpcContext uses enterWith() — modifies current async context
+    // enterRpcContext uses enterWith() -- modifies current async context
     // Must be tested carefully since it persists
     enterRpcContext(MOCK_CTX);
     const ctx = getCurrentRpcContext();

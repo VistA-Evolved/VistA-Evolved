@@ -1,5 +1,5 @@
 /**
- * Department RBAC Routes — Phase 348
+ * Department RBAC Routes -- Phase 348
  *
  * Admin endpoints for department role templates and membership management.
  */
@@ -40,7 +40,7 @@ export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
     return null;
   }
 
-  // ─── Templates ───────────────────────────────────────
+  // --- Templates ---------------------------------------
 
   server.get('/dept-rbac/templates', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
@@ -118,7 +118,7 @@ export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, seeded: seeded.length, templates: seeded });
   });
 
-  // ─── Memberships ─────────────────────────────────────
+  // --- Memberships -------------------------------------
 
   server.get('/dept-rbac/memberships', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
@@ -172,7 +172,7 @@ export async function deptRbacRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, revoked: true });
   });
 
-  // ─── Access Decision ─────────────────────────────────
+  // --- Access Decision ---------------------------------
 
   server.post('/dept-rbac/evaluate', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);

@@ -1,16 +1,16 @@
 /**
- * Consent Engine — Phase 312
+ * Consent Engine -- Phase 312
  *
  * Patient consent management following the regulatory profiles defined
  * in country packs. Supports category-level and all-or-nothing consent.
  *
- * Consent records are immutable — once granted/denied, they are never
+ * Consent records are immutable -- once granted/denied, they are never
  * modified. Revocation creates a new record with status "revoked".
  */
 
 import { createHash, randomBytes } from "node:crypto";
 
-// ── Consent Types ──────────────────────────────────────────────
+// -- Consent Types ----------------------------------------------
 
 export const CONSENT_CATEGORIES = [
   "treatment",          // Use data for treatment purposes
@@ -55,7 +55,7 @@ export interface ConsentPolicy {
   minRetentionDays: number;      // How long to keep the consent record
 }
 
-// ── Consent Policy by Regulatory Framework ─────────────────────
+// -- Consent Policy by Regulatory Framework ---------------------
 
 export interface RegulatoryConsentProfile {
   framework: string;
@@ -135,7 +135,7 @@ export function listConsentProfiles(): string[] {
   return Object.keys(PROFILES);
 }
 
-// ── Consent Store (In-Memory — Phase 312 Scaffold) ─────────────
+// -- Consent Store (In-Memory -- Phase 312 Scaffold) -------------
 
 const consentRecords = new Map<string, ConsentRecord>();
 

@@ -21,7 +21,7 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 
 export default async function edRoutes(server: FastifyInstance) {
-  // ── Visit CRUD ─────────────────────────────────────────────────
+  // -- Visit CRUD -------------------------------------------------
 
   server.post('/ed/visits', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -52,7 +52,7 @@ export default async function edRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  // ── Triage ─────────────────────────────────────────────────────
+  // -- Triage -----------------------------------------------------
 
   server.post('/ed/visits/:id/triage', async (request, reply) => {
     const { id } = request.params as any;
@@ -81,7 +81,7 @@ export default async function edRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  // ── Bed Management ─────────────────────────────────────────────
+  // -- Bed Management ---------------------------------------------
 
   server.get('/ed/beds', async () => {
     return { ok: true, beds: listBeds() };
@@ -105,7 +105,7 @@ export default async function edRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  // ── Disposition ────────────────────────────────────────────────
+  // -- Disposition ------------------------------------------------
 
   server.post('/ed/visits/:id/disposition', async (request, reply) => {
     const { id } = request.params as any;
@@ -116,13 +116,13 @@ export default async function edRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  // ── Board Metrics ──────────────────────────────────────────────
+  // -- Board Metrics ----------------------------------------------
 
   server.get('/ed/board', async () => {
     return { ok: true, metrics: getBoardMetrics() };
   });
 
-  // ── VistA-enriched: patient demographics for ED visit ─────────
+  // -- VistA-enriched: patient demographics for ED visit ---------
 
   server.get('/ed/visits/:id/vista-demographics', async (request, reply) => {
     const { id } = request.params as any;
@@ -149,7 +149,7 @@ export default async function edRoutes(server: FastifyInstance) {
     }
   });
 
-  // ── VistA-enriched: latest vitals for ED patient ──────────────
+  // -- VistA-enriched: latest vitals for ED patient --------------
 
   server.get('/ed/visits/:id/vista-vitals', async (request, reply) => {
     const { id } = request.params as any;
@@ -181,7 +181,7 @@ export default async function edRoutes(server: FastifyInstance) {
     }
   });
 
-  // ── VistA-enriched: allergies for ED patient ──────────────────
+  // -- VistA-enriched: allergies for ED patient ------------------
 
   server.get('/ed/visits/:id/vista-allergies', async (request, reply) => {
     const { id } = request.params as any;

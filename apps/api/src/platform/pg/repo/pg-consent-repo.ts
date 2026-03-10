@@ -1,5 +1,5 @@
 /**
- * PG Consent Repository — Phase 140
+ * PG Consent Repository -- Phase 140
  *
  * CRUD for patient_consent and patient_portal_pref tables.
  * All operations are tenant-scoped.
@@ -13,7 +13,7 @@ import { randomUUID } from 'node:crypto';
 export type PatientConsentRow = typeof pgPatientConsent.$inferSelect;
 export type PatientPortalPrefRow = typeof pgPatientPortalPref.$inferSelect;
 
-/* ────────────── Patient Consent ────────────── */
+/* -------------- Patient Consent -------------- */
 
 export async function listConsents(
   patientDfn: string,
@@ -92,7 +92,7 @@ export async function upsertConsent(data: {
   return newRow;
 }
 
-/* ────────────── Patient Portal Preferences ────────────── */
+/* -------------- Patient Portal Preferences -------------- */
 
 export async function getPortalPref(
   patientDfn: string,

@@ -5,11 +5,11 @@
  * In-memory store (matches project pattern).
  *
  * Steps:
- *   1. tenant      — Create/configure tenant (facility name, station, VistA host/port)
- *   2. vista-probe  — Verify VistA connectivity (TCP probe + optional auth)
- *   3. modules      — Select enabled modules from SKU profile
- *   4. users        — Invite initial users / configure roles
- *   5. complete     — Review + finalize
+ *   1. tenant      -- Create/configure tenant (facility name, station, VistA host/port)
+ *   2. vista-probe  -- Verify VistA connectivity (TCP probe + optional auth)
+ *   3. modules      -- Select enabled modules from SKU profile
+ *   4. users        -- Invite initial users / configure roles
+ *   5. complete     -- Review + finalize
  */
 
 import * as crypto from 'node:crypto';

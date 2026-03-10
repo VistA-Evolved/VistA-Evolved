@@ -1,5 +1,5 @@
 /**
- * NZ ACC Connector — New Zealand Accident Compensation Corporation
+ * NZ ACC Connector -- New Zealand Accident Compensation Corporation
  *
  * Phase 40 (Superseding): Integration-ready connector for ACC Claim API.
  * Phase 46: Enhanced with create/park claim model, throttling expectations,
@@ -17,9 +17,9 @@
  *   - Test environment available at sandbox.api.acc.co.nz
  *
  * Create/Park/Submit workflow:
- *   1. POST /claims/v2           → Creates draft claim (status: parked)
- *   2. PUT  /claims/v2/{claimNo} → Updates/enriches parked claim
- *   3. POST /claims/v2/{claimNo}/submit → Submits for processing
+ *   1. POST /claims/v2           -> Creates draft claim (status: parked)
+ *   2. PUT  /claims/v2/{claimNo} -> Updates/enriches parked claim
+ *   3. POST /claims/v2/{claimNo}/submit -> Submits for processing
  *   This allows building a claim incrementally before final submission.
  *
  * Enrollment: https://www.acc.co.nz/for-providers/
@@ -88,9 +88,9 @@ export class AccNzConnector implements RcmConnector {
 
     // Integration-ready: when configured, this would:
     // 1. POST /oauth2/token for access token
-    // 2. POST /claims/v2 → create parked claim (status: parked)
-    // 3. PUT  /claims/v2/{claimNo} → enrich with additional data
-    // 4. POST /claims/v2/{claimNo}/submit → submit for processing
+    // 2. POST /claims/v2 -> create parked claim (status: parked)
+    // 3. PUT  /claims/v2/{claimNo} -> enrich with additional data
+    // 4. POST /claims/v2/{claimNo}/submit -> submit for processing
     // 5. Parse response for claim number + status
     // Rate limit: 50 req/min with exponential backoff (maxRetries: 3)
     return {

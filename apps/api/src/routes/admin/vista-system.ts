@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -17,7 +18,7 @@ export default async function vistaSystemRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE TASKMAN LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE TASKMAN LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -35,7 +36,7 @@ export default async function vistaSystemRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE ERROR TRAP', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE ERROR TRAP', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -56,7 +57,7 @@ export default async function vistaSystemRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE SYS STATUS', data };
     } catch (err: any) {
       log.error('Failed to call VE SYS STATUS', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -74,7 +75,7 @@ export default async function vistaSystemRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE PARAM LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE PARAM LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -95,7 +96,7 @@ export default async function vistaSystemRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE PARAM EDIT' };
     } catch (err: any) {
       log.error('Failed to call VE PARAM EDIT', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

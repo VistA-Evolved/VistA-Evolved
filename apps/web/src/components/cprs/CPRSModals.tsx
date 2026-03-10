@@ -245,7 +245,7 @@ function GraphingModal({ onClose }: { onClose: () => void }) {
 function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
   const { authenticated, hasRole } = useSession();
   const [output, setOutput] = useState<string[]>([
-    '> Legacy RPC Console — Phase 13 (WebSocket)',
+    '> Legacy RPC Console -- Phase 13 (WebSocket)',
     '> Type a command and press Enter.',
     '> Modes: "rpc RPC_NAME param1 param2" or "api /vista/ping"',
     '> _',
@@ -290,7 +290,7 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
         } else if (msg.type === 'result') {
           setOutput((prev) => [
             ...prev,
-            `[${ts}] RPC ${msg.rpcName} → ${msg.count} line(s)`,
+            `[${ts}] RPC ${msg.rpcName} -> ${msg.count} line(s)`,
             ...msg.lines.map((l: string) => `  ${l}`),
             '> _',
           ]);
@@ -350,11 +350,11 @@ function LegacyConsoleModal({ onClose }: { onClose: () => void }) {
       } else if (cmd === 'help') {
         setOutput((prev) => [
           ...prev,
-          '  rpc <RPC_NAME> [param1] [param2] ...  — Execute a VistA RPC',
-          '  api <path>                              — Execute a local API GET',
-          '  ping                                    — Test WebSocket',
-          '  clear                                   — Clear console',
-          '  help                                    — Show this help',
+          '  rpc <RPC_NAME> [param1] [param2] ...  -- Execute a VistA RPC',
+          '  api <path>                              -- Execute a local API GET',
+          '  ping                                    -- Test WebSocket',
+          '  clear                                   -- Clear console',
+          '  help                                    -- Show this help',
           '> _',
         ]);
         setLoading(false);
@@ -505,8 +505,8 @@ function RemoteDataModal({ onClose }: { onClose: () => void }) {
           >
             <strong>Architecture:</strong>
             <ul style={{ margin: '4px 0', paddingLeft: 20 }}>
-              <li>ORWCIRN FACLIST — Lists connected remote facilities</li>
-              <li>ORWCIRN HDRA — Retrieves remote patient data by facility</li>
+              <li>ORWCIRN FACLIST -- Lists connected remote facilities</li>
+              <li>ORWCIRN HDRA -- Retrieves remote patient data by facility</li>
               <li>Remote correlation via ICN (Integration Control Number)</li>
               <li>FHIR R4 bridge for modern interoperability</li>
             </ul>
@@ -588,14 +588,14 @@ function KeyboardShortcutsModal({ onClose }: { onClose: () => void }) {
 
 function AboutModal({ onClose }: { onClose: () => void }) {
   return (
-    <Modal title="About EHR — Evolved" onClose={onClose}>
+    <Modal title="About EHR -- Evolved" onClose={onClose}>
       <div style={{ textAlign: 'center', padding: 16 }}>
-        <h2 style={{ fontSize: 18, margin: '0 0 8px' }}>EHR — Evolved</h2>
+        <h2 style={{ fontSize: 18, margin: '0 0 8px' }}>EHR -- Evolved</h2>
         <p>CPRS Web Replica v2.0</p>
         <p style={{ color: 'var(--cprs-text-muted)', fontSize: 12 }}>
           Built from CPRS Delphi source contracts.
           <br />
-          Phase 13 — CPRS Operationalization.
+          Phase 13 -- CPRS Operationalization.
         </p>
         <p style={{ marginTop: 12, fontSize: 11, color: 'var(--cprs-text-muted)' }}>
           975 RPCs cataloged &bull; 10 chart tabs &bull; 27+ API endpoints &bull; 12 data domains

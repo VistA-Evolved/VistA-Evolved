@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Module Not Enabled — Phase 135.
+ * Module Not Enabled -- Phase 135.
  *
  * Catch-all page shown when a user deep-links to a disabled module's
  * admin area. Displays a clear message with the module name and

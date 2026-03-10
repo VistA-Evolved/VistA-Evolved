@@ -1,5 +1,5 @@
 /**
- * Telehealth Session Hardening — Phase 307 (W12-P9)
+ * Telehealth Session Hardening -- Phase 307 (W12-P9)
  *
  * Cross-cutting hardening for telehealth sessions:
  *   - Heartbeat tracking: detect stale sessions
@@ -97,7 +97,7 @@ const heartbeats = new Map<string, Map<string, ParticipantHeartbeat>>();
 const MAX_TRACKED_ROOMS = 2000;
 let sweepTimer: ReturnType<typeof setInterval> | null = null;
 
-/** Auto-end callback — wired externally (e.g., to room-store.endRoom) */
+/** Auto-end callback -- wired externally (e.g., to room-store.endRoom) */
 let autoEndCallback: ((roomId: string, reason: string) => void) | null = null;
 
 /**

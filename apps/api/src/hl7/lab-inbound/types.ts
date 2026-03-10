@@ -1,5 +1,5 @@
 /**
- * Lab Result Inbound Types — Phase 433 (W27 P3)
+ * Lab Result Inbound Types -- Phase 433 (W27 P3)
  *
  * Types for the HL7v2 ORU^R01 lab result inbound path.
  * Bridges the existing HL7 engine's ObservationResult type
@@ -33,7 +33,7 @@ export interface SpecimenInfo {
 export type LabFilingStatus =
   | 'received' // ORU^R01 parsed and staged
   | 'validated' // Passed validation checks
-  | 'filed' // Filed to VistA (future — requires LR package RPCs)
+  | 'filed' // Filed to VistA (future -- requires LR package RPCs)
   | 'file-failed' // Filing to VistA failed
   | 'quarantined' // Validation failed / unmatched patient
   | 'acknowledged'; // ORWLRR ACK called (clinician saw it)
@@ -55,17 +55,17 @@ export interface InboundLabResult {
   /* Patient matching */
   /** Patient external ID (PID-3) */
   patientExternalId: string;
-  /** Patient name from HL7 (not stored in VistA-Evolved — for matching only) */
+  /** Patient name from HL7 (not stored in VistA-Evolved -- for matching only) */
   patientNameHash?: string; // SHA-256 hash, not plaintext
   /** Matched VistA DFN (null if unmatched) */
   matchedDfn?: string;
 
   /* Order identification */
-  /** Placer order number (OBR-2) — maps to VistA order IEN */
+  /** Placer order number (OBR-2) -- maps to VistA order IEN */
   placerOrderNumber?: string;
-  /** Filler order number (OBR-3) — lab-assigned */
+  /** Filler order number (OBR-3) -- lab-assigned */
   fillerOrderNumber: string;
-  /** Universal service identifier (OBR-4) — LOINC or local code */
+  /** Universal service identifier (OBR-4) -- LOINC or local code */
   universalServiceId: string;
   /** Accession number (OBR-20) */
   accessionNumber?: string;
@@ -78,7 +78,7 @@ export interface InboundLabResult {
 
   /* Status tracking */
   status: LabFilingStatus;
-  receivedAt: string; // ISO 8601 — when we received it
+  receivedAt: string; // ISO 8601 -- when we received it
   validatedAt?: string;
   filedAt?: string;
   filingError?: string;
@@ -93,7 +93,7 @@ export interface InboundLabResult {
 export interface InboundObservation {
   /** Sequence (1-based) */
   setId: number;
-  /** Observation identifier (OBX-3) — LOINC code^description^system */
+  /** Observation identifier (OBX-3) -- LOINC code^description^system */
   observationId: string;
   /** Value type (NM=Numeric, ST=String, CE=Coded, TX=Text) */
   valueType: string;

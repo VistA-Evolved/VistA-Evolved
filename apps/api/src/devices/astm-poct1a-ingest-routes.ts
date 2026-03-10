@@ -1,5 +1,5 @@
 /**
- * ASTM + POCT1-A Ingest — Routes
+ * ASTM + POCT1-A Ingest -- Routes
  *
  * Phase 382 (W21-P5): HTTP ingest endpoints for ASTM E1381 and POCT1-A
  * messages. The edge gateway parses serial/TCP traffic and POSTs the
@@ -11,6 +11,7 @@ import { parseAstm, type AstmParseResult } from './astm-parser.js';
 import { parsePoct1a, type Poct1aParseResult } from './poct1a-parser.js';
 import { storeObservation } from './gateway-store.js';
 import type { DeviceObservation } from './types.js';
+import { requireDeviceServiceKey } from './service-key-guard.js';
 import * as crypto from 'node:crypto';
 
 const DEFAULT_TENANT = 'default';
@@ -68,11 +69,12 @@ function tenantId(request: FastifyRequest): string {
 
 export default async function astmPoct1aIngestRoutes(server: FastifyInstance): Promise<void> {
   // -------------------------------------------------------------------------
-  // POST /devices/astm/ingest — ASTM frame/record ingest
+  // POST /devices/astm/ingest -- ASTM frame/record ingest
   // -------------------------------------------------------------------------
   server.post('/devices/astm/ingest', async (request, reply) => {
+    if (!requireDeviceServiceKey(request, reply)) return reply;
     const tenant = tenantId(request);
-    const body = request.body as any;
+    const body = (request.body as any) || {};
 
     let rawData: string;
     let gatewayId: string | undefined;
@@ -145,7 +147,7 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
   });
 
   // -------------------------------------------------------------------------
-  // POST /devices/astm/parse — Parse-only diagnostic (no storage)
+  // POST /devices/astm/parse -- Parse-only diagnostic (no storage)
   // -------------------------------------------------------------------------
   server.post('/devices/astm/parse', async (request, reply) => {
     const body = request.body as any;
@@ -162,7 +164,7 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
   });
 
   // -------------------------------------------------------------------------
-  // GET /devices/astm/ingest-log — ASTM ingest history
+  // GET /devices/astm/ingest-log -- ASTM ingest history
   // -------------------------------------------------------------------------
   server.get('/devices/astm/ingest-log', async (_request, reply) => {
     return reply.send({
@@ -173,11 +175,12 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
   });
 
   // -------------------------------------------------------------------------
-  // POST /devices/poct1a/ingest — POCT1-A XML ingest
+  // POST /devices/poct1a/ingest -- POCT1-A XML ingest
   // -------------------------------------------------------------------------
   server.post('/devices/poct1a/ingest', async (request, reply) => {
+    if (!requireDeviceServiceKey(request, reply)) return reply;
     const tenant = tenantId(request);
-    const body = request.body as any;
+    const body = (request.body as any) || {};
 
     let xmlData: string;
     let gatewayId: string | undefined;
@@ -249,7 +252,7 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
   });
 
   // -------------------------------------------------------------------------
-  // POST /devices/poct1a/parse — Parse-only diagnostic (no storage)
+  // POST /devices/poct1a/parse -- Parse-only diagnostic (no storage)
   // -------------------------------------------------------------------------
   server.post('/devices/poct1a/parse', async (request, reply) => {
     const body = request.body as any;
@@ -264,7 +267,7 @@ export default async function astmPoct1aIngestRoutes(server: FastifyInstance): P
   });
 
   // -------------------------------------------------------------------------
-  // GET /devices/poct1a/ingest-log — POCT1-A ingest history
+  // GET /devices/poct1a/ingest-log -- POCT1-A ingest history
   // -------------------------------------------------------------------------
   server.get('/devices/poct1a/ingest-log', async (_request, reply) => {
     return reply.send({

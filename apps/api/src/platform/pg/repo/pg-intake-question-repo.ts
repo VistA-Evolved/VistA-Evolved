@@ -251,7 +251,7 @@ function getDefaultQuestions(tenantId: string): IntakeQuestionRow[] {
         questionType: def.type,
         optionsJson: def.options
           ? JSON.stringify(
-              locale === 'en' ? def.options : def.options // Options stay in English for now — translation is a future enhancement
+              locale === 'en' ? def.options : def.options // Options stay in English for now -- translation is a future enhancement
             )
           : null,
         displayOrder: def.order,

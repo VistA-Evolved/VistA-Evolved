@@ -1,16 +1,16 @@
 'use client';
 
 /**
- * Phase 85 — eMAR + BCMA Posture
+ * Phase 85 -- eMAR + BCMA Posture
  *
  * Standalone eMAR page with patient context and 4 tabs:
- *  1) Schedule — Active medication schedule from ORWPS ACTIVE (real VistA)
- *  2) Allergies — Allergy warnings from ORQQAL LIST (real VistA)
- *  3) Administration — Record med admin (integration-pending → PSB MED LOG)
- *  4) BCMA Scanner — Barcode medication verification (integration-pending → PSJBCMA)
+ *  1) Schedule -- Active medication schedule from ORWPS ACTIVE (real VistA)
+ *  2) Allergies -- Allergy warnings from ORQQAL LIST (real VistA)
+ *  3) Administration -- Record med admin (requires PSB MED LOG)
+ *  4) BCMA Scanner -- Barcode medication verification (requires PSJBCMA)
  *
  * VistA-sourced: ORWPS ACTIVE, ORQQAL LIST, ORWORR GETTXT.
- * BCMA write paths: integration-pending with named PSB/PSJ targets.
+ * BCMA write paths: require PSB/PSJ package configuration.
  * Heuristic duplicate therapy detection labeled as such.
  */
 
@@ -118,7 +118,7 @@ function IntegrationPendingBanner({
   status?: string;
 }) {
   const isUnsupported = status === 'unsupported-in-sandbox';
-  const title = isUnsupported ? 'Unsupported in Sandbox' : 'Integration Pending';
+  const title = isUnsupported ? 'Unsupported in Sandbox' : 'Additional Configuration Required';
   return (
     <div
       style={{
@@ -133,7 +133,7 @@ function IntegrationPendingBanner({
         style={{ fontWeight: 600, color: isUnsupported ? '#2b6cb0' : '#975a16', marginBottom: 4 }}
       >
         {title}
-        {context ? ` — ${context}` : ''}
+        {context ? ` -- ${context}` : ''}
       </div>
       <div style={{ fontSize: 13, color: '#744210', marginBottom: 8 }}>
         This feature requires VistA packages not available in the WorldVistA Docker sandbox.
@@ -194,7 +194,7 @@ function AllergyBanner({ warnings }: { warnings: InteractionWarning[] }) {
       </div>
       {warnings.map((w, i) => (
         <div key={i} style={{ fontSize: 13, color: '#742a2a', marginBottom: 4 }}>
-          <strong>{w.allergen}</strong> ({w.category}) — {w.note}
+          <strong>{w.allergen}</strong> ({w.category}) -- {w.note}
         </div>
       ))}
     </div>
@@ -257,12 +257,12 @@ function DuplicateTherapyBanner({ duplicates }: { duplicates: DuplicateAlert[] }
         Potential Duplicate Therapy (Heuristic)
       </div>
       <div style={{ fontSize: 12, color: '#4a5568', marginBottom: 8, fontStyle: 'italic' }}>
-        This is a name-based heuristic check — NOT a clinical decision support engine. Always verify
+        This is a name-based heuristic check -- NOT a clinical decision support engine. Always verify
         with pharmacy.
       </div>
       {duplicates.map((d, i) => (
         <div key={i} style={{ fontSize: 13, color: '#2a4365', marginBottom: 4 }}>
-          <strong>{d.drugA}</strong> + <strong>{d.drugB}</strong> — {d.reason}
+          <strong>{d.drugA}</strong> + <strong>{d.drugB}</strong> -- {d.reason}
         </div>
       ))}
     </div>
@@ -370,7 +370,7 @@ function ScheduleTab({ dfn }: { dfn: string }) {
                       </div>
                     </td>
                     <td style={{ padding: '8px 10px', maxWidth: 200, wordBreak: 'break-word' }}>
-                      {med.sig || '—'}
+                      {med.sig || '--'}
                     </td>
                     <td style={{ padding: '8px 10px', textAlign: 'center' }}>
                       <span
@@ -413,7 +413,7 @@ function ScheduleTab({ dfn }: { dfn: string }) {
                       </span>
                     </td>
                     <td style={{ padding: '8px 10px', textAlign: 'center', fontSize: 12 }}>
-                      {med.nextDue || '—'}
+                      {med.nextDue || '--'}
                     </td>
                   </tr>
                 ))}
@@ -455,7 +455,7 @@ function ScheduleTab({ dfn }: { dfn: string }) {
                   {med.route} | {med.sig || 'See order'}
                 </div>
                 <div style={{ fontSize: 12, color: '#38a169', marginTop: 4 }}>
-                  PRN — {med.frequency}
+                  PRN -- {med.frequency}
                 </div>
               </div>
             ))}
@@ -568,7 +568,7 @@ function AllergiesTab({ dfn }: { dfn: string }) {
                   </span>
                 </td>
                 <td style={{ padding: '8px 10px', fontSize: 12 }}>
-                  {a.reactions.length > 0 ? a.reactions.join(', ') : '—'}
+                  {a.reactions.length > 0 ? a.reactions.join(', ') : '--'}
                 </td>
               </tr>
             ))}
@@ -593,7 +593,7 @@ function AllergiesTab({ dfn }: { dfn: string }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* Administration Tab (integration-pending)                             */
+/* Administration Tab (configuration required)                          */
 /* ------------------------------------------------------------------ */
 
 function AdminTab({ dfn }: { dfn: string }) {
@@ -833,14 +833,14 @@ function AdminTab({ dfn }: { dfn: string }) {
                     background:
                       adminResult.ok && adminResult.source === 'vista'
                         ? '#f0fff4'
-                        : adminResult.status === 'integration-pending' ||
+                        : adminResult.status === 'requires_config' ||
                             adminResult.status === 'unsupported-in-sandbox'
                           ? colors.pendingBg
                           : '#fed7d7',
                     border: `1px solid ${
                       adminResult.ok && adminResult.source === 'vista'
                         ? '#9ae6b4'
-                        : adminResult.status === 'integration-pending' ||
+                        : adminResult.status === 'requires_config' ||
                             adminResult.status === 'unsupported-in-sandbox'
                           ? colors.pendingBorder
                           : '#fc8181'
@@ -862,17 +862,17 @@ function AdminTab({ dfn }: { dfn: string }) {
                         </div>
                       )}
                     </>
-                  ) : adminResult.status === 'integration-pending' ||
+                  ) : adminResult.status === 'requires_config' ||
                     adminResult.status === 'unsupported-in-sandbox' ? (
                     <>
                       <strong>
                         {adminResult.status === 'unsupported-in-sandbox'
                           ? 'Unsupported in Sandbox:'
-                          : 'Integration Pending:'}
+                          : 'Configuration Required:'}
                       </strong>{' '}
                       {adminResult.message}
                       <div style={{ fontSize: 11, color: '#975a16', marginTop: 4 }}>
-                        Target: PSB MED LOG → File 53.79 BCMA MEDICATION LOG
+                        Target: PSB MED LOG {'->'} File 53.79 BCMA MEDICATION LOG
                       </div>
                     </>
                   ) : (
@@ -891,7 +891,7 @@ function AdminTab({ dfn }: { dfn: string }) {
 }
 
 /* ------------------------------------------------------------------ */
-/* BCMA Scanner Tab (integration-pending)                               */
+/* BCMA Scanner Tab (configuration required)                            */
 /* ------------------------------------------------------------------ */
 
 function BCMATab({ dfn }: { dfn: string }) {
@@ -1106,15 +1106,15 @@ function BCMATab({ dfn }: { dfn: string }) {
               <strong>
                 {scanResult.status === 'unsupported-in-sandbox'
                   ? 'Unsupported in Sandbox:'
-                  : 'Integration Pending:'}
+                  : 'Configuration Required:'}
               </strong>{' '}
               {scanResult.message || 'BCMA verification requires PSB/PSJ packages'}
               <div style={{ fontSize: 11, color: '#975a16', marginTop: 4 }}>
                 Targets: PSB MED LOG, PSJBCMA
               </div>
               <div style={{ fontSize: 11, color: '#4a5568', marginTop: 4 }}>
-                Full BCMA workflow: Install BCMA package → configure barcode scanner hardware →
-                enable PSB/PSJ RPCs → implement 5-rights verification workflow
+                Full BCMA workflow: Install BCMA package {'->'} configure barcode scanner hardware{' '}
+                {'->'} enable PSB/PSJ RPCs {'->'} implement 5-rights verification workflow
               </div>
             </div>
           ))}
@@ -1230,10 +1230,10 @@ function EmarPageContent() {
             Back to Inpatient
           </button>
           <h1 style={{ fontSize: 18, fontWeight: 700, margin: 0 }}>
-            eMAR — Medication Administration Record
+            eMAR -- Medication Administration Record
           </h1>
         </div>
-        <div style={{ fontSize: 13, opacity: 0.9 }}>Phase 85 — VistA-first + BCMA posture</div>
+        <div style={{ fontSize: 13, opacity: 0.9 }}>Phase 85 -- VistA-first + BCMA posture</div>
       </div>
 
       {/* Patient context banner */}

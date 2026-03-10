@@ -76,7 +76,7 @@ interface ClaimSeed {
 }
 
 const DEMO_CLAIMS: ClaimSeed[] = [
-  // ── PhilHealth claims ──────────────────────────────────────
+  // -- PhilHealth claims --------------------------------------
   {
     idempotencyKey: 'demo-ph-approved-001',
     status: 'paid',
@@ -145,7 +145,7 @@ const DEMO_CLAIMS: ClaimSeed[] = [
     ]),
   },
 
-  // ── AR Aging: 0-30 day bucket ──────────────────────────────
+  // -- AR Aging: 0-30 day bucket ------------------------------
   {
     idempotencyKey: 'demo-ar-0-30-001',
     status: 'submitted',
@@ -171,7 +171,7 @@ const DEMO_CLAIMS: ClaimSeed[] = [
     ]),
   },
 
-  // ── AR Aging: 31-60 day bucket ─────────────────────────────
+  // -- AR Aging: 31-60 day bucket -----------------------------
   {
     idempotencyKey: 'demo-ar-31-60-001',
     status: 'submitted',
@@ -197,7 +197,7 @@ const DEMO_CLAIMS: ClaimSeed[] = [
     ]),
   },
 
-  // ── AR Aging: 61-90 day bucket ─────────────────────────────
+  // -- AR Aging: 61-90 day bucket -----------------------------
   {
     idempotencyKey: 'demo-ar-61-90-001',
     status: 'submitted',
@@ -222,7 +222,7 @@ const DEMO_CLAIMS: ClaimSeed[] = [
     ]),
   },
 
-  // ── AR Aging: 90+ day bucket ───────────────────────────────
+  // -- AR Aging: 90+ day bucket -------------------------------
   {
     idempotencyKey: 'demo-ar-90plus-001',
     status: 'submitted',
@@ -254,7 +254,7 @@ const DEMO_CLAIMS: ClaimSeed[] = [
     ]),
   },
 
-  // ── Extra paid claims for revenue metrics ──────────────────
+  // -- Extra paid claims for revenue metrics ------------------
   {
     idempotencyKey: 'demo-paid-bcbs-001',
     status: 'paid',
@@ -304,7 +304,7 @@ const DEMO_CLAIMS: ClaimSeed[] = [
     ]),
   },
 
-  // ── Denied claim for denial rate metric ────────────────────
+  // -- Denied claim for denial rate metric --------------------
   {
     idempotencyKey: 'demo-denied-aetna-001',
     status: 'denied',
@@ -340,7 +340,7 @@ async function main() {
   const pool = new pg.Pool({ connectionString: PG_URL, max: 3 });
 
   try {
-    // ── Step 1: Update default tenant facility name ────────────
+    // -- Step 1: Update default tenant facility name ------------
     console.log('\n[1/3] Updating tenant facility name...');
     const tenantResult = await pool.query(
       `UPDATE tenant_config
@@ -359,7 +359,7 @@ async function main() {
     }
     console.log('  -> Tenant "default" -> Metro General Hospital');
 
-    // ── Step 2: Seed claim_draft records ───────────────────────
+    // -- Step 2: Seed claim_draft records -----------------------
     console.log('\n[2/3] Seeding claim_draft records...');
     let inserted = 0;
     let skipped = 0;
@@ -436,7 +436,7 @@ async function main() {
     }
     console.log(`  Total: ${inserted} inserted, ${skipped} skipped (already exist)`);
 
-    // ── Step 3: Summary ────────────────────────────────────────
+    // -- Step 3: Summary ----------------------------------------
     console.log('\n[3/3] Verification...');
     const countResult = await pool.query(
       `SELECT status, COUNT(*) as cnt FROM claim_draft WHERE tenant_id = $1 GROUP BY status ORDER BY status`,

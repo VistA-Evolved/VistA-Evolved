@@ -52,7 +52,7 @@ describe('Data Portability Exports -- Phase 264', () => {
         'DocumentReference',
         'Encounter',
       ]) {
-        expect(c).toContain(`"${rt}"`);
+        expect(c).toContain(`'${rt}'`);
       }
     });
 
@@ -67,7 +67,7 @@ describe('Data Portability Exports -- Phase 264', () => {
         'imaging',
         'integrations',
       ]) {
-        expect(c).toContain(`"${s}"`);
+        expect(c).toContain(`'${s}'`);
       }
     });
 
@@ -78,9 +78,9 @@ describe('Data Portability Exports -- Phase 264', () => {
 
     it('has 3 bulk export levels', () => {
       const c = fs.readFileSync(storePath, 'utf-8');
-      expect(c).toContain('"system"');
-      expect(c).toContain('"patient"');
-      expect(c).toContain('"group"');
+      expect(c).toContain("'system'");
+      expect(c).toContain("'patient'");
+      expect(c).toContain("'group'");
     });
   });
 

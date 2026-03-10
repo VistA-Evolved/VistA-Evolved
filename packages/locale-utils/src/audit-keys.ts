@@ -1,5 +1,5 @@
 /**
- * Locale extraction audit — scans portal and web message files
+ * Locale extraction audit -- scans portal and web message files
  * to ensure key parity across all supported locales.
  *
  * Usage: node --import tsx/esm packages/locale-utils/src/audit-keys.ts
@@ -66,7 +66,7 @@ function auditApp(appName: string, messagesDir: string): AuditResult {
   return { app: appName, locales, keyCountByLocale, missingKeys, extraKeys, ok };
 }
 
-// ── Main ────────────────────────────────────────────────────────
+// -- Main --------------------------------------------------------
 
 const portalResult = auditApp('portal', 'apps/portal/public/messages');
 const webResult = auditApp('web', 'apps/web/public/messages');

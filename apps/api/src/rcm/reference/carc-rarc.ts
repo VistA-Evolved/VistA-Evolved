@@ -1,10 +1,10 @@
 /**
- * RCM — CARC / RARC Reference Tables (Phase 43)
+ * RCM -- CARC / RARC Reference Tables (Phase 43)
  *
  * Common Claim Adjustment Reason Codes (CARC) and Remittance Advice
  * Remark Codes (RARC) used in 835 remittance and denial processing.
  *
- * These are NOT proprietary code sets — they are publicly maintained by
+ * These are NOT proprietary code sets -- they are publicly maintained by
  * X12/ASC and CMS. We include the most commonly encountered codes for
  * workqueue item generation and recommended action text.
  *
@@ -13,7 +13,7 @@
  * RARC: maintained by CMS
  */
 
-/* ── CARC Group Codes ──────────────────────────────────────── */
+/* -- CARC Group Codes ---------------------------------------- */
 
 export const CARC_GROUPS: Record<string, string> = {
   CO: 'Contractual Obligation',
@@ -23,7 +23,7 @@ export const CARC_GROUPS: Record<string, string> = {
   CR: 'Correction/Reversal',
 };
 
-/* ── Common CARC Reason Codes ──────────────────────────────── */
+/* -- Common CARC Reason Codes -------------------------------- */
 
 export interface CarcEntry {
   code: string;
@@ -254,7 +254,7 @@ export const CARC_CODES: Record<string, CarcEntry> = {
   },
 };
 
-/* ── Common RARC Remark Codes ──────────────────────────────── */
+/* -- Common RARC Remark Codes -------------------------------- */
 
 export interface RarcEntry {
   code: string;
@@ -340,7 +340,7 @@ export const RARC_CODES: Record<string, RarcEntry> = {
   },
 };
 
-/* ── Lookup Helpers ────────────────────────────────────────── */
+/* -- Lookup Helpers ------------------------------------------ */
 
 export function lookupCarc(code: string): CarcEntry | undefined {
   return CARC_CODES[code];

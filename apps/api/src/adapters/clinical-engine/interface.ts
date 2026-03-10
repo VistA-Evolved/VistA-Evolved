@@ -1,5 +1,5 @@
 /**
- * Clinical Engine Adapter Interface — Phase 37C.
+ * Clinical Engine Adapter Interface -- Phase 37C.
  *
  * Defines the contract for clinical data access. The default implementation
  * uses VistA RPCs via the RPC Broker. Alternative implementations can use

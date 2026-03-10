@@ -1,5 +1,5 @@
 /**
- * Phase 165 — QA Ladder Extension for Specialty Coverage
+ * Phase 165 -- QA Ladder Extension for Specialty Coverage
  *
  * Extends the existing QA ladder framework with specialty-level
  * validation gates that produce numeric scores rather than binary
@@ -9,7 +9,7 @@
 import { SPECIALTY_TAGS, type SpecialtyTag } from './types.js';
 import { generateCoverageReport, type LetterGrade, scoreToGrade } from './coverage-scorer.js';
 
-// ─── Types ───────────────────────────────────────────────────────────────────
+// --- Types -------------------------------------------------------------------
 
 export type QaCheckStatus = 'pass' | 'warn' | 'fail';
 
@@ -31,13 +31,13 @@ export interface QaLadderResult {
   passCount: number;
   warnCount: number;
   failCount: number;
-  aggregateScore: number; // 0–100
+  aggregateScore: number; // 0-100
   aggregateGrade: LetterGrade;
   status: QaCheckStatus;
   checks: QaSpecialtyCheck[];
 }
 
-// ─── Gate Logic ──────────────────────────────────────────────────────────────
+// --- Gate Logic --------------------------------------------------------------
 
 function toStatus(condition: boolean, warnCondition?: boolean): QaCheckStatus {
   if (condition) return 'pass';
@@ -55,10 +55,10 @@ function worstStatus(...statuses: QaCheckStatus[]): QaCheckStatus {
  * Run the specialty coverage QA ladder gate.
  *
  * Pass thresholds:
- *   - hasPack: pack exists → pass, else fail
- *   - hasMultipleTemplates: ≥3 → pass, ≥1 → warn, 0 → fail
- *   - hasSufficientFields: avgFields ≥5 → pass, ≥2 → warn, else fail
- *   - hasSufficientSections: avgSections ≥3 → pass, ≥1 → warn, else fail
+ *   - hasPack: pack exists -> pass, else fail
+ *   - hasMultipleTemplates: >=3 -> pass, >=1 -> warn, 0 -> fail
+ *   - hasSufficientFields: avgFields >=5 -> pass, >=2 -> warn, else fail
+ *   - hasSufficientSections: avgSections >=3 -> pass, >=1 -> warn, else fail
  */
 export function runSpecialtyCoverageGate(): QaLadderResult {
   const report = generateCoverageReport();

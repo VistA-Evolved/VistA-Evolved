@@ -117,7 +117,7 @@ export function DegradedBanner() {
     >
       <span>
         {status === 'unreachable' ? '⚠ System Unreachable' : '⚠ Degraded Mode'}
-        {detail && ` — ${detail}`}
+        {detail && ` -- ${detail}`}
       </span>
       <div style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
         <button
@@ -146,7 +146,7 @@ export function DegradedBanner() {
           }}
           aria-label="Dismiss banner"
         >
-          ×
+          x
         </button>
       </div>
     </div>

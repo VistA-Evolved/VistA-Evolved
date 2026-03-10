@@ -1,5 +1,5 @@
 /**
- * Data Access Controls — Phase 368 (W19-P7)
+ * Data Access Controls -- Phase 368 (W19-P7)
  *
  * Dataset-level RBAC, column sensitivity masking, export policies,
  * and audit logging for the analytics data platform.
@@ -15,7 +15,7 @@ import type {
   ExportAuditEntry,
 } from './extract-types.js';
 
-// ── Dataset Definitions ─────────────────────────────────────────────────
+// -- Dataset Definitions -------------------------------------------------
 
 interface DatasetDefinition {
   id: DatasetId;
@@ -100,7 +100,7 @@ const DATASETS: DatasetDefinition[] = [
   },
 ];
 
-// ── Permission Store ────────────────────────────────────────────────────
+// -- Permission Store ----------------------------------------------------
 
 const permissionStore = new Map<string, DatasetPermission>();
 const maskRuleStore = new Map<string, ColumnMaskRule[]>();
@@ -179,7 +179,7 @@ export function listDatasetPermissions(tenantId: string): DatasetPermission[] {
   return [...permissionStore.values()].filter((p) => p.tenantId === tenantId);
 }
 
-// ── Column Masking ──────────────────────────────────────────────────────
+// -- Column Masking ------------------------------------------------------
 
 /**
  * Apply column masking to a record based on the viewer's role.
@@ -250,7 +250,7 @@ export function getColumnMaskRules(tenantId: string, datasetId: DatasetId): Colu
   return maskRuleStore.get(`${tenantId}:${datasetId}`) || [];
 }
 
-// ── Export Audit ─────────────────────────────────────────────────────────
+// -- Export Audit ---------------------------------------------------------
 
 /**
  * Record an export event for compliance tracking.
@@ -291,7 +291,7 @@ export function getExportAuditLog(
   };
 }
 
-// ── Dataset Catalog ─────────────────────────────────────────────────────
+// -- Dataset Catalog -----------------------------------------------------
 
 export function getDatasets(): DatasetDefinition[] {
   return [...DATASETS];
@@ -301,7 +301,7 @@ export function getDataset(id: DatasetId): DatasetDefinition | undefined {
   return DATASETS.find((d) => d.id === id);
 }
 
-// ── Clear (for testing) ─────────────────────────────────────────────────
+// -- Clear (for testing) -------------------------------------------------
 
 export function clearAccessControlData(): void {
   permissionStore.clear();

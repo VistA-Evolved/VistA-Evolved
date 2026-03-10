@@ -1,12 +1,12 @@
 /**
- * Phase 130 — Portal MailMan Bridge: VistA-first inbox with Postgres fallback.
+ * Phase 130 -- Portal MailMan Bridge: VistA-first inbox with Postgres fallback.
  *
  * Routes:
- *   GET  /portal/mailman/inbox     — Postgres portal inbox (patient-scoped)
- *   GET  /portal/mailman/message/:id — Single Postgres portal message
- *   POST /portal/mailman/send      — Send via VistA MailMan (primary) or Postgres draft+send (fallback)
+ *   GET  /portal/mailman/inbox     -- Postgres portal inbox (patient-scoped)
+ *   GET  /portal/mailman/message/:id -- Single Postgres portal message
+ *   POST /portal/mailman/send      -- Send via VistA MailMan (primary) or Postgres draft+send (fallback)
  *
- * Auth: portal session (matches /^\/portal\// AUTH_RULE — own session check in handler).
+ * Auth: portal session (matches /^\/portal\// AUTH_RULE -- own session check in handler).
  * Security: message bodies NEVER in audit/logs. Redacted before audit.
  */
 
@@ -133,7 +133,7 @@ export default async function portalMailmanRoutes(server: FastifyInstance) {
         });
         disconnect();
 
-        // Audit: metadata only — NEVER log message body
+        // Audit: metadata only -- NEVER log message body
         immutableAudit('messaging.portal-send', 'success', portalAuditActor(session), {
           detail: {
             route: '/portal/mailman/send',

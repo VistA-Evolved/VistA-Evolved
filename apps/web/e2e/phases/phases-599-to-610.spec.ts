@@ -102,7 +102,7 @@ test.describe("Phase 600: Problem Edit Truthfulness Recovery", () => {
   });
 });
 
-test.describe("Phase 601: CPRS Cover Sheet Appointments Recovery — IMPLEMENT", () => {
+test.describe("Phase 601: CPRS Cover Sheet Appointments Recovery -- IMPLEMENT", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/vista/cprs/appointments`);
     expect(r0.status(), "/vista/cprs/appointments not 500").not.toBe(500);

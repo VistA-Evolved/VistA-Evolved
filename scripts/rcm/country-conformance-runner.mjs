@@ -1,5 +1,5 @@
 /**
- * Country Pack Conformance Runner — Phase 521 (Wave 37 B9)
+ * Country Pack Conformance Runner -- Phase 521 (Wave 37 B9)
  *
  * Validates country packs against the standardized conformance checklist.
  * Checks: currency, locale, claim format, payer mapping, privacy flags,
@@ -20,7 +20,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = join(__dirname, '..', '..');
 
-/* ── Config ─────────────────────────────────────────────────── */
+/* -- Config --------------------------------------------------- */
 
 const args = process.argv.slice(2);
 const flags = {};
@@ -33,7 +33,7 @@ const TARGET_COUNTRY = flags.country?.toUpperCase();
 const RUN_ALL = flags.all === 'true';
 const JSON_OUTPUT = flags.json === 'true';
 
-/* ── Country Metadata ───────────────────────────────────────── */
+/* -- Country Metadata ----------------------------------------- */
 
 const KNOWN_COUNTRIES = {
   US: { name: 'United States', currency: 'USD', locale: 'en', claimFormat: 'x12_5010' },
@@ -43,7 +43,7 @@ const KNOWN_COUNTRIES = {
   NZ: { name: 'New Zealand', currency: 'NZD', locale: 'en-NZ', claimFormat: 'acc_api' },
 };
 
-/* ── Conformance Checks ─────────────────────────────────────── */
+/* -- Conformance Checks --------------------------------------- */
 
 function checkSeedDataExists(country) {
   const patterns = [
@@ -199,7 +199,7 @@ function checkDocumentation(country) {
   return { pass: !!found, file: found ?? 'docs/rcm/jurisdiction-packs.md (generic)' };
 }
 
-/* ── Run Conformance ────────────────────────────────────────── */
+/* -- Run Conformance ------------------------------------------ */
 
 function runConformance(country) {
   const meta = KNOWN_COUNTRIES[country] ?? {
@@ -294,7 +294,7 @@ function runCheck(name, fn) {
   }
 }
 
-/* ── Main ───────────────────────────────────────────────────── */
+/* -- Main ----------------------------------------------------- */
 
 const countries = RUN_ALL ? Object.keys(KNOWN_COUNTRIES) : TARGET_COUNTRY ? [TARGET_COUNTRY] : [];
 

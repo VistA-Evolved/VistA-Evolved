@@ -1,10 +1,10 @@
 /**
- * Translator Interface — Pluggable X12 Translation Strategy
+ * Translator Interface -- Pluggable X12 Translation Strategy
  *
  * Phase 45: Defines the contract for converting between canonical
  * domain objects and X12 wire format. Two implementations:
- *   1) LocalScaffoldTranslator — built-in, limited, for dev/sandbox
- *   2) ExternalTranslatorAdapter — feature-flagged, for Stedi-like APIs
+ *   1) LocalScaffoldTranslator -- built-in, limited, for dev/sandbox
+ *   2) ExternalTranslatorAdapter -- feature-flagged, for Stedi-like APIs
  *
  * The translator does NOT interpret proprietary code sets or embed
  * copyrighted implementation guide content.
@@ -13,7 +13,7 @@
 import type { X12TransactionSet } from '../edi/types.js';
 import type { TranslatorResult, ParsedResponse, TransactionEnvelope } from './types.js';
 
-/* ── Translator interface ────────────────────────────────────── */
+/* -- Translator interface -------------------------------------- */
 
 export interface Translator {
   /** Unique identifier */
@@ -50,7 +50,7 @@ export interface Translator {
   ): Array<{ field: string; message: string; severity: 'error' | 'warning' }>;
 }
 
-/* ── Translator Registry ─────────────────────────────────────── */
+/* -- Translator Registry --------------------------------------- */
 
 const translators = new Map<string, Translator>();
 

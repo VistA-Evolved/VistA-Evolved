@@ -1,5 +1,5 @@
 /**
- * AI Gateway — Model Registry (Phase 33)
+ * AI Gateway -- Model Registry (Phase 33)
  *
  * Approved models only. No ad-hoc model invocations.
  * Each model has governance metadata: deployment, PHI handling,
@@ -18,7 +18,7 @@ const models = new Map<string, ModelConfig>();
 /* Built-in models                                                     */
 /* ------------------------------------------------------------------ */
 
-/** Stub model for development and testing — always available. */
+/** Stub model for development and testing -- always available. */
 const STUB_MODEL: ModelConfig = {
   id: 'stub-v1',
   name: 'Development Stub',

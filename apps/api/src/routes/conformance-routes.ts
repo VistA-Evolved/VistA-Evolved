@@ -1,5 +1,5 @@
 /**
- * Conformance Routes — Phase 499 (W34-P9)
+ * Conformance Routes -- Phase 499 (W34-P9)
  *
  * Admin-only endpoints to run per-pack regulatory conformance checks
  * and produce evidence bundles. Uses the runtime country policy hook
@@ -30,7 +30,7 @@ function gateCheck(name: string, condition: boolean, detail: string): Conformanc
 }
 
 export async function conformanceRoutes(app: FastifyInstance): Promise<void> {
-  // POST /conformance/run — run conformance for all packs (or single pack)
+  // POST /conformance/run -- run conformance for all packs (or single pack)
   app.post('/conformance/run', async (request) => {
     const body = (request.body as Record<string, unknown>) || {};
     const filterPack = body.countryCode as string | undefined;
@@ -190,7 +190,7 @@ export async function conformanceRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // GET /conformance/gates — list all conformance gates
+  // GET /conformance/gates -- list all conformance gates
   app.get('/conformance/gates', async () => {
     return {
       ok: true,

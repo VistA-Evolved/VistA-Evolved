@@ -26,7 +26,7 @@ import {
 import type { TripwireCondition } from '../vista/alignment/types.js';
 
 export default async function alignmentRoutes(server: FastifyInstance) {
-  /* ── Golden Snapshots ─────────────────────────────────────────── */
+  /* -- Golden Snapshots ------------------------------------------- */
 
   server.get('/admin/alignment/snapshots', async (_req, reply) => {
     const snapshots = listSnapshots();
@@ -67,7 +67,7 @@ export default async function alignmentRoutes(server: FastifyInstance) {
     return reply.send({ ok: true, comparison });
   });
 
-  /* ── Tripwires ────────────────────────────────────────────────── */
+  /* -- Tripwires -------------------------------------------------- */
 
   server.get('/admin/alignment/tripwires', async (_req, reply) => {
     const tripwires = listTripwires();
@@ -127,7 +127,7 @@ export default async function alignmentRoutes(server: FastifyInstance) {
     return reply.send({ ok: true, stats });
   });
 
-  /* ── Alignment Scoring ────────────────────────────────────────── */
+  /* -- Alignment Scoring ------------------------------------------ */
 
   server.get('/admin/alignment/score', async (_req, reply) => {
     const score = calculateAlignmentScore();
@@ -139,7 +139,7 @@ export default async function alignmentRoutes(server: FastifyInstance) {
     return reply.send({ ok: true, report });
   });
 
-  /* ── Summary ──────────────────────────────────────────────────── */
+  /* -- Summary ---------------------------------------------------- */
 
   server.get('/admin/alignment/summary', async (_req, reply) => {
     const score = calculateAlignmentScore();

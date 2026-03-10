@@ -1,5 +1,5 @@
 /**
- * Tenant Payer Repository (PostgreSQL) — tenant-scoped payer config
+ * Tenant Payer Repository (PostgreSQL) -- tenant-scoped payer config
  *
  * Phase 102: Migrate Prototype Stores to PlatformStore
  *

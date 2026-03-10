@@ -1,5 +1,5 @@
 /**
- * PayerAdapter Interface — Phase 69: RCM Ops Excellence v1
+ * PayerAdapter Interface -- Phase 69: RCM Ops Excellence v1
  *
  * Higher-level abstraction above connectors (Phase 38 transport layer).
  * Each PayerAdapter wraps workflow-level operations:
@@ -16,14 +16,14 @@
  * is encapsulated in the adapter implementation.
  */
 
-/* ── Response Types ─────────────────────────────────────────── */
+/* -- Response Types ------------------------------------------- */
 
 export interface EligibilityResponse {
   eligible: boolean;
   status: 'active' | 'inactive' | 'unknown' | 'pending';
   payerId: string;
   payerName: string;
-  /** True when response is from sandbox/test adapter — never trust for real workflows */
+  /** True when response is from sandbox/test adapter -- never trust for real workflows */
   isTestData?: boolean;
   memberId?: string;
   groupId?: string;
@@ -80,7 +80,7 @@ export interface AdapterHealthResult {
   checkedAt: string;
 }
 
-/* ── Adapter Configuration ──────────────────────────────────── */
+/* -- Adapter Configuration ------------------------------------ */
 
 export interface PayerAdapterConfig {
   /** Unique adapter ID (e.g., "x12-clearinghouse", "philhealth") */
@@ -106,7 +106,7 @@ export interface PayerAdapterConfig {
   enabled: boolean;
 }
 
-/* ── PayerAdapter Interface ─────────────────────────────────── */
+/* -- PayerAdapter Interface ----------------------------------- */
 
 export interface PayerAdapter {
   /** Configuration */
@@ -157,13 +157,13 @@ export interface PayerAdapter {
   shutdown(): Promise<void>;
 }
 
-/* ── Adapter Registry ───────────────────────────────────────── */
+/* -- Adapter Registry ----------------------------------------- */
 
 const adapters = new Map<string, PayerAdapter>();
 
 export function registerPayerAdapter(adapter: PayerAdapter): void {
   if (adapters.has(adapter.config.id)) {
-    // Warn but allow — idempotent re-registration on hot reload
+    // Warn but allow -- idempotent re-registration on hot reload
     return;
   }
   adapters.set(adapter.config.id, adapter);

@@ -1,5 +1,5 @@
 /**
- * FHIR Subscription routes — Phase 357 (W18-P4)
+ * FHIR Subscription routes -- Phase 357 (W18-P4)
  *
  * REST endpoints for managing FHIR R4 Subscriptions with rest-hook delivery.
  * Prefix: /fhir-subscriptions
@@ -40,7 +40,7 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
     return null;
   }
 
-  // ── Health ──────────────────────────────────────────────────────────
+  // -- Health ----------------------------------------------------------
   server.get('/fhir-subscriptions/health', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -50,7 +50,7 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, phase: 357, ...stats });
   });
 
-  // ── Supported resource types ───────────────────────────────────────
+  // -- Supported resource types ---------------------------------------
   server.get(
     '/fhir-subscriptions/resource-types',
     async (_req: FastifyRequest, reply: FastifyReply) => {
@@ -62,7 +62,7 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
     }
   );
 
-  // ── Create subscription ────────────────────────────────────────────
+  // -- Create subscription --------------------------------------------
   server.post('/fhir-subscriptions', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -88,7 +88,7 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
     }
   });
 
-  // ── List subscriptions ─────────────────────────────────────────────
+  // -- List subscriptions ---------------------------------------------
   server.get('/fhir-subscriptions/list', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -102,7 +102,7 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, subscriptions: subs, count: subs.length });
   });
 
-  // ── Get subscription ───────────────────────────────────────────────
+  // -- Get subscription -----------------------------------------------
   server.get('/fhir-subscriptions/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -114,7 +114,7 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, subscription: sub });
   });
 
-  // ── Update subscription ────────────────────────────────────────────
+  // -- Update subscription --------------------------------------------
   server.patch('/fhir-subscriptions/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -129,7 +129,7 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, subscription: sub });
   });
 
-  // ── Delete subscription ────────────────────────────────────────────
+  // -- Delete subscription --------------------------------------------
   server.delete('/fhir-subscriptions/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;
@@ -141,7 +141,7 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, deleted: true });
   });
 
-  // ── Notifications ──────────────────────────────────────────────────
+  // -- Notifications --------------------------------------------------
   server.get(
     '/fhir-subscriptions/notifications',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -159,7 +159,7 @@ export async function fhirSubscriptionRoutes(server: FastifyInstance): Promise<v
     }
   );
 
-  // ── Stats ──────────────────────────────────────────────────────────
+  // -- Stats ----------------------------------------------------------
   server.get('/fhir-subscriptions/stats', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
     if (!session) return;

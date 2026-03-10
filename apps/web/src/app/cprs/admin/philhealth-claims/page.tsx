@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * PhilHealth Claims — Phase 90
+ * PhilHealth Claims -- Phase 90
  *
  * Admin page for managing PhilHealth eClaims 3.0 claim drafts:
  *  - List/filter claims
@@ -17,7 +17,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ────────────────────────────────────────────────────── */
+/* -- Types ------------------------------------------------------ */
 
 type ClaimStatus =
   | 'draft'
@@ -94,7 +94,7 @@ const STATUS_COLORS: Record<string, string> = {
   denied: '#dc2626',
 };
 
-/* ── Component ───────────────────────────────────────────────── */
+/* -- Component ------------------------------------------------- */
 
 export default function PhilHealthClaimsPage() {
   const [claims, setClaims] = useState<ClaimDraft[]>([]);

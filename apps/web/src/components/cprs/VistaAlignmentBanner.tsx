@@ -8,7 +8,7 @@
  *   - Green badge: "Wired to VistA" (all RPCs have live call sites)
  *   - Yellow badge: "Partially wired" (some RPCs live, some pending)
  *   - Gray badge: "No VistA RPCs" (panel doesn't use VistA)
- *   - Red badge: "Integration pending" with target RPCs
+ *   - Red badge: "Configuration required" with target RPCs
  *
  * Generated metadata in: apps/web/src/lib/vista-panel-wiring.ts
  * Regenerate with: node tools/rpc-extract/build-coverage-map.mjs

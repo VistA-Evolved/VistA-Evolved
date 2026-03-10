@@ -1,4 +1,4 @@
-# Imaging Services — Phase 22
+# Imaging Services -- Phase 22
 #
 # Orthanc DICOM Server + OHIF Viewer
 # Use `docker compose --profile imaging up -d` to start

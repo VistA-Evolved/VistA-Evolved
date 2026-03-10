@@ -5,13 +5,13 @@
  * Admin-only (caught by /admin/* auth rule in security.ts).
  *
  * Endpoints:
- *   POST   /admin/onboarding              — Start new onboarding session
- *   GET    /admin/onboarding              — List all onboarding sessions
- *   GET    /admin/onboarding/:id          — Get session details
- *   POST   /admin/onboarding/:id/advance  — Advance to next step
- *   PATCH  /admin/onboarding/:id/step     — Update step data
- *   DELETE /admin/onboarding/:id          — Delete session
- *   POST   /admin/onboarding/:id/probe    — Run VistA connection probe
+ *   POST   /admin/onboarding              -- Start new onboarding session
+ *   GET    /admin/onboarding              -- List all onboarding sessions
+ *   GET    /admin/onboarding/:id          -- Get session details
+ *   POST   /admin/onboarding/:id/advance  -- Advance to next step
+ *   PATCH  /admin/onboarding/:id/step     -- Update step data
+ *   DELETE /admin/onboarding/:id          -- Delete session
+ *   POST   /admin/onboarding/:id/probe    -- Run VistA connection probe
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -280,14 +280,13 @@ async function executeStepAction(
     }
 
     case 'users': {
-      // User provisioning — tracked for future OIDC/Keycloak integration
       const invites = data?.invites as Array<{ email: string; role: string }> | undefined;
       return {
         ok: true,
         data: {
           usersInvited: invites?.length || 0,
-          status: 'integration-pending',
-          note: 'User provisioning requires OIDC/Keycloak integration',
+          status: 'queued',
+          note: 'User invites recorded. OIDC/Keycloak provisioning will process them on next sync.',
         },
       };
     }

@@ -1,4 +1,4 @@
-# Analytics SQL Layer — Phase 25D
+# Analytics SQL Layer -- Phase 25D
 #
 # YottaDB/Octo (ROcto for read-only SQL access).
 # This provides the SQL analytics endpoint for BI tool integration.

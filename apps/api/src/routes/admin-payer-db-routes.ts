@@ -1,41 +1,41 @@
 /**
- * Admin Payer DB Routes — Phase 102: Registry Migration to PlatformStore
- * Phase 104: Security posture — admin role enforcement + audit endpoints
+ * Admin Payer DB Routes -- Phase 102: Registry Migration to PlatformStore
+ * Phase 104: Security posture -- admin role enforcement + audit endpoints
  *
  * Uses store-resolver to select PG backend.
  * All repo calls are now async (await).
  *
  * Endpoints:
- *   GET  /admin/payer-db/payers             — list payers
- *   GET  /admin/payer-db/payers/stats       — registry stats
- *   GET  /admin/payer-db/payers/:id         — single payer detail
- *   PATCH /admin/payer-db/payers/:id        — update payer
+ *   GET  /admin/payer-db/payers             -- list payers
+ *   GET  /admin/payer-db/payers/stats       -- registry stats
+ *   GET  /admin/payer-db/payers/:id         -- single payer detail
+ *   PATCH /admin/payer-db/payers/:id        -- update payer
  *
- *   GET  /admin/payer-db/payers/:id/capabilities — list capabilities
- *   PUT  /admin/payer-db/payers/:id/capabilities — set capability (reason required)
+ *   GET  /admin/payer-db/payers/:id/capabilities -- list capabilities
+ *   PUT  /admin/payer-db/payers/:id/capabilities -- set capability (reason required)
  *
- *   GET  /admin/payer-db/payers/:id/tasks   — list tasks
- *   POST /admin/payer-db/payers/:id/tasks   — create task
- *   PATCH /admin/payer-db/tasks/:taskId     — update task status
+ *   GET  /admin/payer-db/payers/:id/tasks   -- list tasks
+ *   POST /admin/payer-db/payers/:id/tasks   -- create task
+ *   PATCH /admin/payer-db/tasks/:taskId     -- update task status
  *
- *   POST /admin/payer-db/evidence/ingest-json  — ingest JSON snapshot
- *   POST /admin/payer-db/evidence/upload-pdf   — upload PDF evidence
- *   GET  /admin/payer-db/evidence              — list evidence snapshots
- *   GET  /admin/payer-db/evidence/:id          — single evidence detail
- *   GET  /admin/payer-db/evidence/:id/diff     — diff vs current DB
- *   POST /admin/payer-db/evidence/:id/promote  — promote snapshot
+ *   POST /admin/payer-db/evidence/ingest-json  -- ingest JSON snapshot
+ *   POST /admin/payer-db/evidence/upload-pdf   -- upload PDF evidence
+ *   GET  /admin/payer-db/evidence              -- list evidence snapshots
+ *   GET  /admin/payer-db/evidence/:id          -- single evidence detail
+ *   GET  /admin/payer-db/evidence/:id/diff     -- diff vs current DB
+ *   POST /admin/payer-db/evidence/:id/promote  -- promote snapshot
  *
- *   GET  /admin/payer-db/audit              — query audit trail
- *   GET  /admin/payer-db/audit/stats        — audit statistics
- *   GET  /admin/payer-db/audit/payer/:id    — audit for specific payer
- *   GET  /admin/payer-db/audit/verify       — verify audit hash chain (Phase 104)
- *   GET  /admin/payer-db/audit/export       — export audit entries (Phase 104)
- *   GET  /admin/payer-db/audit/retention    — audit retention policy (Phase 104)
+ *   GET  /admin/payer-db/audit              -- query audit trail
+ *   GET  /admin/payer-db/audit/stats        -- audit statistics
+ *   GET  /admin/payer-db/audit/payer/:id    -- audit for specific payer
+ *   GET  /admin/payer-db/audit/verify       -- verify audit hash chain (Phase 104)
+ *   GET  /admin/payer-db/audit/export       -- export audit entries (Phase 104)
+ *   GET  /admin/payer-db/audit/retention    -- audit retention policy (Phase 104)
  *
- *   GET  /admin/payer-db/tenant/:tenantId/payers — tenant payer config
- *   PUT  /admin/payer-db/tenant/:tenantId/payers/:payerId — upsert tenant config
+ *   GET  /admin/payer-db/tenant/:tenantId/payers -- tenant payer config
+ *   PUT  /admin/payer-db/tenant/:tenantId/payers/:payerId -- upsert tenant config
  *
- *   GET  /admin/payer-db/backend            — which backend is active
+ *   GET  /admin/payer-db/backend            -- which backend is active
  *
  * Auth: admin-level (matched by /admin/ catch-all in AUTH_RULES).
  * Phase 104: In-handler requireRole("admin") enforced for mutation routes.
@@ -125,9 +125,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     return null;
   }
 
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
   /* BACKEND INFO                                                */
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
 
   server.get('/admin/payer-db/backend', async (request, reply) => {
     await ensureDb();
@@ -145,9 +145,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     return reply.send({ ok: true, ...info });
   });
 
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
   /* PAYER CRUD                                                  */
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
 
   server.get('/admin/payer-db/payers', async (request, reply) => {
     await ensureDb();
@@ -187,9 +187,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
   });
 
   // IMPORTANT: evidence routes BEFORE :id param routes to avoid collision
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
   /* EVIDENCE PIPELINE                                           */
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
 
   server.post('/admin/payer-db/evidence/ingest-json', async (request, reply) => {
     // Phase 104: Explicit admin role enforcement for mutations
@@ -325,9 +325,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     return reply.code(result.ok ? 200 : 400).send(result);
   });
 
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
   /* PAYER :id routes (AFTER evidence routes)                    */
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
 
   server.get('/admin/payer-db/payers/:id', async (request, reply) => {
     await ensureDb();
@@ -376,9 +376,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     }
   });
 
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
   /* CAPABILITIES                                                */
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
 
   server.get('/admin/payer-db/payers/:id/capabilities', async (request, reply) => {
     await ensureDb();
@@ -428,9 +428,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     return reply.send({ ok: true, capability: result });
   });
 
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
   /* TASKS                                                       */
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
 
   server.get('/admin/payer-db/payers/:id/tasks', async (request, reply) => {
     await ensureDb();
@@ -503,9 +503,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     return reply.send({ ok: true, task: result });
   });
 
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
   /* AUDIT                                                       */
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
 
   server.get('/admin/payer-db/audit', async (request, reply) => {
     await ensureDb();
@@ -549,9 +549,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     return reply.send({ ok: true, count: events.length, events });
   });
 
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
   /* AUDIT INTEGRITY (Phase 104)                                 */
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
 
   server.get('/admin/payer-db/audit/verify', async (request, reply) => {
     // Phase 104: Verify hash chain integrity of platform_audit_event
@@ -591,9 +591,9 @@ const adminPayerDbRoutes: FastifyPluginAsync = async (server: FastifyInstance) =
     return reply.send({ ok: true, policy });
   });
 
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
   /* TENANT PAYER CONFIG                                         */
-  /* ═══════════════════════════════════════════════════════════ */
+  /* =========================================================== */
 
   server.get('/admin/payer-db/tenant/:tenantId/payers', async (request, reply) => {
     await ensureDb();

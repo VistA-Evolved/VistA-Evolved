@@ -1,5 +1,5 @@
 /**
- * RCM — Payer Registry
+ * RCM -- Payer Registry
  *
  * Phase 38: In-memory payer catalog with seed data loading.
  *
@@ -19,15 +19,15 @@ import { matchesPayer } from '../domain/payer.js';
 const __dirname_resolved =
   typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
-/* ── Store ──────────────────────────────────────────────────── */
+/* -- Store ---------------------------------------------------- */
 
 const payers = new Map<string, Payer>();
 let initialized = false;
 
-/* ── Seed Loading ───────────────────────────────────────────── */
+/* -- Seed Loading --------------------------------------------- */
 
 function loadSeedFile(relativePath: string): Payer[] {
-  // Resolve relative to repo root (apps/api/src/rcm/payer-registry → ../../../../..)
+  // Resolve relative to repo root (apps/api/src/rcm/payer-registry -> ../../../../..)
   const repoRoot = join(__dirname_resolved, '..', '..', '..', '..', '..');
   const fullPath = join(repoRoot, relativePath);
   if (!existsSync(fullPath)) {
@@ -63,7 +63,7 @@ export function initPayerRegistry(): void {
   initialized = true;
 }
 
-/* ── CRUD ───────────────────────────────────────────────────── */
+/* -- CRUD ----------------------------------------------------- */
 
 export function getPayer(payerId: string): Payer | undefined {
   return payers.get(payerId);

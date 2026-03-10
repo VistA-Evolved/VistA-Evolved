@@ -1,5 +1,5 @@
 /**
- * Medications Page — Active medications from VistA via ORWPS ACTIVE.
+ * Medications Page -- Active medications from VistA via ORWPS ACTIVE.
  * Real data with PDF download.
  */
 
@@ -90,7 +90,7 @@ export default function MedicationsPage() {
                 <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
                   <td style={{ padding: '0.375rem 0.5rem', fontWeight: 500 }}>{med.drugName}</td>
                   <td style={{ padding: '0.375rem 0.5rem' }}>{med.status || 'Active'}</td>
-                  <td style={{ padding: '0.375rem 0.5rem', color: '#64748b' }}>{med.sig || '—'}</td>
+                  <td style={{ padding: '0.375rem 0.5rem', color: '#64748b' }}>{med.sig || '--'}</td>
                 </tr>
               ))}
             </tbody>

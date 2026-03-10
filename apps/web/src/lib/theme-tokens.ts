@@ -1,5 +1,5 @@
 /**
- * Theme Tokens — Phase 280 (Wave 9) → Phase 281 (Wave 10)
+ * Theme Tokens -- Phase 280 (Wave 9) -> Phase 281 (Wave 10)
  *
  * Centralized theme pack definitions for VistA-Evolved.
  * Each theme pack defines CSS custom property values that map to the
@@ -12,7 +12,7 @@
  * The active theme is applied by CPRSUIProvider via document.documentElement
  * data-theme attribute. Theme pack overrides are injected as inline CSS variables.
  *
- * Resolution order: tenant default → user preference → system default (modern-default)
+ * Resolution order: tenant default -> user preference -> system default (modern-default)
  */
 
 /** All built-in theme pack IDs */
@@ -42,7 +42,7 @@ export interface ThemePack {
   contrastLevel: 'AA' | 'AAA';
 }
 
-/* ── Built-in Light Theme (default) ────────────────────── */
+/* -- Built-in Light Theme (default) ---------------------- */
 
 const LIGHT_TOKENS: Record<string, string> = {
   'cprs-bg': '#f0f0f0',
@@ -80,7 +80,7 @@ const LIGHT_TOKENS: Record<string, string> = {
   'cprs-shadow': 'rgba(0, 0, 0, 0.15)',
 };
 
-/* ── Built-in Dark Theme ───────────────────────────────── */
+/* -- Built-in Dark Theme --------------------------------- */
 
 const DARK_TOKENS: Record<string, string> = {
   'cprs-bg': '#1a1a2e',
@@ -118,7 +118,7 @@ const DARK_TOKENS: Record<string, string> = {
   'cprs-shadow': 'rgba(0, 0, 0, 0.4)',
 };
 
-/* ── Vista Legacy Theme (high contrast, classic look) ──── */
+/* -- Vista Legacy Theme (high contrast, classic look) ---- */
 
 const VISTA_LEGACY_TOKENS: Record<string, string> = {
   ...LIGHT_TOKENS,
@@ -134,7 +134,7 @@ const VISTA_LEGACY_TOKENS: Record<string, string> = {
   'cprs-menu-hover': '#b0b0a0',
 };
 
-/* ── OpenMRS-Inspired Theme (warm earth tones, clinical clarity) ──── */
+/* -- OpenMRS-Inspired Theme (warm earth tones, clinical clarity) ---- */
 
 const OPENMRS_TOKENS: Record<string, string> = {
   ...LIGHT_TOKENS,
@@ -173,7 +173,7 @@ const OPENMRS_TOKENS: Record<string, string> = {
   'cprs-shadow': 'rgba(0, 0, 0, 0.12)',
 };
 
-/* ── OpenEMR-Inspired Theme (clean blue-gray clinical) ──────────── */
+/* -- OpenEMR-Inspired Theme (clean blue-gray clinical) ------------ */
 
 const OPENEMR_TOKENS: Record<string, string> = {
   ...LIGHT_TOKENS,
@@ -212,7 +212,7 @@ const OPENEMR_TOKENS: Record<string, string> = {
   'cprs-shadow': 'rgba(15, 23, 42, 0.1)',
 };
 
-/* ── High Contrast Accessibility Theme ──────────────────────────── */
+/* -- High Contrast Accessibility Theme ---------------------------- */
 
 const HIGH_CONTRAST_TOKENS: Record<string, string> = {
   ...LIGHT_TOKENS,
@@ -251,7 +251,7 @@ const HIGH_CONTRAST_TOKENS: Record<string, string> = {
   'cprs-shadow': 'rgba(0, 0, 0, 0.3)',
 };
 
-/* ── Theme Pack Registry ───────────────────────────────── */
+/* -- Theme Pack Registry --------------------------------- */
 
 export const BUILT_IN_THEMES: ThemePack[] = [
   {
@@ -381,7 +381,7 @@ export function resolveEffectiveTheme(mode: 'light' | 'dark' | 'system'): 'light
 
 /**
  * Resolve the effective theme pack ID using the priority chain:
- *   user preference → tenant default → system default ("modern-default")
+ *   user preference -> tenant default -> system default ("modern-default")
  */
 export function resolveThemePackId(
   userPref?: string | null,

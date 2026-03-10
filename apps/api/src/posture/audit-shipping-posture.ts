@@ -1,5 +1,5 @@
 /**
- * Audit Shipping Posture — Phase 157
+ * Audit Shipping Posture -- Phase 157
  *
  * Production readiness checks for audit JSONL replication to object store.
  * Gates:

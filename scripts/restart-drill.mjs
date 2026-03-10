@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Wave 41 — Phase 565 (W41-P8): Restart Drill
+ * Wave 41 -- Phase 565 (W41-P8): Restart Drill
  *
  * Automated restart-safety verification for durable ops stores.
  * Tests that data persisted to PG survives an API restart cycle.
@@ -79,9 +79,9 @@ async function loginAndGetCookies() {
   return sessionCookie.split(';')[0];
 }
 
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 // Phase 1: Check API is alive and PG-backed
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 
 async function checkPrerequisites() {
   console.log('\n=== Phase 1: Prerequisites ===');
@@ -100,9 +100,9 @@ async function checkPrerequisites() {
   return health.status === 200;
 }
 
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 // Phase 2: Store-policy durability audit
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 
 async function checkStorePolicyDurability() {
   console.log('\n=== Phase 2: Store-Policy Durability Audit ===');
@@ -164,9 +164,9 @@ async function checkStorePolicyDurability() {
   }
 }
 
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 // Phase 3: PG migration check
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 
 async function checkPgMigrations() {
   console.log('\n=== Phase 3: PG Migration Verification ===');
@@ -205,9 +205,9 @@ async function checkPgMigrations() {
   }
 }
 
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 // Phase 4: Lifecycle wiring check
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 
 async function checkLifecycleWiring() {
   console.log('\n=== Phase 4: Lifecycle Wiring Verification ===');
@@ -246,9 +246,9 @@ async function checkLifecycleWiring() {
   }
 }
 
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 // Phase 5: Repo factory check
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 
 async function checkRepoFactories() {
   console.log('\n=== Phase 5: W41 Repo Factory Verification ===');
@@ -284,14 +284,14 @@ async function checkRepoFactories() {
   }
 }
 
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 // Main
-// ══════════════════════════════════════════════════════════════
+// ==============================================================
 
 async function main() {
-  console.log('╔══════════════════════════════════════════════════════════╗');
-  console.log('║  Wave 41: Restart-Safe Writeback Drill                  ║');
-  console.log('╚══════════════════════════════════════════════════════════╝');
+  console.log('+==========================================================+');
+  console.log('|  Wave 41: Restart-Safe Writeback Drill                  |');
+  console.log('+==========================================================+');
   console.log(`API: ${API}`);
 
   const alive = await checkPrerequisites();
@@ -300,9 +300,9 @@ async function main() {
   await checkLifecycleWiring();
   await checkRepoFactories();
 
-  console.log('\n══════════════════════════════════════════════════════════');
+  console.log('\n==========================================================');
   console.log(`  PASS: ${pass}  FAIL: ${fail}  SKIP: ${skip}`);
-  console.log('══════════════════════════════════════════════════════════');
+  console.log('==========================================================');
 
   if (fail > 0) {
     console.log('\n  RESULT: FAIL -- Fix failing gates before restart drill.');

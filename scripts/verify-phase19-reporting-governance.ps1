@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-  Phase 19 verifier — Reporting + Export Governance + Ops Analytics + Optional RCM
+  Phase 19 verifier -- Reporting + Export Governance + Ops Analytics + Optional RCM
 .DESCRIPTION
   Checks all Phase 19 deliverables: report config, export governance, reporting API,
   admin reports UI, RCM placeholder, audit action types, feature flags, plus
-  regression checks for Phases 1–18.
+  regression checks for Phases 1-18.
 #>
 
 param([switch]$SkipDocker)
@@ -242,7 +242,7 @@ Assert-Check "Runbook documents env vars" ($runbook -match "REPORT_PAGE_SIZE|EXP
 
 Write-Host ""
 
-# ─── Section K: Phase 1–18 Regression Checks ────────────────────────
+# ─── Section K: Phase 1-18 Regression Checks ────────────────────────
 
 Write-Host "--- K: Phase 1-18 Regression ---" -ForegroundColor White
 

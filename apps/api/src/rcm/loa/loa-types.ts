@@ -1,9 +1,9 @@
 /**
- * LOA Types — Phase 94: PH HMO Workflow Automation
+ * LOA Types -- Phase 94: PH HMO Workflow Automation
  *
  * Letter of Authorization (LOA) domain types for PH HMO workflow.
  *
- * LOA is an orchestration object — it tracks the billing staff's
+ * LOA is an orchestration object -- it tracks the billing staff's
  * interaction with payers to obtain pre-authorization. It is NOT
  * clinical truth. VistA encounters/orders are the source of truth
  * for clinical data referenced by the LOA.
@@ -11,7 +11,7 @@
  * Lifecycle: draft -> submitted -> pending -> approved / denied / expired / cancelled
  */
 
-/* ── LOA Status ─────────────────────────────────────────────── */
+/* -- LOA Status ----------------------------------------------- */
 
 export type LoaStatus =
   | 'draft' // being prepared by billing staff
@@ -46,18 +46,18 @@ export function isValidLoaTransition(from: LoaStatus, to: LoaStatus): boolean {
   return LOA_TRANSITIONS[from]?.includes(to) ?? false;
 }
 
-/* ── Submission Mode ────────────────────────────────────────── */
+/* -- Submission Mode ------------------------------------------ */
 
 export type LoaSubmissionMode = 'manual' | 'portal' | 'email';
 
-/* ── LOA Attachment ─────────────────────────────────────────── */
+/* -- LOA Attachment ------------------------------------------- */
 
 export interface LoaAttachment {
   id: string;
   filename: string;
   mimeType: string;
   sizeBytes: number;
-  /** Stored as opaque reference — no PHI in metadata */
+  /** Stored as opaque reference -- no PHI in metadata */
   storageRef: string;
   uploadedAt: string;
   uploadedBy: string;
@@ -65,7 +65,7 @@ export interface LoaAttachment {
   category: 'clinical_note' | 'order' | 'lab_result' | 'imaging_report' | 'other';
 }
 
-/* ── VistA Source Annotation ────────────────────────────────── */
+/* -- VistA Source Annotation ---------------------------------- */
 
 export interface VistaFieldSource {
   field: string;
@@ -76,7 +76,7 @@ export interface VistaFieldSource {
   notes?: string;
 }
 
-/* ── LOA Checklist Item ─────────────────────────────────────── */
+/* -- LOA Checklist Item --------------------------------------- */
 
 export interface LoaChecklistItem {
   id: string;
@@ -86,7 +86,7 @@ export interface LoaChecklistItem {
   completedBy?: string;
 }
 
-/* ── LOA Audit Entry ────────────────────────────────────────── */
+/* -- LOA Audit Entry ------------------------------------------ */
 
 export interface LoaAuditEntry {
   timestamp: string;
@@ -97,7 +97,7 @@ export interface LoaAuditEntry {
   detail?: string;
 }
 
-/* ── LOA Request ────────────────────────────────────────────── */
+/* -- LOA Request ---------------------------------------------- */
 
 export interface LoaRequest {
   id: string;
@@ -105,7 +105,7 @@ export interface LoaRequest {
   status: LoaStatus;
   submissionMode: LoaSubmissionMode;
 
-  // Patient (orchestration reference only — VistA is source of truth)
+  // Patient (orchestration reference only -- VistA is source of truth)
   patientDfn: string;
   patientName?: string; // display only, redacted in logs
 

@@ -1,5 +1,5 @@
 /**
- * Module Guard Middleware — Phase 37C.
+ * Module Guard Middleware -- Phase 37C.
  *
  * Fastify onRequest hook that checks whether the incoming route belongs to
  * an enabled module for the requesting tenant. Routes belonging to disabled
@@ -17,7 +17,7 @@ import { getPortalSession } from '../routes/portal-auth.js';
 import { getIamSession } from '../portal-iam/portal-iam-routes.js';
 
 /* ------------------------------------------------------------------ */
-/* Bypass patterns — never blocked by module guard                     */
+/* Bypass patterns -- never blocked by module guard                     */
 /* ------------------------------------------------------------------ */
 
 const BYPASS_PATTERNS = [
@@ -39,7 +39,12 @@ const BYPASS_PATTERNS = [
   /^\/api\/adapters/,
   /^\/api\/marketplace/,
   /^\/admin\/modules/, // Phase 109: Module entitlement admin routes
+  /^\/admin\/provisioning/, // Phase C4: SaaS provisioning admin routes
+  /^\/signup\//, // Phase C4: Public signup registration
+  /^\/billing\//, // Phase D: Billing routes (plans are public, others are session-gated)
   /^\/posture\//, // Phase 107: Infrastructure posture routes
+  /^\/fhir\//, // Phase 178: FHIR R4 gateway (auth handled per-route in security.ts)
+  /^\/\.well-known\//, // Phase 179: SMART on FHIR discovery (public per spec)
 ];
 
 /* ------------------------------------------------------------------ */
@@ -47,10 +52,13 @@ const BYPASS_PATTERNS = [
 /* ------------------------------------------------------------------ */
 
 /**
- * Fastify onRequest hook — module-level route guard.
+ * Fastify onRequest hook -- module-level route guard.
  * Must be called inside the handler body or added globally via addHook.
  */
 export async function moduleGuardHook(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+  // BUG-067: Don't send a second response if auth gateway already rejected
+  if ((request as any)._rejected || reply.sent) return;
+
   const path = request.url.split('?')[0]; // strip query params
 
   // Bypass infrastructure routes
@@ -70,6 +78,7 @@ export async function moduleGuardHook(request: FastifyRequest, reply: FastifyRep
     '';
   if (!tenantId) {
     log.warn('Route blocked: tenant context missing', { path });
+    (request as any)._rejected = true;
     reply.code(400).send({
       ok: false,
       code: 'TENANT_REQUIRED',
@@ -97,6 +106,7 @@ export async function moduleGuardHook(request: FastifyRequest, reply: FastifyRep
           tenantId,
           module: moduleId,
         });
+        (request as any)._rejected = true;
         reply.code(403).send({
           ok: false,
           code: 'TENANT_UNPROVISIONED',
@@ -115,6 +125,7 @@ export async function moduleGuardHook(request: FastifyRequest, reply: FastifyRep
           module: moduleId,
         });
 
+        (request as any)._rejected = true;
         reply.code(403).send({
           ok: false,
           code: 'MODULE_DISABLED',
@@ -145,6 +156,7 @@ export async function moduleGuardHook(request: FastifyRequest, reply: FastifyRep
       reason: result.reason,
     });
 
+    (request as any)._rejected = true;
     reply.code(403).send({
       ok: false,
       code: 'MODULE_DISABLED',

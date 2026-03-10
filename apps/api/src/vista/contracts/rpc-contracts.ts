@@ -1,5 +1,5 @@
 /**
- * RPC Contract Registry — Phase 250
+ * RPC Contract Registry -- Phase 250
  *
  * Defines contracted RPCs with input/output schemas for deterministic
  * record/replay testing. Each contract specifies:
@@ -52,7 +52,7 @@ export interface RpcContract {
 }
 
 /**
- * Contracted RPCs — Critical path RPCs that must have deterministic tests.
+ * Contracted RPCs -- Critical path RPCs that must have deterministic tests.
  * Start with 10 high-value RPCs; expand over time.
  */
 export const RPC_CONTRACTS: RpcContract[] = [
@@ -60,7 +60,7 @@ export const RPC_CONTRACTS: RpcContract[] = [
   {
     rpcName: 'XUS SIGNON SETUP',
     domain: 'auth',
-    description: 'Initial signon handshake — returns server info',
+    description: 'Initial signon handshake -- returns server info',
     recordParams: [],
     outputSchema: {
       minLines: 5,
@@ -82,7 +82,7 @@ export const RPC_CONTRACTS: RpcContract[] = [
   {
     rpcName: 'ORWPT LIST ALL',
     domain: 'patients',
-    description: 'List all patients — returns DFN^Name pairs',
+    description: 'List all patients -- returns DFN^Name pairs',
     recordParams: ['A', '1'],
     outputSchema: {
       minLines: 1,

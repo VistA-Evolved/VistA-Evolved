@@ -1,8 +1,8 @@
 /**
- * Appeal Packet Builder — Phase 98
+ * Appeal Packet Builder -- Phase 98
  *
  * Generates HTML appeal packets for denied claims.
- * PDF export deferred — use browser "Print to PDF" for now.
+ * PDF export deferred -- use browser "Print to PDF" for now.
  *
  * IMPORTANT: Credentials not stored; portal submission is manual
  * unless automation is installed via credential vault.
@@ -11,7 +11,7 @@
 import type { DenialCase, DenialAction, DenialAttachment, AppealPacketMeta } from './types.js';
 import { CARC_CODES, RARC_CODES } from '../reference/carc-rarc.js';
 
-/* ── Cover Letter Template ──────────────────────────────────── */
+/* -- Cover Letter Template ------------------------------------ */
 
 function buildCoverLetterHtml(denial: DenialCase, payerName: string): string {
   const date = new Date().toLocaleDateString('en-US', {
@@ -31,7 +31,7 @@ function buildCoverLetterHtml(denial: DenialCase, payerName: string): string {
   <div style="margin-bottom: 20px;">
     <p style="margin: 0; font-weight: bold;">${payerName}</p>
     <p style="margin: 0;">Claims Department / Appeals Unit</p>
-    <p style="margin: 0; color: #666; font-style: italic;">[Address — integration pending]</p>
+    <p style="margin: 0; color: #666; font-style: italic;">[Address -- integration pending]</p>
   </div>
 
   <p><strong>RE: Appeal of Claim Denial</strong></p>
@@ -56,8 +56,8 @@ function buildCoverLetterHtml(denial: DenialCase, payerName: string): string {
 
   <div style="margin-top: 40px;">
     <p style="margin: 0;">Sincerely,</p>
-    <p style="margin: 0; margin-top: 20px;">[Provider Name — integration pending]</p>
-    <p style="margin: 0;">[Facility Name — integration pending]</p>
+    <p style="margin: 0; margin-top: 20px;">[Provider Name -- integration pending]</p>
+    <p style="margin: 0;">[Facility Name -- integration pending]</p>
   </div>
 
   <div style="margin-top: 20px; padding: 10px; background: #fff3cd; border: 1px solid #ffc107; border-radius: 4px;">
@@ -67,7 +67,7 @@ function buildCoverLetterHtml(denial: DenialCase, payerName: string): string {
 </div>`;
 }
 
-/* ── Full Packet HTML ───────────────────────────────────────── */
+/* -- Full Packet HTML ----------------------------------------- */
 
 export function generateAppealPacket(
   denial: DenialCase,
@@ -130,7 +130,7 @@ export function generateAppealPacket(
   };
 }
 
-/* ── Full printable HTML page ───────────────────────────────── */
+/* -- Full printable HTML page --------------------------------- */
 
 export function generateAppealPacketHtml(
   denial: DenialCase,
@@ -149,7 +149,7 @@ export function generateAppealPacketHtml(
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>Appeal Packet — ${denial.claimRef}</title>
+  <title>Appeal Packet -- ${denial.claimRef}</title>
   <style>
     body { font-family: Arial, sans-serif; max-width: 800px; margin: 0 auto; padding: 20px; color: #333; }
     h1, h2, h3 { color: #1a3e5c; }
@@ -166,7 +166,7 @@ export function generateAppealPacketHtml(
 </head>
 <body>
   <div class="no-print" style="background: #e3f2fd; padding: 10px; border-radius: 4px; margin-bottom: 20px;">
-    <strong>Appeal Packet Preview</strong> — Use File → Print → Save as PDF to export.
+    <strong>Appeal Packet Preview</strong> -- Use File -> Print -> Save as PDF to export.
   </div>
 
   <h1>Appeal Packet</h1>
@@ -221,9 +221,9 @@ export function generateAppealPacketHtml(
       .map(
         (a) => `
     <div class="timeline-item">
-      <strong>${a.timestamp.split('T')[0]}</strong> — ${a.actionType}
+      <strong>${a.timestamp.split('T')[0]}</strong> -- ${a.actionType}
       ${a.actor ? ` by ${a.actor}` : ''}
-      ${a.previousStatus && a.newStatus && a.previousStatus !== a.newStatus ? ` (${a.previousStatus} → ${a.newStatus})` : ''}
+      ${a.previousStatus && a.newStatus && a.previousStatus !== a.newStatus ? ` (${a.previousStatus} -> ${a.newStatus})` : ''}
     </div>`
       )
       .join('')}
@@ -236,7 +236,7 @@ export function generateAppealPacketHtml(
 </html>`;
 }
 
-/* ── Utility ────────────────────────────────────────────────── */
+/* -- Utility -------------------------------------------------- */
 
 function escapeHtml(str: string): string {
   return str

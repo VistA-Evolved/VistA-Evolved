@@ -8,7 +8,7 @@
 
 import { test, expect } from '@playwright/test';
 
-test.describe('Secure Messaging — Clinician Flows', () => {
+test.describe('Secure Messaging -- Clinician Flows', () => {
   test.beforeEach(async ({ page }) => {
     // Session pre-loaded via auth.setup.ts (storageState)
     await page.goto('/cprs/messages');
@@ -54,7 +54,7 @@ test.describe('Secure Messaging — Clinician Flows', () => {
     await expect(sendBtn).toBeVisible();
   });
 
-  test('Compose + Send → POST /messaging/compose fires + success UI shown', async ({ page }) => {
+  test('Compose + Send -> POST /messaging/compose fires + success UI shown', async ({ page }) => {
     const composeBtn = page.locator('button', { hasText: /compose/i }).first();
     await composeBtn.click();
 
@@ -126,8 +126,8 @@ test.describe('Secure Messaging — Clinician Flows', () => {
   });
 });
 
-test.describe('Secure Messaging — Portal Posture', () => {
-  test('Portal send → POST /messaging/portal/send or pending with target RPCs', async ({
+test.describe('Secure Messaging -- Portal Posture', () => {
+  test('Portal send -> POST /messaging/portal/send or pending with target RPCs', async ({
     page,
   }) => {
     // Navigate to portal messages page
@@ -164,8 +164,8 @@ test.describe('Secure Messaging — Portal Posture', () => {
   });
 });
 
-test.describe('Secure Messaging — Negative Tests', () => {
-  test('POST /messaging/compose with missing fields → 400, not ok:true', async ({ request }) => {
+test.describe('Secure Messaging -- Negative Tests', () => {
+  test('POST /messaging/compose with missing fields -> 400, not ok:true', async ({ request }) => {
     // Missing subject
     const res1 = await request.post('/messaging/compose', {
       data: { body: 'test', recipients: [{ type: 'user', id: '87', name: 'Test' }] },
@@ -191,7 +191,7 @@ test.describe('Secure Messaging — Negative Tests', () => {
     expect(body3.ok).toBe(false);
   });
 
-  test('POST /messaging/compose with short subject → 400', async ({ request }) => {
+  test('POST /messaging/compose with short subject -> 400', async ({ request }) => {
     const res = await request.post('/messaging/compose', {
       data: { subject: 'ab', body: 'test', recipients: [{ type: 'user', id: '87', name: 'Test' }] },
     });

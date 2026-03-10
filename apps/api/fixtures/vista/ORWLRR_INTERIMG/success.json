@@ -1,0 +1,13 @@
+{
+  "rpcName": "ORWLRR INTERIMG",
+  "caseName": "success",
+  "recordedAt": "2026-03-05T00:00:00Z",
+  "sanitized": true,
+  "params": ["46", "3260101", "3260301"],
+  "response": [
+    "CHEM 7^3260115.0800^COMPLETE^LAB",
+    "  GLUCOSE: 95 MG/DL [70-110]",
+    "  BUN: 15 MG/DL [7-20]"
+  ],
+  "responseHash": "c4d5e6f7a8b9"
+}

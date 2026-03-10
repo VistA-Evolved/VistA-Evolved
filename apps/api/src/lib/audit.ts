@@ -1,5 +1,5 @@
 /**
- * HIPAA-posture audit logging — Phase 15C.
+ * HIPAA-posture audit logging -- Phase 15C.
  *
  * Records structured AuditEvent entries for:
  *   - Authentication (login, logout, session expired)
@@ -144,7 +144,19 @@ export type AuditAction =
   | 'clinical.handoff-submit'
   | 'clinical.handoff-accept'
   | 'clinical.handoff-archive'
-  | 'clinical.handoff-view';
+  | 'clinical.handoff-view'
+  // E-Prescribing audit events
+  | 'clinical.erx-prescribe'
+  | 'clinical.erx-renew'
+  | 'clinical.erx-cancel'
+  | 'phi.erx-history-view'
+  // PCE / Immunization / Encounter audit events
+  | 'clinical.immunization-give'
+  | 'phi.immunizations-view'
+  | 'clinical.encounter-create'
+  | 'clinical.encounter-procedure'
+  | 'clinical.encounter-diagnosis'
+  | 'phi.encounters-view';
 
 export type AuditOutcome = 'success' | 'failure' | 'denied' | 'error' | 'partial';
 
@@ -274,8 +286,8 @@ export function audit(
     /* metric not critical */
   }
 
-  // Also emit to structured log for correlation — Phase 151: no PHI in logs
-  log.info(`AUDIT: ${action} → ${outcome}`, {
+  // Also emit to structured log for correlation -- Phase 151: no PHI in logs
+  log.info(`AUDIT: ${action} -> ${outcome}`, {
     auditId: event.id,
     action,
     outcome,

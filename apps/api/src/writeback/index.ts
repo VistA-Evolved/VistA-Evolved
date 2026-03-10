@@ -1,5 +1,5 @@
 /**
- * Clinical Writeback Command Bus — Barrel Export
+ * Clinical Writeback Command Bus -- Barrel Export
  *
  * Phase 300 (W12-P2): Re-exports for clean imports.
  * Phase 308 (W12-P10): Added certification runner exports.

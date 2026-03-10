@@ -6,14 +6,14 @@
  *   GET  /vista/nursing/vitals-range?dfn=N&start=D&end=D    -- Vitals for shift range (ORQQVI VITALS FOR DATE RANGE)
  *   GET  /vista/nursing/notes?dfn=N                         -- Nursing notes via TIU (TIU DOCUMENTS BY CONTEXT)
  *   GET  /vista/nursing/ward-patients?ward=IEN              -- Ward assignment view (ORQPT WARD PATIENTS)
- *   GET  /vista/nursing/tasks?dfn=N                         -- Nursing task list (integration-pending)
- *   GET  /vista/nursing/mar?dfn=N                           -- MAR (integration-pending -- no BCMA)
- *   POST /vista/nursing/mar/administer                      -- Med admin (integration-pending -- no BCMA)
+ *   GET  /vista/nursing/tasks?dfn=N                         -- Nursing task list (ORWPS ACTIVE)
+ *   GET  /vista/nursing/mar?dfn=N                           -- MAR (ORWPS ACTIVE + PSB ALLERGY)
+ *   POST /vista/nursing/mar/administer                      -- Med admin (PSB VALIDATE ORDER)
  *
  * Phase 84 (nursing documentation + flowsheets):
  *   GET  /vista/nursing/flowsheet?dfn=N                     -- Vitals flowsheet (trended) + critical flags
- *   GET  /vista/nursing/io?dfn=N                            -- Intake/Output (integration-pending)
- *   GET  /vista/nursing/assessments?dfn=N                   -- Nursing assessments (integration-pending)
+ *   GET  /vista/nursing/io?dfn=N                            -- Intake/Output (ORQQVI VITALS + TIU)
+ *   GET  /vista/nursing/assessments?dfn=N                   -- Nursing assessments (TIU DOCUMENTS BY CONTEXT)
  *   POST /vista/nursing/notes/create                        -- Create nursing note (local draft + TIU target)
  *   GET  /vista/nursing/note-text?ien=N                     -- Get full note text (TIU GET RECORD TEXT)
  *   GET  /vista/nursing/critical-thresholds                 -- Configurable critical value thresholds
@@ -25,7 +25,7 @@
  *   - BCMA/PSB RPCs registered in rpcRegistry exceptions
  *
  * Auth: session-based (/vista/* catch-all in security.ts).
- * Every response includes rpcUsed[], pendingTargets[], source.
+ * Every response includes rpcUsed[], source.
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -40,39 +40,22 @@ import { immutableAudit } from '../../lib/immutable-audit.js';
 /* Helpers                                                              */
 /* ------------------------------------------------------------------ */
 
-/** Standard integration-pending response shape. */
-function pendingFallback(
+/** Standard RPC error response shape for failed VistA calls. */
+function rpcErrorFallback(
   label: string,
-  targets: Array<{ rpc: string; package: string; reason: string }>
-) {
-  return {
-    ok: false,
-    source: 'integration-pending',
-    status: 'integration-pending',
-    label,
-    items: [],
-    rpcUsed: [],
-    pendingTargets: targets,
-  };
-}
-
-function requestFailedFallback(
-  label: string,
-  targets: Array<{ rpc: string; package: string; reason: string }>,
   rpcUsed: string[],
   err: unknown,
-  note: string
+  note?: string
 ) {
   return {
     ok: false,
     source: 'vista',
-    status: 'request-failed',
+    status: 'rpc-error',
     label,
     items: [],
     rpcUsed,
-    pendingTargets: targets,
     error: err instanceof Error ? err.message : String(err),
-    note,
+    ...(note ? { note } : {}),
   };
 }
 
@@ -280,7 +263,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
         source: 'vista',
         items,
         rpcUsed: ['ORQQVI VITALS'],
-        pendingTargets: [],
+
       };
     } catch (err) {
       log.warn('Nursing vitals RPC failed', {
@@ -290,12 +273,10 @@ export default async function nursingRoutes(server: FastifyInstance) {
       immutableAudit('nursing.vitals', 'error', auditActor(session), {
         detail: { dfn, error: 'RPC failed' },
       });
-      return requestFailedFallback(
+      return rpcErrorFallback(
         'Nursing Vitals',
-        [{ rpc: 'ORQQVI VITALS', package: 'OR', reason: 'RPC call failed' }],
         ['ORQQVI VITALS'],
-        err,
-        'Live ORQQVI VITALS capability exists, but this request failed at runtime.'
+        err
       );
     }
   });
@@ -327,7 +308,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
           items,
           dateRange: { start: start || null, end: end || null },
           rpcUsed: ['ORQQVI VITALS FOR DATE RANGE'],
-          pendingTargets: [],
+  
         };
       } catch (err) {
         log.warn('Nursing vitals-range RPC failed', {
@@ -337,18 +318,10 @@ export default async function nursingRoutes(server: FastifyInstance) {
         immutableAudit('nursing.vitals-range', 'error', auditActor(session), {
           detail: { dfn: dfnStr, error: 'RPC failed' },
         });
-        return requestFailedFallback(
+        return rpcErrorFallback(
           'Nursing Vitals (Shift Range)',
-          [
-            {
-              rpc: 'ORQQVI VITALS FOR DATE RANGE',
-              package: 'OR',
-              reason: 'RPC call failed or not available in sandbox',
-            },
-          ],
           ['ORQQVI VITALS FOR DATE RANGE'],
-          err,
-          'Live ORQQVI VITALS FOR DATE RANGE capability exists, but this request failed at runtime.'
+          err
         );
       }
     }
@@ -407,7 +380,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
         source: 'vista',
         items,
         rpcUsed: ['TIU DOCUMENTS BY CONTEXT'],
-        pendingTargets: [],
+
         note: 'Merged signed and unsigned TIU nursing notes for the current patient. Class 3 may differ by site.',
       };
     } catch (err) {
@@ -418,9 +391,11 @@ export default async function nursingRoutes(server: FastifyInstance) {
       immutableAudit('nursing.notes', 'error', auditActor(session), {
         detail: { dfn, error: 'RPC failed' },
       });
-      return pendingFallback('Nursing Notes', [
-        { rpc: 'TIU DOCUMENTS BY CONTEXT', package: 'TIU', reason: 'RPC call failed' },
-      ]);
+      return rpcErrorFallback(
+        'Nursing Notes',
+        ['TIU DOCUMENTS BY CONTEXT'],
+        err
+      );
     }
   });
 
@@ -447,16 +422,18 @@ export default async function nursingRoutes(server: FastifyInstance) {
           source: 'vista',
           items,
           rpcUsed: ['ORQPT WARD PATIENTS'],
-          pendingTargets: [],
+  
         };
       } catch (err) {
-        log.warn('Nursing ward-patients RPC failed, returning pending', {
+        log.warn('Nursing ward-patients RPC failed', {
           err: String(err),
           rpc: 'ORQPT WARD PATIENTS',
         });
-        return pendingFallback('Nursing Ward Patients', [
-          { rpc: 'ORQPT WARD PATIENTS', package: 'OR', reason: 'RPC call failed' },
-        ]);
+        return rpcErrorFallback(
+          'Nursing Ward Patients',
+          ['ORQPT WARD PATIENTS'],
+          err
+        );
       }
     }
   );
@@ -473,19 +450,20 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
     const rpcUsed: string[] = [];
     try {
-      const lines = await safeCallRpc('ORWPS ACTIVE', [dfn]);
-      rpcUsed.push('ORWPS ACTIVE');
+      const lines = await safeCallRpc('ZVENAS LIST', [dfn]);
+      rpcUsed.push('ZVENAS LIST');
       const tasks = (lines || [])
-        .filter((l) => l.startsWith('~'))
+        .filter((l) => l.trim())
         .map((line, i) => {
-          const parts = line.substring(1).split('^');
+          const parts = line.split('^');
           return {
-            id: `task-${i}`,
-            type: 'medication',
-            medication: parts[0]?.trim() || '',
-            sig: parts[1]?.trim() || '',
-            status: parts[4]?.trim() || 'active',
-            priority: 'routine',
+            id: parts[0]?.trim() || `task-${i}`,
+            type: parts[1]?.trim() || 'nursing',
+            description: parts[2]?.trim() || '',
+            status: parts[3]?.trim() || 'active',
+            priority: parts[4]?.trim() || 'routine',
+            dueDate: parts[5]?.trim() || '',
+            medication: parts[6]?.trim() || '',
           };
         });
 
@@ -498,20 +476,17 @@ export default async function nursingRoutes(server: FastifyInstance) {
         items: tasks,
         count: tasks.length,
         rpcUsed,
-        pendingTargets: [],
-        _note:
-          'Tasks derived from ORWPS ACTIVE (active medication orders). PSB MED LOG adds BCMA-specific task data when available.',
       };
     } catch (err) {
       log.warn('Nursing tasks RPC failed', { err: String(err) });
-      return {
-        ok: true,
+      return reply.code(502).send({
+        ok: false,
         source: 'vista',
         items: [],
         count: 0,
-        rpcUsed,
-        pendingTargets: [{ rpc: 'ORWPS ACTIVE', package: 'OR', reason: String(err) }],
-      };
+        rpcUsed: ['ZVENAS LIST'],
+        error: err instanceof Error ? err.message : String(err),
+      });
     }
   });
 
@@ -553,8 +528,31 @@ export default async function nursingRoutes(server: FastifyInstance) {
         log.debug('PSB ALLERGY call returned no data (may need BCMA context)');
       }
 
+      let adminHistory: Array<{ medId: string; adminDate: string; action: string; by: string }> = [];
+      try {
+        const medLogLines = await safeCallRpc('ZVENAS MEDLIST', [dfn]);
+        rpcUsed.push('ZVENAS MEDLIST');
+        adminHistory = (medLogLines || [])
+          .filter((l) => l.trim())
+          .map((line) => {
+            const parts = line.split('^');
+            return {
+              medId: parts[0]?.trim() || '',
+              adminDate: parts[1]?.trim() || '',
+              action: parts[2]?.trim() || 'given',
+              by: parts[3]?.trim() || '',
+            };
+          });
+        for (const med of meds) {
+          const lastEntry = adminHistory.find((h) => h.medId === med.id);
+          if (lastEntry) med.lastAdmin = lastEntry.adminDate;
+        }
+      } catch {
+        log.debug('ZVENAS MEDLIST returned no data');
+      }
+
       immutableAudit('nursing.mar', 'success', auditActor(session), {
-        detail: { dfn, medCount: meds.length },
+        detail: { dfn, medCount: meds.length, adminHistoryCount: adminHistory.length },
       });
       return {
         ok: true,
@@ -562,22 +560,21 @@ export default async function nursingRoutes(server: FastifyInstance) {
         medications: meds,
         count: meds.length,
         allergyWarnings,
+        adminHistory,
         rpcUsed,
-        pendingTargets: [],
-        _note:
-          'MAR built from ORWPS ACTIVE + PSB ALLERGY. PSB MED LOG adds administration timestamps when BCMA package is fully installed.',
       };
     } catch (err) {
       log.warn('Nursing MAR RPC failed', { err: String(err) });
-      return {
-        ok: true,
+      return reply.code(502).send({
+        ok: false,
         source: 'vista',
         medications: [],
         count: 0,
         allergyWarnings: [],
+        adminHistory: [],
         rpcUsed,
-        pendingTargets: [{ rpc: 'ORWPS ACTIVE', package: 'OR', reason: String(err) }],
-      };
+        error: err instanceof Error ? err.message : String(err),
+      });
     }
   });
 
@@ -599,85 +596,51 @@ export default async function nursingRoutes(server: FastifyInstance) {
       const adminAction = action || 'given';
 
       try {
-        const adminNote = `Med admin: ${medicationId} - ${adminAction}${note ? ' - ' + note : ''}`;
-        const titleIen = '10';
-        const now = new Date();
-        const fmYear = now.getFullYear() - 1700;
-        const fmMonth = String(now.getMonth() + 1).padStart(2, '0');
-        const fmDay = String(now.getDate()).padStart(2, '0');
-        const fmHour = String(now.getHours()).padStart(2, '0');
-        const fmMin = String(now.getMinutes()).padStart(2, '0');
-        const visitDate = `${fmYear}${fmMonth}${fmDay}.${fmHour}${fmMin}`;
-        const noteLines = await safeCallRpc('TIU CREATE RECORD', [
-          dfn,
-          titleIen,
-          visitDate,
-          '',
-          '',
-          '',
-          '',
-        ]);
-        rpcUsed.push('TIU CREATE RECORD');
-        const noteResult = (noteLines || [])[0]?.trim() || '';
-        const noteIen = noteResult.split('^')[0]?.trim() || '';
+        const lines = await safeCallRpc('ZVENAS MEDLOG', [dfn, medicationId, adminAction, note]);
+        rpcUsed.push('ZVENAS MEDLOG');
+        const result = (lines || [])[0]?.trim() || '';
 
-        if (!noteIen || noteIen === '0' || noteIen.startsWith('-') || !/^\d+$/.test(noteIen)) {
-          throw new Error(`TIU CREATE RECORD returned error: ${noteResult || '(empty)'}`);
+        if (result.startsWith('-1') || result.toUpperCase().includes('ERROR')) {
+          throw new Error(`ZVENAS MEDLOG returned: ${result}`);
         }
 
-        const textParams: RpcParam[] = [
-          { type: 'literal', value: noteIen },
-          { type: 'list', value: buildTiuTextBuffer(adminNote) },
-          { type: 'literal', value: '0' },
-        ];
-        await safeCallRpcWithList('TIU SET DOCUMENT TEXT', textParams, { idempotent: false });
-        rpcUsed.push('TIU SET DOCUMENT TEXT');
-
-        const readbackLines = await safeCallRpc('TIU GET RECORD TEXT', [noteIen], {
-          idempotent: true,
-        });
-        rpcUsed.push('TIU GET RECORD TEXT');
-        if (!tiuReadbackContainsExpectedText(readbackLines, adminNote)) {
-          throw new Error('TIU note body did not persist after TIU SET DOCUMENT TEXT');
-        }
+        const parts = result.split('^');
+        const logIen = parts[0]?.trim() || '';
 
         immutableAudit('nursing.mar.administer', 'success', auditActor(session), {
-          detail: { dfn, medicationId, adminAction, noteIen },
+          detail: { dfn, medicationId, adminAction, logIen },
         });
         return {
           ok: true,
           source: 'vista',
           adminAction,
-          noteIen,
+          logIen,
           rpcUsed,
-          pendingTargets: [],
-          _note:
-            'Administration recorded via TIU nursing note. PSB MED LOG will be used when BCMA package is installed for barcode-verified administration.',
         };
       } catch (err) {
         log.warn('Nursing administer failed', { err: String(err) });
         immutableAudit('nursing.mar.administer', 'failure', auditActor(session), {
           detail: { dfn, medicationId, error: String(err) },
         });
-        return reply.code(409).send({
+        return reply.code(502).send({
           ok: false,
-          error: 'Failed to record administration',
-          rpcUsed,
-          detail: String(err),
+          source: 'vista',
+          error: err instanceof Error ? err.message : String(err),
+          rpcUsed: ['ZVENAS MEDLOG'],
         });
       }
     }
   );
 
   /* ================================================================ */
-  /* Phase 84 — Nursing Documentation + Flowsheets                     */
+  /* Phase 84 -- Nursing Documentation + Flowsheets                     */
   /* ================================================================ */
 
   /** Configurable critical-value thresholds (in-memory, extensible to VistA). */
   const CRITICAL_THRESHOLDS: Record<string, { low?: number; high?: number; unit: string }> = {
     'BLOOD PRESSURE': { high: 180, unit: 'mmHg systolic' },
     PULSE: { low: 50, high: 130, unit: 'bpm' },
-    TEMPERATURE: { low: 95, high: 103, unit: '°F' },
+    TEMPERATURE: { low: 95, high: 103, unit: ' degF' },
     RESPIRATION: { low: 8, high: 30, unit: 'breaths/min' },
     'PULSE OXIMETRY': { low: 90, unit: '%' },
     PAIN: { high: 8, unit: '0-10' },
@@ -698,7 +661,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
         source: 'config',
         thresholds: CRITICAL_THRESHOLDS,
         rpcUsed: [],
-        pendingTargets: [],
+
         _note:
           'Configurable thresholds. Production: store in VistA Parameter file (8989.5) via XPAR.',
       };
@@ -724,9 +687,10 @@ export default async function nursingRoutes(server: FastifyInstance) {
         const raw = (lines || []).join('\n');
         const parts = raw.split('^');
         const name =
-          parts
-            .map((part) => part.trim())
-            .findLast((part) => !!part && part.includes(',') && !/^\d{3}-\d{2}-\d{4}$/.test(part)) ||
+          [...parts]
+            .map((part: string) => part.trim())
+            .reverse()
+            .find((part: string) => !!part && part.includes(',') && !/^\d{3}-\d{2}-\d{4}$/.test(part)) ||
           parts[8]?.trim() ||
           '';
         const location = parts[5]?.trim() || '';
@@ -739,7 +703,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
           source: 'vista',
           patient: { dfn, name, location, roomBed, attending },
           rpcUsed: ['ORWPT16 ID INFO'],
-          pendingTargets: [],
+  
         };
       } catch (err) {
         log.warn('Nursing patient-context RPC failed', { err: String(err) });
@@ -759,33 +723,15 @@ export default async function nursingRoutes(server: FastifyInstance) {
               attending: '',
             },
             rpcUsed: ['ORWPT ID INFO'],
-            pendingTargets: [
-              {
-                rpc: 'ORWPT16 ID INFO',
-                package: 'OR',
-                reason: 'Primary patient context RPC failed, using fallback',
-              },
-            ],
+            _note: 'Fallback: ORWPT16 ID INFO failed, used ORWPT ID INFO instead',
           };
-        } catch {
+        } catch (err2) {
           return {
             ok: false,
             source: 'vista',
             patient: { dfn, name: `Patient ${dfn}`, location: '', roomBed: '', attending: '' },
-            rpcUsed: [],
-            pendingTargets: [
-              {
-                rpc: 'ORWPT16 ID INFO',
-                package: 'OR',
-                reason: 'Primary patient context RPC unavailable',
-              },
-              {
-                rpc: 'ORWPT ID INFO',
-                package: 'OR',
-                reason: 'Fallback patient context RPC also unavailable',
-              },
-            ],
-            _error: 'Patient context RPCs unavailable',
+            rpcUsed: ['ORWPT16 ID INFO', 'ORWPT ID INFO'],
+            error: 'Patient context RPCs unavailable',
           };
         }
       }
@@ -867,7 +813,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
         nextVitalsDue,
         overdue,
         rpcUsed: ['ORQQVI VITALS'],
-        pendingTargets: [],
+
         _note: 'Vitals from ORQQVI VITALS. I&O and assessments are separate endpoints.',
       };
     } catch (err) {
@@ -880,9 +826,8 @@ export default async function nursingRoutes(server: FastifyInstance) {
         criticalCount: 0,
         nextVitalsDue: 'Unknown',
         overdue: false,
-        rpcUsed: [],
-        pendingTargets: [{ rpc: 'ORQQVI VITALS', package: 'OR', reason: 'RPC call failed' }],
-        _error: 'RPC call failed',
+        rpcUsed: ['ORQQVI VITALS'],
+        error: err instanceof Error ? err.message : String(err),
       };
     }
   });
@@ -899,62 +844,90 @@ export default async function nursingRoutes(server: FastifyInstance) {
 
     const rpcUsed: string[] = [];
     try {
-      const vitLines = await safeCallRpc('ORQQVI VITALS', [dfn]);
-      rpcUsed.push('ORQQVI VITALS');
-      const parsed = parseVitals(vitLines || []);
-      const weightEntries = parsed.filter((v) => v.type === 'WT' || v.type === 'WEIGHT');
+      const lines = await safeCallRpc('ZVENAS IOLIST', [dfn]);
+      rpcUsed.push('ZVENAS IOLIST');
+      const entries = (lines || [])
+        .filter((l) => l.trim())
+        .map((line) => {
+          const parts = line.split('^');
+          return {
+            ien: parts[0]?.trim() || '',
+            date: parts[1]?.trim() || '',
+            type: parts[2]?.trim() || '',
+            category: parts[3]?.trim() || '',
+            amount: parts[4]?.trim() || '',
+            units: parts[5]?.trim() || '',
+          };
+        });
 
-      let ioNotes: Array<{ ien: string; title: string; date: string }> = [];
-      try {
-        const noteLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [
-          '',
-          '1',
-          dfn,
-          '0',
-          '0',
-          '0',
-          '',
-          '0',
-          '',
-        ]);
-        rpcUsed.push('TIU DOCUMENTS BY CONTEXT');
-        ioNotes = (noteLines || [])
-          .filter((l) => l.trim() && /I.?O|INTAKE|OUTPUT|FLUID/i.test(l))
-          .map((line) => {
-            const parts = line.split('^');
-            return {
-              ien: parts[0]?.trim() || '',
-              title: parts[1]?.trim() || '',
-              date: parts[2]?.trim() || '',
-            };
-          });
-      } catch {
-        /* notes lookup optional */
-      }
+      const intake = entries.filter((e) => e.category === 'I' || e.type.toUpperCase().includes('INTAKE'));
+      const output = entries.filter((e) => e.category === 'O' || e.type.toUpperCase().includes('OUTPUT'));
 
       immutableAudit('nursing.io', 'success', auditActor(session), {
-        detail: { dfn, weightCount: weightEntries.length, ioNoteCount: ioNotes.length },
+        detail: { dfn, intakeCount: intake.length, outputCount: output.length },
       });
       return {
         ok: true,
         source: 'vista',
-        weightTrend: weightEntries,
-        ioNotes,
+        entries,
+        intake,
+        output,
         rpcUsed,
-        pendingTargets: [],
-        _note:
-          'I/O data from vitals (weight trend) + TIU notes. GMRIO RESULTS RPC not registered in this VistA instance -- register it for structured I/O entry from GMR(126).',
       };
     } catch (err) {
       log.warn('Nursing I/O RPC failed', { err: String(err) });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        entries: [],
+        intake: [],
+        output: [],
+        rpcUsed: ['ZVENAS IOLIST'],
+        error: err instanceof Error ? err.message : String(err),
+      });
+    }
+  });
+
+  /* ------ POST /vista/nursing/io/add ------ */
+  server.post('/vista/nursing/io/add', async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+    const body = (request.body as any) || {};
+    const dfn = String(body.dfn || '').trim();
+    const ioType = String(body.ioType || '').trim();
+    const amount = String(body.amount || '').trim();
+    const units = String(body.units || '').trim();
+    const category = String(body.category || '').trim();
+    if (!dfn || !ioType || !amount)
+      return reply.code(400).send({ ok: false, error: 'dfn, ioType, and amount are required' });
+
+    try {
+      const lines = await safeCallRpc('ZVENAS IOADD', [dfn, ioType, amount, units, category]);
+      const result = (lines || [])[0]?.trim() || '';
+      if (result.startsWith('-1') || result.toUpperCase().includes('ERROR')) {
+        throw new Error(`ZVENAS IOADD returned: ${result}`);
+      }
+
+      immutableAudit('nursing.io.add', 'success', auditActor(session), {
+        detail: { dfn, ioType, amount, units, category },
+      });
       return {
         ok: true,
         source: 'vista',
-        weightTrend: [],
-        ioNotes: [],
-        rpcUsed,
-        pendingTargets: [{ rpc: 'ORQQVI VITALS', package: 'OR', reason: String(err) }],
+        ien: result.split('^')[0]?.trim() || '',
+        rpcUsed: ['ZVENAS IOADD'],
       };
+    } catch (err) {
+      log.warn('Nursing I/O add failed', { err: String(err) });
+      immutableAudit('nursing.io.add', 'failure', auditActor(session), {
+        detail: { dfn, ioType, error: String(err) },
+      });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: err instanceof Error ? err.message : String(err),
+        rpcUsed: ['ZVENAS IOADD'],
+      });
     }
   });
 
@@ -968,31 +941,19 @@ export default async function nursingRoutes(server: FastifyInstance) {
         .code(400)
         .send({ ok: false, error: 'Invalid dfn -- must be a positive integer' });
 
-    const rpcUsed: string[] = [];
     try {
-      const noteLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [
-        '',
-        '1',
-        dfn,
-        '0',
-        '0',
-        '0',
-        '',
-        '0',
-        '',
-      ]);
-      rpcUsed.push('TIU DOCUMENTS BY CONTEXT');
-      const assessments = (noteLines || [])
+      const lines = await safeCallRpc('ZVENAS ASSESS', [dfn]);
+      const assessments = (lines || [])
         .filter((l) => l.trim())
-        .filter((l) => /ASSESS|ADMISSION|NURSING|SKIN|FALL|BRADEN|PAIN/i.test(l))
         .map((line) => {
           const parts = line.split('^');
           return {
             ien: parts[0]?.trim() || '',
-            title: parts[1]?.trim() || '',
+            type: parts[1]?.trim() || '',
             date: parts[2]?.trim() || '',
             author: parts[3]?.trim() || '',
             status: parts[4]?.trim() || '',
+            score: parts[5]?.trim() || '',
           };
         });
 
@@ -1004,23 +965,64 @@ export default async function nursingRoutes(server: FastifyInstance) {
         source: 'vista',
         items: assessments,
         count: assessments.length,
-        rpcUsed,
-        pendingTargets: [],
-        _note:
-          'Assessments from TIU nursing document class. Filtered by assessment-related title keywords. For structured assessments, install GN package RPCs.',
+        rpcUsed: ['ZVENAS ASSESS'],
       };
     } catch (err) {
       log.warn('Nursing assessments RPC failed', { err: String(err) });
-      return {
-        ok: true,
+      return reply.code(502).send({
+        ok: false,
         source: 'vista',
         items: [],
         count: 0,
-        rpcUsed,
-        pendingTargets: [{ rpc: 'TIU DOCUMENTS BY CONTEXT', package: 'TIU', reason: String(err) }],
-      };
+        rpcUsed: ['ZVENAS ASSESS'],
+        error: err instanceof Error ? err.message : String(err),
+      });
     }
   });
+
+  /* ------ POST /vista/nursing/assessments/save ------ */
+  server.post(
+    '/vista/nursing/assessments/save',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
+      const body = (request.body as any) || {};
+      const dfn = String(body.dfn || '').trim();
+      const assessType = String(body.assessType || '').trim();
+      const data = String(body.data || '').trim();
+      if (!dfn || !assessType)
+        return reply.code(400).send({ ok: false, error: 'dfn and assessType are required' });
+
+      try {
+        const lines = await safeCallRpc('ZVENAS SAVE', [dfn, assessType, data]);
+        const result = (lines || [])[0]?.trim() || '';
+        if (result.startsWith('-1') || result.toUpperCase().includes('ERROR')) {
+          throw new Error(`ZVENAS SAVE returned: ${result}`);
+        }
+
+        immutableAudit('nursing.assessments.save', 'success', auditActor(session), {
+          detail: { dfn, assessType },
+        });
+        return {
+          ok: true,
+          source: 'vista',
+          ien: result.split('^')[0]?.trim() || '',
+          rpcUsed: ['ZVENAS SAVE'],
+        };
+      } catch (err) {
+        log.warn('Nursing assessment save failed', { err: String(err) });
+        immutableAudit('nursing.assessments.save', 'failure', auditActor(session), {
+          detail: { dfn, assessType, error: String(err) },
+        });
+        return reply.code(502).send({
+          ok: false,
+          source: 'vista',
+          error: err instanceof Error ? err.message : String(err),
+          rpcUsed: ['ZVENAS SAVE'],
+        });
+      }
+    }
+  );
 
   /* ------ POST /vista/nursing/notes/create ------ */
   server.post(
@@ -1066,7 +1068,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
         const fmMin = String(now.getMinutes()).padStart(2, '0');
         const visitDate = `${fmYear}${fmMonth}${fmDay}.${fmHour}${fmMin}`;
 
-        const duz = String(session?.duz || session?.user?.duz || '').trim();
+        const duz = String(session?.duz || '').trim();
         const createLocation = '2';
         const createFields: Record<string, string> = {
           '1301': visitDate,
@@ -1117,7 +1119,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
               'VistA rejected the note body text for this TIU note.',
             noteIen: newIen,
             rpcUsed,
-            pendingTargets: [],
+    
             _note: 'VistA created the TIU note shell but did not accept the nursing note body text.',
           };
         }
@@ -1139,7 +1141,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
               'VistA created a shell TIU note but did not persist the nursing note body text in this environment.',
             noteIen: newIen,
             rpcUsed,
-            pendingTargets: [],
+    
             _note:
               'VistA created a shell TIU note but did not persist the nursing note body text in this environment.',
           };
@@ -1231,7 +1233,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
           shift: noteShift,
           timestamp: now.toISOString(),
           rpcUsed,
-          pendingTargets: [],
+  
           _note: signMessage,
         };
       } catch (err) {
@@ -1251,30 +1253,10 @@ export default async function nursingRoutes(server: FastifyInstance) {
           shift: noteShift,
           textLength: text.length,
           timestamp: new Date().toISOString(),
-          rpcUsed: [],
-          pendingTargets: [
-            {
-              rpc: 'TIU CREATE RECORD',
-              package: 'TIU',
-              reason: 'TIU document creation -- RPC may not accept nursing note class in sandbox',
-            },
-            { rpc: 'TIU SET DOCUMENT TEXT', package: 'TIU', reason: 'Set note body text' },
-            {
-              rpc: 'TIU SIGN RECORD',
-              package: 'TIU',
-              reason: 'Electronic signature after TIU note creation when the sandbox note class is available',
-            },
-          ],
-          vistaGrounding: {
-            vistaFiles: ['TIU(8925) TIU DOCUMENT', 'TIU(8925.1) TIU DOCUMENT DEFINITION'],
-            targetRoutines: ['TIUSRVP', 'TIUSRVPT', 'TIUSRVS'],
-            migrationPath:
-              'Configure TIU Document Definition for Nursing Notes class, enable TIU CREATE RECORD + TIU SIGN RECORD',
-            sandboxNote:
-              'TIU package present but nursing note title IEN may not exist in sandbox. Note saved as local draft.',
-          },
+          rpcUsed: ['TIU CREATE RECORD'],
+          error: err instanceof Error ? err.message : String(err),
           _note:
-            'Note saved as local draft. Will persist to VistA when TIU Nursing Note class is configured.',
+            'VistA TIU CREATE RECORD was attempted but failed. Note saved as local draft.',
         });
       }
     }
@@ -1299,7 +1281,7 @@ export default async function nursingRoutes(server: FastifyInstance) {
         ien,
         text: (lines || []).join('\n'),
         rpcUsed: ['TIU GET RECORD TEXT'],
-        pendingTargets: [],
+
       };
     } catch (err) {
       log.warn('TIU GET RECORD TEXT failed', { ien, err: String(err) });
@@ -1311,8 +1293,8 @@ export default async function nursingRoutes(server: FastifyInstance) {
         source: 'vista',
         ien,
         text: '',
-        rpcUsed: [],
-        pendingTargets: [{ rpc: 'TIU GET RECORD TEXT', package: 'TIU', reason: 'RPC call failed' }],
+        rpcUsed: ['TIU GET RECORD TEXT'],
+        error: err instanceof Error ? err.message : String(err),
       };
     }
   });

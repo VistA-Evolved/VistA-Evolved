@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Admin Reporting Dashboard — Phase 19C.
+ * Admin Reporting Dashboard -- Phase 19C.
  *
  * Multi-tab operations analytics dashboard with:
  *   - Operations report (RPC health, circuit breaker, process metrics)
@@ -201,7 +201,7 @@ export default function ReportsPage() {
   const [exporting, setExporting] = useState(false);
   const [exportMsg, setExportMsg] = useState<string | null>(null);
 
-  /* ── Fetchers ──────────────────────────────────────────────────── */
+  /* -- Fetchers ---------------------------------------------------- */
 
   const fetchReport = useCallback(async (type: string, queryParams?: string) => {
     setLoading(true);
@@ -268,7 +268,7 @@ export default function ReportsPage() {
     loadTab(tab);
   }, [tab, loadTab]);
 
-  /* ── Export handler ────────────────────────────────────────────── */
+  /* -- Export handler ---------------------------------------------- */
 
   const handleExport = useCallback(async (reportType: string, format: 'csv' | 'json') => {
     setExporting(true);
@@ -304,7 +304,7 @@ export default function ReportsPage() {
     }
   }, []);
 
-  /* ── Guard ─────────────────────────────────────────────────────── */
+  /* -- Guard ------------------------------------------------------- */
 
   if (!user) {
     return (
@@ -322,14 +322,14 @@ export default function ReportsPage() {
     );
   }
 
-  /* ── Render ────────────────────────────────────────────────────── */
+  /* -- Render ------------------------------------------------------ */
 
   return (
     <div className={styles.cprsPage}>
       <div style={{ padding: '16px 24px', borderBottom: '1px solid #dee2e6' }}>
         <h2 style={{ margin: 0, fontSize: 18 }}>Reporting &amp; Export Governance</h2>
         <p style={{ margin: '4px 0 0', fontSize: 12, color: '#6c757d' }}>
-          Phase 19 — Admin-only operations analytics. All report views and exports are fully
+          Phase 19 -- Admin-only operations analytics. All report views and exports are fully
           audited.
         </p>
       </div>
@@ -381,12 +381,12 @@ export default function ReportsPage() {
 
       {/* Loading */}
       {loading && (
-        <p style={{ padding: '12px 24px', fontSize: 13, color: '#6c757d' }}>Loading report…</p>
+        <p style={{ padding: '12px 24px', fontSize: 13, color: '#6c757d' }}>Loading report...</p>
       )}
 
       {/* Tab content */}
       <div style={{ padding: '16px 24px', overflowY: 'auto', flex: 1 }}>
-        {/* ── Operations ────────────────────────────────────── */}
+        {/* -- Operations -------------------------------------- */}
         {tab === 'operations' && opsReport && (
           <div>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 16 }}>
@@ -437,7 +437,7 @@ export default function ReportsPage() {
           </div>
         )}
 
-        {/* ── Integrations ──────────────────────────────────── */}
+        {/* -- Integrations ------------------------------------ */}
         {tab === 'integrations' && intReport && (
           <div>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 16 }}>
@@ -501,7 +501,7 @@ export default function ReportsPage() {
           </div>
         )}
 
-        {/* ── Audit ─────────────────────────────────────────── */}
+        {/* -- Audit ------------------------------------------- */}
         {tab === 'audit' && auditReport && (
           <div>
             <div style={{ display: 'flex', gap: 16, flexWrap: 'wrap', marginBottom: 16 }}>
@@ -579,7 +579,7 @@ export default function ReportsPage() {
           </div>
         )}
 
-        {/* ── Clinical ──────────────────────────────────────── */}
+        {/* -- Clinical ---------------------------------------- */}
         {tab === 'clinical' && clinicalReport && (
           <div>
             <div
@@ -645,7 +645,7 @@ export default function ReportsPage() {
           </div>
         )}
 
-        {/* ── Exports ───────────────────────────────────────── */}
+        {/* -- Exports ----------------------------------------- */}
         {tab === 'exports' && (
           <div>
             {exportMsg && (
@@ -755,7 +755,7 @@ function ExportBar({
       <button onClick={() => onExport(reportType, 'json')} disabled={exporting} style={btnStyle}>
         JSON
       </button>
-      {exporting && <span style={{ fontSize: 11, color: '#6c757d' }}>Exporting…</span>}
+      {exporting && <span style={{ fontSize: 11, color: '#6c757d' }}>Exporting...</span>}
     </div>
   );
 }

@@ -1,14 +1,14 @@
 /**
- * HL7v2 Tenant Endpoint Routes — Phase 258
+ * HL7v2 Tenant Endpoint Routes -- Phase 258
  *
  * Admin endpoints for managing per-tenant HL7v2 integration endpoints.
  *
  * Routes:
- *   POST /api/platform/integrations/hl7v2/endpoints     — Create endpoint
- *   GET  /api/platform/integrations/hl7v2/endpoints      — List endpoints
- *   GET  /api/platform/integrations/hl7v2/endpoints/:id  — Get endpoint
- *   PUT  /api/platform/integrations/hl7v2/endpoints/:id  — Update endpoint
- *   DELETE /api/platform/integrations/hl7v2/endpoints/:id — Delete endpoint
+ *   POST /api/platform/integrations/hl7v2/endpoints     -- Create endpoint
+ *   GET  /api/platform/integrations/hl7v2/endpoints      -- List endpoints
+ *   GET  /api/platform/integrations/hl7v2/endpoints/:id  -- Get endpoint
+ *   PUT  /api/platform/integrations/hl7v2/endpoints/:id  -- Update endpoint
+ *   DELETE /api/platform/integrations/hl7v2/endpoints/:id -- Delete endpoint
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -48,7 +48,7 @@ export default async function hl7TenantEndpointRoutes(server: FastifyInstance): 
   }
 
   /**
-   * POST /api/platform/integrations/hl7v2/endpoints — Create a tenant endpoint.
+   * POST /api/platform/integrations/hl7v2/endpoints -- Create a tenant endpoint.
    */
   server.post('/api/platform/integrations/hl7v2/endpoints', async (request, reply) => {
     const body = (request.body as CreateEndpointRequest) || {};
@@ -79,7 +79,7 @@ export default async function hl7TenantEndpointRoutes(server: FastifyInstance): 
   });
 
   /**
-   * GET /api/platform/integrations/hl7v2/endpoints — List endpoints.
+   * GET /api/platform/integrations/hl7v2/endpoints -- List endpoints.
    */
   server.get('/api/platform/integrations/hl7v2/endpoints', async (request, reply) => {
     const tenantId = requireTenantId(request, reply);
@@ -93,7 +93,7 @@ export default async function hl7TenantEndpointRoutes(server: FastifyInstance): 
   });
 
   /**
-   * GET /api/platform/integrations/hl7v2/endpoints/:id — Get endpoint.
+   * GET /api/platform/integrations/hl7v2/endpoints/:id -- Get endpoint.
    */
   server.get('/api/platform/integrations/hl7v2/endpoints/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
@@ -107,7 +107,7 @@ export default async function hl7TenantEndpointRoutes(server: FastifyInstance): 
   });
 
   /**
-   * PUT /api/platform/integrations/hl7v2/endpoints/:id — Update endpoint.
+   * PUT /api/platform/integrations/hl7v2/endpoints/:id -- Update endpoint.
    */
   server.put('/api/platform/integrations/hl7v2/endpoints/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
@@ -125,7 +125,7 @@ export default async function hl7TenantEndpointRoutes(server: FastifyInstance): 
   });
 
   /**
-   * DELETE /api/platform/integrations/hl7v2/endpoints/:id — Delete endpoint.
+   * DELETE /api/platform/integrations/hl7v2/endpoints/:id -- Delete endpoint.
    */
   server.delete('/api/platform/integrations/hl7v2/endpoints/:id', async (request, reply) => {
     const { id } = request.params as { id: string };

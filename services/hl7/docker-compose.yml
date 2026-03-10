@@ -1,4 +1,4 @@
-# HL7v2 Engine Docker Compose — Phase 258
+# HL7v2 Engine Docker Compose -- Phase 258
 #
 # Optional docker compose profile for HL7v2 integration testing.
 # The MLLP engine runs in-process with the API; this compose file

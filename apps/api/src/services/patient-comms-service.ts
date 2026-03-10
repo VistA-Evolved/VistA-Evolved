@@ -1,5 +1,5 @@
 /**
- * Patient Communications Service — Phase 351
+ * Patient Communications Service -- Phase 351
  *
  * PHI-safe notification provider abstraction with consent management.
  * No PHI in notification payloads unless tenant explicitly enables +
@@ -10,7 +10,7 @@
 
 import { randomUUID, createHash } from "node:crypto";
 
-// ─── Types ───────────────────────────────────────────────
+// --- Types -----------------------------------------------
 
 export type NotificationChannel = "email" | "sms" | "push" | "portal_inbox" | "voice";
 export type NotificationStatus = "queued" | "sent" | "delivered" | "failed" | "bounced";
@@ -98,7 +98,7 @@ export interface NotificationTemplate {
   updatedAt: string;
 }
 
-// ─── PHI Safety ──────────────────────────────────────────
+// --- PHI Safety ------------------------------------------
 
 const PHI_ENABLED = process.env.PATIENT_COMMS_PHI_ENABLED === "true";
 
@@ -110,7 +110,7 @@ export function isPhiAllowed(): boolean {
   return PHI_ENABLED;
 }
 
-// ─── Stores ──────────────────────────────────────────────
+// --- Stores ----------------------------------------------
 
 const providerRegistry = new Map<string, NotificationProvider>();
 const consentStore = new Map<string, PatientConsent>();
@@ -118,7 +118,7 @@ const notificationLog: NotificationRecord[] = [];
 const MAX_NOTIFICATION_LOG_SIZE = 50_000;
 const templateStore = new Map<string, NotificationTemplate>();
 
-// ─── Provider Registry ───────────────────────────────────
+// --- Provider Registry -----------------------------------
 
 function pushNotificationRecord(record: NotificationRecord): void {
   notificationLog.push(record);
@@ -139,7 +139,7 @@ export function listProviders(): NotificationProvider[] {
   return Array.from(providerRegistry.values());
 }
 
-// ─── Stub Provider (always registered) ───────────────────
+// --- Stub Provider (always registered) -------------------
 
 const stubProvider: NotificationProvider = {
   id: "stub",
@@ -161,7 +161,7 @@ const stubProvider: NotificationProvider = {
 // Auto-register stub
 registerProvider(stubProvider);
 
-// ─── Consent Management ──────────────────────────────────
+// --- Consent Management ----------------------------------
 
 export function setConsent(
   tenantId: string,
@@ -253,7 +253,7 @@ export function hasConsent(
   return !!getConsent(tenantId, patientDfn, channel, category);
 }
 
-// ─── Template Management ─────────────────────────────────
+// --- Template Management ---------------------------------
 
 export function createTemplate(
   tenantId: string,
@@ -295,7 +295,7 @@ export function listTemplates(
   );
 }
 
-// ─── Send Notification ───────────────────────────────────
+// --- Send Notification -----------------------------------
 
 export interface SendRequest {
   tenantId: string;
@@ -430,7 +430,7 @@ export async function sendNotification(
   }
 }
 
-// ─── Notification Log ────────────────────────────────────
+// --- Notification Log ------------------------------------
 
 export function getNotificationLog(
   tenantId: string,
@@ -459,7 +459,7 @@ export function getPatientCommsStats(tenantId: string): {
   };
 }
 
-// ─── Store Reset ─────────────────────────────────────────
+// --- Store Reset -----------------------------------------
 
 export function _resetCommsStores(): void {
   consentStore.clear();

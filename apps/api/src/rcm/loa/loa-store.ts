@@ -1,5 +1,5 @@
 /**
- * LOA Store — Phase 94: PH HMO Workflow Automation
+ * LOA Store -- Phase 94: PH HMO Workflow Automation
  *
  * In-memory store for LOA (Letter of Authorization) requests.
  * Follows the same pattern as claim-store.ts (Phase 38) and
@@ -16,6 +16,7 @@
  */
 
 import { randomUUID } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 import type {
   LoaRequest,
   LoaStatus,
@@ -24,7 +25,7 @@ import type {
   LoaAttachment,
 } from './loa-types.js';
 
-/* ── DB repo interface (lazy-wired at startup) ─────────────── */
+/* -- DB repo interface (lazy-wired at startup) --------------- */
 
 interface LoaRepo {
   insert(data: any): Promise<any>;
@@ -36,17 +37,21 @@ interface LoaRepo {
 
 let dbRepo: LoaRepo | null = null;
 
+function dbWarn(e: unknown): void {
+  log.warn('LOA store PG write-through failed', { error: String(e) });
+}
+
 /** Phase 146: Wire PG repo for durable LOA storage */
 export function initLoaStoreRepo(repo: LoaRepo): void {
   dbRepo = repo;
 }
 
-/* ── Store (cache layer — PG is truth when wired) ──────────── */
+/* -- Store (cache layer -- PG is truth when wired) ------------ */
 
 const loaStore = new Map<string, LoaRequest>();
 const tenantLoaIndex = new Map<string, Set<string>>();
 
-/* ── Create ─────────────────────────────────────────────────── */
+/* -- Create --------------------------------------------------- */
 
 export function createLoaRequest(params: {
   tenantId: string;
@@ -140,12 +145,12 @@ export function createLoaRequest(params: {
       createdAt: now,
       updatedAt: now,
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return loa;
 }
 
-/* ── Read ───────────────────────────────────────────────────── */
+/* -- Read ----------------------------------------------------- */
 
 export function getLoaRequest(id: string): LoaRequest | undefined {
   return loaStore.get(id);
@@ -199,7 +204,7 @@ export function getLoaStats(tenantId: string): Record<string, number> {
   return stats;
 }
 
-/* ── Update ─────────────────────────────────────────────────── */
+/* -- Update --------------------------------------------------- */
 
 export function transitionLoa(
   tenantId: string,
@@ -265,7 +270,7 @@ export function transitionLoa(
       updatedAt: updated.updatedAt,
       metadataJson: JSON.stringify(updated),
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return updated;
 }
@@ -316,7 +321,7 @@ export function updateLoaChecklist(
       updatedAt: updated.updatedAt,
       metadataJson: JSON.stringify(updated),
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return updated;
 }
@@ -357,7 +362,7 @@ export function addLoaAttachment(
       updatedAt: updated.updatedAt,
       metadataJson: JSON.stringify(updated),
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return updated;
 }
@@ -393,7 +398,7 @@ export function assignLoa(tenantId: string, id: string, assignedTo: string, acto
       updatedAt: updated.updatedAt,
       metadataJson: JSON.stringify(updated),
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return updated;
 }

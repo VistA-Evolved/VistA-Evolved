@@ -1,7 +1,7 @@
 name: E2E Smoke (Playwright)
 
 # Runs the Playwright smoke suite on PRs and main merges.
-# Uses a lightweight setup (no VistA Docker) — only UI rendering + dead-click checks.
+# Uses a lightweight setup (no VistA Docker) -- only UI rendering + dead-click checks.
 # Full integration e2e (with VistA) runs in the nightly DR workflow.
 
 on:

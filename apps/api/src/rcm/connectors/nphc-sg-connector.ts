@@ -1,5 +1,5 @@
 /**
- * SG NPHC Connector — Singapore National Programme for Healthcare Claims
+ * SG NPHC Connector -- Singapore National Programme for Healthcare Claims
  *
  * Phase 40 (Superseding): Integration-ready connector for NPHC.
  * Phase 46: Enhanced with CorpPass probes, role-based access checks,

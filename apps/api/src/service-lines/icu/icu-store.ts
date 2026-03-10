@@ -3,7 +3,7 @@
  *
  * Phase 468 (W31-P5). In-memory ICU admission, flowsheet, and device store.
  *
- * Phase 525 (W38): PG write-through — fire-and-forget durability.
+ * Phase 525 (W38): PG write-through -- fire-and-forget durability.
  */
 
 import { randomBytes } from 'crypto';
@@ -22,7 +22,7 @@ import type {
   IcuMetrics,
 } from './types.js';
 
-// ── PG Write-Through (Phase 525 / W38) ────────────────────────────
+// -- PG Write-Through (Phase 525 / W38) ----------------------------
 
 interface IcuDbRepo {
   insertIcuAdmission(data: any): Promise<any>;
@@ -45,7 +45,7 @@ function dbWarn(op: string, err: any): void {
   }
 }
 
-// ── Stores ─────────────────────────────────────────────────────────
+// -- Stores ---------------------------------------------------------
 
 const admissions = new Map<string, IcuAdmission>();
 const beds = new Map<string, IcuBed>();
@@ -54,7 +54,7 @@ const ventRecords = new Map<string, VentSettings>();
 const ioRecords = new Map<string, IoRecord>();
 const scores = new Map<string, SeverityScore>();
 
-// ── Seed default beds ──────────────────────────────────────────────
+// -- Seed default beds ----------------------------------------------
 
 function seedBeds() {
   const units = [
@@ -78,7 +78,7 @@ function seedBeds() {
 }
 seedBeds();
 
-// ── Bed ────────────────────────────────────────────────────────────
+// -- Bed ------------------------------------------------------------
 
 export function listBeds(unit?: string): IcuBed[] {
   let list = Array.from(beds.values());
@@ -86,7 +86,7 @@ export function listBeds(unit?: string): IcuBed[] {
   return list;
 }
 
-// ── Admission CRUD ─────────────────────────────────────────────────
+// -- Admission CRUD -------------------------------------------------
 
 export function createAdmission(data: {
   patientDfn: string;
@@ -180,7 +180,7 @@ export function dischargeAdmission(id: string, disposition: string): boolean {
   return true;
 }
 
-// ── Flowsheet ──────────────────────────────────────────────────────
+// -- Flowsheet ------------------------------------------------------
 
 export function addFlowsheetEntry(data: {
   admissionId: string;
@@ -225,7 +225,7 @@ export function getFlowsheet(admissionId: string, category?: FlowsheetCategory):
   return list.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
 }
 
-// ── Ventilator ─────────────────────────────────────────────────────
+// -- Ventilator -----------------------------------------------------
 
 export function addVentSettings(data: Omit<VentSettings, 'id'>): VentSettings | null {
   if (!admissions.has(data.admissionId)) return null;
@@ -261,7 +261,7 @@ export function getVentHistory(admissionId: string): VentSettings[] {
     .sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
 }
 
-// ── Intake & Output ────────────────────────────────────────────────
+// -- Intake & Output ------------------------------------------------
 
 export function addIoRecord(data: Omit<IoRecord, 'id'>): IoRecord | null {
   if (!admissions.has(data.admissionId)) return null;
@@ -301,7 +301,7 @@ export function getIoBalance(admissionId: string): { intake: number; output: num
   return { intake, output, net: intake - output };
 }
 
-// ── Severity Scores ────────────────────────────────────────────────
+// -- Severity Scores ------------------------------------------------
 
 export function addScore(data: Omit<SeverityScore, 'id'>): SeverityScore | null {
   if (!admissions.has(data.admissionId)) return null;
@@ -333,7 +333,7 @@ export function getScores(admissionId: string, scoreType?: SeverityScoreType): S
   return list.sort((a, b) => new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime());
 }
 
-// ── ICU Metrics ────────────────────────────────────────────────────
+// -- ICU Metrics ----------------------------------------------------
 
 export function getIcuMetrics(): IcuMetrics {
   const allBeds = Array.from(beds.values());

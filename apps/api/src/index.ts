@@ -57,6 +57,25 @@ initTracing();
 bridgeTracingToLogger(getCurrentTraceId, getCurrentSpanId);
 
 // ----------------------------------------------------------------------
+// Global safety net: log + exit on unhandled rejections / exceptions.
+// Without this, Node.js 15+ terminates silently on unhandled rejections.
+// ----------------------------------------------------------------------
+process.on('unhandledRejection', (reason) => {
+  log.error('Unhandled promise rejection -- shutting down', {
+    error: reason instanceof Error ? reason.message : String(reason),
+    stack: reason instanceof Error ? reason.stack : undefined,
+  });
+  process.exit(1);
+});
+process.on('uncaughtException', (err) => {
+  log.error('Uncaught exception -- shutting down', {
+    error: err.message,
+    stack: err.stack,
+  });
+  process.exit(1);
+});
+
+// ----------------------------------------------------------------------
 // Start the server (build + listen + lifecycle)
 // ----------------------------------------------------------------------
 import { startServer } from './server/start.js';
@@ -71,12 +90,12 @@ await startServer();
 // by scanning this entrypoint file.
 //
 // Routes (register-routes.ts):
-//   identityLinkingRoutes  ← routes/identity-linking.ts
-//   opsAdminRoutes         ← routes/ops-admin.ts
-//   certificationEvidenceRoutes ← routes/certification-evidence.ts
+//   identityLinkingRoutes  <- routes/identity-linking.ts
+//   opsAdminRoutes         <- routes/ops-admin.ts
+//   certificationEvidenceRoutes <- routes/certification-evidence.ts
 //
 // Lifecycle (lifecycle.ts):
-//   dbPoolInUse, dbPoolTotal ← telemetry/metrics.ts (PG pool gauges)
+//   dbPoolInUse, dbPoolTotal <- telemetry/metrics.ts (PG pool gauges)
 //
 // See server/register-routes.ts for the full 92+ route plugin list.
 // See server/lifecycle.ts for DB init, background jobs, and pool stats.

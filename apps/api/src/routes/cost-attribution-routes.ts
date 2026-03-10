@@ -8,6 +8,7 @@
 
 import { FastifyInstance } from 'fastify';
 import { requireSession } from '../auth/auth-routes.js';
+import { safeErr } from '../lib/safe-error.js';
 import {
   ingestCostRecord,
   getCostRecord,
@@ -47,9 +48,9 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
     return session?.userName || session?.duz || 'admin';
   }
 
-  // ── Cost Records ────────────────────────────────────────────────
+  // -- Cost Records ------------------------------------------------
 
-  /** POST /platform/costs/ingest — ingest a cost record */
+  /** POST /platform/costs/ingest -- ingest a cost record */
   server.post('/platform/costs/ingest', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -62,7 +63,7 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
     return reply.code(201).send({ ok: true, record });
   });
 
-  /** GET /platform/costs/records/:id — get a cost record */
+  /** GET /platform/costs/records/:id -- get a cost record */
   server.get('/platform/costs/records/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -73,7 +74,7 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
     return { ok: true, record };
   });
 
-  /** GET /platform/costs/records — list cost records */
+  /** GET /platform/costs/records -- list cost records */
   server.get('/platform/costs/records', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -92,7 +93,7 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
     return { ok: true, count: records.length, records };
   });
 
-  /** GET /platform/costs/breakdown — cost breakdown by tenant/period */
+  /** GET /platform/costs/breakdown -- cost breakdown by tenant/period */
   server.get('/platform/costs/breakdown', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -105,7 +106,7 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
     return { ok: true, breakdown };
   });
 
-  // ── Budget Management ───────────────────────────────────────────
+  // -- Budget Management -------------------------------------------
 
   /** POST /platform/budgets -- set a tenant budget */
   server.post('/platform/budgets', async (request, reply) => {
@@ -126,11 +127,11 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
       const budget = setBudget({ ...b, tenantId }, resolveActor(session));
       return reply.code(201).send({ ok: true, budget });
     } catch (e: any) {
-      return reply.code(e.statusCode || 500).send({ ok: false, error: e.message });
+      return reply.code(e.statusCode || 500).send({ ok: false, error: safeErr(e) });
     }
   });
 
-  /** GET /platform/budgets/:tenantId — get tenant budget */
+  /** GET /platform/budgets/:tenantId -- get tenant budget */
   server.get('/platform/budgets/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -140,7 +141,7 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
     return { ok: true, budget };
   });
 
-  /** GET /platform/budgets — list all budgets */
+  /** GET /platform/budgets -- list all budgets */
   server.get('/platform/budgets', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -149,9 +150,9 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
     return { ok: true, count: budgets.length, budgets };
   });
 
-  // ── Alerts ──────────────────────────────────────────────────────
+  // -- Alerts ------------------------------------------------------
 
-  /** GET /platform/costs/alerts — list budget alerts */
+  /** GET /platform/costs/alerts -- list budget alerts */
   server.get('/platform/costs/alerts', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -168,7 +169,7 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
     return { ok: true, count: alerts.length, alerts };
   });
 
-  /** POST /platform/costs/alerts/:id/acknowledge — acknowledge an alert */
+  /** POST /platform/costs/alerts/:id/acknowledge -- acknowledge an alert */
   server.post('/platform/costs/alerts/:id/acknowledge', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -178,11 +179,11 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
       const alert = acknowledgeAlert(id, resolveActor(session), tenantId);
       return { ok: true, alert };
     } catch (e: any) {
-      return reply.code(e.statusCode || 500).send({ ok: false, error: e.message });
+      return reply.code(e.statusCode || 500).send({ ok: false, error: safeErr(e) });
     }
   });
 
-  /** POST /platform/costs/alerts/:id/resolve — resolve an alert */
+  /** POST /platform/costs/alerts/:id/resolve -- resolve an alert */
   server.post('/platform/costs/alerts/:id/resolve', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -192,13 +193,13 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
       const alert = resolveAlert(id, resolveActor(session), tenantId);
       return { ok: true, alert };
     } catch (e: any) {
-      return reply.code(e.statusCode || 500).send({ ok: false, error: e.message });
+      return reply.code(e.statusCode || 500).send({ ok: false, error: safeErr(e) });
     }
   });
 
-  // ── Anomalies ───────────────────────────────────────────────────
+  // -- Anomalies ---------------------------------------------------
 
-  /** POST /platform/costs/anomalies/detect — detect cost anomalies for a tenant */
+  /** POST /platform/costs/anomalies/detect -- detect cost anomalies for a tenant */
   server.post('/platform/costs/anomalies/detect', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -208,7 +209,7 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
     return { ok: true, count: anomalies.length, anomalies };
   });
 
-  /** GET /platform/costs/anomalies — list detected anomalies */
+  /** GET /platform/costs/anomalies -- list detected anomalies */
   server.get('/platform/costs/anomalies', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -221,23 +222,23 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
     return { ok: true, count: anomalies.length, anomalies };
   });
 
-  // ── OpenCost Config ─────────────────────────────────────────────
+  // -- OpenCost Config ---------------------------------------------
 
-  /** GET /platform/costs/opencost/config — get OpenCost configuration */
+  /** GET /platform/costs/opencost/config -- get OpenCost configuration */
   server.get('/platform/costs/opencost/config', async () => {
     return { ok: true, config: getOpenCostConfig() };
   });
 
-  /** PUT /platform/costs/opencost/config — update OpenCost configuration */
+  /** PUT /platform/costs/opencost/config -- update OpenCost configuration */
   server.put('/platform/costs/opencost/config', async (request) => {
     const b = (request.body as any) || {};
     const config = updateOpenCostConfig(b, 'admin');
     return { ok: true, config };
   });
 
-  // ── Summary + Audit ─────────────────────────────────────────────
+  // -- Summary + Audit ---------------------------------------------
 
-  /** GET /platform/costs/summary — cost attribution summary */
+  /** GET /platform/costs/summary -- cost attribution summary */
   server.get('/platform/costs/summary', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);
@@ -245,7 +246,7 @@ export default async function costAttributionRoutes(server: FastifyInstance): Pr
     return { ok: true, summary: getCostSummary(tenantId) };
   });
 
-  /** GET /platform/costs/audit — cost audit log */
+  /** GET /platform/costs/audit -- cost audit log */
   server.get('/platform/costs/audit', async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = requireTenantId(request, reply, session);

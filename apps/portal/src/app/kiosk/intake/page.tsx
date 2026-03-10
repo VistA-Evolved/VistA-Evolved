@@ -7,13 +7,14 @@ import { API_BASE } from '@/lib/api-config';
 async function kioskFetch(path: string, options: RequestInit = {}): Promise<any> {
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json', ...options.headers },
   });
   return res.json();
 }
 
 /* ================================================================== */
-/* Kiosk Start Page — large touch-friendly intake launcher              */
+/* Kiosk Start Page -- large touch-friendly intake launcher              */
 /* ================================================================== */
 
 export default function KioskStartPage() {

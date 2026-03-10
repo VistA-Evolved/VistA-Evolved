@@ -1,4 +1,4 @@
-# SLO Definitions — VistA-Evolved
+# SLO Definitions -- VistA-Evolved
 # Used by Sloth / Pyrra or manual Prometheus recording rules.
 # Format: Sloth v0.11 specification.
 #
@@ -103,7 +103,7 @@ slos:
         severity: 'critical'
         team: 'platform'
       annotations:
-        summary: 'Backup success SLO (99.9%) at risk — data loss risk'
+        summary: 'Backup success SLO (99.9%) at risk -- data loss risk'
       page_alert:
         labels:
           severity: 'critical'

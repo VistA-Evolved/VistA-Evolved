@@ -1,35 +1,35 @@
 /**
- * PayerOps Routes — Phase 87+89: Philippines RCM Foundation + LOA Engine v1
+ * PayerOps Routes -- Phase 87+89: Philippines RCM Foundation + LOA Engine v1
  *
  * Endpoints:
- *   GET  /rcm/payerops/health              — PayerOps subsystem health
- *   GET  /rcm/payerops/stats               — Aggregate stats
+ *   GET  /rcm/payerops/health              -- PayerOps subsystem health
+ *   GET  /rcm/payerops/stats               -- Aggregate stats
  *
- *   GET  /rcm/payerops/enrollments         — List facility-payer enrollments
- *   GET  /rcm/payerops/enrollments/:id     — Get enrollment detail
- *   POST /rcm/payerops/enrollments         — Create enrollment
- *   PUT  /rcm/payerops/enrollments/:id/status — Update enrollment status
+ *   GET  /rcm/payerops/enrollments         -- List facility-payer enrollments
+ *   GET  /rcm/payerops/enrollments/:id     -- Get enrollment detail
+ *   POST /rcm/payerops/enrollments         -- Create enrollment
+ *   PUT  /rcm/payerops/enrollments/:id/status -- Update enrollment status
  *
- *   GET  /rcm/payerops/loa                 — List LOA cases
- *   GET  /rcm/payerops/loa-queue           — LOA work queue (SLA filtered)
- *   GET  /rcm/payerops/loa/:id            — Get LOA case detail
- *   POST /rcm/payerops/loa                 — Create LOA case
- *   PATCH /rcm/payerops/loa/:id           — Patch LOA draft fields
- *   PUT  /rcm/payerops/loa/:id/status     — Transition LOA status
- *   PUT  /rcm/payerops/loa/:id/assign     — Assign LOA to staff member
- *   POST /rcm/payerops/loa/:id/attachments — Attach credential to LOA
- *   POST /rcm/payerops/loa/:id/submit     — Submit LOA via adapter
- *   POST /rcm/payerops/loa/:id/pack       — Generate submission pack
+ *   GET  /rcm/payerops/loa                 -- List LOA cases
+ *   GET  /rcm/payerops/loa-queue           -- LOA work queue (SLA filtered)
+ *   GET  /rcm/payerops/loa/:id            -- Get LOA case detail
+ *   POST /rcm/payerops/loa                 -- Create LOA case
+ *   PATCH /rcm/payerops/loa/:id           -- Patch LOA draft fields
+ *   PUT  /rcm/payerops/loa/:id/status     -- Transition LOA status
+ *   PUT  /rcm/payerops/loa/:id/assign     -- Assign LOA to staff member
+ *   POST /rcm/payerops/loa/:id/attachments -- Attach credential to LOA
+ *   POST /rcm/payerops/loa/:id/submit     -- Submit LOA via adapter
+ *   POST /rcm/payerops/loa/:id/pack       -- Generate submission pack
  *
- *   GET  /rcm/payerops/credentials         — List credential vault entries
- *   GET  /rcm/payerops/credentials/:id    — Get credential entry
- *   POST /rcm/payerops/credentials         — Create credential entry
- *   DELETE /rcm/payerops/credentials/:id  — Delete credential entry
- *   GET  /rcm/payerops/credentials/expiring — Expiring credentials
+ *   GET  /rcm/payerops/credentials         -- List credential vault entries
+ *   GET  /rcm/payerops/credentials/:id    -- Get credential entry
+ *   POST /rcm/payerops/credentials         -- Create credential entry
+ *   DELETE /rcm/payerops/credentials/:id  -- Delete credential entry
+ *   GET  /rcm/payerops/credentials/expiring -- Expiring credentials
  *
- *   GET  /rcm/payerops/adapters            — List available adapters
+ *   GET  /rcm/payerops/adapters            -- List available adapters
  *
- * All routes fall under /rcm/ prefix → existing security rule covers auth.
+ * All routes fall under /rcm/ prefix -> existing security rule covers auth.
  * RBAC: reads = rcm:read, mutations = rcm:write.
  * Phase 89: appendRcmAudit wired to ALL LOA mutation routes.
  */
@@ -76,18 +76,18 @@ import { appendRcmAudit } from '../audit/rcm-audit.js';
 // Types
 import type { EnrollmentStatus, LOAStatus, LOAPack } from './types.js';
 
-/* ── Adapter registry (manual + portal; API adapters added in future phases) ── */
+/* -- Adapter registry (manual + portal; API adapters added in future phases) -- */
 
 const manualAdapter = new ManualAdapter();
 const portalAdapter = getPortalAdapter();
 
 function resolveAdapter(mode: 'manual' | 'portal' | 'api') {
   if (mode === 'portal') return portalAdapter;
-  // API mode is future — fall back to manual
+  // API mode is future -- fall back to manual
   return manualAdapter;
 }
 
-/* ── Helper: safe body parse ────────────────────────────────── */
+/* -- Helper: safe body parse ---------------------------------- */
 function body(request: FastifyRequest): Record<string, any> {
   return (request.body as Record<string, any>) || {};
 }
@@ -117,10 +117,10 @@ function resolveTenantId(request: FastifyRequest): string {
   return 'default';
 }
 
-/* ── Route plugin ────────────────────────────────────────────── */
+/* -- Route plugin ---------------------------------------------- */
 
 export default async function payerOpsRoutes(server: FastifyInstance): Promise<void> {
-  /* ── Health ────────────────────────────────────────────────── */
+  /* -- Health -------------------------------------------------- */
 
   server.get('/rcm/payerops/health', async (_request, reply) => {
     const encryptionResult = testEncryptionHealth();
@@ -135,13 +135,13 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     });
   });
 
-  /* ── Stats ─────────────────────────────────────────────────── */
+  /* -- Stats --------------------------------------------------- */
 
   server.get('/rcm/payerops/stats', async (request, reply) => {
     return reply.send({ ok: true, stats: getPayerOpsStats(resolveTenantId(request)) });
   });
 
-  /* ── Enrollments ───────────────────────────────────────────── */
+  /* -- Enrollments --------------------------------------------- */
 
   server.get('/rcm/payerops/enrollments', async (request, reply) => {
     const q = query(request);
@@ -207,7 +207,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, enrollment: updated });
   });
 
-  /* ── LOA Cases ─────────────────────────────────────────────── */
+  /* -- LOA Cases ----------------------------------------------- */
 
   server.get('/rcm/payerops/loa', async (request, reply) => {
     const q = query(request);
@@ -221,7 +221,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, count: results.length, loaCases: results });
   });
 
-  /* ── LOA Work Queue (Phase 89) ────────────────────────────── */
+  /* -- LOA Work Queue (Phase 89) ------------------------------ */
 
   server.get('/rcm/payerops/loa-queue', async (request, reply) => {
     const q = query(request);
@@ -290,7 +290,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     return reply.code(201).send({ ok: true, loaCase: loa });
   });
 
-  /* ── Patch LOA Draft (Phase 89) ───────────────────────────── */
+  /* -- Patch LOA Draft (Phase 89) ----------------------------- */
 
   server.patch('/rcm/payerops/loa/:id', async (request, reply) => {
     const { id } = params(request);
@@ -361,7 +361,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, loaCase: result.loaCase });
   });
 
-  /* ── Assign LOA (Phase 89) ────────────────────────────────── */
+  /* -- Assign LOA (Phase 89) ---------------------------------- */
 
   server.put('/rcm/payerops/loa/:id/assign', async (request, reply) => {
     const { id } = params(request);
@@ -464,7 +464,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, pack: { ...packData, id: pack.id } });
   });
 
-  /* ── Credential Vault ──────────────────────────────────────── */
+  /* -- Credential Vault ---------------------------------------- */
 
   server.get('/rcm/payerops/credentials', async (request, reply) => {
     const q = query(request);
@@ -533,7 +533,7 @@ export default async function payerOpsRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, message: 'Credential deleted' });
   });
 
-  /* ── Adapters ──────────────────────────────────────────────── */
+  /* -- Adapters ------------------------------------------------ */
 
   server.get('/rcm/payerops/adapters', async (_request, reply) => {
     return reply.send({

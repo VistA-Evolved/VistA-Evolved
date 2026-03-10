@@ -1,15 +1,15 @@
 {
-  "feature": "Phase 720: CPRS Inbox Acknowledge Contract Recovery",
+  "feature": "Phase 725: Enterprise Readiness Program Dead Click Tripwire Hardening",
   "stage": "complete",
   "status": "completed",
-  "promptRef": "prompts/720-PHASE-720-CPRS-INBOX-ACKNOWLEDGE-CONTRACT-RECOVERY/720-01-IMPLEMENT.md",
-  "runbookPath": "docs/runbooks/vista-rpc-phase13-operationalization.md",
-  "verifyScript": "manual-cprs-inbox-acknowledge-proof",
-  "commitSha": "pending",
+  "promptRef": "prompts/725-PHASE-725-ENTERPRISE-READINESS-PROGRAM/725-01-IMPLEMENT.md",
+  "runbookPath": "docs/runbooks/run-from-zero.md",
+  "verifyScript": "scripts/verify-latest.ps1",
+  "commitSha": "7bb5e26dfeaadc9e54a89a011d29b4a8b07ff1d9",
   "notes": [
-    "Recovered a live clinician inbox defect where clicking Acknowledge hit a missing /vista/inbox/acknowledge endpoint and surfaced Not Found in the browser.",
-    "Added the missing inbox acknowledge API contract so the page now receives a structured integration-pending response instead of a raw 404.",
-    "Grounded the pending posture on the missing VistA persistence RPC ORWORB KILL EXPIR MSG, which is not available in the active VEHU sandbox.",
-    "Completed live API and browser proof after the fix: acknowledge now keeps the inbox stable and shows the intended pending banner rather than a fatal page error."
+    "Added a stable root command, pnpm qa:tripwire:source, that runs the source-level dead-click scanner with the correct repo-root working directory while reusing the app-local tsx binary.",
+    "The previous delegated command executed from apps/api and falsely reported Scanned: 0 files; the corrected entrypoint now scans 110 files.",
+    "Disabled clinician-facing buttons in Immunizations, Intake, Labs, Messaging Tasks, Inbox, and patient search now expose explanatory title tooltips instead of silent disablement.",
+    "Verification: pnpm qa:tripwire:source reports Errors: 0 and Warnings: 0 on commit 7bb5e26dfeaadc9e54a89a011d29b4a8b07ff1d9"
   ]
 }

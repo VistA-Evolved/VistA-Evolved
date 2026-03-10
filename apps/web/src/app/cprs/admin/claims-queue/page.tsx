@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Claims Queue — Phase 91
+ * Claims Queue -- Phase 91
  *
  * Admin page for the unified claims lifecycle workbench:
  *  - List/filter claim cases by status, payer, priority
@@ -16,7 +16,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ────────────────────────────────────────────────────── */
+/* -- Types ------------------------------------------------------ */
 
 type LifecycleStatus =
   | 'draft'
@@ -72,7 +72,7 @@ interface Stats {
   avgScrubScore: number;
 }
 
-/* ── Status Colors ────────────────────────────────────────────── */
+/* -- Status Colors ---------------------------------------------- */
 
 const STATUS_COLORS: Record<string, string> = {
   draft: '#6b7280',
@@ -101,7 +101,7 @@ const PRIORITY_COLORS: Record<string, string> = {
   low: '#6b7280',
 };
 
-/* ── Component ────────────────────────────────────────────────── */
+/* -- Component -------------------------------------------------- */
 
 export default function ClaimsQueuePage() {
   const [claims, setClaims] = useState<ClaimCase[]>([]);
@@ -247,7 +247,7 @@ export default function ClaimsQueuePage() {
     );
   };
 
-  /* ── Render ──────────────────────────────────────────────── */
+  /* -- Render ------------------------------------------------ */
 
   return (
     <div style={{ padding: 24 }}>
@@ -647,7 +647,7 @@ export default function ClaimsQueuePage() {
   );
 }
 
-/* ── Sub-Components ────────────────────────────────────────── */
+/* -- Sub-Components ------------------------------------------ */
 
 function StatCard({
   label,

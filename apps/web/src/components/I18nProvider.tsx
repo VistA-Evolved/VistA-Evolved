@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * I18nProvider — Phase 132: Wraps the app with next-intl locale context.
+ * I18nProvider -- Phase 132: Wraps the app with next-intl locale context.
  *
  * Loads messages from /messages/{locale}.json and provides them
  * to all child components via useTranslations().
@@ -20,7 +20,7 @@ import {
   loadLocaleFromApi,
 } from '@/lib/i18n';
 
-// Dynamic message loaders — fetch from /messages/*.json at runtime
+// Dynamic message loaders -- fetch from /messages/*.json at runtime
 async function loadMessagesForLocale(locale: string): Promise<Record<string, any>> {
   try {
     const res = await fetch(`/messages/${locale}.json`);

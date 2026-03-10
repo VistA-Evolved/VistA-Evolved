@@ -1,12 +1,12 @@
 /**
- * AI Gateway — Main Orchestrator (Phase 33)
+ * AI Gateway -- Main Orchestrator (Phase 33)
  *
  * Ties together: model registry, prompt registry, safety layer,
  * redaction engine, RAG grounding, provider adapters, and audit log.
  *
- * Flow: validate → safety check → resolve model → assemble RAG context
- * → optionally redact → render prompt → call provider → post-safety
- * check → audit → return response.
+ * Flow: validate -> safety check -> resolve model -> assemble RAG context
+ * -> optionally redact -> render prompt -> call provider -> post-safety
+ * check -> audit -> return response.
  */
 
 import { randomBytes } from 'node:crypto';
@@ -30,6 +30,23 @@ import { log } from '../lib/logger.js';
 /* ------------------------------------------------------------------ */
 
 const userRequestTimestamps = new Map<string, number[]>();
+const MAX_AI_RATE_LIMIT_USERS = 10000;
+
+// Prune stale rate-limit entries every 10 min
+setInterval(() => {
+  const now = Date.now();
+  for (const [userId, ts] of userRequestTimestamps) {
+    const fresh = ts.filter((t) => now - t < 3600000);
+    if (fresh.length === 0) userRequestTimestamps.delete(userId);
+    else userRequestTimestamps.set(userId, fresh);
+  }
+  // Hard cap: evict oldest entries if too many users tracked
+  while (userRequestTimestamps.size > MAX_AI_RATE_LIMIT_USERS) {
+    const oldest = userRequestTimestamps.keys().next().value;
+    if (oldest != null) userRequestTimestamps.delete(oldest);
+    else break;
+  }
+}, 600_000).unref();
 
 function checkAiRateLimit(userId: string): { allowed: boolean; retryAfterMs?: number } {
   const policy = getFacilityPolicy();

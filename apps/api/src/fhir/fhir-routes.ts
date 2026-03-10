@@ -1,5 +1,5 @@
 /**
- * FHIR R4 Gateway Routes — Phase 178.
+ * FHIR R4 Gateway Routes -- Phase 178.
  *
  * Read-only FHIR R4 endpoints that map VistA clinical data to standard
  * FHIR R4 resources via the clinical engine adapter layer.
@@ -18,8 +18,8 @@
  * Auth: session cookie or SMART Bearer JWT (/fhir/* routes use "fhir" AuthLevel in security.ts).
  * Content-Type: application/fhir+json for all FHIR responses.
  *
- * All data flows through the ClinicalEngineAdapter — no direct RPC calls.
- * Adapter result.ok=false → OperationOutcome with integration-pending.
+ * All data flows through the ClinicalEngineAdapter -- no direct RPC calls.
+ * Adapter result.ok=false -> OperationOutcome with integration-pending.
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -27,6 +27,8 @@ import { requireSession } from '../auth/auth-routes.js';
 import { getAdapter } from '../adapters/adapter-loader.js';
 import type { ClinicalEngineAdapter } from '../adapters/clinical-engine/interface.js';
 import { log } from '../lib/logger.js';
+import { safeCallRpc, safeCallRpcWithList } from '../lib/rpc-resilience.js';
+import { safeErr } from '../lib/safe-error.js';
 
 import { buildCapabilityStatement } from './capability-statement.js';
 import { registerFhirCache } from './fhir-cache.js';
@@ -142,7 +144,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   registerFhirCache(server);
 
   /* ---------------------------------------------------------------- */
-  /* GET /fhir/metadata — CapabilityStatement (public per FHIR spec) */
+  /* GET /fhir/metadata -- CapabilityStatement (public per FHIR spec) */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/metadata', async (request: FastifyRequest, reply: FastifyReply) => {
     const baseUrl = getBaseUrl(request);
@@ -151,7 +153,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   });
 
   /* ---------------------------------------------------------------- */
-  /* GET /fhir/Patient/:id — Patient read                            */
+  /* GET /fhir/Patient/:id -- Patient read                            */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/Patient/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     if (reply.sent) return;
@@ -201,7 +203,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   });
 
   /* ---------------------------------------------------------------- */
-  /* GET /fhir/Patient?name=X — Patient search                      */
+  /* GET /fhir/Patient?name=X -- Patient search                      */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/Patient', async (request: FastifyRequest, reply: FastifyReply) => {
     if (reply.sent) return;
@@ -623,7 +625,7 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
   });
 
   /* ---------------------------------------------------------------- */
-  /* GET /fhir/Encounter?patient=N — Encounters by patient           */
+  /* GET /fhir/Encounter?patient=N -- Encounters by patient           */
   /* ---------------------------------------------------------------- */
   server.get('/fhir/Encounter', async (request: FastifyRequest, reply: FastifyReply) => {
     if (reply.sent) return;
@@ -688,5 +690,426 @@ export default async function fhirRoutes(server: FastifyInstance): Promise<void>
     }
   });
 
-  log.info('FHIR R4 gateway registered: 10 endpoints (7 resource types + metadata + search)');
+  /* ================================================================== */
+  /* FHIR Write Endpoints (POST = create)                                */
+  /* Each tries the target VistA RPC, returns OperationOutcome on        */
+  /* success or failure. rpcUsed + source included in every response.    */
+  /* ================================================================== */
+
+  /* ---------------------------------------------------------------- */
+  /* POST /fhir/Patient -- Create patient via VE PAT REGISTER          */
+  /* ---------------------------------------------------------------- */
+  server.post('/fhir/Patient', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
+    const session = await requireSession(request, reply);
+    if (reply.sent) return;
+
+    const body = (request.body as any) || {};
+    const rpcUsed: string[] = [];
+
+    if (body.resourceType !== 'Patient') {
+      return fhirReply(reply, 400, operationOutcome('error', 'invalid', 'resourceType must be Patient'));
+    }
+
+    try {
+      const name = body.name?.[0];
+      const family = name?.family || '';
+      const given = name?.given?.[0] || '';
+      if (!family) {
+        return fhirReply(reply, 400, operationOutcome('error', 'required', 'Patient.name.family is required'));
+      }
+
+      const dob = body.birthDate || '';
+      const sex = body.gender === 'male' ? 'M' : body.gender === 'female' ? 'F' : '';
+      const ssn = body.identifier?.find(
+        (id: any) => id.system === 'http://hl7.org/fhir/sid/us-ssn'
+      )?.value || '';
+
+      const params: Record<string, string> = {
+        NAME: `${family},${given}`.toUpperCase(),
+        DOB: dob,
+        SEX: sex,
+        SSN: ssn,
+        REGISTRAR: session.duz,
+      };
+
+      if (body.telecom) {
+        const phone = body.telecom.find((t: any) => t.system === 'phone');
+        if (phone?.value) params['PHONE'] = phone.value;
+      }
+      if (body.address?.[0]) {
+        const addr = body.address[0];
+        if (addr.line?.[0]) params['STREET1'] = addr.line[0];
+        if (addr.city) params['CITY'] = addr.city;
+        if (addr.state) params['STATE'] = addr.state;
+        if (addr.postalCode) params['ZIP'] = addr.postalCode;
+      }
+
+      rpcUsed.push('VE PAT REGISTER');
+      const lines = await safeCallRpcWithList(
+        'VE PAT REGISTER',
+        [{ type: 'list' as const, value: params }],
+        { idempotent: false }
+      );
+      const result = lines.join('\n').trim();
+
+      if (result.startsWith('ok') || result.match(/^\d+/)) {
+        const dfn = result.replace(/^ok\^?/, '').split('^')[0] || '';
+        return fhirReply(reply, 201, {
+          resourceType: 'OperationOutcome',
+          issue: [{ severity: 'information', code: 'informational', diagnostics: `Patient created: DFN=${dfn}` }],
+          source: 'vista',
+          rpcUsed,
+          createdId: dfn ? `Patient/${dfn}` : undefined,
+        });
+      }
+
+      return fhirReply(reply, 422, {
+        ...operationOutcome('error', 'processing', `VistA rejected: ${result}`),
+        source: 'vista',
+        rpcUsed,
+      });
+    } catch (err: unknown) {
+      log.error('FHIR Patient create error', { error: err instanceof Error ? err.message : String(err) });
+      return fhirReply(reply, 500, {
+        ...operationOutcome('error', 'exception', safeErr(err)),
+        rpcUsed,
+      });
+    }
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* POST /fhir/AllergyIntolerance -- Create via ORWDAL32 SAVE ALLERGY */
+  /* ---------------------------------------------------------------- */
+  server.post('/fhir/AllergyIntolerance', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
+    const session = await requireSession(request, reply);
+    if (reply.sent) return;
+
+    const body = (request.body as any) || {};
+    const rpcUsed: string[] = [];
+
+    if (body.resourceType !== 'AllergyIntolerance') {
+      return fhirReply(reply, 400, operationOutcome('error', 'invalid', 'resourceType must be AllergyIntolerance'));
+    }
+
+    const patientRef = body.patient?.reference || '';
+    const dfn = patientRef.replace(/^Patient\//, '');
+    if (!dfn || !/^\d+$/.test(dfn)) {
+      return fhirReply(reply, 400, operationOutcome('error', 'required', 'AllergyIntolerance.patient reference with numeric DFN is required'));
+    }
+
+    const allergen = body.code?.text || body.code?.coding?.[0]?.display || '';
+    if (!allergen) {
+      return fhirReply(reply, 400, operationOutcome('error', 'required', 'AllergyIntolerance.code (allergen name) is required'));
+    }
+
+    try {
+      const category = body.category?.[0] || 'other';
+      const categoryMap: Record<string, string> = {
+        food: 'F',
+        medication: 'D',
+        environment: 'O',
+        biologic: 'O',
+      };
+      const vistaCategory = categoryMap[category] || 'O';
+
+      const reactions = (body.reaction || [])
+        .flatMap((r: any) =>
+          (r.manifestation || []).map((m: any) => m.text || m.coding?.[0]?.display || '')
+        )
+        .filter(Boolean);
+
+      const severity = body.criticality === 'high' ? 'SEVERE' : body.criticality === 'low' ? 'MILD' : 'MODERATE';
+      const originatorDuz = session.duz;
+
+      const allergyParams = [
+        dfn,
+        `${allergen}^^${vistaCategory}`,
+        severity,
+        reactions.join(';') || 'UNKNOWN',
+        new Date().toLocaleDateString('en-US'),
+        originatorDuz,
+      ];
+
+      rpcUsed.push('ORWDAL32 SAVE ALLERGY');
+      const lines = await safeCallRpc('ORWDAL32 SAVE ALLERGY', allergyParams, { idempotent: false });
+      const result = lines.join('\n').trim();
+
+      if (!result.includes('error') && !result.startsWith('-1')) {
+        return fhirReply(reply, 201, {
+          resourceType: 'OperationOutcome',
+          issue: [{ severity: 'information', code: 'informational', diagnostics: `Allergy recorded for Patient/${dfn}: ${allergen}` }],
+          source: 'vista',
+          rpcUsed,
+        });
+      }
+
+      return fhirReply(reply, 422, {
+        ...operationOutcome('error', 'processing', `VistA rejected: ${result}`),
+        source: 'vista',
+        rpcUsed,
+      });
+    } catch (err: unknown) {
+      log.error('FHIR AllergyIntolerance create error', { error: err instanceof Error ? err.message : String(err) });
+      return fhirReply(reply, 500, {
+        ...operationOutcome('error', 'exception', safeErr(err)),
+        rpcUsed,
+      });
+    }
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* POST /fhir/Condition -- Create via VE PROBLEM ADD                  */
+  /* ---------------------------------------------------------------- */
+  server.post('/fhir/Condition', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
+    const session = await requireSession(request, reply);
+    if (reply.sent) return;
+
+    const body = (request.body as any) || {};
+    const rpcUsed: string[] = [];
+
+    if (body.resourceType !== 'Condition') {
+      return fhirReply(reply, 400, operationOutcome('error', 'invalid', 'resourceType must be Condition'));
+    }
+
+    const patientRef = body.subject?.reference || '';
+    const dfn = patientRef.replace(/^Patient\//, '');
+    if (!dfn || !/^\d+$/.test(dfn)) {
+      return fhirReply(reply, 400, operationOutcome('error', 'required', 'Condition.subject reference with numeric DFN is required'));
+    }
+
+    const description = body.code?.text || body.code?.coding?.[0]?.display || '';
+    if (!description) {
+      return fhirReply(reply, 400, operationOutcome('error', 'required', 'Condition.code (problem description) is required'));
+    }
+
+    try {
+      const icdCode = body.code?.coding?.find(
+        (c: any) => c.system === 'http://hl7.org/fhir/sid/icd-10-cm'
+      )?.code || '';
+
+      const clinicalStatus = body.clinicalStatus?.coding?.[0]?.code || 'active';
+      const statusMap: Record<string, string> = { active: 'A', inactive: 'I', resolved: 'R' };
+      const vistaStatus = statusMap[clinicalStatus] || 'A';
+
+      const onset = body.onsetDateTime || '';
+      const providerDuz = session.duz;
+
+      const params: Record<string, string> = {
+        DFN: dfn,
+        PROBLEM: description,
+        ICD: icdCode,
+        STATUS: vistaStatus,
+        ONSET: onset,
+        PROVIDER: providerDuz,
+      };
+
+      rpcUsed.push('VE PROBLEM ADD');
+      const lines = await safeCallRpcWithList(
+        'VE PROBLEM ADD',
+        [{ type: 'list' as const, value: params }],
+        { idempotent: false }
+      );
+      const result = lines.join('\n').trim();
+
+      if (result.startsWith('ok') || result.match(/^\d+/)) {
+        const problemIen = result.replace(/^ok\^?/, '').split('^')[0] || '';
+        return fhirReply(reply, 201, {
+          resourceType: 'OperationOutcome',
+          issue: [{ severity: 'information', code: 'informational', diagnostics: `Problem added for Patient/${dfn}: ${description}` }],
+          source: 'vista',
+          rpcUsed,
+          createdId: problemIen ? `Condition/condition-${problemIen}` : undefined,
+        });
+      }
+
+      return fhirReply(reply, 422, {
+        ...operationOutcome('error', 'processing', `VistA rejected: ${result}`),
+        source: 'vista',
+        rpcUsed,
+      });
+    } catch (err: unknown) {
+      log.error('FHIR Condition create error', { error: err instanceof Error ? err.message : String(err) });
+      return fhirReply(reply, 500, {
+        ...operationOutcome('error', 'exception', safeErr(err)),
+        rpcUsed,
+      });
+    }
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* POST /fhir/MedicationRequest -- Create via VE ERX NEWRX            */
+  /* ---------------------------------------------------------------- */
+  server.post('/fhir/MedicationRequest', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
+    const session = await requireSession(request, reply);
+    if (reply.sent) return;
+
+    const body = (request.body as any) || {};
+    const rpcUsed: string[] = [];
+
+    if (body.resourceType !== 'MedicationRequest') {
+      return fhirReply(reply, 400, operationOutcome('error', 'invalid', 'resourceType must be MedicationRequest'));
+    }
+
+    const patientRef = body.subject?.reference || '';
+    const dfn = patientRef.replace(/^Patient\//, '');
+    if (!dfn || !/^\d+$/.test(dfn)) {
+      return fhirReply(reply, 400, operationOutcome('error', 'required', 'MedicationRequest.subject reference with numeric DFN is required'));
+    }
+
+    const medName =
+      body.medicationCodeableConcept?.text ||
+      body.medicationCodeableConcept?.coding?.[0]?.display ||
+      '';
+    if (!medName) {
+      return fhirReply(reply, 400, operationOutcome('error', 'required', 'MedicationRequest.medicationCodeableConcept (drug name) is required'));
+    }
+
+    try {
+      const dosage = body.dosageInstruction?.[0] || {};
+      const dose = dosage.doseAndRate?.[0]?.doseQuantity?.value
+        ? `${dosage.doseAndRate[0].doseQuantity.value} ${dosage.doseAndRate[0].doseQuantity.unit || ''}`
+        : dosage.text || '';
+      const route = dosage.route?.text || dosage.route?.coding?.[0]?.display || '';
+      const schedule = dosage.timing?.code?.text || dosage.timing?.code?.coding?.[0]?.display || '';
+      const quantity = body.dispenseRequest?.quantity?.value
+        ? String(body.dispenseRequest.quantity.value)
+        : '';
+      const refills = body.dispenseRequest?.numberOfRepeatsAllowed != null
+        ? String(body.dispenseRequest.numberOfRepeatsAllowed)
+        : '';
+      const providerDuz = session.duz;
+
+      const params: Record<string, string> = {
+        DFN: dfn,
+        DRUG: medName,
+        DOSE: dose,
+        ROUTE: route,
+        SCHEDULE: schedule,
+        QUANTITY: quantity,
+        REFILLS: refills,
+        PROVIDER: providerDuz,
+      };
+
+      rpcUsed.push('VE ERX NEWRX');
+      const lines = await safeCallRpcWithList(
+        'VE ERX NEWRX',
+        [{ type: 'list' as const, value: params }],
+        { idempotent: false }
+      );
+      const result = lines.join('\n').trim();
+
+      if (result.startsWith('ok') || result.match(/^\d+/)) {
+        const rxIen = result.replace(/^ok\^?/, '').split('^')[0] || '';
+        return fhirReply(reply, 201, {
+          resourceType: 'OperationOutcome',
+          issue: [{ severity: 'information', code: 'informational', diagnostics: `Prescription created for Patient/${dfn}: ${medName}` }],
+          source: 'vista',
+          rpcUsed,
+          createdId: rxIen ? `MedicationRequest/med-${rxIen}` : undefined,
+        });
+      }
+
+      return fhirReply(reply, 422, {
+        ...operationOutcome('error', 'processing', `VistA rejected: ${result}`),
+        source: 'vista',
+        rpcUsed,
+      });
+    } catch (err: unknown) {
+      log.error('FHIR MedicationRequest create error', { error: err instanceof Error ? err.message : String(err) });
+      return fhirReply(reply, 500, {
+        ...operationOutcome('error', 'exception', safeErr(err)),
+        rpcUsed,
+      });
+    }
+  });
+
+  /* ---------------------------------------------------------------- */
+  /* POST /fhir/Immunization -- Create via VE PCE IMM GIVE              */
+  /* ---------------------------------------------------------------- */
+  server.post('/fhir/Immunization', async (request: FastifyRequest, reply: FastifyReply) => {
+    if (reply.sent) return;
+    const session = await requireSession(request, reply);
+    if (reply.sent) return;
+
+    const body = (request.body as any) || {};
+    const rpcUsed: string[] = [];
+
+    if (body.resourceType !== 'Immunization') {
+      return fhirReply(reply, 400, operationOutcome('error', 'invalid', 'resourceType must be Immunization'));
+    }
+
+    const patientRef = body.patient?.reference || '';
+    const dfn = patientRef.replace(/^Patient\//, '');
+    if (!dfn || !/^\d+$/.test(dfn)) {
+      return fhirReply(reply, 400, operationOutcome('error', 'required', 'Immunization.patient reference with numeric DFN is required'));
+    }
+
+    const vaccineName =
+      body.vaccineCode?.text ||
+      body.vaccineCode?.coding?.[0]?.display ||
+      '';
+    if (!vaccineName) {
+      return fhirReply(reply, 400, operationOutcome('error', 'required', 'Immunization.vaccineCode is required'));
+    }
+
+    try {
+      const cvxCode = body.vaccineCode?.coding?.find(
+        (c: any) => c.system === 'http://hl7.org/fhir/sid/cvx'
+      )?.code || '';
+
+      const occurrenceDate = body.occurrenceDateTime || new Date().toISOString();
+      const lotNumber = body.lotNumber || '';
+      const site = body.site?.text || body.site?.coding?.[0]?.display || '';
+      const route = body.route?.text || body.route?.coding?.[0]?.display || '';
+      const providerDuz = session.duz;
+
+      const params: Record<string, string> = {
+        DFN: dfn,
+        VACCINE: vaccineName,
+        CVX: cvxCode,
+        DATE: occurrenceDate,
+        LOT: lotNumber,
+        SITE: site,
+        ROUTE: route,
+        PROVIDER: providerDuz,
+      };
+
+      rpcUsed.push('VE PCE IMM GIVE');
+      const lines = await safeCallRpcWithList(
+        'VE PCE IMM GIVE',
+        [{ type: 'list' as const, value: params }],
+        { idempotent: false }
+      );
+      const result = lines.join('\n').trim();
+
+      if (result.startsWith('ok') || result.match(/^\d+/)) {
+        const immIen = result.replace(/^ok\^?/, '').split('^')[0] || '';
+        return fhirReply(reply, 201, {
+          resourceType: 'OperationOutcome',
+          issue: [{ severity: 'information', code: 'informational', diagnostics: `Immunization recorded for Patient/${dfn}: ${vaccineName}` }],
+          source: 'vista',
+          rpcUsed,
+          createdId: immIen ? `Immunization/${immIen}` : undefined,
+        });
+      }
+
+      return fhirReply(reply, 422, {
+        ...operationOutcome('error', 'processing', `VistA rejected: ${result}`),
+        source: 'vista',
+        rpcUsed,
+      });
+    } catch (err: unknown) {
+      log.error('FHIR Immunization create error', { error: err instanceof Error ? err.message : String(err) });
+      return fhirReply(reply, 500, {
+        ...operationOutcome('error', 'exception', safeErr(err)),
+        rpcUsed,
+      });
+    }
+  });
+
+  log.info('FHIR R4 gateway registered: 15 endpoints (7 read resource types + 5 write + metadata + search)');
 }

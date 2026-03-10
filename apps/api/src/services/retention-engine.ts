@@ -1,12 +1,12 @@
 /**
- * Retention Engine — Phase 496 (W34-P6)
+ * Retention Engine -- Phase 496 (W34-P6)
  *
  * Validates record deletion/archival against the country pack's
  * retentionMinYears and retentionMaxYears. Prevents premature deletion
  * and flags records past max retention for mandatory archival.
  */
 
-// ── Types ──────────────────────────────────────────────────────
+// -- Types ------------------------------------------------------
 
 export interface RetentionPolicy {
   retentionMinYears: number;
@@ -22,7 +22,7 @@ export interface RetentionValidationResult {
   pastMaxRetention: boolean;
 }
 
-// ── Validation ─────────────────────────────────────────────────
+// -- Validation -------------------------------------------------
 
 /**
  * Validate whether a record can be deleted/archived based on the pack's

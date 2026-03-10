@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Payer Intelligence Dashboard — Phase 92
+ * Payer Intelligence Dashboard -- Phase 92
  *
  * Admin page for payer performance analytics:
  *  - Payer KPI table (avg days, denial rate, underpayment rate)
@@ -15,7 +15,7 @@
 import { useEffect, useState } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ────────────────────────────────────────────────────── */
+/* -- Types ------------------------------------------------------ */
 
 interface PayerKPI {
   payerId: string;
@@ -55,11 +55,11 @@ interface IntelReport {
   tenantId: string;
 }
 
-/* ── Section Type ──────────────────────────────────────────── */
+/* -- Section Type -------------------------------------------- */
 
 type Section = 'kpi' | 'aging';
 
-/* ── Component ─────────────────────────────────────────────── */
+/* -- Component ----------------------------------------------- */
 
 export default function PayerIntelligencePage() {
   const [section, setSection] = useState<Section>('kpi');
@@ -292,7 +292,7 @@ export default function PayerIntelligencePage() {
   );
 }
 
-/* ── KPI Section ───────────────────────────────────────────── */
+/* -- KPI Section --------------------------------------------- */
 
 function KpiSection({
   payers,
@@ -310,7 +310,7 @@ function KpiSection({
   formatPercent: (v: number) => string;
 }) {
   const sortArrow = (field: keyof PayerKPI) =>
-    sortField === field ? (sortDir === 'asc' ? ' ▲' : ' ▼') : '';
+    sortField === field ? (sortDir === 'asc' ? ' ^' : ' v') : '';
 
   if (payers.length === 0) {
     return (
@@ -420,7 +420,7 @@ function KpiSection({
   );
 }
 
-/* ── Aging Section ──────────────────────────────────────────── */
+/* -- Aging Section -------------------------------------------- */
 
 function AgingSection({
   report,
@@ -536,7 +536,7 @@ function AgingSection({
   );
 }
 
-/* ── Sub-Components ────────────────────────────────────────── */
+/* -- Sub-Components ------------------------------------------ */
 
 function SortTh({
   label,

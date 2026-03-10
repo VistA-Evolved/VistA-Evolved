@@ -1,5 +1,5 @@
 /**
- * Document Center — Phase 140
+ * Document Center -- Phase 140
  *
  * Allows portal users to:
  * - Browse available document types (VistA-backed)
@@ -80,7 +80,7 @@ export default function DocumentsPage() {
       ? 'Documents are generated from your live health-system record. Download links expire in 5 minutes.'
       : pageBadgeSource === 'local'
         ? 'Documents are currently generated from local portal data, not directly from the live health-system record. Download links expire in 5 minutes.'
-        : 'Document sources vary by type. Some are generated from the live health-system record while others remain local or integration-pending. Download links expire in 5 minutes.';
+        : 'Document sources vary by type. Some are generated from the live health-system record while others remain local. Download links expire in 5 minutes.';
 
   useEffect(() => {
     portalFetch('/portal/documents')

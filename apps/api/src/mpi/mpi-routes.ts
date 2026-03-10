@@ -1,5 +1,5 @@
 /**
- * Phase 401 (W23-P3): MPI / Client Registry — Routes
+ * Phase 401 (W23-P3): MPI / Client Registry -- Routes
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -17,7 +17,7 @@ import {
 } from './mpi-store.js';
 
 export default async function mpiRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Identity CRUD ─────────────────────────────────────────
+  // --- Identity CRUD -----------------------------------------
 
   server.get('/mpi/identities', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -71,7 +71,7 @@ export default async function mpiRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, identity: rec };
   });
 
-  // ─── Matching ──────────────────────────────────────────────
+  // --- Matching ----------------------------------------------
 
   server.post('/mpi/match', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -85,7 +85,7 @@ export default async function mpiRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, results };
   });
 
-  // ─── Merge / Link ─────────────────────────────────────────
+  // --- Merge / Link -----------------------------------------
 
   server.post('/mpi/merge', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -108,7 +108,7 @@ export default async function mpiRoutes(server: FastifyInstance): Promise<void> 
     return { ok: true, events: listMergeEvents(session.tenantId, Number(qs.limit) || 100) };
   });
 
-  // ─── Dashboard ─────────────────────────────────────────────
+  // --- Dashboard ---------------------------------------------
 
   server.get('/mpi/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);

@@ -1,5 +1,5 @@
 /**
- * Clinical Journey Configuration — Phase 252
+ * Clinical Journey Configuration -- Phase 252
  *
  * Defines evidence-mode clinical journeys for pilot go-live verification.
  * Each journey is a named sequence of steps with expected outcomes.
@@ -31,10 +31,13 @@ export interface ClinicalJourney {
   steps: JourneyStep[];
 }
 
+const TEST_DFN = process.env.VISTA_TEST_DFN ?? '46';
+const chartRoute = (slug: string) => `/cprs/chart/${TEST_DFN}/${slug}`;
+
 /**
- * Journey: Clinician Login → Patient Selection → Chart Review
+ * Journey: Clinician Login -> Patient Selection -> Chart Review
  *
- * The canonical "morning workflow" — provider logs in, picks a patient,
+ * The canonical "morning workflow" -- provider logs in, picks a patient,
  * reviews the cover sheet, checks allergies, reviews meds.
  */
 export const CHART_REVIEW_JOURNEY: ClinicalJourney = {
@@ -64,28 +67,28 @@ export const CHART_REVIEW_JOURNEY: ClinicalJourney = {
     },
     {
       name: 'cover-sheet',
-      route: '/cprs/chart/3/cover',
-      action: 'Open cover sheet for patient DFN=3',
+      route: chartRoute('cover'),
+      action: 'Open cover sheet for patient DFN=46',
       expectText: /cover|sheet|allerg|problem|med|pending/i,
       screenshot: true,
     },
     {
       name: 'problems-tab',
-      route: '/cprs/chart/3/problems',
+      route: chartRoute('problems'),
       action: 'Navigate to problems tab',
       expectText: /problem|condition|pending/i,
       screenshot: true,
     },
     {
       name: 'meds-tab',
-      route: '/cprs/chart/3/meds',
+      route: chartRoute('meds'),
       action: 'Navigate to medications tab',
       expectText: /med|prescription|pending/i,
       screenshot: true,
     },
     {
       name: 'notes-tab',
-      route: '/cprs/chart/3/notes',
+      route: chartRoute('notes'),
       action: 'Navigate to notes tab',
       expectText: /note|document|tiu|pending/i,
       screenshot: true,
@@ -94,7 +97,7 @@ export const CHART_REVIEW_JOURNEY: ClinicalJourney = {
 };
 
 /**
- * Journey: Admin → Integration Console → Posture Check
+ * Journey: Admin -> Integration Console -> Posture Check
  */
 export const ADMIN_POSTURE_JOURNEY: ClinicalJourney = {
   id: 'admin-posture',
@@ -123,7 +126,7 @@ export const ADMIN_POSTURE_JOURNEY: ClinicalJourney = {
 };
 
 /**
- * Journey: FHIR Metadata → API endpoint smoke
+ * Journey: FHIR Metadata -> API endpoint smoke
  * (API-only, no UI navigation)
  */
 export const FHIR_SMOKE_JOURNEY: ClinicalJourney = {
@@ -133,7 +136,7 @@ export const FHIR_SMOKE_JOURNEY: ClinicalJourney = {
   steps: [
     {
       name: 'metadata',
-      action: 'GET /fhir/metadata — CapabilityStatement',
+      action: 'GET /fhir/metadata -- CapabilityStatement',
       expectText: /CapabilityStatement/,
       screenshot: false,
     },

@@ -1,5 +1,5 @@
 /**
- * Country Pack Template Generator — Phase 521 (Wave 37 B9)
+ * Country Pack Template Generator -- Phase 521 (Wave 37 B9)
  *
  * Generates a standardized country pack scaffold for new markets.
  * Each pack includes: payer seed JSON, validation rules, connector stub,
@@ -17,7 +17,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = join(__dirname, '..', '..');
 
-/* ── Config ─────────────────────────────────────────────────── */
+/* -- Config --------------------------------------------------- */
 
 const args = process.argv.slice(2);
 const flags = {};
@@ -38,7 +38,7 @@ if (!COUNTRY || COUNTRY.length !== 2) {
   process.exit(1);
 }
 
-/* ── Templates ──────────────────────────────────────────────── */
+/* -- Templates ------------------------------------------------ */
 
 function generateSeedJson() {
   return JSON.stringify(
@@ -47,7 +47,7 @@ function generateSeedJson() {
         description: `${NAME} payer registry seed data`,
         source: 'VistA-Evolved country pack generator (Phase 521)',
         lastUpdated: new Date().toISOString().split('T')[0],
-        notes: `Scaffold — populate with actual ${NAME} payers`,
+        notes: `Scaffold -- populate with actual ${NAME} payers`,
       },
       payers: [
         {
@@ -64,7 +64,7 @@ function generateSeedJson() {
               purpose: 'claims',
               protocol: 'rest',
               url: `https://api.health.gov.${COUNTRY.toLowerCase()}/claims/v1`,
-              notes: 'Production endpoint — requires facility registration',
+              notes: 'Production endpoint -- requires facility registration',
             },
           ],
           aliases: [],
@@ -94,7 +94,7 @@ function generateSeedJson() {
 
 function generateValidationRules() {
   return `/**
- * ${NAME} (${COUNTRY}) Validation Rules — Phase 521 Country Pack
+ * ${NAME} (${COUNTRY}) Validation Rules -- Phase 521 Country Pack
  *
  * Country-specific claim validation rules for ${NAME}.
  * Add to the countrySpecificRules array in validation/engine.ts.
@@ -142,7 +142,7 @@ export const ${COUNTRY.toLowerCase()}Rules: ValidationRule[] = [
 
 function generateConnectorStub() {
   return `/**
- * ${NAME} (${COUNTRY}) Connector Stub — Phase 521 Country Pack
+ * ${NAME} (${COUNTRY}) Connector Stub -- Phase 521 Country Pack
  *
  * Scaffold connector for ${NAME} payer connectivity.
  * Implement the real transport when ready.
@@ -170,7 +170,7 @@ export class ${capitalize(NAME.replace(/\s+/g, ''))}Connector implements RcmConn
       success: false,
       errors: [{
         code: '${COUNTRY}_NOT_IMPLEMENTED',
-        description: '${NAME} connector not yet implemented — integration pending',
+        description: '${NAME} connector not yet implemented -- integration pending',
         severity: 'error',
       }],
       metadata: { connector: this.id, country: '${COUNTRY}' },
@@ -193,7 +193,7 @@ export class ${capitalize(NAME.replace(/\s+/g, ''))}Connector implements RcmConn
   }
 
   async healthCheck(): Promise<{ healthy: boolean; details?: string }> {
-    return { healthy: false, details: '${NAME} connector scaffold — not yet implemented' };
+    return { healthy: false, details: '${NAME} connector scaffold -- not yet implemented' };
   }
 
   async shutdown(): Promise<void> {}
@@ -203,7 +203,7 @@ export class ${capitalize(NAME.replace(/\s+/g, ''))}Connector implements RcmConn
 
 function generateScrubberPack() {
   return `/**
- * ${NAME} (${COUNTRY}) Scrubber Pack — Phase 521 Country Pack
+ * ${NAME} (${COUNTRY}) Scrubber Pack -- Phase 521 Country Pack
  *
  * Claim scrubbing rules specific to ${NAME} market.
  * Register in scrubber.ts determinePacks() to auto-select.
@@ -310,7 +310,7 @@ function generateConformanceChecklist() {
   );
 }
 
-/* ── File Output ────────────────────────────────────────────── */
+/* -- File Output ---------------------------------------------- */
 
 function writeIfNew(path, content) {
   const abs = join(ROOT, path);
@@ -329,7 +329,7 @@ function capitalize(s) {
   return s.charAt(0).toUpperCase() + s.slice(1);
 }
 
-/* ── Main ───────────────────────────────────────────────────── */
+/* -- Main ----------------------------------------------------- */
 
 console.log(`\nGenerating country pack for ${NAME} (${COUNTRY})...\n`);
 

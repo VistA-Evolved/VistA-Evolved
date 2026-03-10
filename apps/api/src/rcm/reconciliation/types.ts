@@ -1,5 +1,5 @@
 /**
- * Reconciliation Domain Model — Phase 99
+ * Reconciliation Domain Model -- Phase 99
  *
  * Durable SQLite-backed payment reconciliation types.
  * Complements Phase 92 in-memory payment-types with persistent storage.
@@ -12,7 +12,7 @@
 
 import { z } from 'zod';
 
-/* ── Remittance Import ──────────────────────────────────────── */
+/* -- Remittance Import ---------------------------------------- */
 
 export const REMITTANCE_SOURCE_TYPES = ['EDI_835', 'MANUAL', 'OTHER'] as const;
 export type RemittanceSourceType = (typeof REMITTANCE_SOURCE_TYPES)[number];
@@ -42,7 +42,7 @@ export const CreateRemittanceImportSchema = z.object({
   mappingVersion: z.string().max(20).optional(),
 });
 
-/* ── Payment Record ─────────────────────────────────────────── */
+/* -- Payment Record ------------------------------------------- */
 
 export const PAYMENT_STATUSES = [
   'IMPORTED',
@@ -110,7 +110,7 @@ export const CreatePaymentRecordSchema = z.object({
 });
 export type CreatePaymentRecordInput = z.infer<typeof CreatePaymentRecordSchema>;
 
-/* ── Manual Payment Entry (single payment, not from import) ── */
+/* -- Manual Payment Entry (single payment, not from import) -- */
 
 export const ManualPaymentEntrySchema = z.object({
   claimRef: z.string().min(1).max(100),
@@ -130,7 +130,7 @@ export const ManualPaymentEntrySchema = z.object({
 });
 export type ManualPaymentEntryInput = z.infer<typeof ManualPaymentEntrySchema>;
 
-/* ── Reconciliation Match ───────────────────────────────────── */
+/* -- Reconciliation Match ------------------------------------- */
 
 export const MATCH_METHODS = [
   'EXACT_CLAIM_REF',
@@ -162,7 +162,7 @@ export const ConfirmMatchSchema = z.object({
   notes: z.string().max(2000).optional(),
 });
 
-/* ── Underpayment Case ──────────────────────────────────────── */
+/* -- Underpayment Case ---------------------------------------- */
 
 export const EXPECTED_AMOUNT_MODELS = [
   'BILLED_AMOUNT',
@@ -232,7 +232,7 @@ export const UpdateUnderpaymentSchema = z.object({
   reason: z.string().min(1).max(500),
 });
 
-/* ── EDI 835 Parser Adapter ─────────────────────────────────── */
+/* -- EDI 835 Parser Adapter ----------------------------------- */
 
 export interface NormalizedPaymentLine {
   claimRef: string;
@@ -259,14 +259,14 @@ export interface NormalizedRemittance {
   parseErrors: string[];
 }
 
-/** Adapter interface for EDI 835 parsing — swap parser without refactor */
+/** Adapter interface for EDI 835 parsing -- swap parser without refactor */
 export interface Edi835Parser {
   readonly name: string;
   readonly version: string;
   parse(content: string): NormalizedRemittance;
 }
 
-/* ── Batch 835 Import Schema ────────────────────────────────── */
+/* -- Batch 835 Import Schema ---------------------------------- */
 
 export const Import835PaymentSchema = z.object({
   claimRef: z.string().min(1),
@@ -292,7 +292,7 @@ export const ImportRemittanceBatchSchema = z.object({
 });
 export type ImportRemittanceBatchInput = z.infer<typeof ImportRemittanceBatchSchema>;
 
-/* ── List Queries ───────────────────────────────────────────── */
+/* -- List Queries --------------------------------------------- */
 
 export const PaymentListQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
@@ -315,7 +315,7 @@ export const UnderpaymentListQuerySchema = z.object({
 });
 export type UnderpaymentListQuery = z.infer<typeof UnderpaymentListQuerySchema>;
 
-/* ── Reconciliation Stats ───────────────────────────────────── */
+/* -- Reconciliation Stats ------------------------------------- */
 
 export interface ReconciliationStats {
   totalImports: number;

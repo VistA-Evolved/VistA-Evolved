@@ -85,7 +85,7 @@ const WIRED_RPCS: Record<string, { endpoint: string; method: string; phase: stri
   'VE LIST RPCS': { endpoint: 'GET /vista/rpc-catalog', method: 'GET', phase: '37B' },
 };
 
-// ---- Tab → panel wiring ----
+// ---- Tab -> panel wiring ----
 const TAB_PANEL_STATUS: Record<
   string,
   { panel: string; status: 'wired' | 'integration-pending' | 'extension'; rpcs: string[] }

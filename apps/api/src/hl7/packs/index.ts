@@ -1,5 +1,5 @@
 /**
- * HL7v2 Message Packs — Pack Registry
+ * HL7v2 Message Packs -- Pack Registry
  *
  * Phase 241 (Wave 6 P4): Central registry for all message packs.
  * Provides lookup by ID or by message type.

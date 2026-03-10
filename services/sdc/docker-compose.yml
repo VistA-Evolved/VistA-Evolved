@@ -1,11 +1,11 @@
-# IEEE 11073 SDC Sidecar — Docker Compose
+# IEEE 11073 SDC Sidecar -- Docker Compose
 #
 # Phase 383 (W21-P6): Optional SDC consumer sidecar using sdc11073 Python library.
 # Subscribes to SDC devices on the local network, normalizes BICEPS metrics
 # to JSON, and POSTs to the API /devices/sdc/ingest endpoint.
 #
 # Usage: docker compose --profile sdc up -d
-# The sidecar is behind a compose profile — it won't start unless explicitly requested.
+# The sidecar is behind a compose profile -- it won't start unless explicitly requested.
 
 services:
   sdc-consumer:

@@ -1,5 +1,5 @@
 /**
- * IEEE 11073 SDC Ingest — Types + Route
+ * IEEE 11073 SDC Ingest -- Types + Route
  *
  * Phase 383 (W21-P6): API-side ingest endpoint for IEEE 11073 SDC
  * observations forwarded by the sdc11073 Python sidecar. The sidecar
@@ -7,13 +7,15 @@
  * POSTing.
  *
  * Per ADR-W21-SDC-POSTURE: SDC is optional (sidecar behind compose profile).
- * The API accepts any observation format — SDC is just another producer.
+ * The API accepts any observation format -- SDC is just another producer.
  */
 
 import type { FastifyInstance, FastifyRequest } from 'fastify';
 import { storeObservation } from './gateway-store.js';
 import type { DeviceObservation } from './types.js';
+import { requireDeviceServiceKey } from './service-key-guard.js';
 import * as crypto from 'node:crypto';
+import { safeErr } from '../lib/safe-error.js';
 
 const DEFAULT_TENANT = 'default';
 const MAX_SDC_INGEST_LOG = 1000;
@@ -35,7 +37,7 @@ export interface SdcIngestPayload {
   serialNumber: string;
   /** Location context (SDC LocationContextDescriptor) */
   locationContext?: string;
-  /** Patient context (SDC PatientContextDescriptor — ID only, no PHI) */
+  /** Patient context (SDC PatientContextDescriptor -- ID only, no PHI) */
   patientId?: string;
   /** Metrics/observations from the device */
   metrics: SdcMetric[];
@@ -108,9 +110,10 @@ function tenantId(request: FastifyRequest): string {
 
 export default async function sdcIngestRoutes(server: FastifyInstance): Promise<void> {
   // -------------------------------------------------------------------------
-  // POST /devices/sdc/ingest — SDC metric ingest from sidecar
+  // POST /devices/sdc/ingest -- SDC metric ingest from sidecar
   // -------------------------------------------------------------------------
   server.post('/devices/sdc/ingest', async (request, reply) => {
+    if (!requireDeviceServiceKey(request, reply)) return reply;
     const tenant = tenantId(request);
     const body = request.body as SdcIngestPayload;
 
@@ -173,7 +176,7 @@ export default async function sdcIngestRoutes(server: FastifyInstance): Promise<
         metricCount: body.metrics.length,
         storedCount,
         parseOk: false,
-        error: err.message,
+        error: safeErr(err),
         timestamp: now(),
       };
       sdcIngestLog.push(entry);
@@ -182,13 +185,13 @@ export default async function sdcIngestRoutes(server: FastifyInstance): Promise<
       return reply.code(500).send({
         ok: false,
         ingestId: entry.id,
-        error: err.message,
+        error: safeErr(err),
       });
     }
   });
 
   // -------------------------------------------------------------------------
-  // GET /devices/sdc/ingest-log — SDC ingest history
+  // GET /devices/sdc/ingest-log -- SDC ingest history
   // -------------------------------------------------------------------------
   server.get('/devices/sdc/ingest-log', async (_request, reply) => {
     return reply.send({
@@ -199,7 +202,7 @@ export default async function sdcIngestRoutes(server: FastifyInstance): Promise<
   });
 
   // -------------------------------------------------------------------------
-  // GET /devices/sdc/status — SDC subsystem status
+  // GET /devices/sdc/status -- SDC subsystem status
   // -------------------------------------------------------------------------
   server.get('/devices/sdc/status', async (_request, reply) => {
     const recentIngests = sdcIngestLog.slice(-10);

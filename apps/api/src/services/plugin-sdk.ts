@@ -1,10 +1,10 @@
 /**
- * Backend Plugin SDK — Phase 358 (W18-P5)
+ * Backend Plugin SDK -- Phase 358 (W18-P5)
  *
  * Signed plugin manifests, extension points (event consumers, validators,
  * transformers), sandboxed execution with timeouts, and audit logging.
  *
- * ADR: ADR-PLUGIN-MODEL.md — signed manifests, extension points, React portals.
+ * ADR: ADR-PLUGIN-MODEL.md -- signed manifests, extension points, React portals.
  */
 
 import { randomBytes, createHash, createHmac } from "node:crypto";
@@ -14,7 +14,7 @@ import {
   type DomainEvent,
 } from "./event-bus.js";
 
-// ── Types ───────────────────────────────────────────────────────────────
+// -- Types ---------------------------------------------------------------
 
 export type PluginStatus =
   | "installed"
@@ -91,24 +91,29 @@ export interface PluginAuditEntry {
   createdAt: string;
 }
 
-// ── Stores ──────────────────────────────────────────────────────────────
+// -- Stores --------------------------------------------------------------
 
-/** Installed plugins — keyed by composite "tenantId:pluginId" */
+/** Installed plugins -- keyed by composite "tenantId:pluginId" */
 const plugins = new Map<string, InstalledPlugin>();
 
-/** Plugin audit log — max 10K entries */
+/** Plugin audit log -- max 10K entries */
 const auditLog: PluginAuditEntry[] = [];
 const MAX_AUDIT = 10_000;
 
-/** Validator registry — keyed by validation stage */
+/** Validator registry -- keyed by validation stage */
 const validators = new Map<string, Array<{ pluginId: string; handler: (data: unknown) => Promise<{ valid: boolean; errors?: string[] }> }>>();
 
-/** Transformer registry — keyed by transform key */
+/** Transformer registry -- keyed by transform key */
 const transformers = new Map<string, Array<{ pluginId: string; handler: (data: unknown) => Promise<unknown> }>>();
 
-// ── Plugin signing secret (env-configurable, default for dev) ────────
-const PLUGIN_SIGNING_SECRET =
-  process.env.PLUGIN_SIGNING_SECRET || "dev-plugin-signing-secret-change-me";
+// -- Plugin signing secret (env-configurable, default for dev) --------
+const PLUGIN_SIGNING_SECRET = (() => {
+  const secret = process.env.PLUGIN_SIGNING_SECRET;
+  if (!secret && (process.env.PLATFORM_RUNTIME_MODE === 'rc' || process.env.PLATFORM_RUNTIME_MODE === 'prod' || process.env.NODE_ENV === 'production')) {
+    throw new Error('PLUGIN_SIGNING_SECRET must be set in rc/prod mode');
+  }
+  return secret || 'dev-plugin-signing-secret-change-me';
+})();
 
 /** Execution timeout for plugin handlers (ms) */
 const PLUGIN_TIMEOUT_MS = parseInt(
@@ -116,7 +121,7 @@ const PLUGIN_TIMEOUT_MS = parseInt(
   10,
 );
 
-// ── Helpers ─────────────────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------------------
 
 function genId(): string {
   return randomBytes(16).toString("hex");
@@ -207,7 +212,7 @@ async function withTimeout<T>(
   });
 }
 
-// ── Plugin Lifecycle ────────────────────────────────────────────────────
+// -- Plugin Lifecycle ----------------------------------------------------
 
 export function installPlugin(
   tenantId: string,
@@ -261,7 +266,7 @@ export function activatePlugin(
       const consumerId = `plugin-${pluginId}-${ep.target}`;
       registerConsumer({
         id: consumerId,
-        name: `Plugin: ${plugin.manifest.name} → ${ep.target}`,
+        name: `Plugin: ${plugin.manifest.name} -> ${ep.target}`,
         handler: async (event: DomainEvent) => {
           plugin.stats.totalInvocations++;
           plugin.stats.lastInvokedAt = now();
@@ -333,7 +338,7 @@ export function uninstallPlugin(
   return true;
 }
 
-// ── Extension Point Registration (programmatic for in-process plugins) ─
+// -- Extension Point Registration (programmatic for in-process plugins) -
 
 export function registerValidator(
   pluginId: string,
@@ -412,7 +417,7 @@ export async function runTransformers(
   return result;
 }
 
-// ── Query Helpers ───────────────────────────────────────────────────────
+// -- Query Helpers -------------------------------------------------------
 
 export function getPlugin(
   tenantId: string,
@@ -489,7 +494,7 @@ export function getPluginStats(tenantId: string): {
   };
 }
 
-// ── Reset (testing) ─────────────────────────────────────────────────────
+// -- Reset (testing) -----------------------------------------------------
 
 export function _resetPluginSdk(): void {
   for (const p of plugins.values()) {

@@ -17,7 +17,7 @@ import { listClaimCases } from '../claims/claim-store.js';
 import type { ClaimCase } from '../claims/claim-types.js';
 import { listUnderpayments } from './payment-store.js';
 
-/* ── Aging Buckets ─────────────────────────────────────────── */
+/* -- Aging Buckets ------------------------------------------- */
 
 const AGING_BUCKET_DEFS: Array<{ label: string; minDays: number; maxDays: number | null }> = [
   { label: '0-30 days', minDays: 0, maxDays: 30 },
@@ -31,9 +31,9 @@ const AGING_BUCKET_DEFS: Array<{ label: string; minDays: number; maxDays: number
  * Compute aging report for a tenant.
  * A claim is "outstanding" if it's been submitted but not yet paid/closed/cancelled.
  */
-export function computeAging(tenantId: string): AgingReport {
+export async function computeAging(tenantId: string): Promise<AgingReport> {
   const now = new Date();
-  const { items } = listClaimCases({ tenantId, limit: 10000 });
+  const { items } = await listClaimCases({ tenantId, limit: 10000 });
 
   const outstandingStatuses = new Set([
     'submitted_electronic',
@@ -86,21 +86,21 @@ export function computeAging(tenantId: string): AgingReport {
   };
 }
 
-/* ── Payer Intelligence ────────────────────────────────────── */
+/* -- Payer Intelligence -------------------------------------- */
 
 /**
  * Compute KPIs for all payers with activity within a period.
  */
-export function computePayerIntelligence(
+export async function computePayerIntelligence(
   tenantId: string,
   periodStart?: string,
   periodEnd?: string
-): PayerIntelligenceReport {
+): Promise<PayerIntelligenceReport> {
   const now = new Date();
   const start = periodStart ?? new Date(now.getFullYear(), now.getMonth() - 6, 1).toISOString();
   const end = periodEnd ?? now.toISOString();
 
-  const { items: allClaims } = listClaimCases({ tenantId, limit: 10000 });
+  const { items: allClaims } = await listClaimCases({ tenantId, limit: 10000 });
 
   // Filter by period (createdAt within range)
   const periodClaims = allClaims.filter((c) => c.createdAt >= start && c.createdAt <= end);
@@ -182,7 +182,7 @@ export function computePayerIntelligence(
   };
 }
 
-/* ── Helpers ───────────────────────────────────────────────── */
+/* -- Helpers ------------------------------------------------- */
 
 function computeMedian(values: number[]): number {
   const sorted = [...values].sort((a, b) => a - b);

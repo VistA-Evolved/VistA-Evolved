@@ -1,5 +1,5 @@
 /**
- * FHIR Bearer Token Authentication — Phase 231 (Wave 5 Q231).
+ * FHIR Bearer Token Authentication -- Phase 231 (Wave 5 Q231).
  *
  * Enables SMART-on-FHIR bearer token authentication for /fhir/* routes.
  * When OIDC is enabled, FHIR endpoints accept either:
@@ -46,7 +46,7 @@ export interface FhirPrincipal {
 
 declare module 'fastify' {
   interface FastifyRequest {
-    /** FHIR principal — set by fhir auth middleware for /fhir/* routes */
+    /** FHIR principal -- set by fhir auth middleware for /fhir/* routes */
     fhirPrincipal?: FhirPrincipal;
   }
 }

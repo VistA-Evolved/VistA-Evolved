@@ -1,14 +1,15 @@
 /**
- * HL7v2 Message Event Store — Phase 259 (Wave 8 P3)
+ * HL7v2 Message Event Store -- Phase 259 (Wave 8 P3)
  *
  * Append-only message event store with PHI-safe logging.
  * In-memory ring buffer with optional PG persistence (wired via setHl7DbRepo).
  *
- * Pattern: Same as imaging-audit.ts, rcm-audit.ts — hash-chained, PHI-redacted.
+ * Pattern: Same as imaging-audit.ts, rcm-audit.ts -- hash-chained, PHI-redacted.
  */
 import { createHash, randomBytes } from 'crypto';
+import { log } from '../lib/logger.js';
 
-/* ── Types ─────────────────────────────────────────────── */
+/* -- Types ----------------------------------------------- */
 
 export type Hl7MessageDirection = 'inbound' | 'outbound';
 
@@ -36,7 +37,7 @@ export interface Hl7MessageEvent {
   status: Hl7ProcessingStatus;
   routeId: string | null;
   endpointId: string | null;
-  /** PHI-safe summary — never contains raw patient data */
+  /** PHI-safe summary -- never contains raw patient data */
   summary: string;
   /** Size of the original HL7 message in bytes */
   messageSizeBytes: number;
@@ -66,7 +67,7 @@ export interface CreateMessageEventInput {
   errorDetail?: string;
 }
 
-/* ── PHI Redaction ─────────────────────────────────────── */
+/* -- PHI Redaction --------------------------------------- */
 
 const PHI_SEGMENT_PREFIXES = ['PID', 'NK1', 'GT1', 'IN1', 'IN2'];
 
@@ -95,7 +96,7 @@ export function hashMessage(raw: string): string {
   return createHash('sha256').update(raw).digest('hex');
 }
 
-/* ── Ring Buffer Store ─────────────────────────────────── */
+/* -- Ring Buffer Store ----------------------------------- */
 
 const MAX_EVENTS = 10_000;
 const events: Hl7MessageEvent[] = [];
@@ -112,7 +113,7 @@ function generateEventId(): string {
 
 /**
  * Append a message event (PHI-safe).
- * Raw message is NEVER stored — only its hash and byte size.
+ * Raw message is NEVER stored -- only its hash and byte size.
  */
 export function recordMessageEvent(input: CreateMessageEventInput): Hl7MessageEvent {
   const id = generateEventId();
@@ -155,7 +156,7 @@ export function recordMessageEvent(input: CreateMessageEventInput): Hl7MessageEv
 
   // Fire-and-forget DB persistence if wired
   if (_dbRepo) {
-    void _dbRepo.insertMessageEvent(event).catch(() => {});
+    void _dbRepo.insertMessageEvent(event).catch((e) => log.warn('PG write-through failed', { error: String(e) }));
   }
 
   return event;
@@ -245,7 +246,7 @@ export function getMessageEventStats(tenantId?: string): Record<string, number> 
   return stats;
 }
 
-/* ── DB Repo Injection (optional PG persistence) ─────── */
+/* -- DB Repo Injection (optional PG persistence) ------- */
 
 export interface Hl7MessageEventDbRepo {
   insertMessageEvent(event: Hl7MessageEvent): Promise<void>;

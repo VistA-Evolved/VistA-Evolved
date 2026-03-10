@@ -16,7 +16,7 @@
 
 import { randomUUID } from "node:crypto";
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+// --- Types ------------------------------------------------------------------
 
 export type ShardStatus = "active" | "readonly" | "draining" | "offline" | "promoting";
 export type ReplicationRole = "primary" | "standby" | "async_standby";
@@ -80,19 +80,19 @@ export interface ShardMigrationStep {
   error: string | null;
 }
 
-// ─── In-Memory Stores ───────────────────────────────────────────────────────
+// --- In-Memory Stores -------------------------------------------------------
 
 const shardStore = new Map<string, DataShard>();
-const shardByRegion = new Map<string, string[]>();              // region → shard IDs
-const mappingStore = new Map<string, TenantShardMapping>();     // id → mapping
-const mappingByTenant = new Map<string, string>();              // tenantId → mapping id (active)
-const healthStore = new Map<string, ShardHealthProbe>();        // shardId → latest
-const migrationStore = new Map<string, ShardMigrationPlan>();   // id → plan
+const shardByRegion = new Map<string, string[]>();              // region -> shard IDs
+const mappingStore = new Map<string, TenantShardMapping>();     // id -> mapping
+const mappingByTenant = new Map<string, string>();              // tenantId -> mapping id (active)
+const healthStore = new Map<string, ShardHealthProbe>();        // shardId -> latest
+const migrationStore = new Map<string, ShardMigrationPlan>();   // id -> plan
 
 const auditLog: Array<{ ts: string; action: string; actor: string; detail: Record<string, unknown> }> = [];
 const MAX_AUDIT = 10_000;
 
-// ─── Shard CRUD ─────────────────────────────────────────────────────────────
+// --- Shard CRUD -------------------------------------------------------------
 
 export function registerShard(input: {
   name: string;
@@ -181,7 +181,7 @@ export function updateShardStatus(id: string, status: ShardStatus, actor: string
   return shard;
 }
 
-// ─── Shard Health ───────────────────────────────────────────────────────────
+// --- Shard Health -----------------------------------------------------------
 
 export function recordShardHealth(probe: ShardHealthProbe): void {
   healthStore.set(probe.shardId, probe);
@@ -203,7 +203,7 @@ export function listShardHealth(): ShardHealthProbe[] {
   return Array.from(healthStore.values());
 }
 
-// ─── Tenant-Shard Mapping ───────────────────────────────────────────────────
+// --- Tenant-Shard Mapping ---------------------------------------------------
 
 /**
  * Map a tenant to a shard. Shard selection is deterministic:
@@ -313,7 +313,7 @@ export function listShardMappings(filters?: {
   return results.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-// ─── Cross-Shard Query Guard ────────────────────────────────────────────────
+// --- Cross-Shard Query Guard ------------------------------------------------
 
 /**
  * Validate that a query target is on the same shard as the requesting tenant.
@@ -344,7 +344,7 @@ export function validateSameShardAccess(
   return { allowed: true, reason: "same shard" };
 }
 
-// ─── Shard Migration Planning ───────────────────────────────────────────────
+// --- Shard Migration Planning -----------------------------------------------
 
 const MIGRATION_STEPS: string[] = [
   "validate_target_shard",
@@ -420,7 +420,7 @@ export function listMigrationPlans(filters?: {
   return results.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-// ─── Summary ────────────────────────────────────────────────────────────────
+// --- Summary ----------------------------------------------------------------
 
 export function getShardingSummary(): {
   totalShards: number;
@@ -455,7 +455,7 @@ export function getShardingSummary(): {
   };
 }
 
-// ─── Audit ──────────────────────────────────────────────────────────────────
+// --- Audit ------------------------------------------------------------------
 
 function appendAudit(action: string, actor: string, detail: Record<string, unknown>): void {
   auditLog.push({ ts: new Date().toISOString(), action, actor, detail });

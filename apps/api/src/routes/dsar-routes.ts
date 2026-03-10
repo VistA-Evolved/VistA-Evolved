@@ -1,5 +1,5 @@
 /**
- * DSAR Routes — Phase 496 (W34-P6)
+ * DSAR Routes -- Phase 496 (W34-P6)
  *
  * Data Subject Access Request endpoints. Pack-aware: reads
  * rightToErasure, dataPortability, retentionMinYears from
@@ -53,7 +53,7 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
     return null;
   }
 
-  // POST /dsar/requests — create a DSAR request
+  // POST /dsar/requests -- create a DSAR request
   app.post('/dsar/requests', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const { requestType, subjectRef, requestedBy, dueDays } = body as Record<
@@ -118,7 +118,7 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
     return reply.code(201).send({ ok: true, request: req });
   });
 
-  // GET /dsar/requests — list DSAR requests
+  // GET /dsar/requests -- list DSAR requests
   app.get('/dsar/requests', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
     const { status, requestType, limit } = query;
@@ -134,7 +134,7 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, requests, total: requests.length };
   });
 
-  // GET /dsar/requests/:id — get a DSAR request
+  // GET /dsar/requests/:id -- get a DSAR request
   app.get('/dsar/requests/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const tenantId = requireTenantId(request, reply);
@@ -146,7 +146,7 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, request: req };
   });
 
-  // POST /dsar/requests/:id/process — transition to processing
+  // POST /dsar/requests/:id/process -- transition to processing
   app.post('/dsar/requests/:id/process', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as Record<string, unknown>) || {};
@@ -161,7 +161,7 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, request: updated };
   });
 
-  // POST /dsar/requests/:id/fulfill — transition to fulfilled
+  // POST /dsar/requests/:id/fulfill -- transition to fulfilled
   app.post('/dsar/requests/:id/fulfill', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as Record<string, unknown>) || {};
@@ -176,7 +176,7 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, request: updated };
   });
 
-  // POST /dsar/requests/:id/deny — deny a DSAR request
+  // POST /dsar/requests/:id/deny -- deny a DSAR request
   app.post('/dsar/requests/:id/deny', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as Record<string, unknown>) || {};
@@ -198,7 +198,7 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, request: updated };
   });
 
-  // POST /dsar/requests/:id/export — transition to exported
+  // POST /dsar/requests/:id/export -- transition to exported
   app.post('/dsar/requests/:id/export', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as Record<string, unknown>) || {};
@@ -220,7 +220,7 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, request: updated };
   });
 
-  // GET /dsar/stats — DSAR statistics for a tenant
+  // GET /dsar/stats -- DSAR statistics for a tenant
   app.get('/dsar/stats', async (request, reply) => {
     const tenantId = requireTenantId(request, reply);
     if (!tenantId) return;
@@ -228,7 +228,7 @@ export async function dsarRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, ...stats };
   });
 
-  // POST /dsar/validate-retention — validate deletion against retention policy
+  // POST /dsar/validate-retention -- validate deletion against retention policy
   app.post('/dsar/validate-retention', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const { recordCreatedAt } = body as { recordCreatedAt: string };

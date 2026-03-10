@@ -1,7 +1,7 @@
 import { defineConfig, devices } from '@playwright/test';
 
 /**
- * Phase 37 — Playwright config for apps/web (CPRS Web Replica).
+ * Phase 37 -- Playwright config for apps/web (CPRS Web Replica).
  *
  * Expects:
  *   - API running on http://localhost:3001 (with VistA Docker)
@@ -15,7 +15,7 @@ export default defineConfig({
   timeout: 60_000,
   expect: { timeout: 10_000 },
   retries: 1,
-  workers: 1, // serial — shared auth state
+  workers: 1, // serial -- shared auth state
   reporter: [
     ['list'],
     ['json', { outputFile: 'e2e-results.json' }],

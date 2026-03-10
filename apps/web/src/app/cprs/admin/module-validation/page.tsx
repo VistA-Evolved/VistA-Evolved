@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
 
 /* ================================================================== */
-/*  Phase 163 — Modular Packaging Validation Dashboard                 */
+/*  Phase 163 -- Modular Packaging Validation Dashboard                 */
 /* ================================================================== */
 
 type Tab = 'report' | 'dependencies' | 'boundaries' | 'coverage';

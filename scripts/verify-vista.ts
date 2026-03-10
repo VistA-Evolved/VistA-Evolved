@@ -1,12 +1,12 @@
 /**
- * VistA Connectivity Verification Script — Phase P1-1
+ * VistA Connectivity Verification Script -- Phase P1-1
  *
  * Standalone script that tests VistA RPC connectivity:
- *   1. ORWU USERINFO — returns authenticated user info
- *   2. ORWPT LIST ALL — returns patient list (≥1 patient)
- *   3. ORWORDG IEN — returns order display group IEN
- *   4. ORWU DT — returns server date/time
- *   5. Disconnect — clean teardown
+ *   1. ORWU USERINFO -- returns authenticated user info
+ *   2. ORWPT LIST ALL -- returns patient list (>=1 patient)
+ *   3. ORWORDG IEN -- returns order display group IEN
+ *   4. ORWU DT -- returns server date/time
+ *   5. Disconnect -- clean teardown
  *
  * Usage:
  *   pnpm run verify:vista
@@ -62,7 +62,7 @@ async function runTest(name: string, fn: () => Promise<string>): Promise<void> {
     const durationMs = Date.now() - start;
     const msg = err instanceof Error ? err.message : String(err);
     results.push({ name, passed: false, durationMs, detail: msg });
-    console.log(`  FAIL  ${name}  (${durationMs}ms) — ${msg}`);
+    console.log(`  FAIL  ${name}  (${durationMs}ms) -- ${msg}`);
   }
 }
 
@@ -88,11 +88,11 @@ async function main(): Promise<void> {
       durationMs,
       detail: `DUZ=${bridge.duz}`,
     });
-    console.log(`  PASS  Connect  (${durationMs}ms) — DUZ=${bridge.duz}`);
+    console.log(`  PASS  Connect  (${durationMs}ms) -- DUZ=${bridge.duz}`);
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err);
     results.push({ name: 'Connect', passed: false, durationMs: 0, detail: msg });
-    console.log(`  FAIL  Connect — ${msg}`);
+    console.log(`  FAIL  Connect -- ${msg}`);
     console.log(`\nVistA connectivity: 0/5 tests passed`);
     process.exit(1);
   }

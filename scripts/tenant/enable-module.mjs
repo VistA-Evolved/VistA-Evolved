@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Enable Module CLI — Phase 135
+ * Enable Module CLI -- Phase 135
  *
  * Enables a module for a tenant via the admin API.
  *

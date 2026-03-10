@@ -1,11 +1,11 @@
 /**
- * SAT (Site Acceptance Test) + Degraded Mode Routes — Phase 265 (Wave 8 P9)
+ * SAT (Site Acceptance Test) + Degraded Mode Routes -- Phase 265 (Wave 8 P9)
  *
  * Endpoints for pilot hospital go-live acceptance testing and
  * runtime degradation monitoring.
  *
  * All routes under /admin/pilot/sat/* and /admin/pilot/degraded-mode/*
- * — admin-only via AUTH_RULES.
+ * -- admin-only via AUTH_RULES.
  */
 import type { FastifyInstance } from 'fastify';
 import {
@@ -37,7 +37,7 @@ export async function satRoutes(app: FastifyInstance): Promise<void> {
   });
 
   // -----------------------------------------------------------------------
-  // SAT Runs — CRUD + execute
+  // SAT Runs -- CRUD + execute
   // -----------------------------------------------------------------------
 
   app.post('/admin/pilot/sat/runs', async (req, reply) => {

@@ -1,5 +1,5 @@
 /**
- * Integration Onboarding Routes — Phase 325 (W14-P9)
+ * Integration Onboarding Routes -- Phase 325 (W14-P9)
  *
  * 16 REST endpoints for guided partner onboarding:
  *  - Templates: create, list, get
@@ -39,7 +39,7 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
   // Seed built-in templates on first load
   seedOnboardingTemplates();
 
-  /* ── Template endpoints ──────────────────────────────────────── */
+  /* -- Template endpoints ---------------------------------------- */
 
   server.post('/onboarding/templates', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -76,7 +76,7 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
     return { ok: true, template };
   });
 
-  /* ── Session endpoints ───────────────────────────────────────── */
+  /* -- Session endpoints ----------------------------------------- */
 
   server.post('/onboarding/sessions', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -189,7 +189,7 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
     return { ok: true, status: 'abandoned' };
   });
 
-  /* ── Readiness endpoints ─────────────────────────────────────── */
+  /* -- Readiness endpoints --------------------------------------- */
 
   server.post('/onboarding/sessions/:id/readiness', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -216,7 +216,7 @@ export default async function onboardingRoutes(server: FastifyInstance): Promise
     return { ok: true, report };
   });
 
-  /* ── Stats ─────────────────────────────────────────────────────── */
+  /* -- Stats ------------------------------------------------------- */
 
   server.get('/onboarding/stats', async (request, reply) => {
     const session = await requireSession(request, reply);

@@ -1,5 +1,5 @@
 /**
- * Reporting & export configuration — Phase 19.
+ * Reporting & export configuration -- Phase 19.
  *
  * Controls pagination limits, cache TTLs, export policies,
  * and query constraints for all /reports/* endpoints.
@@ -39,7 +39,7 @@ export const EXPORT_CONFIG = {
   requireAdmin: true,
   /** Export job retention (hours). After this, completed exports are purged. */
   jobRetentionHours: Number(process.env.EXPORT_RETENTION_HOURS || 24),
-  /** PHI export allowed? Default: false — only summary/aggregate data */
+  /** PHI export allowed? Default: false -- only summary/aggregate data */
   allowPhiExport: process.env.EXPORT_ALLOW_PHI === 'true',
   /** Max concurrent export jobs per user */
   maxConcurrentJobsPerUser: Number(process.env.EXPORT_MAX_CONCURRENT || 3),

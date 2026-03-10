@@ -1,5 +1,5 @@
 /**
- * Redis Client — Phase 574 (Wave 42)
+ * Redis Client -- Phase 574 (Wave 42)
  *
  * Centralized Redis client for distributed state:
  *   - Session cache (replaces in-memory LRU)
@@ -25,7 +25,7 @@ const REDIS_KEY_PREFIX = process.env.REDIS_KEY_PREFIX || 've:';
 /** Initialize Redis clients. Call once at startup. */
 export function initRedis(): boolean {
   if (!REDIS_URL) {
-    log.warn('REDIS_URL not configured — Redis disabled, using in-memory fallback');
+    log.warn('REDIS_URL not configured -- Redis disabled, using in-memory fallback');
     return false;
   }
 
@@ -53,7 +53,7 @@ export function initRedis(): boolean {
     });
 
     client.connect().catch((err) => {
-      log.warn('Redis initial connect failed — operating without Redis', { error: err.message });
+      log.warn('Redis initial connect failed -- operating without Redis', { error: err.message });
     });
 
     return true;
@@ -229,7 +229,7 @@ function ensureSubClient(): Redis | null {
         }
       }
     });
-    subClient.connect().catch(() => {});
+    subClient.connect().catch((e) => log.warn('Redis pub/sub subscriber connect failed', { error: String(e) }));
   }
   return subClient;
 }

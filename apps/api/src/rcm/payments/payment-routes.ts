@@ -1,22 +1,22 @@
 /**
- * Payment Tracking + Reconciliation + Payer Intelligence — API Routes (Phase 92)
+ * Payment Tracking + Reconciliation + Payer Intelligence -- API Routes (Phase 92)
  *
  * Endpoints:
- *   POST /payerops/payments/batches                        — Create batch
- *   POST /payerops/payments/batches/:id/upload             — Upload file data
- *   POST /payerops/payments/batches/:id/import             — Parse CSV into lines
- *   POST /payerops/payments/batches/:id/match              — Run matching engine
- *   GET  /payerops/payments/batches                        — List batches
- *   GET  /payerops/payments/batches/:id                    — Get batch + lines
- *   GET  /payerops/payments/reconciliation                 — Needs-review worklist
- *   POST /payerops/payments/reconciliation/:lineId/link-claim — Manual link
- *   GET  /payerops/analytics/payer-intelligence            — Payer KPIs
- *   GET  /payerops/analytics/aging                         — Aging buckets
- *   GET  /payerops/exports/payments/:batchId               — Export CSV/JSON
- *   GET  /payerops/payments/underpayments                  — Underpayment cases
- *   GET  /payerops/payments/store-info                     — Store stats
+ *   POST /payerops/payments/batches                        -- Create batch
+ *   POST /payerops/payments/batches/:id/upload             -- Upload file data
+ *   POST /payerops/payments/batches/:id/import             -- Parse CSV into lines
+ *   POST /payerops/payments/batches/:id/match              -- Run matching engine
+ *   GET  /payerops/payments/batches                        -- List batches
+ *   GET  /payerops/payments/batches/:id                    -- Get batch + lines
+ *   GET  /payerops/payments/reconciliation                 -- Needs-review worklist
+ *   POST /payerops/payments/reconciliation/:lineId/link-claim -- Manual link
+ *   GET  /payerops/analytics/payer-intelligence            -- Payer KPIs
+ *   GET  /payerops/analytics/aging                         -- Aging buckets
+ *   GET  /payerops/exports/payments/:batchId               -- Export CSV/JSON
+ *   GET  /payerops/payments/underpayments                  -- Underpayment cases
+ *   GET  /payerops/payments/store-info                     -- Store stats
  *
- * All routes under /payerops/ — existing security catch-all covers auth.
+ * All routes under /payerops/ -- existing security catch-all covers auth.
  * Mutations call appendRcmAudit.
  */
 
@@ -41,7 +41,7 @@ import { exportBatch, getAvailableFormats } from './export-bridge.js';
 import { appendRcmAudit } from '../audit/rcm-audit.js';
 import type { BatchStatus } from './payment-types.js';
 
-/* ── Helper: extract session ───────────────────────────────── */
+/* -- Helper: extract session --------------------------------- */
 
 function getSession(request: FastifyRequest): { duz: string; tenantId: string } {
   const s = (request as any).session;
@@ -51,10 +51,10 @@ function getSession(request: FastifyRequest): { duz: string; tenantId: string } 
   };
 }
 
-/* ── Route Registration ────────────────────────────────────── */
+/* -- Route Registration -------------------------------------- */
 
 export default async function paymentRoutes(server: FastifyInstance): Promise<void> {
-  /* ── Create Batch ──────────────────────────────────────── */
+  /* -- Create Batch ---------------------------------------- */
   server.post(
     '/payerops/payments/batches',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -86,7 +86,7 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
     }
   );
 
-  /* ── Upload file to batch ──────────────────────────────── */
+  /* -- Upload file to batch -------------------------------- */
   server.post(
     '/payerops/payments/batches/:id/upload',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -130,7 +130,7 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
     }
   );
 
-  /* ── Import (parse CSV) ────────────────────────────────── */
+  /* -- Import (parse CSV) ---------------------------------- */
   server.post(
     '/payerops/payments/batches/:id/import',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -196,7 +196,7 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
     }
   );
 
-  /* ── Match batch ───────────────────────────────────────── */
+  /* -- Match batch ----------------------------------------- */
   server.post(
     '/payerops/payments/batches/:id/match',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -208,7 +208,7 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
       if (batch.tenantId !== tenantId)
         return reply.status(403).send({ ok: false, error: 'Access denied' });
 
-      const result = matchBatch(id, duz);
+      const result = await matchBatch(id, duz);
 
       appendRcmAudit('remit.matched', {
         claimId: id,
@@ -224,7 +224,7 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
     }
   );
 
-  /* ── List batches ──────────────────────────────────────── */
+  /* -- List batches ---------------------------------------- */
   server.get('/payerops/payments/batches', async (request: FastifyRequest, reply: FastifyReply) => {
     const { tenantId } = getSession(request);
     const q = (request.query as any) || {};
@@ -240,7 +240,7 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
     return reply.send({ ok: true, ...result });
   });
 
-  /* ── Get batch detail + lines ──────────────────────────── */
+  /* -- Get batch detail + lines ---------------------------- */
   server.get(
     '/payerops/payments/batches/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -269,7 +269,7 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
     }
   );
 
-  /* ── Reconciliation worklist ───────────────────────────── */
+  /* -- Reconciliation worklist ----------------------------- */
   server.get(
     '/payerops/payments/reconciliation',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -295,7 +295,7 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
     }
   );
 
-  /* ── Manual link claim ─────────────────────────────────── */
+  /* -- Manual link claim ----------------------------------- */
   server.post(
     '/payerops/payments/reconciliation/:lineId/link-claim',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -313,7 +313,7 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
       if (line.tenantId !== tenantId)
         return reply.status(403).send({ ok: false, error: 'Access denied' });
 
-      const result = manualLinkLine(lineId, body.claimCaseId, duz);
+      const result = await manualLinkLine(lineId, body.claimCaseId, duz);
 
       appendRcmAudit('remit.matched', {
         claimId: body.claimCaseId,
@@ -325,27 +325,27 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
     }
   );
 
-  /* ── Payer Intelligence ────────────────────────────────── */
+  /* -- Payer Intelligence ---------------------------------- */
   server.get(
     '/payerops/analytics/payer-intelligence',
     async (request: FastifyRequest, reply: FastifyReply) => {
       const { tenantId } = getSession(request);
       const q = (request.query as any) || {};
 
-      const report = computePayerIntelligence(tenantId, q.periodStart, q.periodEnd);
+      const report = await computePayerIntelligence(tenantId, q.periodStart, q.periodEnd);
 
       return reply.send({ ok: true, report });
     }
   );
 
-  /* ── Aging ─────────────────────────────────────────────── */
+  /* -- Aging ----------------------------------------------- */
   server.get('/payerops/analytics/aging', async (request: FastifyRequest, reply: FastifyReply) => {
     const { tenantId } = getSession(request);
-    const report = computeAging(tenantId);
+    const report = await computeAging(tenantId);
     return reply.send({ ok: true, report });
   });
 
-  /* ── Export ────────────────────────────────────────────── */
+  /* -- Export ---------------------------------------------- */
   server.get(
     '/payerops/exports/payments/:batchId',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -375,7 +375,7 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
     }
   );
 
-  /* ── Underpayments ─────────────────────────────────────── */
+  /* -- Underpayments --------------------------------------- */
   server.get(
     '/payerops/payments/underpayments',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -394,7 +394,7 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
     }
   );
 
-  /* ── Store Info ────────────────────────────────────────── */
+  /* -- Store Info ------------------------------------------ */
   server.get(
     '/payerops/payments/store-info',
     async (_request: FastifyRequest, reply: FastifyReply) => {
@@ -405,5 +405,5 @@ export default async function paymentRoutes(server: FastifyInstance): Promise<vo
   );
 }
 
-/* ── Upload Cache (transient, in-memory) ───────────────────── */
+/* -- Upload Cache (transient, in-memory) --------------------- */
 const uploadCache = new Map<string, string>();

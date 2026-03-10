@@ -1,5 +1,5 @@
 /**
- * SMART Scope Enforcement — Phase 232 (Wave 5 Q232).
+ * SMART Scope Enforcement -- Phase 232 (Wave 5 Q232).
  *
  * Enforces SMART-on-FHIR scopes on FHIR resource access.
  * Bearer token requests must have appropriate scopes.
@@ -7,10 +7,10 @@
  *
  * Scope format: <context>/<resourceType>.<permission>
  *   - patient/Patient.read
- *   - patient/*.read       (wildcard — all patient-context resources)
- *   - user/Patient.read    (user-level — broader than patient)
+ *   - patient/*.read       (wildcard -- all patient-context resources)
+ *   - user/Patient.read    (user-level -- broader than patient)
  *   - user/*.read          (wildcard user-level)
- *   - system/*.read        (system-level — backend services)
+ *   - system/*.read        (system-level -- backend services)
  *
  * Patient-level scopes additionally restrict access to the patient in
  * the launch context (fhirPrincipal.patientContext).
@@ -148,7 +148,7 @@ export function enforceFhirScope(
   // No principal = session auth fallback (handled by security.ts), allow
   if (!principal) return true;
 
-  // Session-authenticated users get implicit user/*.read — always allowed
+  // Session-authenticated users get implicit user/*.read -- always allowed
   if (principal.authMethod === 'session') return true;
 
   const { granted, context, matchedScope } = checkScopeAccess(principal.scopes, resourceType);

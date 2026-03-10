@@ -1,5 +1,5 @@
 /**
- * Record Portability Store — Phase 80
+ * Record Portability Store -- Phase 80
  *
  * In-memory store for patient record export artifacts and share links.
  * Matches established patterns: imaging-worklist.ts, room-store.ts, portal-sharing.ts.
@@ -33,14 +33,12 @@ export interface ExportArtifact {
   encryptedData: Buffer;
   iv: Buffer;
   authTag: Buffer;
-  /** Per-export symmetric key — never persisted to disk */
+  /** Per-export symmetric key -- never persisted to disk */
   key: Buffer;
   /** Sections included in this export */
   sections: string[];
   /** RPCs actually called (VistA-first evidence) */
   rpcUsed: string[];
-  /** RPCs that returned integration-pending */
-  pendingTargets: string[];
   createdAt: string;
   expiresAt: string;
   downloadCount: number;
@@ -132,7 +130,7 @@ function maskIp(ip: string): string {
 
 /**
  * Encrypt content with AES-256-GCM.
- * Returns { encrypted, iv, authTag, key } — key must be stored in-memory only.
+ * Returns { encrypted, iv, authTag, key } -- key must be stored in-memory only.
  */
 export function encryptContent(plaintext: Buffer): {
   encrypted: Buffer;
@@ -175,7 +173,6 @@ export function createExport(opts: {
   content: Buffer;
   sections: string[];
   rpcUsed: string[];
-  pendingTargets: string[];
   ttlMs?: number;
 }): ExportArtifact | { error: string } {
   // Enforce per-patient limit
@@ -207,7 +204,6 @@ export function createExport(opts: {
     key,
     sections: opts.sections,
     rpcUsed: opts.rpcUsed,
-    pendingTargets: opts.pendingTargets,
     createdAt: new Date().toISOString(),
     expiresAt: new Date(Date.now() + ttl).toISOString(),
     downloadCount: 0,
@@ -223,7 +219,6 @@ export function createExport(opts: {
       format: opts.format,
       sections: opts.sections,
       rpcUsed: opts.rpcUsed,
-      pendingTargets: opts.pendingTargets,
     },
   });
 
@@ -290,7 +285,6 @@ export function getPatientExports(tenantId: string, patientDfn: string): Array<{
   format: ExportFormat;
   sections: string[];
   rpcUsed: string[];
-  pendingTargets: string[];
   createdAt: string;
   expiresAt: string;
   downloadCount: number;
@@ -304,7 +298,6 @@ export function getPatientExports(tenantId: string, patientDfn: string): Array<{
       format: e.format,
       sections: e.sections,
       rpcUsed: e.rpcUsed,
-      pendingTargets: e.pendingTargets,
       createdAt: e.createdAt,
       expiresAt: e.expiresAt,
       downloadCount: e.downloadCount,
@@ -491,7 +484,7 @@ export function verifyShareAccess(
   return { share, content, format: artifact.format };
 }
 
-/** Get share preview by token (for public page — minimal info). */
+/** Get share preview by token (for public page -- minimal info). */
 export function getSharePreview(token: string): {
   patientName: string;
   label: string;

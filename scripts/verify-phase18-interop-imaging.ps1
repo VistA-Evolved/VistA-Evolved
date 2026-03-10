@@ -1,10 +1,10 @@
 <#
 .SYNOPSIS
-  Phase 18 verifier — Enterprise Interop + Imaging Platform Integration
+  Phase 18 verifier -- Enterprise Interop + Imaging Platform Integration
 .DESCRIPTION
   Checks all Phase 18 deliverables: integration registry, admin integration API,
   imaging integration service, device onboarding, admin console UI, remote data viewer
-  upgrade, metrics/audit events, plus regression checks for Phases 1–17.
+  upgrade, metrics/audit events, plus regression checks for Phases 1-17.
 #>
 
 param([switch]$SkipDocker)

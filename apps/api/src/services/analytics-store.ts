@@ -1,5 +1,5 @@
 /**
- * Analytics Event Store — Phase 25.
+ * Analytics Event Store -- Phase 25.
  *
  * Append-only, tenant-scoped event stream for platform ops and usage metrics.
  * PHI-safe by design: no patient DFN, user IDs are salted-hashed.
@@ -26,7 +26,7 @@ import { ANALYTICS_EVENT_CONFIG } from "../config/analytics-config.js";
 /* ================================================================== */
 
 /**
- * Analytics event categories — maps to data classification doc.
+ * Analytics event categories -- maps to data classification doc.
  */
 export type AnalyticsEventCategory =
   | "ops.api"           // API request/response metrics
@@ -87,7 +87,7 @@ const USER_SALT = ANALYTICS_EVENT_CONFIG.userIdSalt;
 
 /**
  * Hash a user DUZ for analytics storage.
- * Uses salted SHA-256 — not reversible without the salt.
+ * Uses salted SHA-256 -- not reversible without the salt.
  */
 export function hashUserId(duz: string): string {
   return createHash("sha256").update(`${USER_SALT}:${duz}`).digest("hex").slice(0, 16);
@@ -233,7 +233,7 @@ function flushToFile(): void {
 
 // Periodic flush
 if (EVENT_FILE) {
-  setInterval(flushToFile, FLUSH_INTERVAL);
+  setInterval(flushToFile, FLUSH_INTERVAL).unref();
 }
 
 /* ================================================================== */

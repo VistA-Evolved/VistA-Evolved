@@ -1,16 +1,16 @@
 /**
- * country-pack-routes.ts — REST endpoints for country pack management.
+ * country-pack-routes.ts -- REST endpoints for country pack management.
  *
  * Phase 314 (W13-P6)
  *
  * Endpoints:
- *   GET  /country-packs                 — List all loaded packs
- *   GET  /country-packs/:cc             — Get a specific pack by ISO code
- *   GET  /country-packs/:cc/validate    — Validate a pack
- *   GET  /country-packs/:cc/resolve     — Resolve effective config for tenant
- *   GET  /country-packs/:cc/modules     — Get enabled modules for a pack
- *   GET  /country-packs/:cc/terminology — Get terminology defaults for a pack
- *   GET  /country-packs/:cc/regulatory  — Get regulatory profile for a pack
+ *   GET  /country-packs                 -- List all loaded packs
+ *   GET  /country-packs/:cc             -- Get a specific pack by ISO code
+ *   GET  /country-packs/:cc/validate    -- Validate a pack
+ *   GET  /country-packs/:cc/resolve     -- Resolve effective config for tenant
+ *   GET  /country-packs/:cc/modules     -- Get enabled modules for a pack
+ *   GET  /country-packs/:cc/terminology -- Get terminology defaults for a pack
+ *   GET  /country-packs/:cc/regulatory  -- Get regulatory profile for a pack
  */
 
 import { FastifyInstance } from 'fastify';

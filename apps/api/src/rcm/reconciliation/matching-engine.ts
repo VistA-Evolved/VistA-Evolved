@@ -1,7 +1,7 @@
 /**
- * Reconciliation Matching Engine — Phase 99
+ * Reconciliation Matching Engine -- Phase 99
  *
- * Deterministic matching: payment records → claim references.
+ * Deterministic matching: payment records -> claim references.
  * Three-tier strategy (no AI):
  *   1. Exact match by claimRef
  *   2. Match by traceNumber / checkNumber
@@ -19,18 +19,18 @@ import {
 } from './recon-store.js';
 import type { PaymentRecord } from './types.js';
 
-/* ── Configuration ─────────────────────────────────────────── */
+/* -- Configuration ------------------------------------------- */
 
 /** Amount tolerance for fuzzy matching (cents) */
 const AMOUNT_TOLERANCE_CENTS = 100; // $1.00
 
 /** Underpayment threshold: flag if paid < (billed * threshold) */
-const UNDERPAYMENT_THRESHOLD = 0.9; // 90% — shortfall > 10% flagged
+const UNDERPAYMENT_THRESHOLD = 0.9; // 90% -- shortfall > 10% flagged
 
 /** Minimum confidence to auto-match */
 const AUTO_MATCH_CONFIDENCE = 80;
 
-/* ── Match Result Types ────────────────────────────────────── */
+/* -- Match Result Types -------------------------------------- */
 
 export interface SingleMatchResult {
   paymentId: string;
@@ -54,7 +54,7 @@ export interface BatchMatchResult {
   results: SingleMatchResult[];
 }
 
-/* ── Known Claims Registry (simple in-memory for matching) ─── */
+/* -- Known Claims Registry (simple in-memory for matching) --- */
 
 /**
  * Simple claim reference registry for matching.
@@ -85,7 +85,7 @@ export function clearKnownClaims(): void {
   knownClaims.clear();
 }
 
-/* ── Core Matching Logic ───────────────────────────────────── */
+/* -- Core Matching Logic ------------------------------------- */
 
 /**
  * Attempt to match a single payment record.
@@ -123,7 +123,7 @@ export async function matchPayment(payment: PaymentRecord): Promise<SingleMatchR
       }
     }
 
-    // No match found — mark as unmatched
+    // No match found -- mark as unmatched
     await updatePaymentStatus(payment.tenantId, payment.id, 'UNMATCHED');
     return {
       paymentId: payment.id,
@@ -185,7 +185,7 @@ export async function matchImportBatch(tenantId: string, importId: string): Prom
   };
 }
 
-/* ── Internal Helpers ──────────────────────────────────────── */
+/* -- Internal Helpers ---------------------------------------- */
 
 /**
  * Run batch matching for a given import and return a simplified result.
@@ -203,7 +203,7 @@ export async function runBatchMatch(
   };
 }
 
-/* ── Internal Helpers ──────────────────────────────────────── */
+/* -- Internal Helpers ---------------------------------------- */
 
 async function createMatchAndCheck(
   payment: PaymentRecord,

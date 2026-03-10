@@ -1,11 +1,11 @@
 #!/usr/bin/env node
 /**
- * RPC Contract CI Runner — Phase 267
+ * RPC Contract CI Runner -- Phase 267
  *
  * Runs the full RPC contract validation suite and produces:
- *   1. rpc-contract-report.json  — machine-readable results
- *   2. rpc-contract-junit.xml    — JUnit XML for CI integration
- *   3. rpc-contract-summary.md   — human-readable summary
+ *   1. rpc-contract-report.json  -- machine-readable results
+ *   2. rpc-contract-junit.xml    -- JUnit XML for CI integration
+ *   3. rpc-contract-summary.md   -- human-readable summary
  *
  * Usage:
  *   node scripts/rpc-contract-ci.mjs [--output-dir <dir>] [--live]
@@ -314,7 +314,7 @@ console.log(`JUnit XML:   ${junitPath}`);
 // ---------------------------------------------------------------------------
 
 const summaryLines = [
-  '# RPC Contract Suite — CI Report',
+  '# RPC Contract Suite -- CI Report',
   '',
   `**Generated**: ${report.generatedAt}`,
   `**Mode**: ${report.mode}`,

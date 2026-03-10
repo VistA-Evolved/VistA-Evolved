@@ -1,5 +1,5 @@
 /**
- * AI Gateway — RAG Grounding Engine (Phase 33)
+ * AI Gateway -- RAG Grounding Engine (Phase 33)
  *
  * Assembles patient context for AI requests from allowed sources.
  * Only sources that the actor's role is permitted to view are included.
@@ -217,7 +217,7 @@ export async function assembleContext(
         totalChars += chunk.content.length;
       }
     } catch {
-      // Skip failed providers — don't block the request
+      // Skip failed providers -- don't block the request
     }
 
     if (totalChars >= MAX_CONTEXT_CHARS) break;

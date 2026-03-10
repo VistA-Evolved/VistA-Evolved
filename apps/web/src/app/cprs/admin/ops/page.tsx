@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { API_BASE } from '@/lib/api-config';
 
 /* ================================================================== */
-/*  Phase 171 — Ops Admin Center                                       */
+/*  Phase 171 -- Ops Admin Center                                       */
 /* ================================================================== */
 
 type Tab = 'overview' | 'alerts' | 'stores' | 'runbooks';
@@ -145,7 +145,7 @@ export default function OpsAdminPage() {
     <div style={{ padding: 24, maxWidth: 1200, margin: '0 auto' }}>
       <h1 style={{ fontSize: 24, fontWeight: 700, marginBottom: 8 }}>Ops Admin Center</h1>
       <p style={{ color: '#6b7280', marginBottom: 16 }}>
-        Unified operational visibility — posture, alerts, stores, runbooks
+        Unified operational visibility -- posture, alerts, stores, runbooks
       </p>
 
       {/* Tab bar */}

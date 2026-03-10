@@ -1,5 +1,5 @@
 /**
- * QA Module — Barrel Export
+ * QA Module -- Barrel Export
  *
  * Phase 96B: QA/Audit OS v1.1
  */

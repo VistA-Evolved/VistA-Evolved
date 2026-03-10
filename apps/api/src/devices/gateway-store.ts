@@ -1,5 +1,5 @@
 /**
- * Edge Device Gateway — Gateway Store
+ * Edge Device Gateway -- Gateway Store
  *
  * Phase 379 (W21-P2): In-memory store for edge gateway registrations,
  * heartbeats, and uplink message buffering.

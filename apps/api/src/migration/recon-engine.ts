@@ -8,7 +8,7 @@
 
 import { randomBytes } from 'crypto';
 
-// ── Types ──────────────────────────────────────────────────────────
+// -- Types ----------------------------------------------------------
 
 export type ReconEntityType = 'patient' | 'problem' | 'medication' | 'allergy' | 'encounter';
 
@@ -72,12 +72,12 @@ export interface ReconStats {
   byEntity: Record<string, number>;
 }
 
-// ── In-memory stores ───────────────────────────────────────────────
+// -- In-memory stores -----------------------------------------------
 
 const reconJobs = new Map<string, ReconJob>();
 const discrepancies = new Map<string, Discrepancy>();
 
-// ── Default rules ──────────────────────────────────────────────────
+// -- Default rules --------------------------------------------------
 
 const DEFAULT_RULES: ReconRule[] = [
   {
@@ -108,7 +108,7 @@ const DEFAULT_RULES: ReconRule[] = [
   },
 ];
 
-// ── Engine ─────────────────────────────────────────────────────────
+// -- Engine ---------------------------------------------------------
 
 export class ReconEngine {
   private rules: ReconRule[] = [...DEFAULT_RULES];
@@ -294,7 +294,7 @@ export class ReconEngine {
     }
   }
 
-  // ── Query methods ──────────────────────────────────────────────
+  // -- Query methods ----------------------------------------------
 
   getJob(id: string): ReconJob | undefined {
     return reconJobs.get(id);
@@ -357,6 +357,6 @@ export class ReconEngine {
   }
 }
 
-// ── Singleton ──────────────────────────────────────────────────────
+// -- Singleton ------------------------------------------------------
 
 export const reconEngine = new ReconEngine();

@@ -1,5 +1,5 @@
 /**
- * ManualAdapter — Phase 87: Philippines RCM Foundation
+ * ManualAdapter -- Phase 87: Philippines RCM Foundation
  *
  * Default adapter for all payers. Generates:
  *   - Print packs (structured JSON for PDF rendering)

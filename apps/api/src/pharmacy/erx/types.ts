@@ -1,5 +1,5 @@
 /**
- * Phase 586 (W42-P15): e-Prescribing NCPDP SCRIPT Framework — Types
+ * Phase 586 (W42-P15): e-Prescribing NCPDP SCRIPT Framework -- Types
  *
  * NCPDP SCRIPT Standard v2017071 message types for electronic prescribing.
  * These types model the wire format that Surescripts, WENO, DoseSpot, and
@@ -11,7 +11,7 @@
  * message framework ready for certification testing.
  */
 
-// ─── NCPDP SCRIPT Message Types ────────────────────────────
+// --- NCPDP SCRIPT Message Types ----------------------------
 
 export type ScriptMessageType =
   | 'NewRx'
@@ -30,7 +30,7 @@ export type ScriptMessageType =
 
 export type ControlledSubstanceSchedule = 'II' | 'III' | 'IV' | 'V' | 'non-controlled';
 
-// ─── Prescriber ────────────────────────────────────────────
+// --- Prescriber --------------------------------------------
 
 export interface ErxPrescriber {
   npi: string;
@@ -49,7 +49,7 @@ export interface ErxPrescriber {
   stateLicense: string | null;
 }
 
-// ─── Patient ───────────────────────────────────────────────
+// --- Patient -----------------------------------------------
 
 export interface ErxPatient {
   lastName: string;
@@ -82,7 +82,7 @@ export interface ErxPayerInfo {
   payerName: string;
 }
 
-// ─── Pharmacy ──────────────────────────────────────────────
+// --- Pharmacy ----------------------------------------------
 
 export interface ErxPharmacy {
   ncpdpId: string;
@@ -94,7 +94,7 @@ export interface ErxPharmacy {
   pharmacyType: 'retail' | 'mail_order' | 'specialty' | 'long_term_care' | 'compounding';
 }
 
-// ─── Medication ────────────────────────────────────────────
+// --- Medication --------------------------------------------
 
 export interface ErxMedication {
   /** RxNorm CUI */
@@ -139,15 +139,15 @@ export interface ErxDrugCoded {
 export type DawCode =
   | '0' // No product selection indicated
   | '1' // Substitution not allowed by prescriber
-  | '2' // Substitution allowed — patient requested product dispensed
-  | '3' // Substitution allowed — pharmacist selected product dispensed
-  | '4' // Substitution allowed — generic drug not in stock
-  | '5' // Substitution allowed — brand drug dispensed as generic
-  | '7' // Substitution not allowed — brand drug mandated by law
-  | '8' // Substitution allowed — generic drug not available
+  | '2' // Substitution allowed -- patient requested product dispensed
+  | '3' // Substitution allowed -- pharmacist selected product dispensed
+  | '4' // Substitution allowed -- generic drug not in stock
+  | '5' // Substitution allowed -- brand drug dispensed as generic
+  | '7' // Substitution not allowed -- brand drug mandated by law
+  | '8' // Substitution allowed -- generic drug not available
   | '9'; // Other
 
-// ─── NCPDP SCRIPT Messages ────────────────────────────────
+// --- NCPDP SCRIPT Messages --------------------------------
 
 export interface ScriptMessageHeader {
   messageId: string;
@@ -249,7 +249,7 @@ export type ScriptMessage =
   | CancelRxResponseMessage
   | RxFillMessage;
 
-// ─── eRx Adapter Interface ────────────────────────────────
+// --- eRx Adapter Interface --------------------------------
 
 export type ErxNetworkProvider = 'surescripts' | 'weno' | 'dosespot' | 'stub';
 

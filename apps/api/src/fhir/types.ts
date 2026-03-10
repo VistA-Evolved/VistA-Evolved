@@ -1,15 +1,15 @@
 /**
- * FHIR R4 Core Type Definitions — Phase 178.
+ * FHIR R4 Core Type Definitions -- Phase 178.
  *
  * Minimal subset of FHIR R4 resource types needed for the US Core
  * Implementation Guide read-only gateway. Only structural types used
- * by our mappers are defined here — this is NOT a full FHIR library.
+ * by our mappers are defined here -- this is NOT a full FHIR library.
  *
  * References:
  *   - https://hl7.org/fhir/R4/
  *   - https://www.hl7.org/fhir/us/core/STU6.1/
  *
- * Zero external dependencies — all types are pure TypeScript interfaces.
+ * Zero external dependencies -- all types are pure TypeScript interfaces.
  */
 
 /* ================================================================== */
@@ -255,6 +255,31 @@ export interface FhirEncounter extends FhirResource {
     system: string;
     code: string;
   };
+}
+
+/* ================================================================== */
+/* Immunization                                                         */
+/* ================================================================== */
+
+export interface FhirImmunization extends FhirResource {
+  resourceType: 'Immunization';
+  status: 'completed' | 'entered-in-error' | 'not-done';
+  vaccineCode: FhirCodeableConcept;
+  patient: FhirReference;
+  occurrenceDateTime?: string;
+  occurrenceString?: string;
+  recorded?: string;
+  primarySource?: boolean;
+  lotNumber?: string;
+  site?: FhirCodeableConcept;
+  route?: FhirCodeableConcept;
+  doseQuantity?: FhirQuantity;
+  performer?: Array<{
+    actor: FhirReference;
+    function?: FhirCodeableConcept;
+  }>;
+  note?: Array<{ text: string }>;
+  reasonCode?: FhirCodeableConcept[];
 }
 
 /* ================================================================== */

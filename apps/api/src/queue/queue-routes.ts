@@ -1,5 +1,5 @@
 /**
- * Phase 159: Queue Routes — Patient Queue / Waiting / Numbering / Calling System
+ * Phase 159: Queue Routes -- Patient Queue / Waiting / Numbering / Calling System
  * Fastify plugin with ~15 endpoints for queue management, display board, and stats.
  */
 import { randomUUID } from 'node:crypto';
@@ -205,7 +205,7 @@ async function createPgTicket(
 }
 
 export async function queueRoutes(server: FastifyInstance): Promise<void> {
-  // ── Create ticket ──────────────────────────────────────────────
+  // -- Create ticket ----------------------------------------------
   server.post('/queue/tickets', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -233,7 +233,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, ticket };
   });
 
-  // ── List tickets for department ────────────────────────────────
+  // -- List tickets for department --------------------------------
   server.get('/queue/tickets', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -248,7 +248,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, tickets, count: tickets.length };
   });
 
-  // ── Get single ticket ──────────────────────────────────────────
+  // -- Get single ticket ------------------------------------------
   server.get('/queue/tickets/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -262,7 +262,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, ticket };
   });
 
-  // ── Get ticket events ──────────────────────────────────────────
+  // -- Get ticket events ------------------------------------------
   server.get('/queue/tickets/:id/events', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -279,7 +279,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, events };
   });
 
-  // ── Call specific ticket ───────────────────────────────────────
+  // -- Call specific ticket ---------------------------------------
   server.post('/queue/tickets/:id/call', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -322,7 +322,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, ticket };
   });
 
-  // ── Call next ticket in department ─────────────────────────────
+  // -- Call next ticket in department -----------------------------
   server.post('/queue/call-next', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -366,7 +366,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, ticket };
   });
 
-  // ── Start serving ──────────────────────────────────────────────
+  // -- Start serving ----------------------------------------------
   server.post('/queue/tickets/:id/serve', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -405,7 +405,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, ticket };
   });
 
-  // ── Complete ticket ────────────────────────────────────────────
+  // -- Complete ticket --------------------------------------------
   server.post('/queue/tickets/:id/complete', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -441,7 +441,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, ticket };
   });
 
-  // ── No-show ────────────────────────────────────────────────────
+  // -- No-show ----------------------------------------------------
   server.post('/queue/tickets/:id/no-show', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -477,7 +477,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, ticket };
   });
 
-  // ── Transfer to another department ─────────────────────────────
+  // -- Transfer to another department -----------------------------
   server.post('/queue/tickets/:id/transfer', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -531,7 +531,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, ticket: newTicket };
   });
 
-  // ── Public display board (NO AUTH) ─────────────────────────────
+  // -- Public display board (NO AUTH) -----------------------------
   server.get('/queue/display/:dept', async (request, reply) => {
     const { dept } = (request as any).params;
     const tenantId = resolveTenantId(request, (request as any).session) || 'default';
@@ -545,7 +545,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, board };
   });
 
-  // ── Queue stats ────────────────────────────────────────────────
+  // -- Queue stats ------------------------------------------------
   server.get('/queue/stats/:dept', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -561,7 +561,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, stats };
   });
 
-  // ── List departments ───────────────────────────────────────────
+  // -- List departments -------------------------------------------
   server.get('/queue/departments', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -571,7 +571,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, departments, count: departments.length };
   });
 
-  // ── Upsert department config (admin) ───────────────────────────
+  // -- Upsert department config (admin) ---------------------------
   server.post('/queue/departments', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -584,7 +584,7 @@ export async function queueRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, config };
   });
 
-  // ── Seed default department configs ────────────────────────────
+  // -- Seed default department configs ----------------------------
   server.post('/queue/departments/seed', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;

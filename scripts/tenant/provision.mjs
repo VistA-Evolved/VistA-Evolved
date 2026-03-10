@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Tenant Provisioning CLI — Phase 135
+ * Tenant Provisioning CLI -- Phase 135
  *
  * Creates a new tenant record, seeds module entitlements from a SKU profile,
  * and writes an immutable audit entry.
@@ -48,7 +48,7 @@ function parseArgs() {
 
 function printHelp() {
   console.log(`
-Tenant Provisioning CLI — Phase 135
+Tenant Provisioning CLI -- Phase 135
 
 Usage:
   node scripts/tenant/provision.mjs --tenant-id <id> --name <name> [--sku <SKU>] [--station <num>] [--dry-run]

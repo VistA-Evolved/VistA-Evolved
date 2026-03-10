@@ -1,19 +1,19 @@
 /**
- * Phase 392 (W22-P4): Pharmacy Deep Workflows — REST Routes
+ * Phase 392 (W22-P4): Pharmacy Deep Workflows -- REST Routes
  *
  * Endpoints:
- *   GET  /pharmacy/orders                    — List pharmacy orders
- *   POST /pharmacy/orders                    — Create pharmacy order
- *   GET  /pharmacy/orders/:id                — Get single order
- *   POST /pharmacy/orders/:id/transition     — Transition order status
- *   POST /pharmacy/orders/:id/override       — Override clinical check
- *   GET  /pharmacy/dispense                  — List dispense events
- *   POST /pharmacy/dispense                  — Create dispense event
- *   PATCH /pharmacy/dispense/:id             — Update dispense status
- *   GET  /pharmacy/admin-records             — List administration records
- *   POST /pharmacy/admin-records             — Record administration
- *   GET  /pharmacy/dashboard                 — Dashboard stats
- *   GET  /pharmacy/writeback-posture         — Writeback posture report
+ *   GET  /pharmacy/orders                    -- List pharmacy orders
+ *   POST /pharmacy/orders                    -- Create pharmacy order
+ *   GET  /pharmacy/orders/:id                -- Get single order
+ *   POST /pharmacy/orders/:id/transition     -- Transition order status
+ *   POST /pharmacy/orders/:id/override       -- Override clinical check
+ *   GET  /pharmacy/dispense                  -- List dispense events
+ *   POST /pharmacy/dispense                  -- Create dispense event
+ *   PATCH /pharmacy/dispense/:id             -- Update dispense status
+ *   GET  /pharmacy/admin-records             -- List administration records
+ *   POST /pharmacy/admin-records             -- Record administration
+ *   GET  /pharmacy/dashboard                 -- Dashboard stats
+ *   GET  /pharmacy/writeback-posture         -- Writeback posture report
  *
  * Auth: session-based; pharmacist-specific actions validated at handler level.
  */
@@ -42,10 +42,10 @@ import type {
   AdminStatus,
 } from './types.js';
 
-// ─── Plugin ─────────────────────────────────────────────────
+// --- Plugin -------------------------------------------------
 
 export async function pharmacyRoutes(server: FastifyInstance): Promise<void> {
-  // ── Orders ──────────────────────────────────────────────
+  // -- Orders ----------------------------------------------
 
   server.get('/pharmacy/orders', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -147,7 +147,7 @@ export async function pharmacyRoutes(server: FastifyInstance): Promise<void> {
     }
   );
 
-  // ── Dispensing ──────────────────────────────────────────
+  // -- Dispensing ------------------------------------------
 
   server.get('/pharmacy/dispense', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -212,7 +212,7 @@ export async function pharmacyRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, event: updated };
   });
 
-  // ── Administration Records ──────────────────────────────
+  // -- Administration Records ------------------------------
 
   server.get('/pharmacy/admin-records', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -265,7 +265,7 @@ export async function pharmacyRoutes(server: FastifyInstance): Promise<void> {
     return reply.code(201).send({ ok: true, record });
   });
 
-  // ── Dashboard + Posture ─────────────────────────────────
+  // -- Dashboard + Posture ---------------------------------
 
   server.get('/pharmacy/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);

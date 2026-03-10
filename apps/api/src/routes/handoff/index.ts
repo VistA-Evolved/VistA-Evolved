@@ -1,5 +1,5 @@
 /**
- * Phase 86 — Shift Handoff + Signout Routes + Phase 138 hardening.
+ * Phase 86 -- Shift Handoff + Signout Routes + Phase 138 hardening.
  *
  * Endpoints:
  *   GET    /handoff/reports           -- List handoff reports (filter by ward/status)
@@ -62,7 +62,7 @@ function auditActor(actor: { duz: string; name: string; role?: string }): {
   return { sub: actor.duz, name: actor.name, roles: actor.role ? [actor.role] : [] };
 }
 
-/** CRHD migration targets — all responses include these. */
+/** CRHD migration targets -- all responses include these. */
 const CRHD_MIGRATION_TARGETS = [
   {
     rpc: 'CRHD GET PAT LIST',
@@ -80,7 +80,7 @@ const VISTA_GROUNDING = {
   targetRoutines: ['CRHD*'],
   currentStorage: 'In-memory (API process). Resets on restart.',
   migrationPath:
-    "Install CRHD package → configure CRHD RPCs → replace in-memory store with CRHD calls. Alternatively: persist as TIU document class 'SHIFT HANDOFF NOTE' via TIU CREATE RECORD.",
+    "Install CRHD package -> configure CRHD RPCs -> replace in-memory store with CRHD calls. Alternatively: persist as TIU document class 'SHIFT HANDOFF NOTE' via TIU CREATE RECORD.",
   sandboxNote:
     'WorldVistA Docker does not include CRHD (Shift Handoff Tool) package. 0 of 58 RPCs available.',
   alternativeMigration:
@@ -139,7 +139,7 @@ async function assembleWardPatients(ward: string): Promise<{
         if (!rpcsUsed.includes('ORWPS ACTIVE')) rpcsUsed.push('ORWPS ACTIVE');
       }
     } catch {
-      // Non-fatal — just leave count at 0
+      // Non-fatal -- just leave count at 0
     }
 
     try {
@@ -391,7 +391,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
 
     const updated = updateHandoffReport(id, updates);
     if (!updated) {
-      return reply.code(409).send({ ok: false, error: 'Update failed — report may be archived' });
+      return reply.code(409).send({ ok: false, error: 'Update failed -- report may be archived' });
     }
 
     const actor = actorFromSession(session);
@@ -420,7 +420,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
       if (!submitted) {
         return reply
           .code(409)
-          .send({ ok: false, error: 'Cannot submit — report must be in draft status' });
+          .send({ ok: false, error: 'Cannot submit -- report must be in draft status' });
       }
 
       const actor = actorFromSession(session);
@@ -451,7 +451,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
       if (!accepted) {
         return reply
           .code(409)
-          .send({ ok: false, error: 'Cannot accept — report must be in submitted status' });
+          .send({ ok: false, error: 'Cannot accept -- report must be in submitted status' });
       }
 
       log.info('Handoff report accepted', {
@@ -484,7 +484,7 @@ export default async function handoffRoutes(server: FastifyInstance) {
       if (!archived) {
         return reply
           .code(409)
-          .send({ ok: false, error: 'Cannot archive — report must be in accepted status' });
+          .send({ ok: false, error: 'Cannot archive -- report must be in accepted status' });
       }
 
       const actor = actorFromSession(session);

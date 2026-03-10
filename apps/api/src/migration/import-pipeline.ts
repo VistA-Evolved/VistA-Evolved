@@ -1,7 +1,7 @@
 /**
  * import-pipeline.ts -- Import Pipeline (Phase 50)
  *
- * Orchestrates the import flow: parse → validate → dry-run → import.
+ * Orchestrates the import flow: parse -> validate -> dry-run -> import.
  * Works with the mapping engine and migration store.
  *
  * All domain writes go through VistA-Evolved's existing write-back
@@ -26,6 +26,7 @@ import {
   saveRollbackPlan,
 } from './migration-store.js';
 import { log } from '../lib/logger.js';
+import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Validate step                                                       */
@@ -33,7 +34,7 @@ import { log } from '../lib/logger.js';
 
 /**
  * Parse and validate the uploaded CSV against the job's mapping template.
- * Transitions: created → validating → validated | validation-failed
+ * Transitions: created -> validating -> validated | validation-failed
  */
 export function runValidation(jobId: string): {
   ok: boolean;
@@ -87,7 +88,7 @@ export function runValidation(jobId: string): {
   } catch (err: any) {
     transitionJob(jobId, 'validation-failed');
     updateJob(jobId, { error: err.message });
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
 }
 
@@ -97,7 +98,7 @@ export function runValidation(jobId: string): {
 
 /**
  * Simulate the import without writing to any store.
- * Transitions: validated → dry-run → dry-run-complete
+ * Transitions: validated -> dry-run -> dry-run-complete
  */
 export function runDryRun(jobId: string): {
   ok: boolean;
@@ -171,7 +172,7 @@ export function runDryRun(jobId: string): {
   } catch (err: any) {
     // dry-run can't fail to a specific state, revert to validated
     updateJob(jobId, { error: err.message, status: 'validated' });
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
 }
 
@@ -183,7 +184,7 @@ export function runDryRun(jobId: string): {
  * Execute the actual import. In sandbox mode, this simulates record
  * creation. Production would call VistA write-back RPCs.
  *
- * Transitions: validated|dry-run-complete → importing → imported | import-failed
+ * Transitions: validated|dry-run-complete -> importing -> imported | import-failed
  */
 export function runImport(jobId: string): {
   ok: boolean;
@@ -281,7 +282,7 @@ export function runImport(jobId: string): {
   } catch (err: any) {
     transitionJob(jobId, 'import-failed');
     updateJob(jobId, { error: err.message, progress: undefined });
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
 }
 

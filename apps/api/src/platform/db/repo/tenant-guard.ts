@@ -1,5 +1,5 @@
 /**
- * Tenant Isolation Guard — Phase 122
+ * Tenant Isolation Guard -- Phase 122
  *
  * Provides tenant boundary enforcement for all DB operations.
  * Every query that touches tenant-scoped data MUST pass through
@@ -11,10 +11,10 @@
  * (e.g., module_catalog, system configuration).
  *
  * assertTenantMatch() validates that a fetched record belongs
- * to the requesting tenant — defense-in-depth beyond RLS.
+ * to the requesting tenant -- defense-in-depth beyond RLS.
  */
 
-// ── Tenant Isolation Error ──────────────────────────────────
+// -- Tenant Isolation Error ----------------------------------
 
 export class TenantIsolationError extends Error {
   public readonly statusCode = 403;
@@ -29,7 +29,7 @@ export class TenantIsolationError extends Error {
   }
 }
 
-// ── Canonical Table Lists ───────────────────────────────────
+// -- Canonical Table Lists -----------------------------------
 
 /**
  * All tables that have a tenant_id column and MUST be
@@ -68,7 +68,7 @@ export const TENANT_SCOPED_TABLES = [
 export type TenantScopedTable = (typeof TENANT_SCOPED_TABLES)[number];
 
 /**
- * Tables that are NOT tenant-scoped — shared across all tenants.
+ * Tables that are NOT tenant-scoped -- shared across all tenants.
  * These do NOT get RLS policies and do NOT require tenant_id filters.
  */
 export const GLOBAL_TABLES = [
@@ -80,7 +80,7 @@ export const GLOBAL_TABLES = [
 
 export type GlobalTable = (typeof GLOBAL_TABLES)[number];
 
-// ── Guard Functions ─────────────────────────────────────────
+// -- Guard Functions -----------------------------------------
 
 /**
  * Extract and validate tenant_id from the request context.
@@ -97,7 +97,7 @@ export function requireTenantId(
   if (!tenantId || tenantId.trim() === '') {
     throw new TenantIsolationError(
       `Tenant ID is required for ${operation}. ` +
-        'This is a programming error — ensure session middleware sets tenantId.',
+        'This is a programming error -- ensure session middleware sets tenantId.',
       tenantId || '<missing>'
     );
   }
@@ -106,7 +106,7 @@ export function requireTenantId(
 
 /**
  * Assert that a fetched record's tenant_id matches the requesting tenant.
- * This is a defense-in-depth check beyond RLS — catches bugs where
+ * This is a defense-in-depth check beyond RLS -- catches bugs where
  * a query accidentally omits the tenant_id predicate.
  *
  * @param record - The fetched record (must have tenant_id field)

@@ -1655,7 +1655,7 @@
           "/rcm/workqueues",
           "/rcm/workqueues/stats",
           "/ready",
-          "/vista/allergies?dfn=3"
+          "/vista/allergies?dfn=46"
         ],
         "vistaProbes": []
       },
@@ -1714,7 +1714,7 @@
           "/posture/observability",
           "/rcm/audit/verify",
           "/ready",
-          "/vista/allergies?dfn=3"
+          "/vista/allergies?dfn=46"
         ],
         "vistaProbes": []
       },
@@ -4533,7 +4533,7 @@
         "uiRoutes": [],
         "apiEndpoints": [
           "/vista/immunizations",
-          "/vista/immunizations?dfn=3",
+          "/vista/immunizations?dfn=46",
           "/vista/immunizations?dfn=X",
           "/vista/immunizations?dfn=abc"
         ],

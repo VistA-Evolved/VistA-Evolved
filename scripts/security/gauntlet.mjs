@@ -1,16 +1,16 @@
 #!/usr/bin/env node
 /**
- * Security Verification Gauntlet — Phase 269
+ * Security Verification Gauntlet -- Phase 269
  *
  * Unified security scan runner that orchestrates:
  *   1. Dependency vulnerability scan (pnpm audit)
- *   2. SAST — static analysis (secret scan, PHI leak scan, pattern matching)
+ *   2. SAST -- static analysis (secret scan, PHI leak scan, pattern matching)
  *   3. Container scan (Dockerfile lint + image analysis)
  *   4. IaC scan (Docker Compose, Helm, config validation)
  *
  * Produces:
- *   security-scan-summary.md   — human-readable report
- *   security-gauntlet.json     — machine-readable results
+ *   security-scan-summary.md   -- human-readable report
+ *   security-gauntlet.json     -- machine-readable results
  *
  * Usage:
  *   node scripts/security/gauntlet.mjs [--output-dir <dir>] [--fix-forward]
@@ -95,10 +95,10 @@ scanResults.push({
 console.log(`  Critical: ${depFindings.critical || 0}, High: ${depFindings.high || 0}`);
 
 // ---------------------------------------------------------------------------
-// Scan 2: SAST — Secret Scan
+// Scan 2: SAST -- Secret Scan
 // ---------------------------------------------------------------------------
 
-console.log('\n--- Scan 2: SAST — Secret Scan ---');
+console.log('\n--- Scan 2: SAST -- Secret Scan ---');
 const secretResult = safeExec('node scripts/secret-scan.mjs 2>&1', ROOT, 60_000);
 scanResults.push({
   name: 'secret-scan',
@@ -111,10 +111,10 @@ console.log(`  ${secretResult.ok ? 'PASS' : 'FAIL'}`);
 if (!secretResult.ok) highFindings++;
 
 // ---------------------------------------------------------------------------
-// Scan 3: SAST — PHI Leak Scan
+// Scan 3: SAST -- PHI Leak Scan
 // ---------------------------------------------------------------------------
 
-console.log('\n--- Scan 3: SAST — PHI Leak Scan ---');
+console.log('\n--- Scan 3: SAST -- PHI Leak Scan ---');
 const phiResult = safeExec('node scripts/phi-leak-scan.mjs 2>&1', ROOT, 60_000);
 scanResults.push({
   name: 'phi-leak-scan',
@@ -127,10 +127,10 @@ console.log(`  ${phiResult.ok ? 'PASS' : 'FAIL'}`);
 if (!phiResult.ok) criticalFindings++;
 
 // ---------------------------------------------------------------------------
-// Scan 4: SAST — Dangerous Pattern Scan
+// Scan 4: SAST -- Dangerous Pattern Scan
 // ---------------------------------------------------------------------------
 
-console.log('\n--- Scan 4: SAST — Dangerous Patterns ---');
+console.log('\n--- Scan 4: SAST -- Dangerous Patterns ---');
 const dangerousPatterns = [
   { name: 'eval_usage', pattern: /\beval\s*\(/, severity: 'critical' },
   { name: 'exec_sync_shell', pattern: /execSync\s*\(\s*`/, severity: 'high' },
@@ -174,10 +174,10 @@ scanResults.push({
 console.log(`  Findings: ${patternFindings.length}`);
 
 // ---------------------------------------------------------------------------
-// Scan 5: Container Scan — Dockerfile Lint
+// Scan 5: Container Scan -- Dockerfile Lint
 // ---------------------------------------------------------------------------
 
-console.log('\n--- Scan 5: Container — Dockerfile Analysis ---');
+console.log('\n--- Scan 5: Container -- Dockerfile Analysis ---');
 const dockerfiles = ['services/vista-distro/Dockerfile', 'Dockerfile'].filter((f) =>
   existsSync(join(ROOT, f))
 );
@@ -210,15 +210,15 @@ scanResults.push({
   tool: 'dockerfile-lint',
   passed: containerFindings.filter((f) => f.severity === 'critical').length === 0,
   findings: { total: containerFindings.length, items: containerFindings },
-  note: dockerfiles.length === 0 ? 'No Dockerfiles found — scan skipped' : undefined,
+  note: dockerfiles.length === 0 ? 'No Dockerfiles found -- scan skipped' : undefined,
 });
 console.log(`  Dockerfiles: ${dockerfiles.length}, Findings: ${containerFindings.length}`);
 
 // ---------------------------------------------------------------------------
-// Scan 6: IaC Scan — Docker Compose + Helm Analysis
+// Scan 6: IaC Scan -- Docker Compose + Helm Analysis
 // ---------------------------------------------------------------------------
 
-console.log('\n--- Scan 6: IaC — Docker Compose & Config ---');
+console.log('\n--- Scan 6: IaC -- Docker Compose & Config ---');
 const composeFiles = [
   'services/vista/docker-compose.yml',
   'services/imaging/docker-compose.yml',
@@ -250,7 +250,7 @@ const helmDir = join(ROOT, 'infra', 'helm');
 if (existsSync(helmDir)) {
   iacFindings.push({
     file: 'infra/helm/',
-    issue: 'Helm charts present — manual review recommended',
+    issue: 'Helm charts present -- manual review recommended',
     severity: 'info',
   });
 }
@@ -316,7 +316,7 @@ md.push(
   '## Fix-Forward Status',
   '',
   fixForward
-    ? 'Fix-forward mode enabled — auto-fixes attempted where possible.'
+    ? 'Fix-forward mode enabled -- auto-fixes attempted where possible.'
     : 'Fix-forward mode disabled. Run with `--fix-forward` to auto-fix.'
 );
 

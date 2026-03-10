@@ -1,7 +1,7 @@
 {
-  "generatedAt": "2026-03-08T23:13:30.431Z",
+  "generatedAt": "2026-03-10T13:08:33.124Z",
   "generator": "scripts/build-phase-index.mjs",
-  "phaseCount": 692,
+  "phaseCount": 730,
   "phases": [
     {
       "phaseNumber": "1",
@@ -18472,6 +18472,73 @@
       ]
     },
     {
+      "phaseNumber": "688",
+      "title": "CPRS Labs Acknowledge Action Truth Recovery",
+      "folder": "688-PHASE-688-CPRS-LABS-ACK-ACTION-TRUTH-RECOVERY",
+      "files": [
+        "688-01-IMPLEMENT.md",
+        "688-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "688-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "688-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/labs",
+        "/health",
+        "/vista/labs?dfn=46",
+        "/vista/ping"
+      ],
+      "rpcs": [
+        "ORWLRR INTERIM"
+      ],
+      "uiComponents": [
+        "LabsPanel.tsx"
+      ],
+      "filesTouched": [
+        "prompts/688-PHASE-688-CPRS-LABS-ACK-ACTION-TRUTH-RECOVERY/688-01-IMPLEMENT.md",
+        "prompts/688-PHASE-688-CPRS-LABS-ACK-ACTION-TRUTH-RECOVERY/688-99-VERIFY.md",
+        "apps/web/src/components/cprs/panels/LabsPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "689",
+      "title": "CPRS Labs Order Action Truth Recovery",
+      "folder": "689-PHASE-689-CPRS-LABS-ORDER-ACTION-TRUTH-RECOVERY",
+      "files": [
+        "689-01-IMPLEMENT.md",
+        "689-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "689-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "689-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/labs",
+        "/health",
+        "/vista/ping"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "LabsPanel.tsx"
+      ],
+      "filesTouched": [
+        "prompts/689-PHASE-689-CPRS-LABS-ORDER-ACTION-TRUTH-RECOVERY/689-01-IMPLEMENT.md",
+        "prompts/689-PHASE-689-CPRS-LABS-ORDER-ACTION-TRUTH-RECOVERY/689-99-VERIFY.md",
+        "apps/web/src/components/cprs/panels/LabsPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
       "phaseNumber": "64",
       "title": "Secure Messaging v1 (MailMan-Backed) + Portal Messaging Posture",
       "folder": "69-PHASE-64-SECURE-MESSAGING-V1",
@@ -18510,6 +18577,299 @@
       ]
     },
     {
+      "phaseNumber": "690",
+      "title": "CPRS Labs Specimen/Result Action Truth Recovery",
+      "folder": "690-PHASE-690-CPRS-LABS-SPECIMEN-RESULT-ACTION-TRUTH-RECOVERY",
+      "files": [
+        "690-01-IMPLEMENT.md",
+        "690-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "690-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "690-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/labs",
+        "/health",
+        "/vista/ping"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "LabsPanel.tsx"
+      ],
+      "filesTouched": [
+        "prompts/690-PHASE-690-CPRS-LABS-SPECIMEN-RESULT-ACTION-TRUTH-RECOVERY/690-01-IMPLEMENT.md",
+        "prompts/690-PHASE-690-CPRS-LABS-SPECIMEN-RESULT-ACTION-TRUTH-RECOVERY/690-99-VERIFY.md",
+        "apps/web/src/components/cprs/panels/LabsPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "691",
+      "title": "CPRS AI INTAKE ACTION TRUTH RECOVERY",
+      "folder": "691-PHASE-691-CPRS-AI-INTAKE-ACTION-TRUTH-RECOVERY",
+      "files": [
+        "691-01-IMPLEMENT.md",
+        "691-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "691-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "691-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/aiassist",
+        "/cprs/chart/46/intake",
+        "/intake/by-patient/46"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "AIAssistPanel.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/panels/AIAssistPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "692",
+      "title": "CPRS Imaging Order Action Truth Recovery",
+      "folder": "692-PHASE-692-CPRS-IMAGING-ORDER-ACTION-TRUTH-RECOVERY",
+      "files": [
+        "692-01-IMPLEMENT.md",
+        "692-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "692-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "692-99-VERIFY.md"
+      ],
+      "routes": [
+        "/imaging/worklist/orders"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "ImagingPanel.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/panels/ImagingPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "693",
+      "title": "CPRS Reports Date-Range Action Truth Recovery",
+      "folder": "693-PHASE-693-CPRS-REPORTS-DATE-RANGE-ACTION-TRUTH-RECOVERY",
+      "files": [
+        "693-01-IMPLEMENT.md",
+        "693-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "693-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "693-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "ReportsPanel.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/panels/ReportsPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "694",
+      "title": "CPRS Tasks Reply Action Truth Recovery",
+      "folder": "694-PHASE-694-CPRS-TASKS-REPLY-ACTION-TRUTH-RECOVERY",
+      "files": [
+        "694-01-IMPLEMENT.md",
+        "694-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "694-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "694-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "MessagingTasksPanel.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/panels/MessagingTasksPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "695",
+      "title": "CPRS MailMan Truth Recovery",
+      "folder": "695-PHASE-695-CPRS-MAILMAN-TRUTH-RECOVERY",
+      "files": [
+        "695-01-IMPLEMENT.md",
+        "695-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "695-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "695-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [
+        "CPRSMenuBar.tsx",
+        "MessagingTasksPanel.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/app/cprs/messages/page.tsx",
+        "apps/web/src/components/cprs/CPRSMenuBar.tsx",
+        "apps/web/src/components/cprs/panels/MessagingTasksPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "696",
+      "title": "Problem Onset Date Truth Recovery",
+      "folder": "696-PHASE-696-PROBLEM-ONSET-DATE-TRUTH-RECOVERY",
+      "files": [
+        "696-01-IMPLEMENT.md",
+        "696-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "696-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "696-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/cover",
+        "/cprs/chart/46/problems",
+        "/portal/health/problems",
+        "/vista/problems?dfn=46"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/server/inline-routes.ts",
+        "apps/api/src/routes/portal-auth.ts",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "697",
+      "title": "CPRS Labs Selection Truth Recovery",
+      "folder": "697-PHASE-697-CPRS-LABS-SELECTION-TRUTH-RECOVERY",
+      "files": [
+        "697-01-IMPLEMENT.md",
+        "697-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "697-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "697-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/labs",
+        "/vista/labs",
+        "/vista/labs?dfn=46"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "LabsPanel.tsx",
+        "data-cache.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/panels/LabsPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "698",
+      "title": "CPRS Orders Draft Cache Truth Recovery",
+      "folder": "698-PHASE-698-CPRS-ORDERS-DRAFT-CACHE-TRUTH-RECOVERY",
+      "files": [
+        "698-01-IMPLEMENT.md",
+        "698-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "698-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "698-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/orders",
+        "/vista/cprs/orders",
+        "/vista/cprs/orders?dfn=46"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "OrdersPanel.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/panels/OrdersPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "699",
+      "title": "Nursing Tasks Truth Recovery",
+      "folder": "699-PHASE-699-NURSING-TASKS-TRUTH-RECOVERY",
+      "files": [
+        "699-01-IMPLEMENT.md",
+        "699-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "699-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "699-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/nursing",
+        "/vista/nursing/tasks",
+        "/vista/nursing/tasks?dfn=46"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/app/cprs/nursing/page.tsx",
+        "docs/runbooks/nursing-flowsheets.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
       "phaseNumber": "70",
       "title": "IMPLEMENT: MailMan RPC Bridge (ZVEMSGR.m) + Real Inbox/Sent + Remove Local Store",
       "folder": "70-PHASE-70-MAILMAN-RPC-BRIDGE",
@@ -18544,6 +18904,296 @@
       "filesTouched": []
     },
     {
+      "phaseNumber": "700",
+      "title": "Nursing Patient Banner Truth Recovery",
+      "folder": "700-PHASE-700-NURSING-PATIENT-BANNER-TRUTH-RECOVERY",
+      "files": [
+        "700-01-IMPLEMENT.md",
+        "700-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "700-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "700-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/nursing",
+        "/vista/nursing/patient-context",
+        "/vista/nursing/patient-context?dfn=46"
+      ],
+      "rpcs": [
+        "ORWPT16 ID INFO"
+      ],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/routes/nursing/index.ts",
+        "docs/runbooks/nursing-flowsheets.md",
+        "docs/runbooks/nursing-grounding.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "701",
+      "title": "CPRS Consults Selection Truth Recovery",
+      "folder": "701-PHASE-701-CPRS-CONSULTS-SELECTION-TRUTH-RECOVERY",
+      "files": [
+        "701-01-IMPLEMENT.md",
+        "701-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "701-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "701-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/consults",
+        "/cprs/chart/:dfn/consults",
+        "/vista/consults",
+        "/vista/consults/detail",
+        "/vista/consults?dfn=46"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "ConsultsPanel.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/panels/ConsultsPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "702",
+      "title": "CPRS Medications Selection Truth Recovery",
+      "folder": "702-PHASE-702-CPRS-MEDICATIONS-SELECTION-TRUTH-RECOVERY",
+      "files": [
+        "702-01-IMPLEMENT.md",
+        "702-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "702-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "702-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/meds",
+        "/cprs/chart/:dfn/meds",
+        "/vista/medications",
+        "/vista/medications?dfn=46",
+        "/vista/medications?dfn=47"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "MedsPanel.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/panels/MedsPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "703",
+      "title": "CPRS Notes Selection Truth Recovery",
+      "folder": "703-PHASE-703-CPRS-NOTES-SELECTION-TRUTH-RECOVERY",
+      "files": [
+        "703-01-IMPLEMENT.md",
+        "703-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "703-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "703-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/notes",
+        "/cprs/chart/:dfn/notes",
+        "/vista/notes",
+        "/vista/notes?dfn=46"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "NotesPanel.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/panels/NotesPanel.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "704",
+      "title": "CPRS Surgery Selection Truth Recovery",
+      "folder": "704-PHASE-704-CPRS-SURGERY-SELECTION-TRUTH-RECOVERY",
+      "files": [
+        "704-01-IMPLEMENT.md",
+        "704-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "704-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "704-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/surgery",
+        "/vista/surgery"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "SurgeryPanel.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "705",
+      "title": "CPRS D/C Summary Selection Truth Recovery",
+      "folder": "705-PHASE-705-CPRS-DC-SUMMARY-SELECTION-TRUTH-RECOVERY",
+      "files": [
+        "705-01-IMPLEMENT.md",
+        "705-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "705-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "705-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/dcsumm",
+        "/vista/dc-summaries"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "DCSummPanel.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "706",
+      "title": "CPRS Reports Selection Truth Recovery",
+      "folder": "706-PHASE-706-CPRS-REPORTS-SELECTION-TRUTH-RECOVERY",
+      "files": [
+        "706-01-IMPLEMENT.md",
+        "706-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "706-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "706-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/reports",
+        "/vista/reports"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "ReportsPanel.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "707",
+      "title": "Nursing Note Signing Completion",
+      "folder": "707-PHASE-707-NURSING-NOTE-SIGNING-COMPLETION",
+      "files": [
+        "707-01-IMPLEMENT.md",
+        "707-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "707-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "707-99-VERIFY.md"
+      ],
+      "routes": [
+        "/health",
+        "/vista/ping"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/api/src/routes/nursing/index.ts",
+        "apps/web/src/app/cprs/nursing/page.tsx",
+        "docs/runbooks/nursing-flowsheets.md",
+        "docs/runbooks/nursing-grounding.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "708",
+      "title": "CPRS Lab Acknowledge Dialog Truth Recovery",
+      "folder": "708-PHASE-708-CPRS-LAB-ACK-DIALOG-TRUTH-RECOVERY",
+      "files": [
+        "708-01-IMPLEMENT.md",
+        "708-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "708-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "708-99-VERIFY.md"
+      ],
+      "routes": [
+        "/vista/cprs/labs/ack"
+      ],
+      "rpcs": [
+        "ORWLRR ACK"
+      ],
+      "uiComponents": [
+        "AcknowledgeLabDialog.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/dialogs/AcknowledgeLabDialog.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "709",
+      "title": "CPRS Dialog Draft Truth Recovery",
+      "folder": "709-PHASE-709-CPRS-DIALOG-DRAFT-TRUTH-RECOVERY",
+      "files": [
+        "709-01-IMPLEMENT.md",
+        "709-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "709-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "709-99-VERIFY.md"
+      ],
+      "routes": [
+        "/vista/cprs/allergies/add",
+        "/vista/cprs/notes/create",
+        "/vista/cprs/problems/add",
+        "/vista/cprs/problems/edit",
+        "/vista/cprs/vitals/add"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "AddAllergyDialog.tsx",
+        "AddProblemDialog.tsx",
+        "AddVitalDialog.tsx",
+        "CreateNoteDialog.tsx",
+        "EditProblemDialog.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
       "phaseNumber": "65",
       "title": "Immunizations v1 (VistA-First) + Portal View",
       "folder": "71-PHASE-65-IMMUNIZATIONS",
@@ -18569,6 +19219,305 @@
         "ImmunizationsPanel.tsx"
       ],
       "filesTouched": []
+    },
+    {
+      "phaseNumber": "710",
+      "title": "CPRS Login Autofill Truth Recovery",
+      "folder": "710-PHASE-710-CPRS-LOGIN-AUTOFILL-TRUTH-RECOVERY",
+      "files": [
+        "710-01-IMPLEMENT.md",
+        "710-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "710-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "710-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/login"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "711",
+      "title": "CPRS Meds Dialog Truth Recovery",
+      "folder": "711-PHASE-711-CPRS-MEDS-DIALOG-TRUTH-RECOVERY",
+      "files": [
+        "711-01-IMPLEMENT.md",
+        "711-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "711-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "711-99-VERIFY.md"
+      ],
+      "routes": [
+        "/vista/cprs/meds/quick-order"
+      ],
+      "rpcs": [
+        "ORWDX SEND",
+        "ORWDXM AUTOACK"
+      ],
+      "uiComponents": [
+        "AddMedicationDialog.tsx"
+      ],
+      "filesTouched": []
+    },
+    {
+      "phaseNumber": "712",
+      "title": "IMPLEMENT: CPRS Session Expiry Truth Recovery",
+      "folder": "712-PHASE-712-CPRS-SESSION-EXPIRY-TRUTH-RECOVERY",
+      "files": [
+        "712-01-IMPLEMENT.md",
+        "712-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "712-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "712-99-VERIFY.md"
+      ],
+      "routes": [
+        "/auth/session",
+        "/cprs/chart/46/orders",
+        "/cprs/login",
+        "/vista/cprs/orders?dfn=46",
+        "/vista/ping"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "OrdersPanel.tsx",
+        "session-context.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/stores/session-context.tsx",
+        "apps/web/src/components/cprs/panels/OrdersPanel.tsx",
+        "docs/runbooks/auth-troubleshooting.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "713",
+      "title": "IMPLEMENT: CPRS ADT Census Truth Recovery",
+      "folder": "713-PHASE-713-CPRS-ADT-CENSUS-TRUTH-RECOVERY",
+      "files": [
+        "713-01-IMPLEMENT.md",
+        "713-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "713-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "713-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/adt",
+        "/vista/adt/census"
+      ],
+      "rpcs": [
+        "ORQPT WARD PATIENTS",
+        "ORQPT WARDS"
+      ],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/routes/adt/index.ts",
+        "docs/runbooks/inpatient-adt.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "714",
+      "title": "CPRS Cover Slug Alias Recovery",
+      "folder": "714-PHASE-714-CPRS-COVER-SLUG-ALIAS-RECOVERY",
+      "files": [
+        "714-01-IMPLEMENT.md",
+        "714-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "714-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "714-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/cover",
+        "/cprs/login"
+      ],
+      "rpcs": [
+        "ORWPT APPTLST"
+      ],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "prompts/714-PHASE-714-CPRS-COVER-SLUG-ALIAS-RECOVERY/714-01-IMPLEMENT.md",
+        "prompts/714-PHASE-714-CPRS-COVER-SLUG-ALIAS-RECOVERY/714-99-VERIFY.md",
+        "apps/web/src/app/cprs/chart/[dfn]/[tab]/page.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "715",
+      "title": "CPRS Legacy Tab Alias Recovery",
+      "folder": "715-PHASE-715-CPRS-LEGACY-TAB-ALIAS-RECOVERY",
+      "files": [
+        "715-01-IMPLEMENT.md",
+        "715-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "715-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "715-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/aiassist",
+        "/cprs/chart/46/dcsumm",
+        "/cprs/chart/46/telehealth",
+        "/cprs/login"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "CPRSTabStrip.tsx",
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "prompts/715-PHASE-715-CPRS-LEGACY-TAB-ALIAS-RECOVERY/715-01-IMPLEMENT.md",
+        "prompts/715-PHASE-715-CPRS-LEGACY-TAB-ALIAS-RECOVERY/715-99-VERIFY.md",
+        "apps/web/src/app/cprs/chart/[dfn]/[tab]/page.tsx",
+        "docs/runbooks/cprs-parity-closure-phase14.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "716",
+      "title": "CPRS Verify Dashboard Truth Recovery",
+      "folder": "716-PHASE-716-CPRS-VERIFY-DASHBOARD-TRUTH-RECOVERY",
+      "files": [
+        "716-01-IMPLEMENT.md",
+        "716-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "716-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "716-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/verify",
+        "/health",
+        "/vista/*",
+        "/vista/patient-search?q=ZZZRETFOURNINETYFOUR"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "prompts/716-PHASE-716-CPRS-VERIFY-DASHBOARD-TRUTH-RECOVERY/716-01-IMPLEMENT.md",
+        "prompts/716-PHASE-716-CPRS-VERIFY-DASHBOARD-TRUTH-RECOVERY/716-99-VERIFY.md",
+        "apps/web/src/app/cprs/verify/page.tsx",
+        "docs/runbooks/cprs-web-replica-v1.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "717",
+      "title": "IMPLEMENT: CPRS MailMan Mount Race Recovery",
+      "folder": "717-PHASE-717-CPRS-MAILMAN-MOUNT-RACE-RECOVERY",
+      "files": [
+        "717-01-IMPLEMENT.md",
+        "717-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "717-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "717-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/messages",
+        "/health",
+        "/vista/ping"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/routes/vista-mailman.ts",
+        "apps/api/src/routes/messaging/index.ts",
+        "docs/runbooks/phase70-mailman-bridge.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "718",
+      "title": "IMPLEMENT: CPRS MailMan Session Redirect Recovery",
+      "folder": "718-PHASE-718-CPRS-MAILMAN-SESSION-REDIRECT-RECOVERY",
+      "files": [
+        "718-01-IMPLEMENT.md",
+        "718-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "718-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "718-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/messages"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "page.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/app/cprs/messages/page.tsx",
+        "docs/runbooks/phase70-mailman-bridge.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "719",
+      "title": "IMPLEMENT: CPRS Inbox Notification Parse Recovery",
+      "folder": "719-PHASE-719-CPRS-INBOX-NOTIFICATION-PARSE-RECOVERY",
+      "files": [
+        "719-01-IMPLEMENT.md",
+        "719-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "719-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "719-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/inbox",
+        "/vista/inbox"
+      ],
+      "rpcs": [
+        "ORWORB FASTUSER"
+      ],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/routes/inbox.ts",
+        "docs/runbooks/vista-rpc-phase13-operationalization.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
     },
     {
       "phaseNumber": "66",
@@ -18604,6 +19553,170 @@
         "artifacts/phase66/iam-plan.json",
         "prompts/72-PHASE-66-PRODUCTION-IAM-V1/72-01-IMPLEMENT.md",
         "prompts/72-PHASE-66-PRODUCTION-IAM-V1/72-99-VERIFY.md"
+      ]
+    },
+    {
+      "phaseNumber": "720",
+      "title": "CPRS Inbox Acknowledge Contract Recovery",
+      "folder": "720-PHASE-720-CPRS-INBOX-ACKNOWLEDGE-CONTRACT-RECOVERY",
+      "files": [
+        "720-01-IMPLEMENT.md",
+        "720-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "720-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "720-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/inbox",
+        "/vista/inbox",
+        "/vista/inbox/acknowledge"
+      ],
+      "rpcs": [
+        "ORWORB KILL EXPIR MSG"
+      ],
+      "uiComponents": [],
+      "filesTouched": [
+        "apps/api/src/routes/inbox.ts",
+        "docs/runbooks/vista-rpc-phase13-operationalization.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "721",
+      "title": "CPRS Labs View Continuity Recovery",
+      "folder": "721-PHASE-721-CPRS-LABS-VIEW-CONTINUITY-RECOVERY",
+      "files": [
+        "721-01-IMPLEMENT.md",
+        "721-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "721-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "721-99-VERIFY.md"
+      ],
+      "routes": [
+        "/cprs/chart/46/labs"
+      ],
+      "rpcs": [],
+      "uiComponents": [
+        "LabsPanel.tsx"
+      ],
+      "filesTouched": [
+        "apps/web/src/components/cprs/panels/LabsPanel.tsx"
+      ]
+    },
+    {
+      "phaseNumber": "722",
+      "title": "GitHub Workflow Email Suppression",
+      "folder": "722-PHASE-722-GITHUB-WORKFLOW-EMAIL-SUPPRESSION",
+      "files": [
+        "722-01-IMPLEMENT.md",
+        "722-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "722-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "722-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        ".github/workflows/resilience-certification.yml",
+        ".github/workflows/supply-chain-security.yml",
+        ".github/workflows/ci-vehu-smoke.yml",
+        ".github/workflows/perf-acceptance-gate.yml",
+        ".github/workflows/codeql.yml",
+        ".github/workflows/dr-nightly.yml",
+        ".github/workflows/qa-gauntlet.yml"
+      ]
+    },
+    {
+      "phaseNumber": "723",
+      "title": "RC Gate Realignment",
+      "folder": "723-PHASE-723-RC-GATE-REALIGNMENT",
+      "files": [
+        "723-01-IMPLEMENT.md",
+        "723-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "723-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "723-99-VERIFY.md"
+      ],
+      "routes": [],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "scripts/qa-gates/phase-index-gate.mjs",
+        "scripts/qa-gates/rpc-trace-compare.mjs",
+        "prompts/723-PHASE-723-RC-GATE-REALIGNMENT/723-01-IMPLEMENT.md",
+        "prompts/723-PHASE-723-RC-GATE-REALIGNMENT/723-99-VERIFY.md"
+      ]
+    },
+    {
+      "phaseNumber": "724",
+      "title": "System Stabilization Continuation - IMPLEMENT",
+      "folder": "724-PHASE-724-SYSTEM-STABILIZATION-CONTINUATION",
+      "files": [
+        "724-01-IMPLEMENT.md",
+        "724-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "724-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "724-99-VERIFY.md"
+      ],
+      "routes": [
+        "/auth/login"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/724-PHASE-724-SYSTEM-STABILIZATION-CONTINUATION/724-01-IMPLEMENT.md",
+        "prompts/724-PHASE-724-SYSTEM-STABILIZATION-CONTINUATION/724-99-VERIFY.md",
+        "scripts/start-api-safe.ps",
+        "package.json",
+        "scripts/dev-up.ps",
+        "docs/runbooks/windows-port-3001-fix.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
+      ]
+    },
+    {
+      "phaseNumber": "725",
+      "title": "Enterprise Readiness Program - IMPLEMENT",
+      "folder": "725-PHASE-725-ENTERPRISE-READINESS-PROGRAM",
+      "files": [
+        "725-01-IMPLEMENT.md",
+        "725-99-VERIFY.md"
+      ],
+      "implementFiles": [
+        "725-01-IMPLEMENT.md"
+      ],
+      "verifyFiles": [
+        "725-99-VERIFY.md"
+      ],
+      "routes": [
+        "/health",
+        "/vista/ping"
+      ],
+      "rpcs": [],
+      "uiComponents": [],
+      "filesTouched": [
+        "prompts/725-PHASE-725-ENTERPRISE-READINESS-PROGRAM/725-01-IMPLEMENT.md",
+        "prompts/725-PHASE-725-ENTERPRISE-READINESS-PROGRAM/725-99-VERIFY.md",
+        "docs/runbooks/<relevant-runbooks>.md",
+        "ops/summary.md",
+        "ops/notion-update.json"
       ]
     },
     {

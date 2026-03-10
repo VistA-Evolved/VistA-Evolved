@@ -8,15 +8,15 @@
  * PhilHealth eClaims 3.0 flow:
  *   1. Facility accreditation + eClaims 3.0 API credential request
  *   2. TLS client certificate enrollment (facility PKI)
- *   3. Member eligibility check → PIN validation
+ *   3. Member eligibility check -> PIN validation
  *   4. CF1/CF2/CF3/CF4 form generation (claim forms)
  *   5. Electronic SOA generation (scanned PDFs REJECTED)
  *   6. eClaims 3.0 JSON submission with electronic SOA
  *   7. Status tracking via claim reference number
  *   8. Payment reconciliation via SSS/GSIS/PHIC remittance
  *
- * Phase 38 — RCM + Payer Connectivity
- * Phase 46 — eClaims 3.0 upgrade + SOA + cert probes
+ * Phase 38 -- RCM + Payer Connectivity
+ * Phase 46 -- eClaims 3.0 upgrade + SOA + cert probes
  */
 
 import type { X12TransactionSet } from '../edi/types.js';
@@ -78,7 +78,7 @@ export class PhilHealthConnector implements RcmConnector {
   ): Promise<ConnectorResult> {
     const txId = `ph-${Date.now()}-${randomBytes(4).toString('hex')}`;
 
-    // In production: transform internal claim → PhilHealth CF1-CF4 format
+    // In production: transform internal claim -> PhilHealth CF1-CF4 format
     // and POST to eClaims 3.0 API with electronic SOA.
     //
     // eClaims 3.0 changes:
@@ -87,10 +87,10 @@ export class PhilHealthConnector implements RcmConnector {
     //   - API endpoint changed to /api/v3
     //
     // PhilHealth-specific mapping:
-    //   - 837P → CF2 (professional claim) + CF1 (member data) + electronic SOA
-    //   - 837I → CF2 + CF3 (hospital charges) + optional CF4 (professional fees) + electronic SOA
-    //   - 270  → Member eligibility/PIN check
-    //   - 276  → Claim status inquiry
+    //   - 837P -> CF2 (professional claim) + CF1 (member data) + electronic SOA
+    //   - 837I -> CF2 + CF3 (hospital charges) + optional CF4 (professional fees) + electronic SOA
+    //   - 270  -> Member eligibility/PIN check
+    //   - 276  -> Claim status inquiry
 
     // Reject scanned PDF payloads (eClaims 3.0 mandate)
     if (isScannedPdf(payload)) {
@@ -209,7 +209,7 @@ export class PhilHealthConnector implements RcmConnector {
     this.submissions.clear();
   }
 
-  /* ─── PhilHealth-specific helpers ─────────────────────────────── */
+  /* --- PhilHealth-specific helpers ------------------------------- */
 
   /**
    * Check member eligibility using PhilHealth PIN

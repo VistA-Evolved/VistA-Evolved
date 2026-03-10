@@ -1,5 +1,5 @@
 /**
- * Messaging Adapter Interface — Phase 37C.
+ * Messaging Adapter Interface -- Phase 37C.
  *
  * Abstracts HL7v2 / HLO / FHIR messaging for interop module.
  * VistA adapter uses existing ZVEMIOP.m entry points.

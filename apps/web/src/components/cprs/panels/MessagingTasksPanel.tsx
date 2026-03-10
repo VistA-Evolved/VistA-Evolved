@@ -6,7 +6,7 @@ import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
 
 /**
- * MessagingTasksPanel — Phase 32 CPRS staff panel
+ * MessagingTasksPanel -- Phase 32 CPRS staff panel
  *
  * Displays:
  * 1. Unread patient portal messages (staff queue)
@@ -365,7 +365,7 @@ export default function MessagingTasksPanel({ dfn }: { dfn: string }) {
                               Reply will be sent through the patient portal staff messaging workflow.
                             </span>
                             <div style={{ display: 'flex', gap: 8 }}>
-                              <button className={styles.btn} onClick={cancelReply} disabled={replySending}>
+                              <button className={styles.btn} onClick={cancelReply} disabled={replySending} title={replySending ? 'Reply sending is in progress.' : undefined}>
                                 Cancel
                               </button>
                               <button

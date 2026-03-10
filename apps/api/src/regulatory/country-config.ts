@@ -1,12 +1,12 @@
 /**
- * Multi-Country Config Layer — Phase 441.
+ * Multi-Country Config Layer -- Phase 441.
  *
  * Bridges tenant-config.ts and country-pack-loader.ts by providing
- * a persistent, audited tenant→country mapping layer. Previously,
- * tenant→country lived only in classification-engine.ts as an in-memory
- * Map with just "default"→"US". This module:
+ * a persistent, audited tenant->country mapping layer. Previously,
+ * tenant->country lived only in classification-engine.ts as an in-memory
+ * Map with just "default"->"US". This module:
  *
- * 1. Provides a durable tenant→country assignment store
+ * 1. Provides a durable tenant->country assignment store
  * 2. Wires country assignments to the regulatory classification engine
  * 3. Resolves effective regulatory config per tenant (country + framework + pack)
  * 4. Supports country override (admin) with audit trail
@@ -71,7 +71,7 @@ export interface CountryAssignmentAudit {
 const MAX_ASSIGNMENTS = 2000;
 const MAX_AUDIT = 5000;
 
-/** Active assignments: tenantId → TenantCountryAssignment */
+/** Active assignments: tenantId -> TenantCountryAssignment */
 const activeAssignments = new Map<string, TenantCountryAssignment>();
 
 /** Assignment history (all changes, including superseded) */
@@ -193,7 +193,7 @@ export function getTenantCountryAssignment(tenantId: string): TenantCountryAssig
 }
 
 /**
- * List all active tenant→country assignments.
+ * List all active tenant->country assignments.
  */
 export function listTenantCountryAssignments(): TenantCountryAssignment[] {
   return [...activeAssignments.values()];

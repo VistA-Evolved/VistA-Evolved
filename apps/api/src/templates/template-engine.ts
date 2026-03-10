@@ -1,5 +1,5 @@
 /**
- * Phase 158: Template Engine — Core logic for template CRUD, versioning,
+ * Phase 158: Template Engine -- Core logic for template CRUD, versioning,
  * and note generation. VistA TIU alignment with local-draft fallback.
  *
  * Templates are orchestration metadata, NOT clinical truth.
@@ -7,6 +7,7 @@
  */
 
 import { randomUUID } from 'node:crypto';
+import { log } from '../lib/logger.js';
 import type {
   ClinicalTemplate,
   TemplateVersionEvent,
@@ -17,10 +18,13 @@ import type {
   TemplateStatus,
 } from './types.js';
 
-// ─── In-Memory Store (pg_backed via repo injection) ────────────────
+// --- In-Memory Store (pg_backed via repo injection) ----------------
 
 let templateStore = new Map<string, ClinicalTemplate>();
 let versionEventStore: TemplateVersionEvent[] = [];
+const MAX_VERSION_EVENTS = 10000;
+const MAX_TEMPLATES = 10000;
+const MAX_QUICK_TEXTS = 10000;
 let quickTextStore = new Map<string, QuickText>();
 
 // DB repo interface for Postgres backing
@@ -42,7 +46,7 @@ export function setTemplateDbRepo(repo: TemplateDbRepo): void {
   dbRepo = repo;
 }
 
-// ─── Template CRUD ─────────────────────────────────────────────────
+// --- Template CRUD -------------------------------------------------
 
 export async function createTemplate(
   tenantId: string,
@@ -55,7 +59,7 @@ export async function createTemplate(
   const now = new Date().toISOString();
   const template: ClinicalTemplate = {
     ...input,
-    // Pin system fields after spread — cannot be overwritten by input
+    // Pin system fields after spread -- cannot be overwritten by input
     id: randomUUID(),
     tenantId,
     version: 1,
@@ -64,14 +68,19 @@ export async function createTemplate(
     updatedAt: now,
   };
 
+  if (templateStore.size >= MAX_TEMPLATES && !templateStore.has(template.id)) {
+    const oldest = templateStore.keys().next().value;
+    if (oldest) templateStore.delete(oldest);
+  }
   templateStore.set(template.id, template);
   if (dbRepo) {
-    void dbRepo.upsertTemplate(template);
+    void dbRepo.upsertTemplate(template).catch((e: unknown) => log.warn('[template-engine] DB upsertTemplate failed', { err: (e as any)?.message ?? e }));
   }
 
   const event = buildVersionEvent(template, 'created', actor);
   versionEventStore.push(event);
-  if (dbRepo) void dbRepo.insertVersionEvent(event);
+  if (versionEventStore.length > MAX_VERSION_EVENTS) versionEventStore = versionEventStore.slice(-MAX_VERSION_EVENTS);
+  if (dbRepo) void dbRepo.insertVersionEvent(event).catch((e: unknown) => log.warn('[template-engine] DB insertVersionEvent failed', { err: (e as any)?.message ?? e }));
 
   return template;
 }
@@ -106,11 +115,12 @@ export async function updateTemplate(
   };
 
   templateStore.set(id, updated);
-  if (dbRepo) void dbRepo.upsertTemplate(updated);
+  if (dbRepo) void dbRepo.upsertTemplate(updated).catch((e: unknown) => log.warn('[template-engine] DB upsertTemplate failed', { err: (e as any)?.message ?? e }));
 
   const event = buildVersionEvent(updated, 'updated', actor);
   versionEventStore.push(event);
-  if (dbRepo) void dbRepo.insertVersionEvent(event);
+  if (versionEventStore.length > MAX_VERSION_EVENTS) versionEventStore = versionEventStore.slice(-MAX_VERSION_EVENTS);
+  if (dbRepo) void dbRepo.insertVersionEvent(event).catch((e: unknown) => log.warn('[template-engine] DB insertVersionEvent failed', { err: (e as any)?.message ?? e }));
 
   return updated;
 }
@@ -130,11 +140,12 @@ export async function publishTemplate(
   };
 
   templateStore.set(id, published);
-  if (dbRepo) void dbRepo.upsertTemplate(published);
+  if (dbRepo) void dbRepo.upsertTemplate(published).catch((e: unknown) => log.warn('[template-engine] DB upsertTemplate failed', { err: (e as any)?.message ?? e }));
 
   const event = buildVersionEvent(published, 'published', actor);
   versionEventStore.push(event);
-  if (dbRepo) void dbRepo.insertVersionEvent(event);
+  if (versionEventStore.length > MAX_VERSION_EVENTS) versionEventStore = versionEventStore.slice(-MAX_VERSION_EVENTS);
+  if (dbRepo) void dbRepo.insertVersionEvent(event).catch((e: unknown) => log.warn('[template-engine] DB insertVersionEvent failed', { err: (e as any)?.message ?? e }));
 
   return published;
 }
@@ -154,11 +165,12 @@ export async function archiveTemplate(
   };
 
   templateStore.set(id, archived);
-  if (dbRepo) void dbRepo.upsertTemplate(archived);
+  if (dbRepo) void dbRepo.upsertTemplate(archived).catch((e: unknown) => log.warn('[template-engine] DB upsertTemplate failed', { err: (e as any)?.message ?? e }));
 
   const event = buildVersionEvent(archived, 'archived', actor);
   versionEventStore.push(event);
-  if (dbRepo) void dbRepo.insertVersionEvent(event);
+  if (versionEventStore.length > MAX_VERSION_EVENTS) versionEventStore = versionEventStore.slice(-MAX_VERSION_EVENTS);
+  if (dbRepo) void dbRepo.insertVersionEvent(event).catch((e: unknown) => log.warn('[template-engine] DB insertVersionEvent failed', { err: (e as any)?.message ?? e }));
 
   return archived;
 }
@@ -208,7 +220,7 @@ export async function getVersionHistory(
     .sort((a, b) => b.version - a.version);
 }
 
-// ─── Quick Text CRUD ───────────────────────────────────────────────
+// --- Quick Text CRUD -----------------------------------------------
 
 export async function createQuickText(
   tenantId: string,
@@ -217,15 +229,19 @@ export async function createQuickText(
   const now = new Date().toISOString();
   const qt: QuickText = {
     ...input,
-    // Pin system fields after spread — cannot be overwritten by input
+    // Pin system fields after spread -- cannot be overwritten by input
     id: randomUUID(),
     tenantId,
     version: 1,
     createdAt: now,
     updatedAt: now,
   };
+  if (quickTextStore.size >= MAX_QUICK_TEXTS && !quickTextStore.has(qt.id)) {
+    const oldest = quickTextStore.keys().next().value;
+    if (oldest) quickTextStore.delete(oldest);
+  }
   quickTextStore.set(qt.id, qt);
-  if (dbRepo) void dbRepo.upsertQuickText(qt);
+  if (dbRepo) void dbRepo.upsertQuickText(qt).catch((e: unknown) => log.warn('[template-engine] DB upsertQuickText failed', { err: (e as any)?.message ?? e }));
   return qt;
 }
 
@@ -259,7 +275,7 @@ export async function updateQuickText(
     updatedAt: new Date().toISOString(),
   };
   quickTextStore.set(id, updated);
-  if (dbRepo) void dbRepo.upsertQuickText(updated);
+  if (dbRepo) void dbRepo.upsertQuickText(updated).catch((e: unknown) => log.warn('[template-engine] DB upsertQuickText failed', { err: (e as any)?.message ?? e }));
   return updated;
 }
 
@@ -267,11 +283,11 @@ export async function deleteQuickText(tenantId: string, id: string): Promise<boo
   const existing = quickTextStore.get(id);
   if (!existing || existing.tenantId !== tenantId) return false;
   quickTextStore.delete(id);
-  if (dbRepo) void dbRepo.deleteQuickText(tenantId, id);
+  if (dbRepo) void dbRepo.deleteQuickText(tenantId, id).catch((e: unknown) => log.warn('[template-engine] DB deleteQuickText failed', { err: (e as any)?.message ?? e }));
   return true;
 }
 
-// ─── Note Builder (core rendering) ────────────────────────────────
+// --- Note Builder (core rendering) --------------------------------
 
 export async function generateDraftNote(input: NoteBuilderInput): Promise<NoteBuilderOutput> {
   const template = templateStore.get(input.templateId);
@@ -341,7 +357,7 @@ function renderSection(
   return lines.join('\n');
 }
 
-// ─── Seed from Specialty Packs ─────────────────────────────────────
+// --- Seed from Specialty Packs -------------------------------------
 
 export async function seedSpecialtyPack(
   tenantId: string,
@@ -361,7 +377,7 @@ export async function seedSpecialtyPack(
       ...tpl,
     };
     templateStore.set(id, template);
-    if (dbRepo) void dbRepo.upsertTemplate(template);
+    if (dbRepo) void dbRepo.upsertTemplate(template).catch((e: unknown) => log.warn('[template-engine] DB upsertTemplate failed', { err: (e as any)?.message ?? e }));
     count++;
   }
   return count;
@@ -394,7 +410,7 @@ export function getTemplateStats(tenantId: string): {
   };
 }
 
-// ─── Reset (for testing) ──────────────────────────────────────────
+// --- Reset (for testing) ------------------------------------------
 
 export function resetTemplateStore(): void {
   templateStore = new Map();
@@ -402,7 +418,7 @@ export function resetTemplateStore(): void {
   quickTextStore = new Map();
 }
 
-// ─── Helpers ──────────────────────────────────────────────────────
+// --- Helpers ------------------------------------------------------
 
 function buildVersionEvent(
   template: ClinicalTemplate,

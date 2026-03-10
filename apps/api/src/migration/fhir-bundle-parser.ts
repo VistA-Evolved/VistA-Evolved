@@ -68,7 +68,7 @@ const RESOURCE_TO_ENTITY: Record<string, ImportEntityType> = {
   Patient: 'patient',
   AllergyIntolerance: 'allergy',
   Condition: 'problem',
-  Observation: 'note', // vitals/labs → note entity
+  Observation: 'note', // vitals/labs -> note entity
   MedicationRequest: 'medication',
   Encounter: 'appointment', // closest mapping
   Appointment: 'appointment',

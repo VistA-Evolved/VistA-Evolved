@@ -1,29 +1,30 @@
 /**
- * Adapter Loader — Phase 37C.
+ * Adapter Loader -- Phase 37C.
  *
  * Central registry that loads and manages adapter instances. Each adapter type
  * (clinical-engine, scheduling, billing, imaging, messaging) has a VistA
  * implementation and a stub fallback.
  *
  * Selection logic per adapter:
- *   1. If env var ADAPTER_<TYPE>=stub → use stub
- *   2. If env var ADAPTER_<TYPE>=vista → use VistA impl
- *   3. Default → VistA impl (since VistA is the core backend)
+ *   1. If env var ADAPTER_<TYPE>=stub -> use stub
+ *   2. If env var ADAPTER_<TYPE>=vista -> use VistA impl
+ *   3. Default -> VistA impl (since VistA is the core backend)
  *
- * All adapters are singletons — loaded once at startup.
+ * All adapters are singletons -- loaded once at startup.
  */
 
 import { log } from '../lib/logger.js';
 import type { BaseAdapter } from './types.js';
+import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
-/* Adapter registry (type → instance)                                  */
+/* Adapter registry (type -> instance)                                  */
 /* ------------------------------------------------------------------ */
 
 const adapters = new Map<string, BaseAdapter>();
 
 /* ------------------------------------------------------------------ */
-/* Loader functions — lazy-imported to avoid circular deps             */
+/* Loader functions -- lazy-imported to avoid circular deps             */
 /* ------------------------------------------------------------------ */
 
 async function loadClinicalEngineAdapter(variant: string): Promise<BaseAdapter> {
@@ -72,7 +73,7 @@ async function loadMessagingAdapter(variant: string): Promise<BaseAdapter> {
 }
 
 /* ------------------------------------------------------------------ */
-/* Type → loader mapping                                               */
+/* Type -> loader mapping                                               */
 /* ------------------------------------------------------------------ */
 
 const ADAPTER_LOADERS: Record<string, (variant: string) => Promise<BaseAdapter>> = {
@@ -116,7 +117,7 @@ export async function initAdapters(): Promise<void> {
       });
     } catch (err: any) {
       log.warn(`Failed to load adapter '${type}', falling back to stub`, {
-        error: err.message,
+        error: safeErr(err),
       });
       // Fallback to stub
       try {

@@ -1,5 +1,5 @@
 /**
- * Imaging Modality Connectivity — Store
+ * Imaging Modality Connectivity -- Store
  *
  * Phase 386 (W21-P9): In-memory stores for MWL items, MPPS records,
  * and modality AE configurations. Bridges to Orthanc for DICOM operations.

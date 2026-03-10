@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 <#
-  Phase 240 — HL7v2 Routing Layer  (Wave 6 P3)
-  Verification script — 7 gates
+  Phase 240 -- HL7v2 Routing Layer  (Wave 6 P3)
+  Verification script -- 7 gates
 #>
 param([switch]$SkipDocker)
 $ErrorActionPreference = 'Continue'

@@ -1,23 +1,23 @@
 'use client';
 
 /**
- * HMO Portal Dashboard — Phase 97
+ * HMO Portal Dashboard -- Phase 97
  *
  * Billing staff workspace for HMO LOA + Claim submission via portal adapters.
  *
  * Tabs:
- *   1. Adapters — View registered HMO portal adapters and health status
- *   2. LOA Builder — Build LOA packets from clinical data + export for portal upload
- *   3. Claim Builder — Build HMO claim packets + export for portal submission
- *   4. Submissions — Track submission lifecycle (12-state FSM w/ timeline)
- *   5. Submission Stats — Dashboard of submission counts by status
+ *   1. Adapters -- View registered HMO portal adapters and health status
+ *   2. LOA Builder -- Build LOA packets from clinical data + export for portal upload
+ *   3. Claim Builder -- Build HMO claim packets + export for portal submission
+ *   4. Submissions -- Track submission lifecycle (12-state FSM w/ timeline)
+ *   5. Submission Stats -- Dashboard of submission counts by status
  */
 
 import { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 interface PortalAdapterInfo {
   payerId: string;
@@ -90,7 +90,7 @@ interface SpecialtyTemplate {
   payerSpecificNotes?: string;
 }
 
-/* ── Fetch Helper ───────────────────────────────────────────── */
+/* -- Fetch Helper --------------------------------------------- */
 
 async function apiFetch<T>(path: string, opts?: RequestInit): Promise<T> {
   const res = await fetch(`${API}${path}`, {
@@ -105,7 +105,7 @@ async function apiFetch<T>(path: string, opts?: RequestInit): Promise<T> {
   return res.json() as Promise<T>;
 }
 
-/* ── Tab IDs ────────────────────────────────────────────────── */
+/* -- Tab IDs -------------------------------------------------- */
 
 type TabId = 'adapters' | 'loa' | 'claims' | 'submissions' | 'stats';
 
@@ -117,7 +117,7 @@ const TABS: { id: TabId; label: string }[] = [
   { id: 'stats', label: 'Stats' },
 ];
 
-/* ── Main Page ──────────────────────────────────────────────── */
+/* -- Main Page ------------------------------------------------ */
 
 export default function HmoPortalPage() {
   const [tab, setTab] = useState<TabId>('adapters');
@@ -166,7 +166,7 @@ export default function HmoPortalPage() {
   );
 }
 
-/* ── Adapters Tab ───────────────────────────────────────────── */
+/* -- Adapters Tab --------------------------------------------- */
 
 function AdaptersTab() {
   const [adapters, setAdapters] = useState<PortalAdapterInfo[]>([]);
@@ -236,7 +236,7 @@ function AdaptersTab() {
   );
 }
 
-/* ── LOA Builder Tab ────────────────────────────────────────── */
+/* -- LOA Builder Tab ------------------------------------------ */
 
 function LoaBuilderTab() {
   const [specialties, setSpecialties] = useState<SpecialtyTemplate[]>([]);
@@ -492,7 +492,7 @@ function LoaBuilderTab() {
   );
 }
 
-/* ── Claim Builder Tab ──────────────────────────────────────── */
+/* -- Claim Builder Tab ---------------------------------------- */
 
 function ClaimBuilderTab() {
   const [builtPacket, setBuiltPacket] = useState<HmoClaimPacket | null>(null);
@@ -733,7 +733,7 @@ function ClaimBuilderTab() {
   );
 }
 
-/* ── Submissions Tab ────────────────────────────────────────── */
+/* -- Submissions Tab ------------------------------------------ */
 
 function SubmissionsTab() {
   const [submissions, setSubmissions] = useState<SubmissionRecord[]>([]);
@@ -860,7 +860,7 @@ function SubmissionsTab() {
   );
 }
 
-/* ── Submission Detail ──────────────────────────────────────── */
+/* -- Submission Detail ---------------------------------------- */
 
 function SubmissionDetail({
   record,
@@ -953,7 +953,7 @@ function SubmissionDetail({
                 <span style={{ color: '#6b7280' }}>
                   {t.timestamp.slice(0, 19).replace('T', ' ')}
                 </span>{' '}
-                {t.fromStatus} → <strong>{t.toStatus}</strong> by {t.actor}
+                {t.fromStatus}{' -> '}<strong>{t.toStatus}</strong> by {t.actor}
                 {t.detail && <span style={{ color: '#9ca3af' }}> -- {t.detail}</span>}
               </div>
             ))}
@@ -1018,7 +1018,7 @@ function SubmissionDetail({
   );
 }
 
-/* ── Stats Tab ──────────────────────────────────────────────── */
+/* -- Stats Tab ------------------------------------------------ */
 
 function StatsTab() {
   const [stats, setStats] = useState<SubmissionStats | null>(null);

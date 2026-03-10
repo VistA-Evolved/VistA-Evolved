@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Fleet release orchestrator — rolls out a new image tag across environments
+  Fleet release orchestrator -- rolls out a new image tag across environments
   with canary gates, evidence collection, and rollback capability.
 
 .DESCRIPTION

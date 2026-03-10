@@ -1,11 +1,11 @@
 /**
- * LOINC / UCUM Normalization — Mapping Tables & Engine
+ * LOINC / UCUM Normalization -- Mapping Tables & Engine
  *
  * Phase 387 (W21-P10): Terminology normalization for device observations.
  * Maps proprietary/local codes (MDC, ASTM, vendor-specific) to LOINC codes
  * and converts units to UCUM standard representations.
  *
- * This is a static mapping engine — no external terminology server required.
+ * This is a static mapping engine -- no external terminology server required.
  * Tables are curated subsets covering vitals + common lab analytes.
  */
 

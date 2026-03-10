@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Privacy & PHI Audit — Phase 270
+ * Privacy & PHI Audit -- Phase 270
  *
  * Comprehensive PHI grep + redaction proof. Scans:
  *   1. Source code for PHI field logging violations
@@ -10,9 +10,9 @@
  *   5. Structured log payloads for neverLogFields compliance
  *
  * Produces:
- *   phi-grep.txt             — grep results (pass = empty)
- *   phi-audit-report.json    — machine-readable
- *   access-control-proof.json — RBAC + break-glass evidence
+ *   phi-grep.txt             -- grep results (pass = empty)
+ *   phi-audit-report.json    -- machine-readable
+ *   access-control-proof.json -- RBAC + break-glass evidence
  *
  * Usage:
  *   node scripts/privacy/phi-audit.mjs [--output-dir <dir>]
@@ -229,10 +229,10 @@ const accessControlEvidence = {
 
 const phiGrepText =
   grepFindings.length === 0
-    ? 'PHI GREP: CLEAN — No violations found\n'
+    ? 'PHI GREP: CLEAN -- No violations found\n'
     : grepFindings
         .map(
-          (f) => `[${f.check}] ${f.pattern || ''} — ${f.file || f.emitter || ''} ${f.line || ''}`
+          (f) => `[${f.check}] ${f.pattern || ''} -- ${f.file || f.emitter || ''} ${f.line || ''}`
         )
         .join('\n');
 

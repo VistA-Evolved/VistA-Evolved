@@ -1,5 +1,5 @@
 /**
- * Phase 158: Template Routes — CRUD, versioning, note builder, quick text.
+ * Phase 158: Template Routes -- CRUD, versioning, note builder, quick text.
  * Fastify plugin for /admin/templates/* and /encounter/note-builder/* endpoints.
  *
  * Auth: /admin/templates/* requires admin role
@@ -41,7 +41,7 @@ function requireTenantId(request: any, reply: any): string | null {
 }
 
 export default async function templateRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Admin Template Management ────────────────────────────────
+  // --- Admin Template Management --------------------------------
 
   // List templates with optional filters
   server.get('/admin/templates', async (request, reply) => {
@@ -198,7 +198,7 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
     return { ok: true, seeded: totalSeeded, specialties: specialty ? 1 : allPacks.length };
   });
 
-  // ─── Quick Text CRUD ──────────────────────────────────────────
+  // --- Quick Text CRUD ------------------------------------------
 
   server.get('/admin/templates/quick-text', async (request, reply) => {
     const q = request.query as any;
@@ -265,7 +265,7 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
     return { ok: true };
   });
 
-  // ─── Specialty Pack Catalog (read-only, session auth) ─────────
+  // --- Specialty Pack Catalog (read-only, session auth) ---------
 
   server.get('/templates/specialty-packs', async (request, reply) => {
     const packs = getAllSpecialtyPacks();
@@ -281,7 +281,7 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
     };
   });
 
-  // ─── Note Builder ─────────────────────────────────────────────
+  // --- Note Builder ---------------------------------------------
 
   server.post('/encounter/note-builder/generate', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -307,7 +307,7 @@ export default async function templateRoutes(server: FastifyInstance): Promise<v
     return { ok: true, ...result };
   });
 
-  // ─── Phase 167: Pack Validation ───────────────────────────────
+  // --- Phase 167: Pack Validation -------------------------------
 
   server.get('/admin/templates/validate', async () => {
     const { validateAllPacks } = await import('./pack-validator.js');

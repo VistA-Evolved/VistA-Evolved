@@ -1,5 +1,5 @@
 /**
- * HL7v2 Outbound Message Builder — Phase 279 (Wave 9)
+ * HL7v2 Outbound Message Builder -- Phase 279 (Wave 9)
  *
  * Builds HL7v2 messages for outbound transmission to external systems.
  * Uses domain event data as input, produces wire-format HL7v2 messages.
@@ -19,7 +19,7 @@
 
 import { randomUUID } from 'crypto';
 
-/* ── Types ─────────────────────────────────────────────── */
+/* -- Types ----------------------------------------------- */
 
 export interface OutboundConfig {
   sendingApplication: string;
@@ -96,7 +96,7 @@ export interface OutboundResult {
   errors: string[];
 }
 
-/* ── Helpers ───────────────────────────────────────────── */
+/* -- Helpers --------------------------------------------- */
 
 const SEG_SEP = '\r';
 
@@ -183,7 +183,7 @@ function buildPv1(data: {
   return fields.join('|');
 }
 
-/* ── ADT Builder ───────────────────────────────────────── */
+/* -- ADT Builder ----------------------------------------- */
 
 export function buildAdtMessage(config: OutboundConfig, data: AdtOutboundData): OutboundResult {
   const errors: string[] = [];
@@ -230,7 +230,7 @@ export function buildAdtMessage(config: OutboundConfig, data: AdtOutboundData): 
   };
 }
 
-/* ── ORU Builder ───────────────────────────────────────── */
+/* -- ORU Builder ----------------------------------------- */
 
 export function buildOruMessage(config: OutboundConfig, data: OruOutboundData): OutboundResult {
   const errors: string[] = [];
@@ -247,7 +247,7 @@ export function buildOruMessage(config: OutboundConfig, data: OruOutboundData): 
     buildPid({ mrn: data.patientMrn, family: '', given: '' }),
   ];
 
-  // ORC — Common Order
+  // ORC -- Common Order
   const orcFields = new Array(20).fill('');
   orcFields[0] = 'ORC';
   orcFields[1] = 'RE'; // Result/Observation
@@ -255,7 +255,7 @@ export function buildOruMessage(config: OutboundConfig, data: OruOutboundData): 
   if (data.orderingProviderId) orcFields[12] = data.orderingProviderId;
   segments.push(orcFields.join('|'));
 
-  // OBR — Observation Request
+  // OBR -- Observation Request
   const obrFields = new Array(30).fill('');
   obrFields[0] = 'OBR';
   obrFields[1] = '1'; // Set ID
@@ -264,7 +264,7 @@ export function buildOruMessage(config: OutboundConfig, data: OruOutboundData): 
   obrFields[25] = data.resultStatus;
   segments.push(obrFields.join('|'));
 
-  // OBX — Observation/Result segments
+  // OBX -- Observation/Result segments
   data.observations.forEach((obs, idx) => {
     const obxFields = new Array(15).fill('');
     obxFields[0] = 'OBX';
@@ -287,7 +287,7 @@ export function buildOruMessage(config: OutboundConfig, data: OruOutboundData): 
   };
 }
 
-/* ── ORM Builder ───────────────────────────────────────── */
+/* -- ORM Builder ----------------------------------------- */
 
 export function buildOrmMessage(config: OutboundConfig, data: OrmOutboundData): OutboundResult {
   const errors: string[] = [];
@@ -335,7 +335,7 @@ export function buildOrmMessage(config: OutboundConfig, data: OrmOutboundData): 
   };
 }
 
-/* ── SIU Builder ───────────────────────────────────────── */
+/* -- SIU Builder ----------------------------------------- */
 
 export function buildSiuMessage(config: OutboundConfig, data: SiuOutboundData): OutboundResult {
   const errors: string[] = [];
@@ -358,7 +358,7 @@ export function buildSiuMessage(config: OutboundConfig, data: SiuOutboundData): 
     buildPid({ mrn: data.patientMrn, family: '', given: '' }),
   ];
 
-  // SCH — Schedule Activity
+  // SCH -- Schedule Activity
   const schFields = new Array(20).fill('');
   schFields[0] = 'SCH';
   schFields[1] = data.appointmentId;
@@ -371,7 +371,7 @@ export function buildSiuMessage(config: OutboundConfig, data: SiuOutboundData): 
   }
   segments.push(schFields.join('|'));
 
-  // AIS — Appointment Information - Service
+  // AIS -- Appointment Information - Service
   if (data.resource || data.startDateTime) {
     const aisFields = new Array(10).fill('');
     aisFields[0] = 'AIS';
@@ -390,7 +390,7 @@ export function buildSiuMessage(config: OutboundConfig, data: SiuOutboundData): 
   };
 }
 
-/* ── Builder Registry ──────────────────────────────────── */
+/* -- Builder Registry ------------------------------------ */
 
 /**
  * List all supported outbound message types.

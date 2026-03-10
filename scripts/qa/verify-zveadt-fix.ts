@@ -1,11 +1,11 @@
 /**
- * Phase 568 — ZVEADT Crash + Cascade Fix Verification
+ * Phase 568 -- ZVEADT Crash + Cascade Fix Verification
  *
  * Standalone script that:
  *   1. Runs a full RPC capability probe (discoverCapabilities with forceRefresh)
  *   2. Reports available/missing/error counts
  *   3. Specifically checks ZVEADT WARDS and the cascade group
- *   4. Runs an ADT sequence test: ZVEADT WARDS → ORWPT LIST ALL
+ *   4. Runs an ADT sequence test: ZVEADT WARDS -> ORWPT LIST ALL
  *      to prove the socket survives after ZVEADT
  *
  * Usage:
@@ -59,7 +59,7 @@ function pass(msg: string) {
 async function main() {
   console.log('\n=== Phase 568: ZVEADT Crash + Cascade Fix Verification ===\n');
 
-  // ── PART 1: Full capability probe ──────────────────────────────────
+  // -- PART 1: Full capability probe ----------------------------------
   console.log('--- PART 1: Full Capability Probe ---');
   let result;
   try {
@@ -82,7 +82,7 @@ async function main() {
     console.log(`    ${rpc}: ${cap?.error || 'unknown'}`);
   }
 
-  // ── PART 2: Cascade check ─────────────────────────────────────────
+  // -- PART 2: Cascade check -----------------------------------------
   console.log('\n--- PART 2: Cascade Check ---');
   let cascadeNotConnected = 0;
   for (const rpc of CASCADE_GROUP) {
@@ -92,10 +92,10 @@ async function main() {
       continue;
     }
     if (!cap.available && cap.error && /not connected/i.test(cap.error)) {
-      fail(`${rpc}: "Not connected" CASCADE DETECTED — error: ${cap.error}`);
+      fail(`${rpc}: "Not connected" CASCADE DETECTED -- error: ${cap.error}`);
       cascadeNotConnected++;
     } else if (!cap.available) {
-      console.log(`    ${rpc}: missing (genuine) — ${cap.error}`);
+      console.log(`    ${rpc}: missing (genuine) -- ${cap.error}`);
     } else {
       pass(`${rpc}: available`);
     }
@@ -107,7 +107,7 @@ async function main() {
     fail(`${cascadeNotConnected} RPCs still show "Not connected" cascade`);
   }
 
-  // ── PART 3: ZVEADT WARDS specific ──────────────────────────────────
+  // -- PART 3: ZVEADT WARDS specific ----------------------------------
   console.log('\n--- PART 3: ZVEADT WARDS Specific ---');
   const wardsEntry = result.rpcs['ZVEADT WARDS'];
   if (!wardsEntry) {
@@ -117,12 +117,12 @@ async function main() {
   } else if (wardsEntry.error && /socket closed/i.test(wardsEntry.error)) {
     fail(`ZVEADT WARDS still crashes socket: ${wardsEntry.error}`);
   } else {
-    // Missing for a genuine reason (e.g. doesn't exist) — not a socket crash
-    console.log(`    ZVEADT WARDS: missing but NOT a socket crash — ${wardsEntry.error}`);
+    // Missing for a genuine reason (e.g. doesn't exist) -- not a socket crash
+    console.log(`    ZVEADT WARDS: missing but NOT a socket crash -- ${wardsEntry.error}`);
   }
 
-  // ── PART 4: ADT sequence test ──────────────────────────────────────
-  console.log('\n--- PART 4: ADT Sequence Test (ZVEADT WARDS → ORWPT LIST ALL) ---');
+  // -- PART 4: ADT sequence test --------------------------------------
+  console.log('\n--- PART 4: ADT Sequence Test (ZVEADT WARDS -> ORWPT LIST ALL) ---');
   try {
     await connect();
 
@@ -149,10 +149,10 @@ async function main() {
       const patResp = await callRpc('ORWPT LIST ALL', ['1', '1']);
       if (patResp.length > 0) {
         pass(
-          `ORWPT LIST ALL returned ${patResp.length} line(s) AFTER ZVEADT WARDS — socket survived`
+          `ORWPT LIST ALL returned ${patResp.length} line(s) AFTER ZVEADT WARDS -- socket survived`
         );
       } else {
-        fail('ORWPT LIST ALL returned empty — socket may be degraded');
+        fail('ORWPT LIST ALL returned empty -- socket may be degraded');
       }
     } catch (err: any) {
       fail(`ORWPT LIST ALL threw AFTER ZVEADT WARDS: ${err.message}`);
@@ -161,7 +161,7 @@ async function main() {
     // Step C: Call ORWU DT as a second sanity check
     try {
       const dtResp = await callRpc('ORWU DT', []);
-      pass(`ORWU DT returned: ${dtResp[0]?.substring(0, 50) || '(empty)'} — socket fully alive`);
+      pass(`ORWU DT returned: ${dtResp[0]?.substring(0, 50) || '(empty)'} -- socket fully alive`);
     } catch (err: any) {
       fail(`ORWU DT threw: ${err.message}`);
     }
@@ -171,7 +171,7 @@ async function main() {
     fail(`ADT sequence test connection error: ${err.message}`);
   }
 
-  // ── Summary ────────────────────────────────────────────────────────
+  // -- Summary --------------------------------------------------------
   console.log('\n=== SUMMARY ===');
   console.log(`  Available RPCs: ${result.availableList.length}/${totalProbed}`);
   console.log(`  Missing RPCs:   ${result.missingList.length}/${totalProbed}`);

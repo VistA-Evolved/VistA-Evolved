@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -22,7 +23,7 @@ export default async function vistaPharmacyRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE DRUG LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE DRUG LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -45,7 +46,7 @@ export default async function vistaPharmacyRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE DRUG DETAIL', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE DRUG DETAIL', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -66,7 +67,7 @@ export default async function vistaPharmacyRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE MED ROUTES', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE MED ROUTES', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -87,7 +88,7 @@ export default async function vistaPharmacyRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE MED SCHEDULES', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE MED SCHEDULES', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -109,7 +110,7 @@ export default async function vistaPharmacyRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE DRUG EDIT' };
     } catch (err: any) {
       log.error('Failed to call VE DRUG EDIT', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

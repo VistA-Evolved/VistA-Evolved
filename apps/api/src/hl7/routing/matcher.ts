@@ -1,5 +1,5 @@
 /**
- * HL7v2 Routing — Message Matcher
+ * HL7v2 Routing -- Message Matcher
  *
  * Phase 240 (Wave 6 P3): Matches incoming HL7v2 messages against route filters.
  * Evaluates all enabled routes in priority order and returns matches.

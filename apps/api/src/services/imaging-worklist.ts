@@ -1,5 +1,5 @@
 /**
- * Imaging Worklist Service — Phase 23.
+ * Imaging Worklist Service -- Phase 23.
  *
  * Provides a modality worklist backed by imaging orders.
  * V1 uses an in-memory sidecar store. Designed for migration to:
@@ -7,11 +7,11 @@
  *   - DICOM Modality Worklist (MWL) C-FIND via Orthanc plugin
  *
  * Routes:
- *   GET  /imaging/worklist              — list worklist items (filterable)
- *   POST /imaging/worklist/orders       — create imaging order → worklist item
- *   GET  /imaging/worklist/:id          — single worklist item detail
- *   PATCH /imaging/worklist/:id/status  — update item status
- *   GET  /imaging/worklist/stats        — worklist statistics
+ *   GET  /imaging/worklist              -- list worklist items (filterable)
+ *   POST /imaging/worklist/orders       -- create imaging order -> worklist item
+ *   GET  /imaging/worklist/:id          -- single worklist item detail
+ *   PATCH /imaging/worklist/:id/status  -- update item status
+ *   GET  /imaging/worklist/stats        -- worklist statistics
  */
 
 import { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
@@ -40,13 +40,13 @@ export type WorklistItemStatus =
 /** A single worklist item representing an imaging order. */
 export interface WorklistItem {
   id: string;
-  /** VistA order IEN (if created via VistA) — null for prototype orders */
+  /** VistA order IEN (if created via VistA) -- null for prototype orders */
   vistaOrderId: string | null;
   /** Patient DFN in VistA */
   patientDfn: string;
   /** Patient name (denormalized for worklist display) */
   patientName: string;
-  /** Accession number — unique per order, used for DICOM reconciliation */
+  /** Accession number -- unique per order, used for DICOM reconciliation */
   accessionNumber: string;
   /** Ordered procedure description */
   scheduledProcedure: string;
@@ -74,7 +74,7 @@ export interface WorklistItem {
   linkedStudyUid: string | null;
   /** Linked Orthanc study ID (set after reconciliation) */
   linkedOrthancStudyId: string | null;
-  /** Source label — "prototype-sidecar" or "vista-radiology" */
+  /** Source label -- "prototype-sidecar" or "vista-radiology" */
   source: "prototype-sidecar" | "vista-radiology";
   /** Created timestamp (ISO 8601) */
   createdAt: string;
@@ -233,7 +233,7 @@ export async function updateWorklistItem(id: string, updates: Partial<WorklistIt
   const updated = {
     ...item,
     ...updates,
-    // Pin immutable fields — cannot be overwritten by updates
+    // Pin immutable fields -- cannot be overwritten by updates
     id: item.id,
     patientDfn: item.patientDfn,
     createdAt: item.createdAt,
@@ -266,26 +266,26 @@ export async function getAllWorklistItems(): Promise<WorklistItem[]> {
 }
 
 /* ================================================================== */
-/* VistA RPC stubs — migration targets                                 */
+/* VistA RPC stubs -- migration targets                                 */
 /* ================================================================== */
 
 /**
  * Target RPCs for VistA Radiology ordering (when sandbox supports them):
  *
- * - ORWDXR NEW ORDER      — Create a new radiology order
- * - ORWDXR ISREL          — Check if order is released
- * - RAD/NUC MED REGISTER  — Register exam in Radiology package
- * - RARTE EXAMS BY DFN    — List radiology exams for patient
- * - RA DETAILED REPORT    — Get radiology report text
- * - MAGG PAT PHOTOS       — Patient photos (Phase 22 wired)
- * - MAG4 PAT GET IMAGES   — Patient image list (Phase 22 wired)
- * - MAG4 REMOTE PROCEDURE — Imaging metadata (Phase 22 wired)
+ * - ORWDXR NEW ORDER      -- Create a new radiology order
+ * - ORWDXR ISREL          -- Check if order is released
+ * - RAD/NUC MED REGISTER  -- Register exam in Radiology package
+ * - RARTE EXAMS BY DFN    -- List radiology exams for patient
+ * - RA DETAILED REPORT    -- Get radiology report text
+ * - MAGG PAT PHOTOS       -- Patient photos (Phase 22 wired)
+ * - MAG4 PAT GET IMAGES   -- Patient image list (Phase 22 wired)
+ * - MAG4 REMOTE PROCEDURE -- Imaging metadata (Phase 22 wired)
  *
  * File numbers:
- * - ^RAD(75.1)  — Rad/Nuc Med Orders
- * - ^RA(74)     — Rad/Nuc Med Master Accession
- * - ^MAG(2005)  — Image entry (VistA Imaging)
- * - ^MAG(2005.1) — Image Group
+ * - ^RAD(75.1)  -- Rad/Nuc Med Orders
+ * - ^RA(74)     -- Rad/Nuc Med Master Accession
+ * - ^MAG(2005)  -- Image entry (VistA Imaging)
+ * - ^MAG(2005.1) -- Image Group
  */
 
 /* ================================================================== */
@@ -294,7 +294,7 @@ export async function getAllWorklistItems(): Promise<WorklistItem[]> {
 
 export default async function imagingWorklistRoutes(server: FastifyInstance): Promise<void> {
   /**
-   * GET /imaging/worklist — List worklist items.
+   * GET /imaging/worklist -- List worklist items.
    * Query params: facility, modality, date (YYYY-MM-DD), status, patientDfn
    */
   server.get("/imaging/worklist", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -338,7 +338,7 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
   });
 
   /**
-   * POST /imaging/worklist/orders — Create an imaging order.
+   * POST /imaging/worklist/orders -- Create an imaging order.
    * Body: CreateImagingOrderInput
    */
   server.post("/imaging/worklist/orders", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -369,7 +369,7 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
     const now = new Date().toISOString();
     const item: WorklistItem = {
       id: randomUUID(),
-      vistaOrderId: null, // Prototype — no VistA order IEN
+      vistaOrderId: null, // Prototype -- no VistA order IEN
       patientDfn: body.patientDfn,
       patientName: body.patientName || `Patient DFN ${body.patientDfn}`,
       accessionNumber: generateAccessionNumber(),
@@ -441,7 +441,7 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
   });
 
   /**
-   * GET /imaging/worklist/:id — Single worklist item detail.
+   * GET /imaging/worklist/:id -- Single worklist item detail.
    */
   server.get("/imaging/worklist/:id", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = (request as any).session;
@@ -458,7 +458,7 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
   });
 
   /**
-   * PATCH /imaging/worklist/:id/status — Update worklist item status.
+   * PATCH /imaging/worklist/:id/status -- Update worklist item status.
    * Body: { status: WorklistItemStatus }
    */
   server.patch("/imaging/worklist/:id/status", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -502,7 +502,7 @@ export default async function imagingWorklistRoutes(server: FastifyInstance): Pr
   });
 
   /**
-   * GET /imaging/worklist/stats — Worklist statistics.
+   * GET /imaging/worklist/stats -- Worklist statistics.
    */
   server.get("/imaging/worklist/stats", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = (request as any).session;

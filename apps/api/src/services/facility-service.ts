@@ -1,7 +1,7 @@
 /**
- * Facility / Department / Location Service — Phase 347
+ * Facility / Department / Location Service -- Phase 347
  *
- * Implements the Tenant → Facility → Department → Location hierarchy
+ * Implements the Tenant -> Facility -> Department -> Location hierarchy
  * with optional VistA mapping. All data is PG-backed via platform DB.
  *
  * ADR: docs/decisions/ADR-FACILITY-LOCATION-MODEL.md
@@ -9,7 +9,7 @@
 
 import { randomUUID } from "node:crypto";
 
-// ─── Domain Types ────────────────────────────────────────
+// --- Domain Types ----------------------------------------
 
 export type FacilityType =
   | "hospital"
@@ -109,14 +109,14 @@ export interface ProviderFacilityAssignment {
   createdAt: string;
 }
 
-// ─── In-Memory Stores (PG-backed via migration v38) ─────
+// --- In-Memory Stores (PG-backed via migration v38) -----
 
 const facilityStore = new Map<string, Facility>();
 const departmentStore = new Map<string, Department>();
 const locationStore = new Map<string, Location>();
 const assignmentStore = new Map<string, ProviderFacilityAssignment>();
 
-// ─── Facility CRUD ───────────────────────────────────────
+// --- Facility CRUD ---------------------------------------
 
 export function createFacility(
   tenantId: string,
@@ -176,7 +176,7 @@ export function decommissionFacility(tenantId: string, id: string): boolean {
   return true;
 }
 
-// ─── Department CRUD ─────────────────────────────────────
+// --- Department CRUD -------------------------------------
 
 export function createDepartment(
   tenantId: string,
@@ -240,7 +240,7 @@ export function decommissionDepartment(tenantId: string, id: string): boolean {
   return true;
 }
 
-// ─── Location CRUD ───────────────────────────────────────
+// --- Location CRUD ---------------------------------------
 
 export function createLocation(
   tenantId: string,
@@ -298,7 +298,7 @@ export function decommissionLocation(tenantId: string, id: string): boolean {
   return true;
 }
 
-// ─── Provider Facility Assignment ────────────────────────
+// --- Provider Facility Assignment ------------------------
 
 export function assignProvider(
   tenantId: string,
@@ -337,7 +337,7 @@ export function removeAssignment(tenantId: string, id: string): boolean {
   return true;
 }
 
-// ─── Hierarchy Lookup ────────────────────────────────────
+// --- Hierarchy Lookup ------------------------------------
 
 export interface FacilityHierarchy {
   facility: Facility;
@@ -362,7 +362,7 @@ export function getFacilityHierarchy(
   return { facility, departments };
 }
 
-// ─── VistA Mapping Posture ───────────────────────────────
+// --- VistA Mapping Posture -------------------------------
 
 export interface VistaMappingPosture {
   totalFacilities: number;
@@ -397,7 +397,7 @@ export function getVistaMappingPosture(tenantId: string): VistaMappingPosture {
   };
 }
 
-// ─── Store Reset (for tests) ────────────────────────────
+// --- Store Reset (for tests) ----------------------------
 
 export function _resetFacilityStores(): void {
   facilityStore.clear();

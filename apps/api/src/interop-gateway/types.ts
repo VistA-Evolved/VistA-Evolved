@@ -1,12 +1,12 @@
 /**
- * Phase 400 (W23-P2): Interop Gateway Layer — Types
+ * Phase 400 (W23-P2): Interop Gateway Layer -- Types
  *
  * Channels, mediators, transformers, and transaction audit for routing
  * and transforming health data between internal systems and external
  * exchange partners.
  */
 
-// ─── Channel Configuration ─────────────────────────────────
+// --- Channel Configuration ---------------------------------
 
 export type ChannelDirection = 'inbound' | 'outbound' | 'bidirectional';
 export type ChannelProtocol =
@@ -43,7 +43,7 @@ export interface GatewayChannel {
   updatedAt: string;
 }
 
-// ─── Transform Pipeline ────────────────────────────────────
+// --- Transform Pipeline ------------------------------------
 
 export type TransformType =
   | 'hl7v2-to-fhir'
@@ -72,7 +72,7 @@ export interface TransformPipeline {
   updatedAt: string;
 }
 
-// ─── Transaction Audit ─────────────────────────────────────
+// --- Transaction Audit -------------------------------------
 
 export type TransactionStatus = 'pending' | 'processing' | 'completed' | 'failed' | 'rejected';
 
@@ -92,7 +92,7 @@ export interface GatewayTransaction {
   completedAt: string | null;
 }
 
-// ─── Mediator ──────────────────────────────────────────────
+// --- Mediator ----------------------------------------------
 
 export type MediatorType = 'internal' | 'openhim';
 
@@ -109,7 +109,7 @@ export interface MediatorConfig {
   updatedAt: string;
 }
 
-// ─── Dashboard Stats ───────────────────────────────────────
+// --- Dashboard Stats ---------------------------------------
 
 export interface GatewayDashboardStats {
   totalChannels: number;

@@ -31,7 +31,7 @@ interface Violation {
 const violations: Violation[] = [];
 const checks: { name: string; status: 'pass' | 'fail' }[] = [];
 
-// ── Forbidden roots ──────────────────────────────────────────────
+// -- Forbidden roots ----------------------------------------------
 
 const FORBIDDEN_DIRS = [
   { path: 'reports', rule: 'no-root-reports' },
@@ -72,7 +72,7 @@ for (const { path, rule } of FORBIDDEN_DIRS) {
   }
 }
 
-// ── Verify output patterns in docs/ ─────────────────────────────
+// -- Verify output patterns in docs/ -----------------------------
 
 const VERIFY_PATTERNS = [/phase\d+-verify-report\.md$/i, /verify-output/i, /phase\d+-verify\.md$/i];
 
@@ -107,7 +107,7 @@ checks.push({
   status: verifyInDocs.length > 0 ? 'fail' : 'pass',
 });
 
-// ── Required policy files ────────────────────────────────────────
+// -- Required policy files ----------------------------------------
 
 const REQUIRED_FILES = [
   { path: join('docs', 'POLICY.md'), rule: 'policy-exists' },
@@ -129,7 +129,7 @@ for (const { path, rule } of REQUIRED_FILES) {
   }
 }
 
-// ── Artifact output convention ───────────────────────────────────
+// -- Artifact output convention -----------------------------------
 
 // Check that /artifacts is gitignored (look for it in .gitignore)
 const gitignorePath = join(ROOT, '.gitignore');
@@ -148,7 +148,7 @@ if (existsSync(gitignorePath)) {
   }
 }
 
-// ── Output ───────────────────────────────────────────────────────
+// -- Output -------------------------------------------------------
 
 const errorCount = violations.filter((v) => v.severity === 'error').length;
 const warnCount = violations.filter((v) => v.severity === 'warn').length;

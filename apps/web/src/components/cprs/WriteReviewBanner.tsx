@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * WriteReviewBanner — Phase 437.
+ * WriteReviewBanner -- Phase 437.
  *
  * Displays a supervised-mode review banner when a writeback command
  * is awaiting clinical review before execution. Shows the dry-run
@@ -12,6 +12,7 @@
  */
 
 import { useState } from 'react';
+import { csrfHeaders } from '@/lib/csrf';
 
 export interface WriteReviewBannerProps {
   /** The writeback command ID awaiting review */
@@ -45,7 +46,7 @@ export function WriteReviewBanner({
     try {
       const resp = await fetch(`/api/writeback/commands/${commandId}/review`, {
         method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         credentials: 'include',
         body: JSON.stringify({ decision, reason: reason || undefined }),
       });

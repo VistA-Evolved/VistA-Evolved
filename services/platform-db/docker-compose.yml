@@ -1,4 +1,4 @@
-# Platform Database — Phase 101
+# Platform Database -- Phase 101
 #
 # PostgreSQL 16 for all non-clinical SaaS/platform state.
 # VistA/YottaDB remains the clinical source of truth.

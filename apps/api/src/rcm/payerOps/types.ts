@@ -1,12 +1,12 @@
 /**
- * PayerOps Domain Types — Phase 87+89: Philippines RCM Foundation + LOA Engine v1
+ * PayerOps Domain Types -- Phase 87+89: Philippines RCM Foundation + LOA Engine v1
  *
  * Core entities for payer operations workflow:
- *   - FacilityPayerEnrollment — payer x facility status tracking
- *   - LOACase — Letter of Authorization request lifecycle
- *   - LOAPack — generated submission pack history
- *   - CredentialVaultEntry — secure document storage for accreditation artifacts
- *   - PayerOpsAdapterResult — canonical result type for adapter operations
+ *   - FacilityPayerEnrollment -- payer x facility status tracking
+ *   - LOACase -- Letter of Authorization request lifecycle
+ *   - LOAPack -- generated submission pack history
+ *   - CredentialVaultEntry -- secure document storage for accreditation artifacts
+ *   - PayerOpsAdapterResult -- canonical result type for adapter operations
  *
  * Design:
  *   - VistA-first: clinical data from VistA RPCs, never duplicated
@@ -16,7 +16,7 @@
  *   - SLA-tracked: every LOA case has deadlines and risk levels (Phase 89)
  */
 
-/* ── Facility-Payer Enrollment ──────────────────────────────── */
+/* -- Facility-Payer Enrollment -------------------------------- */
 
 export type EnrollmentStatus =
   | 'not_enrolled'
@@ -57,7 +57,7 @@ export interface EnrollmentTimelineEvent {
   detail?: string;
 }
 
-/* ── LOA Case (Letter of Authorization) ─────────────────────── */
+/* -- LOA Case (Letter of Authorization) ----------------------- */
 
 export type LOAStatus =
   | 'draft'
@@ -78,7 +78,7 @@ export type LOARequestType =
   | 'pre_auth'
   | 'guarantee_letter';
 
-/* ── LOA SLA / Queue fields (Phase 89) ──────────────────────── */
+/* -- LOA SLA / Queue fields (Phase 89) ------------------------ */
 
 export type LOASLARiskLevel = 'on_track' | 'at_risk' | 'overdue' | 'critical';
 
@@ -88,7 +88,7 @@ export interface LOACase {
   id: string;
   tenantId: string;
   facilityId: string;
-  /** Patient DFN — clinical data fetched from VistA at render time */
+  /** Patient DFN -- clinical data fetched from VistA at render time */
   patientDfn: string;
   /** Optional encounter IEN from VistA */
   encounterIen?: string;
@@ -121,7 +121,7 @@ export interface LOACase {
   updatedAt: string;
   createdBy: string;
 
-  /* ── Phase 89: SLA + Queue fields ──────────────────────────── */
+  /* -- Phase 89: SLA + Queue fields ---------------------------- */
 
   /** Priority level (routine / urgent / stat) */
   priority: LOAPriority;
@@ -133,7 +133,7 @@ export interface LOACase {
   slaRiskLevel: LOASLARiskLevel;
   /** Clinical urgency notes (e.g., scheduled surgery date) */
   urgencyNotes?: string;
-  /** Associated enrollment ID — links LOA to payer enrollment */
+  /** Associated enrollment ID -- links LOA to payer enrollment */
   enrollmentId?: string;
   /** History of generated submission packs */
   packHistory: LOAPack[];
@@ -143,7 +143,7 @@ export interface LOACase {
   reminderCount: number;
 }
 
-/* ── LOA Pack (Phase 89) ────────────────────────────────────── */
+/* -- LOA Pack (Phase 89) -------------------------------------- */
 
 export interface LOAPack {
   id: string;
@@ -204,7 +204,7 @@ export const LOA_TRANSITIONS: Record<LOAStatus, LOAStatus[]> = {
   cancelled: [],
 };
 
-/* ── Credential Vault ───────────────────────────────────────── */
+/* -- Credential Vault ----------------------------------------- */
 
 export type CredentialDocType =
   | 'prc_license'
@@ -237,7 +237,7 @@ export interface CredentialVaultEntry {
   issuedBy?: string;
   /** Issue date */
   issueDate?: string;
-  /** Expiry date — renewal reminders triggered from this */
+  /** Expiry date -- renewal reminders triggered from this */
   expiryDate?: string;
   /** Days before expiry to trigger reminder */
   renewalReminderDays: number;
@@ -252,7 +252,7 @@ export interface CredentialVaultEntry {
   updatedAt: string;
 }
 
-/* ── Adapter Result Types ───────────────────────────────────── */
+/* -- Adapter Result Types ------------------------------------- */
 
 export type PayerOpsResultStatus = 'success' | 'manual_required' | 'not_supported' | 'error';
 
@@ -276,7 +276,7 @@ export interface PayerOpsResult<T = unknown> {
   message?: string;
 }
 
-/* ── Adapter Interface ──────────────────────────────────────── */
+/* -- Adapter Interface ---------------------------------------- */
 
 export interface PayerOpsAdapter {
   readonly id: string;

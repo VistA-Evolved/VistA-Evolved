@@ -41,7 +41,7 @@ describe("Phase 410: W24-P2 REFERENCE ENVIRONMENTS", () => {
   });
 });
 
-describe("Phase 411: W24-P3: Customer Integration Intake Model — IMPLEMENT", () => {
+describe("Phase 411: W24-P3: Customer Integration Intake Model -- IMPLEMENT", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/pilots/`);
     expect(r0.status, "/pilots/").not.toBe(500);

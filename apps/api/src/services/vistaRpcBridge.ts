@@ -1,15 +1,15 @@
 /**
- * VistaRpcBridge — Class-based facade over the existing XWB RPC Broker client.
+ * VistaRpcBridge -- Class-based facade over the existing XWB RPC Broker client.
  *
  * This wraps the battle-tested rpcBrokerClient.ts (768 lines) and
  * rpc-resilience.ts (499 lines) into a clean OOP interface that can be
  * instantiated with explicit connection parameters.
  *
  * The underlying client implements the full XWB protocol from scratch:
- *   TCPConnect → XUS SIGNON SETUP → XUS AV CODE → XWB CREATE CONTEXT
+ *   TCPConnect -> XUS SIGNON SETUP -> XUS AV CODE -> XWB CREATE CONTEXT
  * with cipher pad encryption, async mutex, circuit breaker, and more.
  *
- * Phase P1-1: VistA RPC Bridge — Verified Live Connection
+ * Phase P1-1: VistA RPC Bridge -- Verified Live Connection
  */
 
 import {
@@ -83,7 +83,7 @@ export class VistaRpcBridge {
    *
    * Sets VISTA_* env vars to match the config (the underlying client
    * reads from process.env) and delegates to `connect()` which performs
-   * the full XWB handshake: TCPConnect → SIGNON SETUP → AV CODE → CREATE CONTEXT.
+   * the full XWB handshake: TCPConnect -> SIGNON SETUP -> AV CODE -> CREATE CONTEXT.
    *
    * Auto-reconnect: retries up to 3 times with 5 s delay on failure.
    */
@@ -155,7 +155,7 @@ export class VistaRpcBridge {
    * Uses the resilient wrapper (`safeCallRpc`) which adds:
    *   - async mutex (serialized socket access)
    *   - auto-reconnect (re-authenticates if socket is stale)
-   *   - circuit breaker (5 failures → open, 30 s half-open)
+   *   - circuit breaker (5 failures -> open, 30 s half-open)
    *   - timeout (default 15 s)
    *   - retry with exponential backoff (2 retries)
    *
@@ -168,7 +168,7 @@ export class VistaRpcBridge {
    */
   async call(rpcName: string, params: string[] = []): Promise<string> {
     if (!this._connected) {
-      throw new Error(`Not connected — call connect() before calling RPCs`);
+      throw new Error(`Not connected -- call connect() before calling RPCs`);
     }
 
     const start = Date.now();
@@ -209,7 +209,7 @@ export class VistaRpcBridge {
   }
 
   /* ---------------------------------------------------------------- */
-  /* callDirect — raw call without resilience layer                    */
+  /* callDirect -- raw call without resilience layer                    */
   /* ---------------------------------------------------------------- */
 
   /**
@@ -218,7 +218,7 @@ export class VistaRpcBridge {
    */
   async callDirect(rpcName: string, params: string[] = []): Promise<string> {
     if (!this._connected) {
-      throw new Error(`Not connected — call connect() before calling RPCs`);
+      throw new Error(`Not connected -- call connect() before calling RPCs`);
     }
 
     const start = Date.now();

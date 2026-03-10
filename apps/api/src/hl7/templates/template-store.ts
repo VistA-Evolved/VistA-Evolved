@@ -1,5 +1,5 @@
 /**
- * HL7v2 Message Template Library — Template Store
+ * HL7v2 Message Template Library -- Template Store
  *
  * Phase 319 (W14-P3): CRUD for versioned message templates.
  * In-memory store with migration target: pg integration_template table.

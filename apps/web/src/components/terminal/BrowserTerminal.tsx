@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Browser Terminal — xterm.js based terminal for VistA MUMPS interaction
+ * Browser Terminal -- xterm.js based terminal for VistA MUMPS interaction
  * Phase 534 (Wave 39 P4)
  *
  * Connects to the /ws/console WebSocket gateway. Admin-only.

@@ -1,8 +1,8 @@
 /**
- * RCM Ops Routes — Phase 82 + Phase 142 enhancements
+ * RCM Ops Routes -- Phase 82 + Phase 142 enhancements
  *
  * Operational visibility endpoints for the RCM subsystem.
- * No fake data — if a connector/adapter is not connected,
+ * No fake data -- if a connector/adapter is not connected,
  * the response says so with pendingTargets.
  *
  * Endpoints:
@@ -61,10 +61,10 @@ function requireTenantId(request: FastifyRequest, reply: FastifyReply): string |
   return null;
 }
 
-/* ── Route plugin ───────────────────────────────────────────── */
+/* -- Route plugin --------------------------------------------- */
 
 export default async function rcmOpsRoutes(server: FastifyInstance): Promise<void> {
-  /* ── RBAC: reads require rcm:read, writes require rcm:write ── */
+  /* -- RBAC: reads require rcm:read, writes require rcm:write -- */
   server.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = (request as any).session;
     if (!session) return; // security.ts already rejected unauthenticated
@@ -82,33 +82,33 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
       });
     }
   });
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   /* GET /rcm/ops/connector-state                                */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   server.get('/rcm/ops/connector-state', async (_request: FastifyRequest) => {
     const states = await getAllConnectorStates();
     return { ok: true, connectors: states };
   });
 
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   /* GET /rcm/ops/adapter-state                                  */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   server.get('/rcm/ops/adapter-state', async (_request: FastifyRequest) => {
     const states = await getAllAdapterStates();
     return { ok: true, adapters: states };
   });
 
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   /* GET /rcm/ops/state-summary                                  */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   server.get('/rcm/ops/state-summary', async (_request: FastifyRequest) => {
     const summary = await getConnectorStateSummary();
     return { ok: true, ...summary };
   });
 
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   /* GET /rcm/ops/queue-depth                                    */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   server.get('/rcm/ops/queue-depth', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
     if (!tenantId) return;
@@ -116,9 +116,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
     return { ok: true, tenantId, ...stats };
   });
 
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   /* GET /rcm/ops/queue-jobs                                     */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   server.get('/rcm/ops/queue-jobs', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = request.query as Record<string, string>;
     const tenantId = requireTenantId(request, reply);
@@ -137,9 +137,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
     return { ok: true, tenantId, ...result };
   });
 
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   /* POST /rcm/ops/enqueue-eligibility                           */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   server.post(
     '/rcm/ops/enqueue-eligibility',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -179,9 +179,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
     }
   );
 
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   /* POST /rcm/ops/enqueue-status-poll                           */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   server.post(
     '/rcm/ops/enqueue-status-poll',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -218,9 +218,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
     }
   );
 
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   /* GET /rcm/ops/denial-queue                                   */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   server.get('/rcm/ops/denial-queue', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = request.query as Record<string, string>;
     const tenantId = requireTenantId(request, reply);
@@ -259,9 +259,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
     };
   });
 
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   /* GET /rcm/ops/scheduler-status                               */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   server.get('/rcm/ops/scheduler-status', async (_request: FastifyRequest) => {
     const scheduler = getPollingScheduler();
     const status = scheduler.getStatus();
@@ -277,14 +277,14 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
     };
   });
 
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   /* GET /rcm/ops/dashboard                                      */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
   server.get('/rcm/ops/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
     if (!tenantId) return;
 
-    // Gather all state — single call to getConnectorStateSummary avoids triple-probe
+    // Gather all state -- single call to getConnectorStateSummary avoids triple-probe
     const [stateSummary, jobStats, schedulerStatus, workqueueStats] = await Promise.all([
       getConnectorStateSummary(),
       getJobStatsByTenant(tenantId),
@@ -319,9 +319,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
     };
   });
 
-  /* ─────────────────────────────────────────────────────────── */
-  /* GET /rcm/ops/jobs/durable — Durable job queue stats (P142)  */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
+  /* GET /rcm/ops/jobs/durable -- Durable job queue stats (P142)  */
+  /* ----------------------------------------------------------- */
   server.get('/rcm/ops/jobs/durable', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = request.query as Record<string, string>;
     const tenantId = requireTenantId(request, reply);
@@ -341,9 +341,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
     }
   });
 
-  /* ─────────────────────────────────────────────────────────── */
-  /* POST /rcm/ops/jobs/durable/purge — Purge completed (P142)   */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
+  /* POST /rcm/ops/jobs/durable/purge -- Purge completed (P142)   */
+  /* ----------------------------------------------------------- */
   server.post('/rcm/ops/jobs/durable/purge', async (request: FastifyRequest) => {
     const body = (request.body as any) || {};
     const olderThanMs = parseInt(body.olderThanMs ?? '86400000', 10) || 86_400_000; // 24h default
@@ -357,9 +357,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
     }
   });
 
-  /* ─────────────────────────────────────────────────────────── */
-  /* GET /rcm/ops/evidence-gate/check — Evidence gate (P142)     */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
+  /* GET /rcm/ops/evidence-gate/check -- Evidence gate (P142)     */
+  /* ----------------------------------------------------------- */
   server.get(
     '/rcm/ops/evidence-gate/check',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -386,9 +386,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
     }
   );
 
-  /* ─────────────────────────────────────────────────────────── */
-  /* POST /rcm/ops/denial-followup/run — Manual followup (P142)  */
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
+  /* POST /rcm/ops/denial-followup/run -- Manual followup (P142)  */
+  /* ----------------------------------------------------------- */
   server.post('/rcm/ops/denial-followup/run', async (request: FastifyRequest) => {
     try {
       const result = await handleDenialFollowupTick({
@@ -401,9 +401,9 @@ export default async function rcmOpsRoutes(server: FastifyInstance): Promise<voi
     }
   });
 
-  /* ─────────────────────────────────────────────────────────── */
-  /* POST /rcm/ops/enqueue-remittance — Enqueue ERA import (P142)*/
-  /* ─────────────────────────────────────────────────────────── */
+  /* ----------------------------------------------------------- */
+  /* POST /rcm/ops/enqueue-remittance -- Enqueue ERA import (P142)*/
+  /* ----------------------------------------------------------- */
   server.post(
     '/rcm/ops/enqueue-remittance',
     async (request: FastifyRequest, reply: FastifyReply) => {

@@ -1,5 +1,5 @@
 /**
- * Export Engine — Phase 245: Data Exports v2
+ * Export Engine -- Phase 245: Data Exports v2
  *
  * Unified export orchestration layer with:
  *   - Background job queue (in-memory, resets on restart)
@@ -11,7 +11,7 @@
  *
  * This engine consolidates the scattered export paths across analytics,
  * reporting, imaging audit, and RCM into a single orchestration layer.
- * The existing subsystem-specific exports remain functional — this engine
+ * The existing subsystem-specific exports remain functional -- this engine
  * provides a unified alternative.
  */
 

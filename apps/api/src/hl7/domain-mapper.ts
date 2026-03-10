@@ -1,5 +1,5 @@
 /**
- * HL7v2 → Domain Event Mapper — Phase 260 (Wave 8 P4)
+ * HL7v2 -> Domain Event Mapper -- Phase 260 (Wave 8 P4)
  *
  * Deterministic mapping from parsed HL7v2 messages to VistA-Evolved
  * domain events. Each mapper extracts structured data from HL7 segments
@@ -8,7 +8,7 @@
  * Pattern: Pure functions, no side effects, no PHI in event metadata.
  */
 
-/* ── Domain Event Types ────────────────────────────────── */
+/* -- Domain Event Types ---------------------------------- */
 
 export type DomainEventType =
   | 'patient.admitted'
@@ -32,11 +32,11 @@ export interface DomainEvent {
   sendingFacility: string;
   /** Timestamp from HL7 message */
   eventTimestamp: string;
-  /** PHI-safe payload — identifiers only, no names/addresses */
+  /** PHI-safe payload -- identifiers only, no names/addresses */
   payload: Record<string, unknown>;
 }
 
-/* ── Segment Field Extraction Helpers ──────────────────── */
+/* -- Segment Field Extraction Helpers -------------------- */
 
 /**
  * Get the Nth field (1-based) from an HL7 segment line.
@@ -83,7 +83,7 @@ function findAllSegments(segments: string[], prefix: string): string[] {
   return segments.filter((s) => s.startsWith(prefix + '|'));
 }
 
-/* ── ADT Mapper ────────────────────────────────────────── */
+/* -- ADT Mapper ------------------------------------------ */
 
 const ADT_EVENT_MAP: Record<string, DomainEventType> = {
   A01: 'patient.admitted',
@@ -134,7 +134,7 @@ export function mapAdtMessage(raw: string): DomainEvent | null {
   };
 }
 
-/* ── ORU Mapper ────────────────────────────────────────── */
+/* -- ORU Mapper ------------------------------------------ */
 
 export function mapOruMessage(raw: string): DomainEvent | null {
   const segments = parseSegments(raw);
@@ -186,7 +186,7 @@ export function mapOruMessage(raw: string): DomainEvent | null {
   };
 }
 
-/* ── SIU Mapper ────────────────────────────────────────── */
+/* -- SIU Mapper ------------------------------------------ */
 
 const SIU_EVENT_MAP: Record<string, DomainEventType> = {
   S12: 'appointment.booked',
@@ -241,7 +241,7 @@ export function mapSiuMessage(raw: string): DomainEvent | null {
   };
 }
 
-/* ── Universal Mapper ──────────────────────────────────── */
+/* -- Universal Mapper ------------------------------------ */
 
 /**
  * Map any supported HL7v2 message to a domain event.
@@ -267,7 +267,7 @@ export function mapHl7ToDomainEvent(raw: string): DomainEvent | null {
 }
 
 /**
- * List supported message type → domain event mappings.
+ * List supported message type -> domain event mappings.
  */
 export function listSupportedMappings(): Array<{
   hl7Type: string;

@@ -1,5 +1,5 @@
 /**
- * Denial Followup Tick — Phase 142: RCM Operational Excellence
+ * Denial Followup Tick -- Phase 142: RCM Operational Excellence
  *
  * Background job that scans open denials approaching their SLA deadline
  * and creates work queue items + audit events for follow-up.
@@ -14,7 +14,7 @@
  *      - Record audit event
  *   4. Return summary of actions taken
  *
- * No external payer calls — this is purely internal workflow automation.
+ * No external payer calls -- this is purely internal workflow automation.
  */
 
 import { getPgDb } from '../../platform/pg/pg-db.js';
@@ -25,7 +25,7 @@ import { log } from '../../lib/logger.js';
 import type { RcmJobType } from './queue.js';
 import type { DenialStatus } from '../denials/types.js';
 
-/* ── Config ────────────────────────────────────────────────── */
+/* -- Config -------------------------------------------------- */
 
 const FOLLOWUP_HORIZON_DAYS =
   parseInt(process.env.RCM_DENIAL_FOLLOWUP_HORIZON_DAYS ?? '7', 10) || 7;
@@ -36,11 +36,11 @@ const FOLLOWUP_BATCH_SIZE = 50;
 
 export const DENIAL_FOLLOWUP_JOB_TYPE: RcmJobType = 'DENIAL_FOLLOWUP_TICK';
 
-/* ── Terminal statuses that don't need follow-up ───────────── */
+/* -- Terminal statuses that don't need follow-up ------------- */
 
 const TERMINAL_STATUSES: DenialStatus[] = ['PAID', 'CLOSED', 'WRITEOFF'];
 
-/* ── Result Types ──────────────────────────────────────────── */
+/* -- Result Types -------------------------------------------- */
 
 export interface DenialFollowupResult {
   scannedAt: string;
@@ -51,7 +51,7 @@ export interface DenialFollowupResult {
   errors: string[];
 }
 
-/* ── Handler ───────────────────────────────────────────────── */
+/* -- Handler ------------------------------------------------- */
 
 /**
  * Process a single denial followup tick.
@@ -119,7 +119,7 @@ export async function handleDenialFollowupTick(job: {
                 : `Denial SLA approaching: deadline ${denial.deadlineDate}`,
               reasonCategory: 'sla',
               recommendedAction: isOverdue
-                ? 'Escalate immediately — SLA has passed'
+                ? 'Escalate immediately -- SLA has passed'
                 : 'Review and take action before deadline',
               sourceType: 'manual',
               sourceId: denial.id,
@@ -185,7 +185,7 @@ async function getExistingFollowupItems(denialId: string): Promise<number> {
   }
 }
 
-/* ── Registration Config ───────────────────────────────────── */
+/* -- Registration Config ------------------------------------- */
 
 /**
  * Returns the PollingJobConfig for denial followup tick.

@@ -139,7 +139,7 @@ export function reconcileImport(
   sourceRecords: ReconciliationRecord[],
   targetRecords: ReconciliationRecord[],
   options?: {
-    /** Custom ID mapping: source ID → target ID */
+    /** Custom ID mapping: source ID -> target ID */
     idMapping?: Map<string, string>;
   }
 ): ReconciliationReport {

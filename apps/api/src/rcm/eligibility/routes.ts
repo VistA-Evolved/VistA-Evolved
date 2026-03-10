@@ -1,20 +1,20 @@
 /**
- * Phase 100 — Eligibility + Claim Status API Routes
+ * Phase 100 -- Eligibility + Claim Status API Routes
  *
  * Endpoints:
- *   POST /rcm/eligibility/check        — Run eligibility check (manual/sandbox/edi-stub)
- *   GET  /rcm/eligibility/history       — Paginated eligibility check history
- *   GET  /rcm/eligibility/stats         — Aggregate eligibility statistics
- *   GET  /rcm/eligibility/:id           — Get single eligibility check
- *   POST /rcm/claim-status/check        — Run claim status check
- *   POST /rcm/claim-status/schedule     — Schedule recurring claim status poll
- *   GET  /rcm/claim-status/history      — Paginated claim status history
- *   GET  /rcm/claim-status/timeline     — Claim-specific status timeline
- *   GET  /rcm/claim-status/stats        — Aggregate claim status statistics
- *   GET  /rcm/claim-status/:id          — Get single claim status check
- *   GET  /rcm/eligibility-adapters      — List available eligibility adapters
+ *   POST /rcm/eligibility/check        -- Run eligibility check (manual/sandbox/edi-stub)
+ *   GET  /rcm/eligibility/history       -- Paginated eligibility check history
+ *   GET  /rcm/eligibility/stats         -- Aggregate eligibility statistics
+ *   GET  /rcm/eligibility/:id           -- Get single eligibility check
+ *   POST /rcm/claim-status/check        -- Run claim status check
+ *   POST /rcm/claim-status/schedule     -- Schedule recurring claim status poll
+ *   GET  /rcm/claim-status/history      -- Paginated claim status history
+ *   GET  /rcm/claim-status/timeline     -- Claim-specific status timeline
+ *   GET  /rcm/claim-status/stats        -- Aggregate claim status statistics
+ *   GET  /rcm/claim-status/:id          -- Get single claim status check
+ *   GET  /rcm/eligibility-adapters      -- List available eligibility adapters
  *
- * All routes under /rcm/ — existing security catch-all covers session auth.
+ * All routes under /rcm/ -- existing security catch-all covers session auth.
  * Mutations wired to appendRcmAudit.
  */
 
@@ -36,7 +36,7 @@ import { getJobQueue } from '../jobs/queue.js';
 import { log } from '../../lib/logger.js';
 import type { EligibilityProvenance, ClaimStatusProvenance } from './types.js';
 
-/* ── Session helper ────────────────────────────────────────── */
+/* -- Session helper ------------------------------------------ */
 
 function getSession(request: FastifyRequest): { duz: string; tenantId: string } {
   const s = (request as any).session;
@@ -56,7 +56,7 @@ function getSession(request: FastifyRequest): { duz: string; tenantId: string } 
   };
 }
 
-/* ── Provenance validation ─────────────────────────────────── */
+/* -- Provenance validation ----------------------------------- */
 
 const VALID_ELIG_PROVENANCES = new Set<string>([
   'MANUAL',
@@ -73,14 +73,14 @@ const VALID_CSTAT_PROVENANCES = new Set<string>([
   'PORTAL',
 ]);
 
-/* ── Route Registration ────────────────────────────────────── */
+/* -- Route Registration -------------------------------------- */
 
 export default async function eligibilityRoutes(server: FastifyInstance): Promise<void> {
   /* ================================================================ */
   /* ELIGIBILITY ENDPOINTS                                            */
   /* ================================================================ */
 
-  /** POST /rcm/eligibility/check — Run eligibility check */
+  /** POST /rcm/eligibility/check -- Run eligibility check */
   server.post('/rcm/eligibility/check', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const { duz, tenantId } = getSession(request);
@@ -135,9 +135,9 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         dateOfService: body.dateOfService ?? null,
         provenance,
         eligible: null,
-        status: 'integration_pending',
+        status: 'awaiting_clearinghouse',
         responseJson: JSON.stringify({
-          integrationPending: true,
+          clearinghouseRequired: true,
           transactionSet: '270/271',
           description: 'EDI clearinghouse enrollment required for live eligibility inquiry',
           requirements: [
@@ -155,7 +155,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
       appendRcmAudit('eligibility.checked', {
         payerId: body.payerId,
         userId: duz,
-        detail: { checkId: record.id, provenance, status: 'integration_pending' },
+        detail: { checkId: record.id, provenance, status: 'awaiting_clearinghouse' },
       });
 
       return reply.status(201).send({ ok: true, check: record });
@@ -238,7 +238,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     }
   });
 
-  /** GET /rcm/eligibility/history — Paginated history */
+  /** GET /rcm/eligibility/history -- Paginated history */
   server.get('/rcm/eligibility/history', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const { tenantId } = getSession(request);
@@ -253,13 +253,13 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     return reply.send({ ok: true, ...result });
   });
 
-  /** GET /rcm/eligibility/stats — Aggregate statistics */
+  /** GET /rcm/eligibility/stats -- Aggregate statistics */
   server.get('/rcm/eligibility/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const stats = await getEligibilityStats(getSession(request).tenantId);
     return reply.send({ ok: true, stats });
   });
 
-  /** GET /rcm/eligibility/:id — Get single check */
+  /** GET /rcm/eligibility/:id -- Get single check */
   server.get('/rcm/eligibility/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { tenantId } = getSession(request);
     const { id } = request.params as { id: string };
@@ -274,7 +274,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
   /* CLAIM STATUS ENDPOINTS                                           */
   /* ================================================================ */
 
-  /** POST /rcm/claim-status/check — Run claim status check */
+  /** POST /rcm/claim-status/check -- Run claim status check */
   server.post('/rcm/claim-status/check', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const { duz, tenantId } = getSession(request);
@@ -329,9 +329,9 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         claimStatus: null,
         adjudicationDate: null,
         paidAmountCents: null,
-        status: 'integration_pending',
+        status: 'awaiting_clearinghouse',
         responseJson: JSON.stringify({
-          integrationPending: true,
+          clearinghouseRequired: true,
           transactionSet: '276/277',
           description: 'EDI clearinghouse enrollment required for live claim status inquiry',
           requirements: [
@@ -350,7 +350,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
         claimId: body.claimRef,
         payerId: body.payerId,
         userId: duz,
-        detail: { checkId: record.id, provenance, status: 'integration_pending' },
+        detail: { checkId: record.id, provenance, status: 'awaiting_clearinghouse' },
       });
 
       return reply.status(201).send({ ok: true, check: record });
@@ -434,7 +434,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     }
   });
 
-  /** POST /rcm/claim-status/schedule — Schedule recurring poll via job queue */
+  /** POST /rcm/claim-status/schedule -- Schedule recurring poll via job queue */
   server.post(
     '/rcm/claim-status/schedule',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -475,7 +475,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     }
   );
 
-  /** GET /rcm/claim-status/history — Paginated history */
+  /** GET /rcm/claim-status/history -- Paginated history */
   server.get('/rcm/claim-status/history', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const { tenantId } = getSession(request);
@@ -490,7 +490,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     return reply.send({ ok: true, ...result });
   });
 
-  /** GET /rcm/claim-status/timeline — Claim-specific timeline */
+  /** GET /rcm/claim-status/timeline -- Claim-specific timeline */
   server.get('/rcm/claim-status/timeline', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const { tenantId } = getSession(request);
@@ -501,13 +501,13 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
     return reply.send({ ok: true, claimRef: q.claimRef, timeline, total: timeline.length });
   });
 
-  /** GET /rcm/claim-status/stats — Aggregate statistics */
+  /** GET /rcm/claim-status/stats -- Aggregate statistics */
   server.get('/rcm/claim-status/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const stats = await getClaimStatusStats(getSession(request).tenantId);
     return reply.send({ ok: true, stats });
   });
 
-  /** GET /rcm/claim-status/:id — Get single check */
+  /** GET /rcm/claim-status/:id -- Get single check */
   server.get('/rcm/claim-status/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { tenantId } = getSession(request);
     const { id } = request.params as { id: string };
@@ -522,7 +522,7 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
   /* ADAPTER LISTING                                                  */
   /* ================================================================ */
 
-  /** GET /rcm/eligibility-adapters — List available adapters */
+  /** GET /rcm/eligibility-adapters -- List available adapters */
   server.get('/rcm/eligibility-adapters', async (_request: FastifyRequest, reply: FastifyReply) => {
     const adapters = listPayerAdapters();
     return reply.send({
@@ -535,10 +535,10 @@ export default async function eligibilityRoutes(server: FastifyInstance): Promis
       integrationStatus: {
         MANUAL: 'available',
         SANDBOX: 'available',
-        EDI_270_271: 'integration_pending',
-        EDI_276_277: 'integration_pending',
-        CLEARINGHOUSE: 'integration_pending',
-        PORTAL: 'integration_pending',
+        EDI_270_271: 'requires_clearinghouse_config',
+        EDI_276_277: 'requires_clearinghouse_config',
+        CLEARINGHOUSE: 'requires_clearinghouse_config',
+        PORTAL: 'requires_portal_config',
       },
     });
   });

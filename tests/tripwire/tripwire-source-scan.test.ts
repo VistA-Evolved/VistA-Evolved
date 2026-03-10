@@ -9,7 +9,8 @@
  * Allowlist: explicitly permitted patterns with justification.
  * CI fails if any non-allowlisted dead-click patterns are found.
  *
- * Usage: npx tsx tests/tripwire/tripwire-source-scan.test.ts
+ * Usage: pnpm qa:tripwire:source
+ *    or: pnpm -C apps/api exec tsx ../../tests/tripwire/tripwire-source-scan.test.ts
  */
 
 import * as fs from 'node:fs';

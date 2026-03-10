@@ -1,5 +1,5 @@
 /**
- * S3-compatible Object Store Client — Phase 157
+ * S3-compatible Object Store Client -- Phase 157
  *
  * Zero external dependency S3 client using AWS Signature V4.
  * Supports MinIO locally and S3 in production.
@@ -14,6 +14,7 @@
 
 import { createHash, createHmac } from 'crypto';
 import { log } from '../lib/logger.js';
+import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -238,7 +239,7 @@ export class S3Client {
       return { ok: false, statusCode: res.statusCode, error: res.body.slice(0, 200) };
     } catch (err: any) {
       log.error('S3 PUT error', { key, error: err.message });
-      return { ok: false, statusCode: 0, error: err.message };
+      return { ok: false, statusCode: 0, error: safeErr(err) };
     }
   }
 
@@ -263,7 +264,7 @@ export class S3Client {
       const res = await s3Request('HEAD', url, headers);
       return { exists: res.statusCode === 200 };
     } catch (err: any) {
-      return { exists: false, error: err.message };
+      return { exists: false, error: safeErr(err) };
     }
   }
 
@@ -287,7 +288,7 @@ export class S3Client {
       if (res.statusCode === 409) return { ok: true };
       return { ok: false, error: `HTTP ${res.statusCode}: ${res.body.slice(0, 200)}` };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   }
 }

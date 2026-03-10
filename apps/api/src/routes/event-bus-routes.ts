@@ -36,7 +36,7 @@ function requireTenantId(request: FastifyRequest, reply: FastifyReply): string |
 }
 
 export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Health ────────────────────────────────────────
+  // --- Health ----------------------------------------
 
   server.get('/events/health', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
@@ -47,13 +47,13 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, phase: 355, ...stats });
   });
 
-  // ─── Event Types ───────────────────────────────────
+  // --- Event Types -----------------------------------
 
   server.get('/events/types', async (_req: FastifyRequest, reply: FastifyReply) => {
     return reply.send({ ok: true, eventTypes: EVENT_TYPES });
   });
 
-  // ─── Publish (for testing / manual triggering) ─────
+  // --- Publish (for testing / manual triggering) -----
 
   server.post('/events/publish', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
@@ -76,7 +76,7 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
     return reply.code(201).send({ ok: true, event });
   });
 
-  // ─── Outbox ────────────────────────────────────────
+  // --- Outbox ----------------------------------------
 
   server.get('/events/outbox', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
@@ -92,7 +92,7 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, events, count: events.length });
   });
 
-  // ─── DLQ ──────────────────────────────────────────
+  // --- DLQ ------------------------------------------
 
   server.get('/events/dlq', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
@@ -119,7 +119,7 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
     return reply.code(code).send(result);
   });
 
-  // ─── Replay ────────────────────────────────────────
+  // --- Replay ----------------------------------------
 
   server.post('/events/replay', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
@@ -137,7 +137,7 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, ...result });
   });
 
-  // ─── Consumers ─────────────────────────────────────
+  // --- Consumers -------------------------------------
 
   server.get('/events/consumers', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);
@@ -152,7 +152,7 @@ export async function eventBusRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, consumers: list });
   });
 
-  // ─── Delivery Log ─────────────────────────────────
+  // --- Delivery Log ---------------------------------
 
   server.get('/events/deliveries', async (req: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(req, reply);

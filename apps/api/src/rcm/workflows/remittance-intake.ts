@@ -1,5 +1,5 @@
 /**
- * Remittance Intake — Phase 94: PH HMO Workflow Automation
+ * Remittance Intake â€" Phase 94: PH HMO Workflow Automation
  *
  * Secure remittance/EOB intake flow for PH HMO payers.
  *
@@ -20,8 +20,9 @@
  */
 
 import { randomUUID } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* â"€â"€ Types â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export type RemittanceDocType = 'eob' | 'soa' | 'check_image' | 'payment_advice' | 'other';
 
@@ -58,7 +59,7 @@ export interface RemittanceDocument {
   filename: string;
   mimeType: string;
   sizeBytes: number;
-  /** Opaque storage reference — blob stored securely, not inline */
+  /** Opaque storage reference â€" blob stored securely, not inline */
   storageRef: string;
 
   // Parsed data (manual entry by billing staff)
@@ -90,7 +91,7 @@ export interface RemittanceDocument {
   updatedAt: string;
 }
 
-/* ── DB repo interface (Phase 146: durable remit doc storage) ── */
+/* â"€â"€ DB repo interface (Phase 146: durable remit doc storage) â"€â"€ */
 
 interface RemitDocRepo {
   insert(data: any): Promise<any>;
@@ -105,12 +106,12 @@ export function initRemitIntakeRepo(repo: RemitDocRepo): void {
   dbRepo = repo;
 }
 
-/* ── Store (cache — PG is truth when wired) ─────────────── */
+/* â"€â"€ Store (cache â€" PG is truth when wired) â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 const remitDocStore = new Map<string, RemittanceDocument>();
 const tenantRemitIndex = new Map<string, Set<string>>();
 
-/* ── Create ─────────────────────────────────────────────────── */
+/* â"€â"€ Create â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export function createRemittanceDocument(params: {
   tenantId: string;
@@ -171,12 +172,12 @@ export function createRemittanceDocument(params: {
       status: 'received',
       createdAt: now,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('remittance-intake DB write-through failed', { error: String(e) }));
 
   return doc;
 }
 
-/* ── Read ───────────────────────────────────────────────────── */
+/* â"€â"€ Read â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export function getRemittanceDocument(id: string): RemittanceDocument | undefined {
   return remitDocStore.get(id);
@@ -218,7 +219,7 @@ export function listRemittanceDocuments(
   return { documents: result.slice(offset, offset + limit), total };
 }
 
-/* ── Tag + Associate ────────────────────────────────────────── */
+/* â"€â"€ Tag + Associate â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export function tagRemittanceDocument(
   tenantId: string,
@@ -265,12 +266,12 @@ export function tagRemittanceDocument(
       status: updated.status,
       updatedAt: updated.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('remittance-intake DB write-through failed', { error: String(e) }));
 
   return updated;
 }
 
-/* ── Review + Underpayment Check ────────────────────────────── */
+/* â"€â"€ Review + Underpayment Check â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export function reviewRemittanceDocument(
   tenantId: string,
@@ -320,12 +321,12 @@ export function reviewRemittanceDocument(
       status: updated.status,
       updatedAt: updated.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('remittance-intake DB write-through failed', { error: String(e) }));
 
   return updated;
 }
 
-/* ── Post to VistA (scaffold) ───────────────────────────────── */
+/* â"€â"€ Post to VistA (scaffold) â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export function markAsPosted(
   tenantId: string,
@@ -368,12 +369,12 @@ export function markAsPosted(
       status: updated.status,
       updatedAt: updated.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('remittance-intake DB write-through failed', { error: String(e) }));
 
   return updated;
 }
 
-/* ── Stats ──────────────────────────────────────────────────── */
+/* â"€â"€ Stats â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export function getRemittanceStats(tenantId: string): {
   total: number;

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Inpatient Census — Phase 137
+ * Inpatient Census -- Phase 137
  *
  * Dedicated ward census page showing:
  * - Ward list with patient counts

@@ -1,5 +1,5 @@
 /**
- * Infusion / BCMA Safety Bridge — Types
+ * Infusion / BCMA Safety Bridge -- Types
  *
  * Phase 385 (W21-P8): Infusion pump integration and Barcode Medication
  * Administration (BCMA) safety bridge. Implements the "right 6" checks
@@ -14,17 +14,17 @@
 export type BcmaCheckStatus = 'pass' | 'fail' | 'warning' | 'pending' | 'override';
 
 export interface BcmaRight6Result {
-  /** Right patient — barcode scan matches ordered patient DFN */
+  /** Right patient -- barcode scan matches ordered patient DFN */
   rightPatient: BcmaCheckStatus;
-  /** Right drug — scanned NDC/UPC matches ordered medication */
+  /** Right drug -- scanned NDC/UPC matches ordered medication */
   rightDrug: BcmaCheckStatus;
-  /** Right dose — scanned quantity matches ordered dose */
+  /** Right dose -- scanned quantity matches ordered dose */
   rightDose: BcmaCheckStatus;
-  /** Right route — matches ordered route of administration */
+  /** Right route -- matches ordered route of administration */
   rightRoute: BcmaCheckStatus;
-  /** Right time — within allowable administration window */
+  /** Right time -- within allowable administration window */
   rightTime: BcmaCheckStatus;
-  /** Right documentation — order is active and unsigned med pass exists */
+  /** Right documentation -- order is active and unsigned med pass exists */
   rightDocumentation: BcmaCheckStatus;
   /** Overall pass/fail */
   overallStatus: BcmaCheckStatus;

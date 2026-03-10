@@ -56,6 +56,13 @@ async function apiPost(path: string, body?: unknown) {
   });
 }
 
+interface MarketplaceSummary {
+  activeSku?: string;
+  totalTenants?: number;
+  totalConnectors?: number;
+  jurisdictionBreakdown?: Record<string, number>;
+}
+
 interface ModuleManifest {
   moduleId: string;
   manifest: {
@@ -105,7 +112,7 @@ export default function ModulesPage() {
   const [manifests, setManifests] = useState<ModuleManifest[]>([]);
   const [marketplaceConfig, setMarketplaceConfig] = useState<MarketplaceConfig | null>(null);
   const [jurisdictions, setJurisdictions] = useState<JurisdictionInfo[]>([]);
-  const [summary, setSummary] = useState<any>(null);
+  const [summary, setSummary] = useState<MarketplaceSummary | null>(null);
   const [error, setError] = useState<string>('');
   const [saving, setSaving] = useState(false);
   const [expandedModule, setExpandedModule] = useState<string | null>(null);
@@ -747,7 +754,7 @@ function StatusTab({
   config,
   manifests,
 }: {
-  summary: any;
+  summary: MarketplaceSummary | null;
   config: MarketplaceConfig | null;
   manifests: ModuleManifest[];
 }) {
@@ -882,7 +889,7 @@ interface EntitlementRow {
 function EntitlementsTab() {
   const [entitlements, setEntitlements] = useState<EntitlementRow[]>([]);
   const [enabledIds, setEnabledIds] = useState<string[]>([]);
-  const [catalog, setCatalog] = useState<any[]>([]);
+  const [catalog, setCatalog] = useState<ModuleManifest[]>([]);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const [seedMsg, setSeedMsg] = useState('');
@@ -1011,7 +1018,7 @@ function EntitlementsTab() {
           </tr>
         </thead>
         <tbody>
-          {catalog.map((mod: any) => {
+          {catalog.map((mod: ModuleManifest) => {
             const ent = entitlements.find((e) => e.moduleId === mod.moduleId);
             const isEnabled = enabledIds.includes(mod.moduleId);
             return (
@@ -1019,7 +1026,7 @@ function EntitlementsTab() {
                 <td style={{ padding: '8px 12px', fontFamily: 'monospace', fontSize: 12 }}>
                   {mod.moduleId}
                 </td>
-                <td style={{ padding: '8px 12px' }}>{mod.name}</td>
+                <td style={{ padding: '8px 12px' }}>{mod.manifest.name}</td>
                 <td style={{ padding: '8px 12px' }}>
                   <span
                     style={{
@@ -1033,7 +1040,7 @@ function EntitlementsTab() {
                   >
                     {isEnabled ? 'ENABLED' : 'DISABLED'}
                   </span>
-                  {mod.alwaysEnabled && (
+                  {mod.manifest.alwaysEnabled && (
                     <span style={{ marginLeft: 4, fontSize: 10, color: '#6c757d' }}>
                       (always-on)
                     </span>
@@ -1048,7 +1055,7 @@ function EntitlementsTab() {
                       : '-'}
                 </td>
                 <td style={{ padding: '8px 12px' }}>
-                  {!mod.alwaysEnabled && (
+                  {!mod.manifest.alwaysEnabled && (
                     <button
                       disabled={saving}
                       onClick={() => toggleEntitlement(mod.moduleId, isEnabled)}

@@ -1,5 +1,5 @@
 /**
- * Phase 37 — E2E: CPRS Menu Bar interactions (no dead clicks).
+ * Phase 37 -- E2E: CPRS Menu Bar interactions (no dead clicks).
  *
  * Tests every top-level menu and menu item to verify each click either:
  * 1. Navigates to a new URL, OR
@@ -11,7 +11,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { setupConsoleGate } from './helpers/auth';
+import { chartRoute, setupConsoleGate } from './helpers/auth';
 
 /** Click a top-level menu trigger and wait for the dropdown to appear. */
 async function openMenu(page: import('@playwright/test').Page, name: string) {
@@ -26,7 +26,7 @@ async function openMenu(page: import('@playwright/test').Page, name: string) {
 test.describe('Menu Bar -- No Dead Clicks', () => {
   test.beforeEach(async ({ page }) => {
     // Session pre-loaded via auth.setup.ts (storageState)
-    await page.goto('/cprs/chart/3/cover');
+    await page.goto(chartRoute('cover'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1500);
   });
@@ -34,7 +34,7 @@ test.describe('Menu Bar -- No Dead Clicks', () => {
   test('File menu items all trigger actions', async ({ page }) => {
     const errors = setupConsoleGate(page);
 
-    // Select Patient → navigates
+    // Select Patient -> navigates
     await openMenu(page, 'File');
     const selectPatientBtn = page.locator('button').filter({ hasText: 'Select Patient' }).first();
     if (await selectPatientBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
@@ -44,10 +44,10 @@ test.describe('Menu Bar -- No Dead Clicks', () => {
     }
 
     // Navigate back
-    await page.goto('/cprs/chart/3/cover');
+    await page.goto(chartRoute('cover'));
     await page.waitForLoadState('domcontentloaded');
 
-    // Inbox → navigates
+    // Inbox -> navigates
     await openMenu(page, 'File');
     const inboxBtn = page.locator('button').filter({ hasText: 'Inbox' }).first();
     if (await inboxBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
@@ -56,10 +56,10 @@ test.describe('Menu Bar -- No Dead Clicks', () => {
       expect(page.url()).toMatch(/\/cprs\/(inbox|chart)/);
     }
 
-    await page.goto('/cprs/chart/3/cover');
+    await page.goto(chartRoute('cover'));
     await page.waitForLoadState('domcontentloaded');
 
-    // Print → opens modal
+    // Print -> opens modal
     await openMenu(page, 'File');
     const printBtn = page
       .locator('button')
@@ -76,7 +76,7 @@ test.describe('Menu Bar -- No Dead Clicks', () => {
     expect(errors, 'Console errors during File menu tests').toHaveLength(0);
   });
 
-  test('View menu — theme/density/layout changes apply', async ({ page }) => {
+  test('View menu -- theme/density/layout changes apply', async ({ page }) => {
     const errors = setupConsoleGate(page);
 
     const viewActions = [
@@ -100,7 +100,7 @@ test.describe('Menu Bar -- No Dead Clicks', () => {
     expect(errors, 'Console errors during View menu tests').toHaveLength(0);
   });
 
-  test('View menu — Chart Tab sub-items navigate', async ({ page }) => {
+  test('View menu -- Chart Tab sub-items navigate', async ({ page }) => {
     const errors = setupConsoleGate(page);
 
     const tabPairs = [
@@ -122,7 +122,7 @@ test.describe('Menu Bar -- No Dead Clicks', () => {
           await page.waitForTimeout(500);
           expect(page.url()).toContain(slug);
           // Navigate back for next iteration
-          await page.goto('/cprs/chart/3/cover');
+          await page.goto(chartRoute('cover'));
           await page.waitForLoadState('domcontentloaded');
         }
       }
@@ -135,7 +135,7 @@ test.describe('Menu Bar -- No Dead Clicks', () => {
     test.setTimeout(90_000);
     const errors = setupConsoleGate(page);
 
-    // Graphing → opens modal
+    // Graphing -> opens modal
     await openMenu(page, 'Tools');
     const graphingBtn = page.locator('button').filter({ hasText: 'Graphing' }).first();
     if (await graphingBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
@@ -147,7 +147,7 @@ test.describe('Menu Bar -- No Dead Clicks', () => {
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
 
-    // Remote Data Viewer (Page) → navigates
+    // Remote Data Viewer (Page) -> navigates
     await openMenu(page, 'Tools');
     const rdvPageBtn = page
       .locator('button')
@@ -166,7 +166,7 @@ test.describe('Menu Bar -- No Dead Clicks', () => {
     test.setTimeout(90_000);
     const errors = setupConsoleGate(page);
 
-    // About → opens modal
+    // About -> opens modal
     await openMenu(page, 'Help');
     const aboutBtn = page.locator('button').filter({ hasText: 'About' }).first();
     if (await aboutBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
@@ -177,7 +177,7 @@ test.describe('Menu Bar -- No Dead Clicks', () => {
     await page.keyboard.press('Escape');
     await page.waitForTimeout(300);
 
-    // Keyboard Shortcuts → opens modal
+    // Keyboard Shortcuts -> opens modal
     await openMenu(page, 'Help');
     const kbBtn = page.locator('button').filter({ hasText: 'Keyboard Shortcuts' }).first();
     if (await kbBtn.isVisible({ timeout: 2000 }).catch(() => false)) {
@@ -188,7 +188,7 @@ test.describe('Menu Bar -- No Dead Clicks', () => {
     expect(errors, 'Console errors during Help menu tests').toHaveLength(0);
   });
 
-  test('Edit menu — Preferences navigates', async ({ page }) => {
+  test('Edit menu -- Preferences navigates', async ({ page }) => {
     const errors = setupConsoleGate(page);
 
     await openMenu(page, 'Edit');

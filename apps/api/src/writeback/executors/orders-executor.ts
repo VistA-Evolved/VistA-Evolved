@@ -1,15 +1,15 @@
 /**
- * Orders Writeback Executor — Phase 302 (W12-P4)
+ * Orders Writeback Executor -- Phase 302 (W12-P4)
  *
  * Domain executor for ORDERS writeback commands.
  * Implements the RpcExecutor interface from the command bus.
  *
  * Supported intents:
- *   PLACE_ORDER       → ORWDX LOCK + ORWDX SAVE + ORWDX UNLOCK
- *   DISCONTINUE_ORDER → ORWDX LOCK + ORWDXA DC + ORWDX UNLOCK
- *   VERIFY_ORDER      → ORWDXA VERIFY
- *   SIGN_ORDER        → ORWDX LOCK + ORWOR1 SIG + ORWDX UNLOCK
- *   FLAG_ORDER        → ORWDXA FLAG
+ *   PLACE_ORDER       -> ORWDX LOCK + ORWDX SAVE + ORWDX UNLOCK
+ *   DISCONTINUE_ORDER -> ORWDX LOCK + ORWDXA DC + ORWDX UNLOCK
+ *   VERIFY_ORDER      -> ORWDXA VERIFY
+ *   SIGN_ORDER        -> ORWDX LOCK + ORWOR1 SIG + ORWDX UNLOCK
+ *   FLAG_ORDER        -> ORWDXA FLAG
  *
  * Safety:
  *   - LOCK before write, always UNLOCK after
@@ -24,7 +24,7 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
-/* Intent → RPC mapping                                                */
+/* Intent -> RPC mapping                                                */
 /* ------------------------------------------------------------------ */
 
 const INTENT_RPC_MAP: Record<string, string[]> = {

@@ -1,5 +1,5 @@
 /**
- * Module Registry — Phase 37C, enhanced Phase 51 (marketplace-ready manifests).
+ * Module Registry -- Phase 37C, enhanced Phase 51 (marketplace-ready manifests).
  *
  * Loads module definitions from config/modules.json and SKU profiles from
  * config/skus.json. Resolves effective enabled modules for a tenant based
@@ -160,7 +160,7 @@ export function getActiveSkuProfile(): SkuProfile | undefined {
 /**
  * Get effective enabled modules for a tenant.
  *
- * Resolution order (Phase 109 — DB-first):
+ * Resolution order (Phase 109 -- DB-first):
  * 1. If DB entitlement provider is set, use it (DB is source of truth)
  * 2. Otherwise fall back to SKU profile + in-memory overrides
  * 3. Always include modules with alwaysEnabled: true
@@ -173,20 +173,20 @@ export function getEnabledModules(tenantId: string = 'default'): string[] {
       // Check if tenant has actual seeded entitlements (not just alwaysEnabled defaults).
       // getEnabledModuleIds always returns alwaysEnabled modules (e.g. kernel) even
       // for unseeded tenants. Detect unseeded tenants by checking whether any returned
-      // module is NOT alwaysEnabled — if all are alwaysEnabled, the tenant has no
+      // module is NOT alwaysEnabled -- if all are alwaysEnabled, the tenant has no
       // explicit entitlements and should fall through to SKU resolution. (Phase 135 fix)
       const hasExplicitEntitlements = dbEnabled.some((id) => !moduleDefinitions[id]?.alwaysEnabled);
       if (hasExplicitEntitlements) {
-        // Tenant has been seeded — use DB as source of truth
+        // Tenant has been seeded -- use DB as source of truth
         const enabled = new Set(dbEnabled);
         for (const [modId, def] of Object.entries(moduleDefinitions)) {
           if (def.alwaysEnabled) enabled.add(modId);
         }
         return Array.from(enabled);
       }
-      // Only alwaysEnabled found — tenant not yet seeded, fall through to SKU
+      // Only alwaysEnabled found -- tenant not yet seeded, fall through to SKU
     } catch {
-      // DB error — fall through to in-memory
+      // DB error -- fall through to in-memory
     }
   }
 
@@ -243,7 +243,7 @@ export function isRouteAllowed(
 ): { allowed: boolean; moduleId: string | undefined; reason?: string } {
   const moduleId = resolveModuleForRoute(path);
 
-  // No module match → kernel or unmatched → allow
+  // No module match -> kernel or unmatched -> allow
   if (!moduleId) {
     return { allowed: true, moduleId: undefined };
   }

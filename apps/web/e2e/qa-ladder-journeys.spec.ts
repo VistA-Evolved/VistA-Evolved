@@ -1,8 +1,8 @@
 /**
- * Phase 129 — QA Ladder: Playwright E2E Journeys
+ * Phase 129 -- QA Ladder: Playwright E2E Journeys
  *
  * Three journeys that exercise the critical happy paths:
- *   1. Login → Patient Search → Cover Sheet → 3 clinical tabs
+ *   1. Login -> Patient Search -> Cover Sheet -> 3 clinical tabs
  *   2. Orders tab navigation (place quick-order form)
  *   3. Dead-click detector: clicks every button on chart, fails on silent no-ops
  *
@@ -11,10 +11,10 @@
  */
 
 import { test, expect, type Page, type Locator } from '@playwright/test';
-import { selectPatient, setupConsoleGate } from './helpers/auth';
+import { TEST_DFN, chartRoute, selectPatient, setupConsoleGate } from './helpers/auth';
 
 const API_BASE = process.env.API_URL ?? 'http://localhost:3001';
-const DFN = '3'; // Default test patient
+const DFN = TEST_DFN;
 
 /* ------------------------------------------------------------------ */
 /* Dead-click detection helper                                         */
@@ -64,7 +64,7 @@ async function auditClick(page: Page, btn: Locator): Promise<ClickAuditResult> {
 
   // Check 1: Navigation
   if (page.url() !== beforeUrl) {
-    return { selector, label, outcome: 'navigated', detail: `→ ${page.url()}` };
+    return { selector, label, outcome: 'navigated', detail: `-> ${page.url()}` };
   }
 
   // Check 2: Dialog/modal opened
@@ -115,11 +115,11 @@ async function auditClick(page: Page, btn: Locator): Promise<ClickAuditResult> {
 }
 
 /* ------------------------------------------------------------------ */
-/* Journey 1: Login → Patient → Cover Sheet → Tabs                     */
+/* Journey 1: Login -> Patient -> Cover Sheet -> Tabs                     */
 /* ------------------------------------------------------------------ */
 
 test.describe('Journey 1: Clinical workflow', () => {
-  test('Login → search → cover sheet → tabs cycle', async ({ page }) => {
+  test('Login -> search -> cover sheet -> tabs cycle', async ({ page }) => {
     const errors = setupConsoleGate(page);
 
     // Navigate to patient search (already logged in via auth.setup.ts)
@@ -175,7 +175,7 @@ test.describe('Journey 1: Clinical workflow', () => {
 /* ------------------------------------------------------------------ */
 
 test.describe('Journey 2: Orders workflow', () => {
-  test('Navigate to patient chart → orders tab', async ({ page }) => {
+  test('Navigate to patient chart -> orders tab', async ({ page }) => {
     setupConsoleGate(page);
 
     await selectPatient(page, DFN);
@@ -202,7 +202,7 @@ test.describe('Journey 2: Orders workflow', () => {
       );
       expect(hasOrderUI).toBeTruthy();
     } else {
-      // If no orders tab visible, that's still valid — record it
+      // If no orders tab visible, that's still valid -- record it
       test.info().annotations.push({
         type: 'info',
         description: 'Orders tab not visible in current chart layout',
@@ -305,7 +305,7 @@ test.describe('Journey 4: API health after journeys', () => {
   });
 
   test('No session leak: unauthenticated request returns 401', async ({ request }) => {
-    const res = await request.get(`${API_BASE}/vista/allergies?dfn=3`, {
+    const res = await request.get(`${API_BASE}/vista/allergies?dfn=46`, {
       headers: { Cookie: '' },
     });
     expect(res.status()).toBe(401);

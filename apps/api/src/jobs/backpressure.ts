@@ -1,5 +1,5 @@
 /**
- * Queue Backpressure Monitor — Wave 2 Q191
+ * Queue Backpressure Monitor -- Wave 2 Q191
  *
  * Provides queue depth monitoring and backpressure signals for Graphile Worker.
  * Queries the graphile_worker schema to report:
@@ -17,7 +17,7 @@
 import { getPgPool, isPgConfigured } from '../platform/pg/index.js';
 import { log } from '../lib/logger.js';
 
-// ── Config ────────────────────────────────────────────────
+// -- Config ------------------------------------------------
 
 const MAX_PENDING = parseInt(process.env.JOB_BACKPRESSURE_MAX_PENDING ?? '1000', 10) || 1000;
 const MAX_PER_TASK = parseInt(process.env.JOB_BACKPRESSURE_MAX_PER_TASK ?? '200', 10) || 200;
@@ -26,7 +26,7 @@ const RAW_SCHEMA = process.env.JOB_WORKER_SCHEMA ?? 'graphile_worker';
 // Sanitize schema name to prevent SQL injection (only allow lowercase identifier chars)
 const SCHEMA = /^[a-z_][a-z0-9_]*$/.test(RAW_SCHEMA) ? RAW_SCHEMA : 'graphile_worker';
 
-// ── Types ─────────────────────────────────────────────────
+// -- Types -------------------------------------------------
 
 export interface QueueHealth {
   ok: boolean;
@@ -47,7 +47,7 @@ export interface QueueHealth {
   timestamp: string;
 }
 
-// ── Query ─────────────────────────────────────────────────
+// -- Query -------------------------------------------------
 
 /**
  * Get current queue health metrics.
@@ -131,7 +131,7 @@ export async function getQueueHealth(): Promise<QueueHealth | null> {
   }
 }
 
-// ── Backpressure Check ────────────────────────────────────
+// -- Backpressure Check ------------------------------------
 
 /**
  * Check if a specific task type is under backpressure.

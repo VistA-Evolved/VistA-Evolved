@@ -59,7 +59,7 @@ if (!existsSync(PROMPTS_DIR)) {
   process.exit(1);
 }
 
-// ── Create backup ────────────────────────────────────────────────
+// -- Create backup ------------------------------------------------
 
 const timestamp = new Date().toISOString().replace(/[:.]/g, '-').slice(0, 19);
 const backupDir = join(ARTIFACTS_DIR, 'backup', timestamp);
@@ -75,7 +75,7 @@ if (!dryRun) {
   }
 }
 
-// ── Collect current state ────────────────────────────────────────
+// -- Collect current state ----------------------------------------
 
 const allEntries = readdirSync(PROMPTS_DIR)
   .filter((e) => statSync(join(PROMPTS_DIR, e)).isDirectory())
@@ -84,7 +84,7 @@ const allEntries = readdirSync(PROMPTS_DIR)
 const META_RE = /^00-/;
 const phaseFolders = allEntries.filter((e) => !META_RE.test(e) && /^\d{1,3}-/.test(e));
 
-// ── Fix 1: Create missing IMPLEMENT/VERIFY stubs ─────────────────
+// -- Fix 1: Create missing IMPLEMENT/VERIFY stubs -----------------
 
 for (const folder of phaseFolders) {
   const m = folder.match(/^(\d{1,3})-/);
@@ -137,7 +137,7 @@ for (const folder of phaseFolders) {
   }
 }
 
-// ── Fix 2: Rename files whose prefix doesn't match folder ────────
+// -- Fix 2: Rename files whose prefix doesn't match folder --------
 
 for (const folder of phaseFolders) {
   const m = folder.match(/^(\d{2})-/);
@@ -170,7 +170,7 @@ for (const folder of phaseFolders) {
   }
 }
 
-// ── Emit plan ────────────────────────────────────────────────────
+// -- Emit plan ----------------------------------------------------
 
 mkdirSync(ARTIFACTS_DIR, { recursive: true });
 writeFileSync(

@@ -1,5 +1,5 @@
 /**
- * HMO Submission Checklist Engine — Phase 517 (Wave 37 B5)
+ * HMO Submission Checklist Engine -- Phase 517 (Wave 37 B5)
  *
  * Provides a per-HMO checklist for manual and portal-assisted
  * claim/LOA submission workflows. Each HMO has different requirements
@@ -11,7 +11,7 @@
 
 import { randomBytes } from 'node:crypto';
 
-/* ── Types ───────────────────────────────────────────────── */
+/* -- Types ------------------------------------------------- */
 
 export type ChecklistItemStatus = 'pending' | 'in_progress' | 'completed' | 'skipped' | 'blocked';
 
@@ -41,7 +41,7 @@ export interface SubmissionChecklist {
   updatedAt: string;
 }
 
-/* ── Checklist Templates ─────────────────────────────────── */
+/* -- Checklist Templates ----------------------------------- */
 
 interface ChecklistTemplate {
   stepKey: string;
@@ -190,7 +190,7 @@ const HMO_SPECIFIC_STEPS: Record<
   },
 };
 
-/* ── Checklist Factory ───────────────────────────────────── */
+/* -- Checklist Factory ------------------------------------- */
 
 export function createChecklistId(): string {
   return `ckl-${randomBytes(8).toString('hex')}`;
@@ -230,7 +230,7 @@ export function buildChecklist(
   };
 }
 
-/* ── Checklist store (in-memory, DB-ready interface) ──────── */
+/* -- Checklist store (in-memory, DB-ready interface) -------- */
 
 const checklistStore = new Map<string, SubmissionChecklist>();
 
@@ -255,7 +255,7 @@ export function listChecklists(payerId?: string): SubmissionChecklist[] {
   return all;
 }
 
-/* ── Checklist operations ────────────────────────────────── */
+/* -- Checklist operations ---------------------------------- */
 
 function recalcStatus(checklist: SubmissionChecklist): void {
   const required = checklist.items.filter((i) => i.required);
@@ -305,7 +305,7 @@ export function updateChecklistItem(
 
 /**
  * Initialize a checklist for a given claim or LOA.
- * Idempotent — returns existing if already created.
+ * Idempotent -- returns existing if already created.
  */
 export function initChecklist(
   payerId: string,

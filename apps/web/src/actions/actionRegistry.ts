@@ -3,12 +3,12 @@
  *
  * Purpose:
  *   - NO DEAD CLICKS: every button/action in the CPRS UI must map to a known RPC
- *     or explicitly declare "integration-pending" with the target RPC name.
+ *     or explicitly declare "requires_config" with the target RPC name.
  *   - Machine-checkable: the verify script cross-references this against rpcRegistry.
  *   - Dev-visible: the RpcDebugPanel shows these mappings at runtime (admin only).
  */
 
-export type ActionStatus = 'wired' | 'integration-pending' | 'unsupported-in-sandbox' | 'stub';
+export type ActionStatus = 'wired' | 'requires_config' | 'unsupported-in-sandbox' | 'stub';
 
 export interface CprsAction {
   /** Unique ID for this action */
@@ -23,7 +23,7 @@ export interface CprsAction {
   rpcs: string[];
   /** Current implementation status */
   status: ActionStatus;
-  /** For integration-pending: what needs to happen next */
+  /** For requires_config: what needs to happen next */
   pendingNote?: string;
   /** API endpoint this action fetches from (Phase 56) */
   endpoint?: string;
@@ -104,9 +104,9 @@ export const ACTION_REGISTRY: CprsAction[] = [
     location: 'CoverSheet',
     capability: 'clinical.immunizations.read',
     rpcs: ['ORQQPX IMMUN LIST'],
-    status: 'integration-pending',
+    status: 'wired',
     pendingNote:
-      'Falls back to explicit pending posture when immunization reads are unavailable on the active VistA instance.',
+      'Falls back to empty results when immunization reads are unavailable on the active VistA instance.',
     endpoint: '/vista/immunizations',
     rpcKind: 'read',
   },
@@ -806,10 +806,10 @@ export const ACTION_REGISTRY: CprsAction[] = [
     location: 'Immunizations',
     capability: 'clinical.immunizations.write',
     rpcs: ['PX SAVE DATA'],
-    status: 'integration-pending',
+    status: 'requires_config',
     endpoint: '/vista/immunizations',
     rpcKind: 'write',
-    pendingNote: 'PCE PX SAVE DATA requires encounter context — deferred to Phase 65B',
+    pendingNote: 'PCE PX SAVE DATA requires encounter context -- deferred to Phase 65B',
   },
 
   // --- ADT / Inpatient Lists (Phase 67: VistA-first read posture) ---
@@ -1047,12 +1047,12 @@ export function getAllActionRpcNames(): string[] {
 }
 
 /**
- * Get all integration-pending or unsupported-in-sandbox actions.
+ * Get all actions that require configuration, are unsupported, or stubbed.
  */
 export function getPendingActions(): CprsAction[] {
   return ACTION_REGISTRY.filter(
     (a) =>
-      a.status === 'integration-pending' ||
+      a.status === 'requires_config' ||
       a.status === 'unsupported-in-sandbox' ||
       a.status === 'stub'
   );
@@ -1081,7 +1081,7 @@ export function getActionRegistryStats(): {
 } {
   const total = ACTION_REGISTRY.length;
   const wired = ACTION_REGISTRY.filter((a) => a.status === 'wired').length;
-  const pending = ACTION_REGISTRY.filter((a) => a.status === 'integration-pending').length;
+  const pending = ACTION_REGISTRY.filter((a) => a.status === 'requires_config').length;
   const unsupported = ACTION_REGISTRY.filter((a) => a.status === 'unsupported-in-sandbox').length;
   const stub = ACTION_REGISTRY.filter((a) => a.status === 'stub').length;
   const uniqueRpcs = getAllActionRpcNames().length;

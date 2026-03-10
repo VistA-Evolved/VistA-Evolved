@@ -1,5 +1,5 @@
 /**
- * HL7v2 Engine — Barrel Export + Lifecycle
+ * HL7v2 Engine -- Barrel Export + Lifecycle
  *
  * Phase 239 (Wave 6 P2): Engine initialization and shutdown.
  * Opt-in via HL7_ENGINE_ENABLED=true env var.

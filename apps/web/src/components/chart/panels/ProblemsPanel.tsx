@@ -62,7 +62,7 @@ export default function ProblemsPanel({ dfn }: ProblemsPanelProps) {
                     {p.status}
                   </span>
                 </td>
-                <td>{p.onset || '—'}</td>
+                <td>{p.onset || '--'}</td>
               </tr>
             ))}
           </tbody>

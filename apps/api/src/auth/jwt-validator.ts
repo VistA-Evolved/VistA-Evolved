@@ -1,5 +1,5 @@
 /**
- * JWT Validator — Phase 35.
+ * JWT Validator -- Phase 35.
  *
  * Validates JSON Web Tokens using JWKS (JSON Web Key Sets) from the
  * configured OIDC provider (Keycloak). Supports RS256 and ES256.
@@ -168,13 +168,13 @@ export async function validateJwt(token: string): Promise<JwtValidationResult> {
   if (header.kid) {
     publicKey = keys.get(header.kid);
     if (!publicKey) {
-      // Key might have rotated — force refresh
+      // Key might have rotated -- force refresh
       jwksFetchedAt = 0;
       const refreshedKeys = await fetchJwks();
       publicKey = refreshedKeys.get(header.kid);
     }
   } else {
-    // No kid — use first key (common in single-key setups)
+    // No kid -- use first key (common in single-key setups)
     publicKey = keys.values().next().value;
   }
 

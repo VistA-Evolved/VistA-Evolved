@@ -1,5 +1,5 @@
 /**
- * Phase 165 — Specialty Coverage REST Endpoints
+ * Phase 165 -- Specialty Coverage REST Endpoints
  *
  * Exposes coverage scoring and QA ladder results via admin-only routes.
  */
@@ -10,7 +10,7 @@ import { runSpecialtyCoverageGate } from '../templates/qa-ladder-ext.js';
 import { SPECIALTY_TAGS } from '../templates/types.js';
 
 export default async function coverageRoutes(server: FastifyInstance): Promise<void> {
-  // ─── GET /admin/coverage/score ───────────────────────────────────────────
+  // --- GET /admin/coverage/score -------------------------------------------
   // Overall coverage score + per-specialty breakdown
   server.get('/admin/coverage/score', async (_request: FastifyRequest, reply: FastifyReply) => {
     const report = generateCoverageReport();
@@ -25,7 +25,7 @@ export default async function coverageRoutes(server: FastifyInstance): Promise<v
     });
   });
 
-  // ─── GET /admin/coverage/specialties ─────────────────────────────────────
+  // --- GET /admin/coverage/specialties -------------------------------------
   // Per-specialty detailed scores
   server.get(
     '/admin/coverage/specialties',
@@ -53,7 +53,7 @@ export default async function coverageRoutes(server: FastifyInstance): Promise<v
     }
   );
 
-  // ─── GET /admin/coverage/gaps ────────────────────────────────────────────
+  // --- GET /admin/coverage/gaps --------------------------------------------
   // Specialties scoring < 50 (priority improvement list)
   server.get('/admin/coverage/gaps', async (_request: FastifyRequest, reply: FastifyReply) => {
     const report = generateCoverageReport();
@@ -69,14 +69,14 @@ export default async function coverageRoutes(server: FastifyInstance): Promise<v
     });
   });
 
-  // ─── GET /admin/coverage/qa-ladder ───────────────────────────────────────
+  // --- GET /admin/coverage/qa-ladder ---------------------------------------
   // QA ladder specialty coverage gate result
   server.get('/admin/coverage/qa-ladder', async (_request: FastifyRequest, reply: FastifyReply) => {
     const result = runSpecialtyCoverageGate();
     return reply.send({ ok: true, ...result });
   });
 
-  // ─── POST /admin/coverage/refresh ───────────────────────────────────────
+  // --- POST /admin/coverage/refresh ---------------------------------------
   // Force-refresh the coverage cache
   server.post('/admin/coverage/refresh', async (_request: FastifyRequest, reply: FastifyReply) => {
     resetCoverageCache();
@@ -89,7 +89,7 @@ export default async function coverageRoutes(server: FastifyInstance): Promise<v
     });
   });
 
-  // ─── GET /admin/coverage/tags ────────────────────────────────────────────
+  // --- GET /admin/coverage/tags --------------------------------------------
   // List all known specialty tags
   server.get('/admin/coverage/tags', async (_request: FastifyRequest, reply: FastifyReply) => {
     return reply.send({
@@ -100,7 +100,7 @@ export default async function coverageRoutes(server: FastifyInstance): Promise<v
   });
 }
 
-// ─── Helpers ─────────────────────────────────────────────────────────────────
+// --- Helpers -----------------------------------------------------------------
 
 function getWeakestDimension(breakdown: {
   packExistence: number;

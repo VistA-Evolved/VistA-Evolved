@@ -1,4 +1,4 @@
-# VistA-Evolved — Local TLS Dev Overlay (Caddy)
+# VistA-Evolved -- Local TLS Dev Overlay (Caddy)
 #
 # Usage:
 #   docker compose -f infra/tls/docker-compose.tls.yml up -d

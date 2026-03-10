@@ -1,5 +1,5 @@
 /**
- * Payment Store — In-Memory Tenant-Scoped (Phase 92)
+ * Payment Store -- In-Memory Tenant-Scoped (Phase 92)
  *
  * Stores RemittanceBatches, RemittanceLines, PaymentPostingEvents,
  * and UnderpaymentCases. All tenant-scoped with indexed lookups.
@@ -8,6 +8,7 @@
  */
 
 import { randomUUID } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 import type {
   RemittanceBatch,
   RemittanceLine,
@@ -18,7 +19,11 @@ import type {
   UnderpaymentStatus,
 } from './payment-types.js';
 
-/* ── DB repo interfaces (Phase 146: durable payment storage) ── */
+/* -- DB repo interfaces (Phase 146: durable payment storage) -- */
+
+function dbWarn(e: unknown): void {
+  log.warn('Payment store PG write-through failed', { error: String(e) });
+}
 
 interface PaymentRepos {
   batchRepo: { upsert(data: any): Promise<any>; update(id: string, u: any): Promise<any> } | null;
@@ -44,36 +49,60 @@ export function initPaymentStoreRepos(repos: Partial<PaymentRepos>): void {
   if (repos.underpaymentRepo) pgRepos.underpaymentRepo = repos.underpaymentRepo;
 }
 
-/* ── Primary Stores (cache layer — PG is truth when wired) ── */
+/* -- Capacity Limits ----------------------------------------- */
+
+const MAX_BATCHES = 10_000;
+const MAX_LINES = 100_000;
+const MAX_POSTINGS = 50_000;
+const MAX_UNDERPAYMENTS = 20_000;
+
+/* -- Primary Stores (cache layer -- PG is truth when wired) -- */
 
 const batches = new Map<string, RemittanceBatch>();
 const lines = new Map<string, RemittanceLine>();
 const postings = new Map<string, PaymentPostingEvent>();
 const underpayments = new Map<string, UnderpaymentCase>();
 
-/* ── Indexes ───────────────────────────────────────────────── */
+/* -- Indexes ------------------------------------------------- */
 
-/** tenantId → Set<batchId> */
+/** tenantId -> Set<batchId> */
 const tenantBatchIndex = new Map<string, Set<string>>();
-/** batchId → Set<lineId> */
+/** batchId -> Set<lineId> */
 const batchLineIndex = new Map<string, Set<string>>();
-/** claimCaseId → Set<lineId> — for fast claim lookup */
+/** claimCaseId -> Set<lineId> -- for fast claim lookup */
 const claimLineIndex = new Map<string, Set<string>>();
-/** tenantId → Set<postingId> */
+/** tenantId -> Set<postingId> */
 const tenantPostingIndex = new Map<string, Set<string>>();
-/** tenantId → Set<underpaymentId> */
+/** tenantId -> Set<underpaymentId> */
 const tenantUnderpaymentIndex = new Map<string, Set<string>>();
-/** payerId → Set<batchId> — for payer intelligence */
+/** payerId -> Set<batchId> -- for payer intelligence */
 const payerBatchIndex = new Map<string, Set<string>>();
 
-/* ── Index Helpers ─────────────────────────────────────────── */
+/* -- Index Helpers ------------------------------------------- */
 
 function addToIndex(index: Map<string, Set<string>>, key: string, value: string): void {
   if (!index.has(key)) index.set(key, new Set());
   index.get(key)!.add(value);
 }
 
-/* ── Batch CRUD ────────────────────────────────────────────── */
+function removeFromIndex(index: Map<string, Set<string>>, key: string, value: string): void {
+  const s = index.get(key);
+  if (s) { s.delete(value); if (s.size === 0) index.delete(key); }
+}
+
+/** Evict oldest entries from a primary Map; returns evicted entries */
+function evictOldest<V>(store: Map<string, V>, max: number): [string, V][] {
+  const evicted: [string, V][] = [];
+  while (store.size > max) {
+    const first = store.entries().next().value as [string, V];
+    store.delete(first[0]);
+    evicted.push(first);
+  }
+  if (evicted.length) log.warn('Payment store eviction', { store: 'payment', evicted: evicted.length });
+  return evicted;
+}
+
+/* -- Batch CRUD ---------------------------------------------- */
 
 export interface CreateBatchParams {
   tenantId: string;
@@ -106,6 +135,10 @@ export function createBatch(params: CreateBatchParams): RemittanceBatch {
   };
 
   batches.set(batch.id, batch);
+  for (const [evId, evBatch] of evictOldest(batches, MAX_BATCHES)) {
+    removeFromIndex(tenantBatchIndex, evBatch.tenantId, evId);
+    removeFromIndex(payerBatchIndex, evBatch.payerId, evId);
+  }
   addToIndex(tenantBatchIndex, params.tenantId, batch.id);
   addToIndex(payerBatchIndex, params.payerId, batch.id);
 
@@ -122,7 +155,7 @@ export function createBatch(params: CreateBatchParams): RemittanceBatch {
       createdAt: now,
       updatedAt: now,
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return batch;
 }
@@ -151,7 +184,7 @@ export function updateBatch(
   batches.set(id, updated);
 
   // Phase 146: Write-through update
-  pgRepos.batchRepo?.update(id, { ...updates, updatedAt: updated.updatedAt }).catch(() => {});
+  pgRepos.batchRepo?.update(id, { ...updates, updatedAt: updated.updatedAt }).catch(dbWarn);
 
   return updated;
 }
@@ -182,11 +215,15 @@ export function listBatches(filters: {
   return { items: items.slice(offset, offset + limit), total };
 }
 
-/* ── Line CRUD ─────────────────────────────────────────────── */
+/* -- Line CRUD ----------------------------------------------- */
 
 export function addLine(line: Omit<RemittanceLine, 'id'>): RemittanceLine {
   const full: RemittanceLine = { ...line, id: randomUUID() };
   lines.set(full.id, full);
+  for (const [evId, evLine] of evictOldest(lines, MAX_LINES)) {
+    removeFromIndex(batchLineIndex, evLine.batchId, evId);
+    if (evLine.matchedClaimCaseId) removeFromIndex(claimLineIndex, evLine.matchedClaimCaseId, evId);
+  }
   addToIndex(batchLineIndex, full.batchId, full.id);
   if (full.matchedClaimCaseId) {
     addToIndex(claimLineIndex, full.matchedClaimCaseId, full.id);
@@ -202,7 +239,7 @@ export function addLine(line: Omit<RemittanceLine, 'id'>): RemittanceLine {
       lineNumber: full.lineNumber,
       matchStatus: full.matchStatus,
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return full;
 }
@@ -225,7 +262,7 @@ export function updateLine(
   lines.set(id, updated);
 
   // Phase 146: Write-through update
-  pgRepos.lineRepo?.update(id, updates).catch(() => {});
+  pgRepos.lineRepo?.update(id, updates).catch(dbWarn);
 
   // Update claim index if match changed
   if (updates.matchedClaimCaseId && updates.matchedClaimCaseId !== line.matchedClaimCaseId) {
@@ -290,11 +327,14 @@ export function getUnresolvedLines(tenantId: string, limit = 100): RemittanceLin
   return result;
 }
 
-/* ── Posting Events ────────────────────────────────────────── */
+/* -- Posting Events ------------------------------------------ */
 
 export function recordPosting(posting: Omit<PaymentPostingEvent, 'id'>): PaymentPostingEvent {
   const full: PaymentPostingEvent = { ...posting, id: randomUUID() };
   postings.set(full.id, full);
+  for (const [evId, evPost] of evictOldest(postings, MAX_POSTINGS)) {
+    removeFromIndex(tenantPostingIndex, evPost.tenantId, evId);
+  }
   addToIndex(tenantPostingIndex, full.tenantId, full.id);
 
   // Phase 146: Write-through to PG
@@ -307,7 +347,7 @@ export function recordPosting(posting: Omit<PaymentPostingEvent, 'id'>): Payment
       amount: (full as any).amount ?? 0,
       postedAt: (full as any).postedAt ?? new Date().toISOString(),
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return full;
 }
@@ -316,7 +356,7 @@ export function getPostingsForClaim(claimCaseId: string): PaymentPostingEvent[] 
   return Array.from(postings.values()).filter((p) => p.claimCaseId === claimCaseId);
 }
 
-/* ── Underpayment Cases ────────────────────────────────────── */
+/* -- Underpayment Cases -------------------------------------- */
 
 export function createUnderpayment(
   data: Omit<UnderpaymentCase, 'id' | 'createdAt' | 'status'>
@@ -328,6 +368,9 @@ export function createUnderpayment(
     createdAt: new Date().toISOString(),
   };
   underpayments.set(uc.id, uc);
+  for (const [evId, evUc] of evictOldest(underpayments, MAX_UNDERPAYMENTS)) {
+    removeFromIndex(tenantUnderpaymentIndex, evUc.tenantId, evId);
+  }
   addToIndex(tenantUnderpaymentIndex, uc.tenantId, uc.id);
 
   // Phase 146: Write-through to PG
@@ -343,7 +386,7 @@ export function createUnderpayment(
       status: uc.status,
       createdAt: uc.createdAt,
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return uc;
 }
@@ -364,7 +407,7 @@ export function updateUnderpayment(
   underpayments.set(id, updated);
 
   // Phase 146: Write-through update
-  pgRepos.underpaymentRepo?.update(id, updates).catch(() => {});
+  pgRepos.underpaymentRepo?.update(id, updates).catch(dbWarn);
 
   return updated;
 }
@@ -395,7 +438,7 @@ export function listUnderpayments(filters: {
   return { items: items.slice(offset, offset + limit), total };
 }
 
-/* ── Store Stats ───────────────────────────────────────────── */
+/* -- Store Stats --------------------------------------------- */
 
 export function getPaymentStoreInfo(): {
   totalBatches: number;
@@ -431,7 +474,7 @@ export function getAllLinesForBatch(batchId: string): RemittanceLine[] {
     .filter(Boolean);
 }
 
-/** Reset all stores — used in tests */
+/** Reset all stores -- used in tests */
 export function resetPaymentStore(): void {
   batches.clear();
   lines.clear();

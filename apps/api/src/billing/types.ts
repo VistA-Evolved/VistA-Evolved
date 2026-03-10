@@ -68,6 +68,7 @@ export interface MeteringRecord {
   event: MeterEvent;
   quantity: number;
   timestamp: string;
+  metadata?: Record<string, unknown>;
 }
 
 export interface UsageSummary {

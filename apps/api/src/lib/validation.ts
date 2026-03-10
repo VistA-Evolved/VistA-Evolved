@@ -1,5 +1,5 @@
 /**
- * Input validation schemas — Phase 15A.
+ * Input validation schemas -- Phase 15A.
  *
  * Zod schemas for all request bodies and query parameters.
  * Used by the validation middleware to reject malformed input early.

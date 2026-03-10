@@ -1,11 +1,11 @@
 /**
- * Phase 393 (W22-P5): Lab Deep Workflows — In-Memory Store
+ * Phase 393 (W22-P5): Lab Deep Workflows -- In-Memory Store
  *
  * Four stores:
- *  1. labOrderStore     — lab orders with FSM validation
- *  2. specimenStore     — specimen tracking with chain-of-custody
- *  3. labResultStore    — results inc. Wave 21 device bridge
- *  4. criticalAlertStore — critical value alerting pipeline
+ *  1. labOrderStore     -- lab orders with FSM validation
+ *  2. specimenStore     -- specimen tracking with chain-of-custody
+ *  3. labResultStore    -- results inc. Wave 21 device bridge
+ *  4. criticalAlertStore -- critical value alerting pipeline
  *
  * All in-memory with FIFO eviction at MAX_ITEMS.
  * VistA is source of truth when integrations are live.
@@ -29,7 +29,7 @@ import type {
 
 const MAX_ITEMS = 10000;
 
-// ─── Stores ─────────────────────────────────────────────────
+// --- Stores -------------------------------------------------
 
 const labOrderStore = new Map<string, LabOrder>();
 const specimenStore = new Map<string, SpecimenSample>();
@@ -43,7 +43,7 @@ const ORDER_STATUS_AT_OR_BEYOND_RESULTED = new Set<LabOrderStatus>([
   'final',
 ]);
 
-// ─── FSM: Lab Order Transitions ─────────────────────────────
+// --- FSM: Lab Order Transitions -----------------------------
 
 const validOrderTransitions: Record<LabOrderStatus, LabOrderStatus[]> = {
   pending: ['collected', 'cancelled', 'on_hold'],
@@ -57,7 +57,7 @@ const validOrderTransitions: Record<LabOrderStatus, LabOrderStatus[]> = {
   on_hold: ['pending', 'cancelled'],
 };
 
-// ─── FSM: Specimen Transitions ──────────────────────────────
+// --- FSM: Specimen Transitions ------------------------------
 
 const validSpecimenTransitions: Record<SpecimenStatus, SpecimenStatus[]> = {
   ordered: ['collected', 'rejected'],
@@ -70,7 +70,7 @@ const validSpecimenTransitions: Record<SpecimenStatus, SpecimenStatus[]> = {
   lost: [],
 };
 
-// ─── Critical Value Thresholds (configurable) ───────────────
+// --- Critical Value Thresholds (configurable) ---------------
 
 interface CritThreshold {
   analyte: string;
@@ -92,7 +92,7 @@ const CRITICAL_THRESHOLDS: CritThreshold[] = [
   { analyte: 'pH', low: 7.2, high: 7.6, units: 'pH' },
 ];
 
-// ─── FIFO Eviction Helper ───────────────────────────────────
+// --- FIFO Eviction Helper -----------------------------------
 
 function enforceMax<T>(store: Map<string, T>): void {
   if (store.size >= MAX_ITEMS) {
@@ -101,7 +101,7 @@ function enforceMax<T>(store: Map<string, T>): void {
   }
 }
 
-// ─── Lab Order Operations ───────────────────────────────────
+// --- Lab Order Operations -----------------------------------
 
 export function createLabOrder(input: {
   tenantId: string;
@@ -206,7 +206,7 @@ export function transitionLabOrder(
   return { ok: true, order };
 }
 
-// ─── Specimen Operations ────────────────────────────────────
+// --- Specimen Operations ------------------------------------
 
 export function createSpecimen(input: {
   tenantId: string;
@@ -320,7 +320,7 @@ export function linkDeviceObservation(
   return { ok: true };
 }
 
-// ─── Lab Result Operations ──────────────────────────────────
+// --- Lab Result Operations ----------------------------------
 
 export function createLabResult(input: {
   tenantId: string;
@@ -420,7 +420,7 @@ export function updateResultStatus(
   return { ok: true, result: r };
 }
 
-// ─── Critical Value Evaluation ──────────────────────────────
+// --- Critical Value Evaluation ------------------------------
 
 function evaluateCriticalValue(result: LabResult): CriticalAlert | null {
   const numVal = parseFloat(result.value);
@@ -484,7 +484,7 @@ function evaluateCriticalValue(result: LabResult): CriticalAlert | null {
   return alert;
 }
 
-// ─── Critical Alert Operations ──────────────────────────────
+// --- Critical Alert Operations ------------------------------
 
 export function getCriticalAlert(id: string): CriticalAlert | undefined {
   return criticalAlertStore.get(id);
@@ -541,7 +541,7 @@ export function resolveCriticalAlert(id: string): {
   return { ok: true, alert };
 }
 
-// ─── Dashboard Stats ────────────────────────────────────────
+// --- Dashboard Stats ----------------------------------------
 
 export function getLabDashboardStats(tenantId: string): LabDashboardStats {
   const now = Date.now();
@@ -594,7 +594,7 @@ export function getLabDashboardStats(tenantId: string): LabDashboardStats {
   };
 }
 
-// ─── Writeback Posture ──────────────────────────────────────
+// --- Writeback Posture --------------------------------------
 
 export function getLabWritebackPosture(): LabWritebackPosture {
   return {
@@ -611,12 +611,12 @@ export function getLabWritebackPosture(): LabWritebackPosture {
     resultVerify: {
       rpc: 'LR VERIFY',
       status: 'integration_pending',
-      note: 'VistA Lab verify — not yet integrated, target: LR VERIFY DISPLAY',
+      note: 'VistA Lab verify -- not yet integrated, target: LR VERIFY DISPLAY',
     },
     specimenCollect: {
       rpc: 'LR PHLEBOTOMY',
       status: 'integration_pending',
-      note: 'Specimen collection tracking — target: Lab file 68 entries',
+      note: 'Specimen collection tracking -- target: Lab file 68 entries',
     },
     labReport: {
       rpc: 'ORWLRR CHART',
@@ -626,7 +626,7 @@ export function getLabWritebackPosture(): LabWritebackPosture {
   };
 }
 
-// ─── Test Reset ─────────────────────────────────────────────
+// --- Test Reset ---------------------------------------------
 
 export function _resetLabStores(): void {
   labOrderStore.clear();

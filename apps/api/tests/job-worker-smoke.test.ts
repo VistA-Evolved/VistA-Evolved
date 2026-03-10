@@ -8,7 +8,7 @@
  *  - Payload validation accepts/rejects correctly
  *  - Runner module exports are present (without starting the runner)
  *
- * Does NOT require Postgres or a running API — purely structural.
+ * Does NOT require Postgres or a running API -- purely structural.
  * Run: pnpm exec vitest run tests/job-worker-smoke.test.ts
  */
 
@@ -39,7 +39,7 @@ import {
   getAddJobFn,
 } from '../src/jobs/runner.js';
 
-/* ── Registry Smoke ────────────────────────────────────────── */
+/* -- Registry Smoke ------------------------------------------ */
 
 describe('Job Registry (smoke)', () => {
   it('exports exactly 5 job names', () => {
@@ -91,7 +91,7 @@ describe('Job Registry (smoke)', () => {
   });
 });
 
-/* ── Payload Schema Smoke ──────────────────────────────────── */
+/* -- Payload Schema Smoke ------------------------------------ */
 
 describe('Payload Schemas (smoke)', () => {
   it('EligibilityCheckPollPayload accepts minimal payload', () => {
@@ -128,7 +128,7 @@ describe('Payload Schemas (smoke)', () => {
   });
 });
 
-/* ── PHI Rejection Smoke ───────────────────────────────────── */
+/* -- PHI Rejection Smoke ------------------------------------- */
 
 describe('PHI Rejection (smoke)', () => {
   // containsPhiFields returns string[] of violation paths
@@ -169,7 +169,7 @@ describe('PHI Rejection (smoke)', () => {
   });
 });
 
-/* ── Governance Validation Smoke ───────────────────────────── */
+/* -- Governance Validation Smoke ----------------------------- */
 
 describe('Governance Validation (smoke)', () => {
   it('validateJobPayload accepts valid retention_cleanup payload', () => {
@@ -218,7 +218,7 @@ describe('Governance Validation (smoke)', () => {
   });
 });
 
-/* ── Runner Exports Smoke ──────────────────────────────────── */
+/* -- Runner Exports Smoke ------------------------------------ */
 
 describe('Runner Exports (smoke)', () => {
   it('exports startJobRunner function', () => {

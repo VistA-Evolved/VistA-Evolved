@@ -1,5 +1,5 @@
 /**
- * RPC Resilience Layer — Phase 15B.
+ * RPC Resilience Layer -- Phase 15B.
  *
  * Provides:
  *   - Timeouts for individual RPC calls
@@ -65,7 +65,7 @@ export function getCurrentRpcContext(): RpcContext | null {
 
 /**
  * Patch the current async context with an RPC context (no callback needed).
- * Use in Fastify onRequest hooks — the context persists through the
+ * Use in Fastify onRequest hooks -- the context persists through the
  * handler and all downstream async continuations for this request.
  */
 export function enterRpcContext(ctx: RpcContext): void {
@@ -194,7 +194,7 @@ export class RpcTimeoutError extends Error {
 
 export class CircuitOpenError extends Error {
   constructor() {
-    super('Circuit breaker is open — RPC calls temporarily blocked');
+    super('Circuit breaker is open -- RPC calls temporarily blocked');
     this.name = 'CircuitOpenError';
   }
 }
@@ -365,7 +365,7 @@ export async function resilientRpc<T>(
     rpcCallsTotal.inc({ rpc_name: rpcName, outcome: 'success' });
     endRpcSpan(span);
 
-    // Phase 586: Billing metering — count RPC calls
+    // Phase 586: Billing metering -- count RPC calls
     try {
       meterRpcCall?.('default', 'rpc_call');
     } catch {
@@ -522,7 +522,7 @@ export async function safeCallRpc(
   params: string[],
   opts?: { idempotent?: boolean; timeoutMs?: number; ctx?: RpcContext }
 ): Promise<string[]> {
-  // Phase 573B: Resolve context — explicit > AsyncLocalStorage > legacy
+  // Phase 573B: Resolve context -- explicit > AsyncLocalStorage > legacy
   const ctx = opts?.ctx ?? getCurrentRpcContext();
   if (ctx) {
     return resilientRpc(() => poolCallRpc(rpcName, params, ctx), rpcName, {
@@ -552,7 +552,7 @@ export async function safeCallRpcWithList(
   params: RpcParam[],
   opts?: { idempotent?: boolean; timeoutMs?: number; ctx?: RpcContext }
 ): Promise<string[]> {
-  // Phase 573B: Resolve context — explicit > AsyncLocalStorage > legacy
+  // Phase 573B: Resolve context -- explicit > AsyncLocalStorage > legacy
   const ctx = opts?.ctx ?? getCurrentRpcContext();
   if (ctx) {
     return resilientRpc(() => poolCallRpcWithList(rpcName, params, ctx), rpcName, {

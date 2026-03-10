@@ -1,10 +1,10 @@
 /**
- * Fine-Grained ABAC Authorization Engine — Phase 340 (W16-P4).
+ * Fine-Grained ABAC Authorization Engine -- Phase 340 (W16-P4).
  *
  * Composable Attribute-Based Access Control that chains AFTER RBAC.
  * RBAC runs first (policy-engine.ts). If RBAC allows, ABAC conditions
  * are evaluated as an additional refinement layer. ABAC can only
- * DENY or CONSTRAIN — it never grants access that RBAC denied.
+ * DENY or CONSTRAIN -- it never grants access that RBAC denied.
  *
  * Features:
  *  - Composable AND/OR condition combinators
@@ -284,7 +284,7 @@ export function featureFlagCondition(requiredFlag: string, name?: string): AbacC
  * AND combinator: all conditions must pass.
  */
 export function andConditions(conditions: AbacCondition[]): AbacCondition[] {
-  // Simply return conditions — AND is the default evaluation mode
+  // Simply return conditions -- AND is the default evaluation mode
   return conditions;
 }
 

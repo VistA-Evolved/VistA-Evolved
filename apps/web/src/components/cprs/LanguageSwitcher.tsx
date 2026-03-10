@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * LanguageSwitcher — Phase 132: Globe icon dropdown for locale selection.
+ * LanguageSwitcher -- Phase 132: Globe icon dropdown for locale selection.
  *
  * Renders in the CPRS header/toolbar area. Shows a globe icon with
  * the current locale code. Clicking reveals a dropdown with all

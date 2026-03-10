@@ -1,15 +1,15 @@
 /**
- * Plugin Marketplace — Phase 360 (W18-P7)
+ * Plugin Marketplace -- Phase 360 (W18-P7)
  *
- * Approval workflow FSM for plugin publishing (submitted → under_review →
+ * Approval workflow FSM for plugin publishing (submitted -> under_review ->
  * approved/rejected), install/uninstall tracking, and marketplace catalog.
  *
- * ADR: ADR-PLUGIN-MODEL.md — marketplace approval flow.
+ * ADR: ADR-PLUGIN-MODEL.md -- marketplace approval flow.
  */
 
 import { randomBytes } from "node:crypto";
 
-// ── Types ───────────────────────────────────────────────────────────────
+// -- Types ---------------------------------------------------------------
 
 export type ListingStatus =
   | "draft"
@@ -95,22 +95,22 @@ export const LISTING_CATEGORIES = [
   "other",
 ] as const;
 
-// ── Stores ──────────────────────────────────────────────────────────────
+// -- Stores --------------------------------------------------------------
 
-/** Marketplace listings — keyed by listing ID */
+/** Marketplace listings -- keyed by listing ID */
 const listings = new Map<string, MarketplaceListing>();
 
-/** Install records — keyed by install ID */
+/** Install records -- keyed by install ID */
 const installs = new Map<string, MarketplaceInstall>();
 
-/** Reviews — keyed by review ID */
+/** Reviews -- keyed by review ID */
 const reviews: MarketplaceReview[] = [];
 
-/** Audit log — max 10K entries */
+/** Audit log -- max 10K entries */
 const auditLog: MarketplaceAuditEntry[] = [];
 const MAX_AUDIT = 10_000;
 
-// ── Helpers ─────────────────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------------------
 
 function genId(): string {
   return randomBytes(16).toString("hex");
@@ -150,7 +150,7 @@ const VALID_TRANSITIONS: Record<ListingStatus, ListingStatus[]> = {
   deprecated: [],
 };
 
-// ── Listing CRUD ────────────────────────────────────────────────────────
+// -- Listing CRUD --------------------------------------------------------
 
 export function createListing(
   publisherId: string,
@@ -231,7 +231,7 @@ export function transitionListing(
   const allowed = VALID_TRANSITIONS[listing.status];
   if (!allowed.includes(targetStatus)) {
     throw new Error(
-      `Invalid transition: ${listing.status} → ${targetStatus}. Allowed: ${allowed.join(", ")}`,
+      `Invalid transition: ${listing.status} -> ${targetStatus}. Allowed: ${allowed.join(", ")}`,
     );
   }
 
@@ -249,7 +249,7 @@ export function transitionListing(
     if (notes) listing.reviewNotes = notes;
   }
 
-  logAudit(id, `transition:${prevStatus}→${targetStatus}`, actor, {
+  logAudit(id, `transition:${prevStatus}->${targetStatus}`, actor, {
     from: prevStatus,
     to: targetStatus,
     notes,
@@ -258,7 +258,7 @@ export function transitionListing(
   return listing;
 }
 
-// ── Install/Uninstall ───────────────────────────────────────────────────
+// -- Install/Uninstall ---------------------------------------------------
 
 export function installFromMarketplace(
   tenantId: string,
@@ -321,7 +321,7 @@ export function uninstallFromMarketplace(
   return true;
 }
 
-// ── Reviews ─────────────────────────────────────────────────────────────
+// -- Reviews -------------------------------------------------------------
 
 export function addReview(
   listingId: string,
@@ -356,7 +356,7 @@ export function addReview(
   return review;
 }
 
-// ── Query Helpers ───────────────────────────────────────────────────────
+// -- Query Helpers -------------------------------------------------------
 
 export function searchListings(opts?: {
   status?: ListingStatus;
@@ -453,7 +453,7 @@ export function getMarketplaceStats(): {
   };
 }
 
-// ── Reset (testing) ─────────────────────────────────────────────────────
+// -- Reset (testing) -----------------------------------------------------
 
 export function _resetMarketplace(): void {
   listings.clear();

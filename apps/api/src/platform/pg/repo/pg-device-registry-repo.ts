@@ -1,5 +1,5 @@
 /**
- * PG Device Registry Repository — Async durable device management state
+ * PG Device Registry Repository -- Async durable device management state
  *
  * Phase 526 (W38-C5): Device Registry Durability
  *
@@ -29,7 +29,7 @@ function requireTenantId(tenantId?: string): string {
   throw new Error('Tenant context required for device registry repository');
 }
 
-/* ═══════════════════ MANAGED DEVICE ═══════════════════ */
+/* =================== MANAGED DEVICE =================== */
 
 export async function insertManagedDevice(data: {
   id: string;
@@ -151,7 +151,7 @@ export async function deleteManagedDevice(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ DEVICE-PATIENT ASSOCIATION ═══════════════════ */
+/* =================== DEVICE-PATIENT ASSOCIATION =================== */
 
 export async function insertDevicePatientAssociation(data: {
   id: string;
@@ -272,7 +272,7 @@ export async function deleteDevicePatientAssociation(id: string): Promise<boolea
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ DEVICE-LOCATION MAPPING ═══════════════════ */
+/* =================== DEVICE-LOCATION MAPPING =================== */
 
 export async function insertDeviceLocationMapping(data: {
   id: string;
@@ -368,7 +368,7 @@ export async function deleteDeviceLocationMapping(id: string): Promise<boolean> 
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ DEVICE AUDIT LOG ═══════════════════ */
+/* =================== DEVICE AUDIT LOG =================== */
 
 export async function insertDeviceAuditLog(data: {
   id: string;

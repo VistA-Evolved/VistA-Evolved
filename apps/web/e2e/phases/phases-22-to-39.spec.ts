@@ -62,7 +62,7 @@ test.describe("Phase 22: Imaging Platform V1", () => {
   });
 });
 
-test.describe("Phase 23: Imaging Workflow — VERIFY", () => {
+test.describe("Phase 23: Imaging Workflow -- VERIFY", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/imaging/ingest/callback`);
     expect(r0.status(), "/imaging/ingest/callback not 500").not.toBe(500);

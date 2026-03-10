@@ -1,5 +1,5 @@
 /**
- * Department Pack Routes — Phase 349
+ * Department Pack Routes -- Phase 349
  *
  * Admin endpoints for browsing, validating, installing, and uninstalling
  * department packs. Read endpoints available to session users.
@@ -47,7 +47,7 @@ export async function deptPackRoutes(server: FastifyInstance): Promise<void> {
   // Load manifests at registration time
   loadPackManifests();
 
-  // ─── Pack Catalog (read) ─────────────────────────────
+  // --- Pack Catalog (read) -----------------------------
 
   server.get('/dept-packs/catalog', async (req: FastifyRequest, reply: FastifyReply) => {
     const { departmentType } = (req.query as any) || {};
@@ -63,7 +63,7 @@ export async function deptPackRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, pack });
   });
 
-  // ─── Validation ──────────────────────────────────────
+  // --- Validation --------------------------------------
 
   server.post('/dept-packs/validate', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
@@ -74,7 +74,7 @@ export async function deptPackRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, validation: result });
   });
 
-  // ─── Installation Management ─────────────────────────
+  // --- Installation Management -------------------------
 
   server.get('/dept-packs/installations', async (req: FastifyRequest, reply: FastifyReply) => {
     const { departmentId } = (req.query as any) || {};
@@ -139,7 +139,7 @@ export async function deptPackRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, uninstalled: true });
   });
 
-  // ─── Effective Flags ─────────────────────────────────
+  // --- Effective Flags ---------------------------------
 
   server.get('/dept-packs/effective-flags', async (req: FastifyRequest, reply: FastifyReply) => {
     const { departmentId } = (req.query as any) || {};
@@ -155,7 +155,7 @@ export async function deptPackRoutes(server: FastifyInstance): Promise<void> {
     });
   });
 
-  // ─── Reload Manifests ────────────────────────────────
+  // --- Reload Manifests --------------------------------
 
   server.post('/dept-packs/reload', async (_req: FastifyRequest, reply: FastifyReply) => {
     const packs = loadPackManifests();

@@ -1,18 +1,18 @@
 /**
- * Job Registry — Phase 116: Postgres Job Queue (Graphile Worker)
+ * Job Registry -- Phase 116: Postgres Job Queue (Graphile Worker)
  *
  * Typesafe job name registry with zod payload schemas.
  * Every job payload is validated at enqueue time to enforce:
  *  1. Correct shape
  *  2. NO PHI fields (structurally excluded)
  *
- * Job names are string literals — Graphile Worker resolves task
+ * Job names are string literals -- Graphile Worker resolves task
  * functions by matching job name to the task list in runner.ts.
  */
 
 import { z } from 'zod';
 
-/* ── Job Name Constants ────────────────────────────────────── */
+/* -- Job Name Constants -------------------------------------- */
 
 export const JOB_NAMES = {
   ELIGIBILITY_CHECK_POLL: 'eligibility_check_poll',
@@ -26,11 +26,11 @@ export type JobName = (typeof JOB_NAMES)[keyof typeof JOB_NAMES];
 
 export const ALL_JOB_NAMES: readonly JobName[] = Object.values(JOB_NAMES);
 
-/* ── Payload Schemas (NO PHI — structurally enforced) ──────── */
+/* -- Payload Schemas (NO PHI -- structurally enforced) -------- */
 
 /**
  * eligibility_check_poll payload.
- * References payer + claim by opaque IDs only — no patient name, DOB, SSN.
+ * References payer + claim by opaque IDs only -- no patient name, DOB, SSN.
  */
 export const EligibilityCheckPollPayload = z.object({
   tenantId: z.string().default('default'),
@@ -78,7 +78,7 @@ export const RetentionCleanupPayload = z.object({
 export type RetentionCleanupPayload = z.infer<typeof RetentionCleanupPayload>;
 
 /**
- * pg_backup payload — Phase 118.
+ * pg_backup payload -- Phase 118.
  * Configures backup retention and directory. No PHI.
  */
 export const PgBackupPayload = z.object({
@@ -88,7 +88,7 @@ export const PgBackupPayload = z.object({
 });
 export type PgBackupPayload = z.infer<typeof PgBackupPayload>;
 
-/* ── Schema Map ────────────────────────────────────────────── */
+/* -- Schema Map ---------------------------------------------- */
 
 /**
  * Maps every job name to its zod schema. Used by governance layer
@@ -102,7 +102,7 @@ export const JOB_PAYLOAD_SCHEMAS: Record<JobName, z.ZodType> = {
   [JOB_NAMES.PG_BACKUP]: PgBackupPayload,
 };
 
-/* ── PHI Blocklist — structural enforcement ────────────────── */
+/* -- PHI Blocklist -- structural enforcement ------------------ */
 
 /**
  * Fields that must NEVER appear in any job payload.
@@ -148,7 +148,7 @@ export function containsPhiFields(obj: Record<string, unknown>, path = ''): stri
   return violations;
 }
 
-/* ── Concurrency Configuration ─────────────────────────────── */
+/* -- Concurrency Configuration ------------------------------- */
 
 /**
  * Default concurrency per job type. Can be overridden via env vars.

@@ -15,7 +15,7 @@ export default function Home() {
           priority
         />
         <div className={styles.intro}>
-          <h1>EHR — Evolved</h1>
+          <h1>EHR -- Evolved</h1>
           <p>Hello System is running.</p>
         </div>
         <div className={styles.ctas}>

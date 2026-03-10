@@ -1,5 +1,5 @@
 /**
- * Platform DB — Tenant Middleware for Fastify
+ * Platform DB -- Tenant Middleware for Fastify
  *
  * Phase 101: Platform Data Architecture Convergence
  *

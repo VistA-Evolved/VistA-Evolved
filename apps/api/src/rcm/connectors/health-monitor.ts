@@ -1,5 +1,5 @@
 /**
- * RCM — Connector Health Monitor
+ * RCM -- Connector Health Monitor
  *
  * Phase 242 (Wave 6 P5): Background health probe timer that continuously
  * monitors all registered payer connectors and maintains a health timeline.
@@ -55,9 +55,9 @@ export function startHealthMonitor(): void {
   if (probeTimer) return; // already running
 
   // Initial probe after short delay
-  setTimeout(() => probeAllConnectors(), 5_000).unref();
+  setTimeout(() => { probeAllConnectors().catch((e) => log.warn('Connector health probe failed', { error: String(e) })); }, 5_000).unref();
 
-  probeTimer = setInterval(() => probeAllConnectors(), PROBE_INTERVAL_MS);
+  probeTimer = setInterval(() => { probeAllConnectors().catch((e) => log.warn('Connector health probe failed', { error: String(e) })); }, PROBE_INTERVAL_MS);
   probeTimer.unref(); // don't keep process alive
 
   log.info('Connector health monitor started', {

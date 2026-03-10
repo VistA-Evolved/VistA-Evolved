@@ -1,15 +1,15 @@
 'use client';
 
 /**
- * Tenant Branding Admin — Phase 282
+ * Tenant Branding Admin -- Phase 282
  *
  * Configure per-tenant visual branding: logo URL, accent colors,
  * header/footer text. Also allows setting the tenant default theme pack.
  *
  * Tabs:
- *   - Branding — Logo, colors, text overrides
- *   - Theme — Select default theme pack for the facility
- *   - Preview — Live preview of branding + theme
+ *   - Branding -- Logo, colors, text overrides
+ *   - Theme -- Select default theme pack for the facility
+ *   - Preview -- Live preview of branding + theme
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
@@ -71,7 +71,7 @@ async function apiPut(path: string, body: unknown) {
   });
 }
 
-/* ── Color Picker Helper ───────────────────────────────── */
+/* -- Color Picker Helper --------------------------------- */
 
 function ColorInput({
   label,
@@ -124,7 +124,7 @@ function ColorInput({
   );
 }
 
-/* ── Main Page Component ───────────────────────────────── */
+/* -- Main Page Component --------------------------------- */
 
 export default function BrandingAdminPage() {
   const [tab, setTab] = useState<Tab>('branding');
@@ -203,7 +203,7 @@ export default function BrandingAdminPage() {
     setBranding((prev) => ({ ...prev, [key]: value }));
   };
 
-  /* ── Tab: Branding ─────────────────────────────── */
+  /* -- Tab: Branding ------------------------------- */
 
   function renderBrandingTab() {
     return (
@@ -368,7 +368,7 @@ export default function BrandingAdminPage() {
     );
   }
 
-  /* ── Tab: Theme ────────────────────────────────── */
+  /* -- Tab: Theme ---------------------------------- */
 
   function renderThemeTab() {
     return (
@@ -432,7 +432,7 @@ export default function BrandingAdminPage() {
     );
   }
 
-  /* ── Tab: Preview ──────────────────────────────── */
+  /* -- Tab: Preview -------------------------------- */
 
   function renderPreviewTab() {
     const previewStyles: React.CSSProperties = {
@@ -515,7 +515,7 @@ export default function BrandingAdminPage() {
     );
   }
 
-  /* ── Main Render ───────────────────────────────── */
+  /* -- Main Render --------------------------------- */
 
   const tabs: { id: Tab; label: string }[] = [
     { id: 'branding', label: 'Branding' },

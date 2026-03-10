@@ -1,12 +1,12 @@
 /**
  * Gateway Conformance Harness
  *
- * Phase 46: Per-gateway conformance data — sample payloads, required fields,
+ * Phase 46: Per-gateway conformance data -- sample payloads, required fields,
  * failure modes, and expected probe behaviors. Used for integration testing
  * and partner onboarding validation.
  */
 
-/* ── Types ───────────────────────────────────────────────────── */
+/* -- Types ----------------------------------------------------- */
 
 export interface ConformanceField {
   field: string;
@@ -39,7 +39,7 @@ export interface GatewayConformance {
   probeBehaviors: ConformanceProbeBehavior[];
 }
 
-/* ── PH PhilHealth eClaims 3.0 ───────────────────────────────── */
+/* -- PH PhilHealth eClaims 3.0 --------------------------------- */
 
 const PH_CONFORMANCE: GatewayConformance = {
   gatewayId: 'ph-philhealth',
@@ -149,7 +149,7 @@ const PH_CONFORMANCE: GatewayConformance = {
   ],
 };
 
-/* ── AU ECLIPSE ──────────────────────────────────────────────── */
+/* -- AU ECLIPSE ------------------------------------------------ */
 
 const AU_CONFORMANCE: GatewayConformance = {
   gatewayId: 'au-eclipse',
@@ -232,7 +232,7 @@ const AU_CONFORMANCE: GatewayConformance = {
   ],
 };
 
-/* ── SG NPHC ─────────────────────────────────────────────────── */
+/* -- SG NPHC --------------------------------------------------- */
 
 const SG_CONFORMANCE: GatewayConformance = {
   gatewayId: 'sg-nphc',
@@ -315,7 +315,7 @@ const SG_CONFORMANCE: GatewayConformance = {
   ],
 };
 
-/* ── NZ ACC ──────────────────────────────────────────────────── */
+/* -- NZ ACC ---------------------------------------------------- */
 
 const NZ_CONFORMANCE: GatewayConformance = {
   gatewayId: 'nz-acc',
@@ -406,7 +406,7 @@ const NZ_CONFORMANCE: GatewayConformance = {
   ],
 };
 
-/* ── Registry ────────────────────────────────────────────────── */
+/* -- Registry -------------------------------------------------- */
 
 const CONFORMANCE_REGISTRY: Record<string, GatewayConformance> = {
   'ph-philhealth': PH_CONFORMANCE,

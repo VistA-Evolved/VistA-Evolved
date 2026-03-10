@@ -22,7 +22,7 @@ import {
   type PlatformCluster,
 } from "./multi-cluster-registry.js";
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+// --- Types ------------------------------------------------------------------
 
 export type DnsRecordType = "A" | "AAAA" | "CNAME";
 export type FailoverStatus = "normal" | "failover_in_progress" | "failed_over" | "rollback_in_progress";
@@ -30,7 +30,7 @@ export type FailoverStatus = "normal" | "failover_in_progress" | "failed_over" |
 export interface TenantDnsRecord {
   id: string;
   tenantId: string;
-  subdomain: string;           // e.g., "acme" → acme.api.example.com
+  subdomain: string;           // e.g., "acme" -> acme.api.example.com
   recordType: DnsRecordType;
   targetValue: string;         // IP or CNAME
   region: string;
@@ -89,7 +89,7 @@ export interface RoutingConfig {
   headerRoutingEnabled: boolean;
 }
 
-// ─── Configuration ──────────────────────────────────────────────────────────
+// --- Configuration ----------------------------------------------------------
 
 const DEFAULT_CONFIG: RoutingConfig = {
   baseDomain: process.env.ROUTING_BASE_DOMAIN || "api.vista-evolved.local",
@@ -111,14 +111,14 @@ export function updateRoutingConfig(update: Partial<RoutingConfig>): RoutingConf
   return { ...routingConfig };
 }
 
-// ─── In-Memory Stores ───────────────────────────────────────────────────────
+// --- In-Memory Stores -------------------------------------------------------
 
-const dnsRecordStore = new Map<string, TenantDnsRecord>();        // id → record
-const dnsByTenant = new Map<string, string>();                     // tenantId → dns record id
-const ingressStore = new Map<string, RegionalIngress>();           // id → ingress
-const ingressByRegion = new Map<string, string>();                 // region → ingress id
-const failoverStore = new Map<string, FailoverEvent>();            // id → event
-const failoverByTenant = new Map<string, string>();                // tenantId → latest failover id
+const dnsRecordStore = new Map<string, TenantDnsRecord>();        // id -> record
+const dnsByTenant = new Map<string, string>();                     // tenantId -> dns record id
+const ingressStore = new Map<string, RegionalIngress>();           // id -> ingress
+const ingressByRegion = new Map<string, string>();                 // region -> ingress id
+const failoverStore = new Map<string, FailoverEvent>();            // id -> event
+const failoverByTenant = new Map<string, string>();                // tenantId -> latest failover id
 
 const routingAudit: Array<{
   ts: string;
@@ -128,7 +128,7 @@ const routingAudit: Array<{
 }> = [];
 const MAX_AUDIT = 10_000;
 
-// ─── Tenant Resolution ─────────────────────────────────────────────────────
+// --- Tenant Resolution -----------------------------------------------------
 
 /**
  * Extract tenant ID from an incoming request.
@@ -169,7 +169,7 @@ export function resolveTenantFromRequest(
 }
 
 /**
- * Full route resolution: tenant → placement → cluster → ingress.
+ * Full route resolution: tenant -> placement -> cluster -> ingress.
  */
 export function resolveRoute(
   host: string | undefined,
@@ -230,7 +230,7 @@ export function resolveRoute(
   };
 }
 
-// ─── Ingress Management ────────────────────────────────────────────────────
+// --- Ingress Management ----------------------------------------------------
 
 export function registerIngress(input: {
   region: string;
@@ -304,7 +304,7 @@ export function updateIngressHealth(
   return ingress;
 }
 
-// ─── DNS Record Management ─────────────────────────────────────────────────
+// --- DNS Record Management -------------------------------------------------
 
 export function createDnsRecord(input: {
   tenantId: string;
@@ -375,7 +375,7 @@ export function updateDnsTarget(
   return record;
 }
 
-// ─── Failover Management ────────────────────────────────────────────────────
+// --- Failover Management ----------------------------------------------------
 
 export function initiateFailover(input: {
   tenantId: string;
@@ -463,7 +463,7 @@ export function completeFailover(
   try {
     updateDnsTarget(event.tenantId, newDnsTarget, routingConfig.defaultTtlSeconds, "system");
   } catch {
-    // DNS record might not exist yet — create it
+    // DNS record might not exist yet -- create it
     const toCluster = getCluster(toClusterId);
     if (toCluster) {
       try {
@@ -518,7 +518,7 @@ export function listFailovers(
   return results.sort((a, b) => b.startedAt.localeCompare(a.startedAt));
 }
 
-// ─── Routing Summary ────────────────────────────────────────────────────────
+// --- Routing Summary --------------------------------------------------------
 
 export function getRoutingSummary(tenantId?: string): {
   config: RoutingConfig;
@@ -569,7 +569,7 @@ export function getRoutingSummary(tenantId?: string): {
   };
 }
 
-// ─── Audit ──────────────────────────────────────────────────────────────────
+// --- Audit ------------------------------------------------------------------
 
 function appendAudit(action: string, actor: string, detail: Record<string, unknown>): void {
   routingAudit.push({ ts: new Date().toISOString(), action, actor, detail });

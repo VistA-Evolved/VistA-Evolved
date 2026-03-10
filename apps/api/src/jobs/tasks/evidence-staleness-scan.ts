@@ -1,5 +1,5 @@
 /**
- * Task: evidence_staleness_scan — Phase 116
+ * Task: evidence_staleness_scan -- Phase 116
  *
  * Scans the integration evidence registry for stale entries
  * (evidence older than the configured threshold) and optionally
@@ -35,7 +35,7 @@ export async function handleEvidenceStalenessScan(payload: Record<string, unknow
 
   const { listAll, updateEvidence } = await import('../../rcm/evidence/evidence-registry-repo.js');
 
-  // 1. Fetch all evidence for tenant (always scoped — no cross-tenant scan)
+  // 1. Fetch all evidence for tenant (always scoped -- no cross-tenant scan)
   const allEvidence = await listAll(tenantId);
   const cutoffDate = new Date();
   cutoffDate.setDate(cutoffDate.getDate() - staleAfterDays);

@@ -1,5 +1,5 @@
 /**
- * Audit Shipping Types — Phase 157
+ * Audit Shipping Types -- Phase 157
  *
  * Shared type definitions for audit JSONL shipping to object store.
  */

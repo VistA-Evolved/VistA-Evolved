@@ -1,4 +1,4 @@
-# ve-shared — Default values
+# ve-shared -- Default values
 # Each sub-component can be disabled for external/managed alternatives.
 
 global:

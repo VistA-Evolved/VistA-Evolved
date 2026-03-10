@@ -1305,7 +1305,7 @@ export default function SchedulingPage() {
               marginBottom: '0.75rem',
             }}
           >
-            INTEGRATION PENDING
+            CONFIGURATION REQUIRED
           </span>
           {recallEntries.length === 0 ? (
             <p style={{ fontStyle: 'italic', color: '#6c757d', fontSize: '0.85rem' }}>

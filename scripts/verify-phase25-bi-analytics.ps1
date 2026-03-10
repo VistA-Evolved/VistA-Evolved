@@ -120,7 +120,7 @@ if (Test-Path $configFile) {
     $configContent = Get-Content $configFile -Raw
     if ($configContent -match "analytics_viewer") { Gate-Pass "Config: analytics_viewer permission defined" } else { Gate-Fail "Config: analytics_viewer missing" }
     if ($configContent -match "analytics_admin") { Gate-Pass "Config: analytics_admin permission defined" } else { Gate-Fail "Config: analytics_admin missing" }
-    if ($configContent -match "ANALYTICS_ROLE_PERMISSIONS") { Gate-Pass "Config: role→permission mapping exists" } else { Gate-Fail "Config: role mapping missing" }
+    if ($configContent -match "ANALYTICS_ROLE_PERMISSIONS") { Gate-Pass "Config: role->permission mapping exists" } else { Gate-Fail "Config: role mapping missing" }
     if ($configContent -match "ANALYTICS_SQL_CONFIG") { Gate-Pass "Config: SQL/Octo config present" } else { Gate-Fail "Config: SQL config missing" }
     if ($configContent -match "ANALYTICS_RATE_LIMIT") { Gate-Pass "Config: rate limit config present" } else { Gate-Fail "Config: rate limit missing" }
 } else {

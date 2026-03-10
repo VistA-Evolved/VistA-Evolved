@@ -1,10 +1,10 @@
 /**
- * CSRF Token Utility — Phase 29 (migrated to synchronizer token Phase 132)
+ * CSRF Token Utility -- Phase 29 (migrated to synchronizer token Phase 132)
  *
  * Synchronizer token pattern for CSRF protection on portal write actions.
  *
  * Flow:
- * 1. GET /portal/iam/csrf-token — returns { csrfToken } from server-side session
+ * 1. GET /portal/iam/csrf-token -- returns { csrfToken } from server-side session
  * 2. Client stores token in JS state (NOT a cookie)
  * 3. Client includes X-CSRF-Token header on all POST/PUT/DELETE requests
  * 4. Server validates: header token === session-stored secret
@@ -33,7 +33,7 @@ export function generateCsrfToken(): string {
 }
 
 /* ------------------------------------------------------------------ */
-/* Validation — Phase 132: session-bound synchronizer token             */
+/* Validation -- Phase 132: session-bound synchronizer token             */
 /* ------------------------------------------------------------------ */
 
 /**

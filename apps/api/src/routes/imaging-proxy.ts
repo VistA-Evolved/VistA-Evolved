@@ -1,22 +1,22 @@
 /**
- * DICOMweb Proxy Routes — Phase 22 + Phase 24 hardening.
+ * DICOMweb Proxy Routes -- Phase 22 + Phase 24 hardening.
  *
  * Proxies DICOMweb requests from authenticated browser clients to Orthanc.
- * The browser NEVER talks directly to Orthanc — all requests go through
+ * The browser NEVER talks directly to Orthanc -- all requests go through
  * the API server which enforces session auth, imaging RBAC, audit logging,
  * and header sanitization.
  *
  * Routes:
- *   GET  /imaging/dicom-web/studies                        — QIDO-RS: search studies
- *   GET  /imaging/dicom-web/studies/:studyUid/series       — QIDO-RS: search series
- *   GET  /imaging/dicom-web/studies/:studyUid/metadata     — WADO-RS: study metadata
- *   GET  /imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances — QIDO-RS: instances
- *   GET  /imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances/:instanceUid/frames/:frameList — WADO-RS: pixel data
- *   GET  /imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances/:instanceUid — WADO-RS: instance
- *   POST /imaging/dicom-web/studies                        — STOW-RS: store instances (admin only)
- *   GET  /imaging/orthanc/studies                          — Orthanc REST: list studies
- *   POST /imaging/demo/upload                              — Dev-only DICOM upload
- *   GET  /imaging/viewer                                   — OHIF viewer launch URL
+ *   GET  /imaging/dicom-web/studies                        -- QIDO-RS: search studies
+ *   GET  /imaging/dicom-web/studies/:studyUid/series       -- QIDO-RS: search series
+ *   GET  /imaging/dicom-web/studies/:studyUid/metadata     -- WADO-RS: study metadata
+ *   GET  /imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances -- QIDO-RS: instances
+ *   GET  /imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances/:instanceUid/frames/:frameList -- WADO-RS: pixel data
+ *   GET  /imaging/dicom-web/studies/:studyUid/series/:seriesUid/instances/:instanceUid -- WADO-RS: instance
+ *   POST /imaging/dicom-web/studies                        -- STOW-RS: store instances (admin only)
+ *   GET  /imaging/orthanc/studies                          -- Orthanc REST: list studies
+ *   POST /imaging/demo/upload                              -- Dev-only DICOM upload
+ *   GET  /imaging/viewer                                   -- OHIF viewer launch URL
  *
  * Security model (Phase 24):
  *   - All routes require valid session (httpOnly cookie)
@@ -42,7 +42,7 @@ import { safeErr } from '../lib/safe-error.js';
 /* Helpers                                                              */
 /* ------------------------------------------------------------------ */
 
-/** Extract session from request — returns null if not authenticated. */
+/** Extract session from request -- returns null if not authenticated. */
 function getSession(request: FastifyRequest): SessionData | null {
   const s = request.session;
   if (!s || !s.duz) return null;
@@ -56,7 +56,7 @@ function auditActor(request: FastifyRequest): { duz: string; name?: string; role
   return { duz: 'anonymous' };
 }
 
-/** Require valid session — sends 401 if not authenticated. */
+/** Require valid session -- sends 401 if not authenticated. */
 function requireSession(request: FastifyRequest, reply: FastifyReply): SessionData | null {
   const s = getSession(request);
   if (!s) {
@@ -83,7 +83,7 @@ function requireTenantId(
 }
 
 /**
- * Require imaging_view permission — sends 403 if not authorized.
+ * Require imaging_view permission -- sends 403 if not authorized.
  * Checks role-based imaging RBAC + active break-glass grants.
  * Phase 24: This is the primary gate for all DICOMweb read routes.
  */
@@ -108,7 +108,7 @@ function requireImagingView(
 }
 
 /**
- * Require imaging_admin permission — sends 403 if not authorized.
+ * Require imaging_admin permission -- sends 403 if not authorized.
  * Phase 24: Used for STOW-RS, demo upload, and device management via DICOMweb.
  */
 function requireImagingAdmin(
@@ -265,7 +265,7 @@ async function proxyToOrthanc(
     }
 
     // Security note: CORS headers are managed by the Fastify CORS plugin.
-    // BUG-039: Do NOT manually set Access-Control-Allow-Origin here —
+    // BUG-039: Do NOT manually set Access-Control-Allow-Origin here --
     // reflecting the request origin with credentials:true is an open CORS vuln.
     // The Fastify CORS plugin validates origins at the framework level.
 
@@ -276,7 +276,7 @@ async function proxyToOrthanc(
         path: orthancPath,
         error: errorText.slice(0, 200),
       });
-      reply.send(errorText);
+      reply.send({ ok: false, error: 'Upstream imaging service error', status: upstream.status });
       return;
     }
 
@@ -633,15 +633,21 @@ export default async function imagingProxyRoutes(server: FastifyInstance): Promi
       const url = `${IMAGING_CONFIG.orthancUrl}/instances`;
       const contentType = request.headers['content-type'] || 'application/dicom';
 
+      const controller = new AbortController();
+      const uploadTimeout = setTimeout(() => controller.abort(), 60_000);
+
       const upstream = await fetch(url, {
         method: 'POST',
         headers: { 'Content-Type': contentType },
         body: request.body as any,
+        signal: controller.signal,
       });
+      clearTimeout(uploadTimeout);
 
       if (!upstream.ok) {
-        const err = await upstream.text();
-        return reply.code(upstream.status).send({ ok: false, error: err.slice(0, 200) });
+        const errText = await upstream.text();
+        log.warn('Imaging demo upload failed', { status: upstream.status, error: errText.slice(0, 200) });
+        return reply.code(upstream.status).send({ ok: false, error: 'Imaging upload failed' });
       }
 
       const result = await upstream.json();

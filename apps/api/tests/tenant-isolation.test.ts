@@ -21,7 +21,7 @@ import {
 import { CANONICAL_RLS_TABLES } from '../src/platform/pg/pg-migrate.js';
 
 describe('Phase 122: Tenant Isolation Guards', () => {
-  /* ── requireTenantId ─────────────────────────────── */
+  /* -- requireTenantId ------------------------------- */
 
   describe('requireTenantId', () => {
     it('passes with a valid tenant ID', () => {
@@ -64,7 +64,7 @@ describe('Phase 122: Tenant Isolation Guards', () => {
     });
   });
 
-  /* ── assertTenantMatch ───────────────────────────── */
+  /* -- assertTenantMatch ----------------------------- */
 
   describe('assertTenantMatch', () => {
     it('passes when tenantId matches', () => {
@@ -110,7 +110,7 @@ describe('Phase 122: Tenant Isolation Guards', () => {
     });
   });
 
-  /* ── Table inventory ─────────────────────────────── */
+  /* -- Table inventory ------------------------------- */
 
   describe('Table inventory', () => {
     it('TENANT_SCOPED_TABLES has >100 entries (derived from canonical list)', () => {
@@ -156,7 +156,7 @@ describe('Phase 122: Tenant Isolation Guards', () => {
     });
   });
 
-  /* ── TenantIsolationError ────────────────────────── */
+  /* -- TenantIsolationError -------------------------- */
 
   describe('TenantIsolationError', () => {
     it('is an Error subclass', () => {
@@ -167,7 +167,7 @@ describe('Phase 122: Tenant Isolation Guards', () => {
     });
   });
 
-  /* ── Cross-tenant leakage simulation ─────────────── */
+  /* -- Cross-tenant leakage simulation --------------- */
 
   describe('Cross-tenant leakage prevention', () => {
     it('tenant A cannot read tenant B claim via PK lookup guard', () => {

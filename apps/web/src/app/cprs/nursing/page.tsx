@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Phase 84 — Nursing Documentation + Flowsheets
+ * Phase 84 -- Nursing Documentation + Flowsheets
  *
  * Standalone nursing page with patient context banner and 3 tabs:
  *  1) Nursing Notes (shift/progress notes, create new, view existing)
@@ -9,7 +9,7 @@
  *  3) Tasks (due vitals, safety checks, med pass reminders)
  *
  * VistA-sourced: ORQQVI VITALS, TIU DOCUMENTS BY CONTEXT, TIU CREATE RECORD,
- *   TIU GET RECORD TEXT. I&O + assessments integration-pending with named targets.
+ *   TIU GET RECORD TEXT. I&O + assessments awaiting VistA configuration with named targets.
  */
 
 import { useState, useEffect, useCallback, Suspense } from 'react';
@@ -351,7 +351,7 @@ function PatientBanner({ patient, dfn }: { patient: PatientContext | null; dfn: 
 }
 
 /* ------------------------------------------------------------------ */
-/* Integration Pending Banner                                           */
+/* Configuration Required Banner                                        */
 /* ------------------------------------------------------------------ */
 
 function IntegrationPendingSection({
@@ -365,11 +365,11 @@ function IntegrationPendingSection({
 }) {
   return (
     <div style={S.pendingBanner}>
-      <div style={S.pendingTitle}>{title} — Integration Pending</div>
+      <div style={S.pendingTitle}>{title} -- Configuration Required</div>
       <div style={S.pendingText}>
         {targets.map((t, i) => (
           <div key={i}>
-            <code>{t.rpc}</code> ({t.package}) — {t.reason}
+            <code>{t.rpc}</code> ({t.package}) -- {t.reason}
           </div>
         ))}
       </div>
@@ -651,13 +651,13 @@ function NotesTab({ dfn }: { dfn: string }) {
                   : `Error: ${createResult.error || createResult._error}`}
                 {createResult.source === 'local-draft' && (
                   <div style={{ fontSize: '11px', marginTop: '4px', color: '#975a16' }}>
-                    Draft ID: {createResult.draftId} — Will persist to VistA when TIU Nursing Note
+                    Draft ID: {createResult.draftId} -- Will persist to VistA when TIU Nursing Note
                     class is configured.
                   </div>
                 )}
                 {createResult.ok && createResult.noteIen && createResult.source === 'vista' && (
                   <div style={{ fontSize: '11px', marginTop: '4px', color: '#2d3748' }}>
-                    Document IEN: {createResult.noteIen} — Status: {createResult.noteStatus || createResult.status}
+                    Document IEN: {createResult.noteIen} -- Status: {createResult.noteStatus || createResult.status}
                   </div>
                 )}
               </div>
@@ -716,7 +716,7 @@ function NotesTab({ dfn }: { dfn: string }) {
               </button>
             </div>
             <div style={{ fontSize: '12px', color: '#718096', marginBottom: '12px' }}>
-              {selectedNote.date} — {selectedNote.author} — {selectedNote.status}
+              {selectedNote.date} -- {selectedNote.author} -- {selectedNote.status}
             </div>
             {loadingText ? (
               <div style={S.loading}>Loading note text...</div>
@@ -871,7 +871,7 @@ function VitalsTrendSection({ dfn }: { dfn: string }) {
                 {isCritical && <span style={S.badge('red')}>CRITICAL</span>}
               </div>
               <div style={S.trendValue}>
-                {latest?.value || '—'}
+                {latest?.value || '--'}
                 <span
                   style={{ fontSize: '12px', color: '#718096', fontWeight: 400, marginLeft: '4px' }}
                 >
@@ -879,12 +879,12 @@ function VitalsTrendSection({ dfn }: { dfn: string }) {
                 </span>
               </div>
               <div style={{ fontSize: '11px', color: '#a0aec0', marginTop: '4px' }}>
-                {latest?.date || 'No data'} — {vals.length} reading{vals.length !== 1 ? 's' : ''}
+                {latest?.date || 'No data'} -- {vals.length} reading{vals.length !== 1 ? 's' : ''}
               </div>
               {thresh && (
                 <div style={{ fontSize: '10px', color: '#718096', marginTop: '2px' }}>
-                  Range: {thresh.low !== undefined ? `${thresh.low}` : '—'} –{' '}
-                  {thresh.high !== undefined ? `${thresh.high}` : '—'} {thresh.unit}
+                  Range: {thresh.low !== undefined ? `${thresh.low}` : '--'} -{' '}
+                  {thresh.high !== undefined ? `${thresh.high}` : '--'} {thresh.unit}
                 </div>
               )}
             </div>
@@ -980,7 +980,7 @@ function IOSection({ dfn }: { dfn: string }) {
         grounding={data.vistaGrounding}
       />
 
-      {/* I&O shell — shows structure even while pending */}
+      {/* I&O shell -- shows structure even while pending */}
       <div style={S.card}>
         <div style={{ fontWeight: 600, fontSize: '13px', color: '#2d3748', marginBottom: '12px' }}>
           I&O Summary (Current Shift)
@@ -1127,7 +1127,6 @@ function TasksTab({ dfn }: { dfn: string }) {
 
   const overdue = flowData?.overdue || false;
   const criticalCount = flowData?.criticalCount || 0;
-  const nextDue = flowData?.nextVitalsDue;
   const hasLiveTasks = Array.isArray(taskData?.items) && taskData.items.length > 0;
   const taskNote = taskData?._note || taskData?.note;
   const checklistItems: Array<{ id: string; label: string; priority: string; due: string }> = [
@@ -1165,7 +1164,7 @@ function TasksTab({ dfn }: { dfn: string }) {
           {flowError ? '⚠ Vitals Schedule Unavailable' : overdue ? '⚠ VITALS OVERDUE' : '✓ Vitals Current'}
         </div>
         {criticalCount > 0 && (
-          <span style={S.badge('red')}>{criticalCount} critical value(s) — notify provider</span>
+          <span style={S.badge('red')}>{criticalCount} critical value(s) -- notify provider</span>
         )}
         {flowError && <span style={S.badge('yellow')}>{flowError}</span>}
       </div>
@@ -1256,7 +1255,7 @@ function TasksTab({ dfn }: { dfn: string }) {
         </table>
       </div>
 
-      {/* Integration pending for expanded task engine */}
+      {/* Configuration required for expanded task engine */}
       {taskData?.pendingTargets?.length > 0 && (
         <IntegrationPendingSection title="Expanded BCMA Task Engine" targets={taskData.pendingTargets} />
       )}
@@ -1265,8 +1264,8 @@ function TasksTab({ dfn }: { dfn: string }) {
         <strong>Nurse Safety Features (Phase 84)</strong>
         <ul style={{ margin: '4px 0 0', paddingLeft: '18px' }}>
           <li>
-            Critical vitals flagged with configurable thresholds (BP ≥180, HR &lt;50/&gt;130, Temp
-            &lt;95/&gt;103°F, SpO2 ≤90%)
+            Critical vitals flagged with configurable thresholds (BP &gt;=180, HR &lt;50/&gt;130, Temp
+            &lt;95/&gt;103 degF, SpO2 &lt;=90%)
           </li>
           <li>Due/overdue indicators based on 4-hour inpatient vitals schedule</li>
           <li>Shift safety checklist is local guidance and clearly separated from live VistA task rows</li>
@@ -1334,7 +1333,7 @@ function NursingDocumentationPageInner() {
           }}
           onClick={() => router.push('/cprs/inpatient')}
         >
-          ← Back to Inpatient
+          {'<- Back to Inpatient'}
         </button>
       </div>
 

@@ -1,11 +1,11 @@
 /**
- * Analytics Extract Types — Phase 363 (W19-P2)
+ * Analytics Extract Types -- Phase 363 (W19-P2)
  *
  * Shared types for the analytics extract layer, de-identification,
  * reporting, and data access controls.
  */
 
-// ── Extract Types ───────────────────────────────────────────────────────
+// -- Extract Types -------------------------------------------------------
 
 export type ExtractEntityType =
   | 'analytics_event'
@@ -50,7 +50,7 @@ export interface ExtractRecord {
   data: Record<string, unknown>;
 }
 
-// ── De-Identification Types ─────────────────────────────────────────────
+// -- De-Identification Types ---------------------------------------------
 
 export type DeidMode = 'strict' | 'pseudonymized' | 'raw';
 
@@ -137,7 +137,7 @@ export const INLINE_PHI_PATTERNS: Array<{ pattern: RegExp; replacement: string }
   },
 ];
 
-// ── Reporting Types ─────────────────────────────────────────────────────
+// -- Reporting Types -----------------------------------------------------
 
 export type ReportId =
   | 'active_users'
@@ -185,7 +185,7 @@ export interface ReportRow {
   [key: string]: unknown;
 }
 
-// ── Quality Metrics Types ───────────────────────────────────────────────
+// -- Quality Metrics Types -----------------------------------------------
 
 export type QualityMeasureId =
   | 'lab_followup_time'
@@ -214,7 +214,7 @@ export interface QualityMetricRun {
   status: 'computed' | 'insufficient_data' | 'error';
 }
 
-// ── Data Access Control Types ───────────────────────────────────────────
+// -- Data Access Control Types -------------------------------------------
 
 export type DatasetId =
   | 'analytics_events'

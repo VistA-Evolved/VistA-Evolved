@@ -1,5 +1,5 @@
 /**
- * Job Governance — Phase 116: Postgres Job Queue (Graphile Worker)
+ * Job Governance -- Phase 116: Postgres Job Queue (Graphile Worker)
  *
  * Enforces payload validation, PHI rejection, and run logging
  * for all jobs processed by the Graphile Worker runner.
@@ -17,7 +17,7 @@ import { type JobName, JOB_PAYLOAD_SCHEMAS, containsPhiFields, ALL_JOB_NAMES } f
 import { log } from '../lib/logger.js';
 import { isPgConfigured, getPgPool } from '../platform/pg/index.js';
 
-/* ── Types ─────────────────────────────────────────────────── */
+/* -- Types --------------------------------------------------- */
 
 export interface JobRunLogEntry {
   id: string;
@@ -32,7 +32,7 @@ export interface JobRunLogEntry {
   tenantId: string;
 }
 
-/* ── Payload Validation ────────────────────────────────────── */
+/* -- Payload Validation -------------------------------------- */
 
 export interface ValidateResult {
   ok: boolean;
@@ -77,7 +77,7 @@ export function validateJobPayload(jobName: string, rawPayload: unknown): Valida
   return { ok: true, payload };
 }
 
-/* ── Job Run Logging (PG) ──────────────────────────────────── */
+/* -- Job Run Logging (PG) ------------------------------------ */
 
 /**
  * Log a job run start to the job_run_log table.
@@ -141,7 +141,7 @@ export async function logJobFinish(
   }
 }
 
-/* ── Redact Error Messages ─────────────────────────────────── */
+/* -- Redact Error Messages ----------------------------------- */
 
 const PHI_PATTERNS = [
   /\b\d{3}-\d{2}-\d{4}\b/g, // SSN
@@ -161,7 +161,7 @@ export function redactErrorMessage(msg: string): string {
   return redacted.length > 500 ? redacted.slice(0, 500) + '...' : redacted;
 }
 
-/* ── Job Run Log Read ──────────────────────────────────────── */
+/* -- Job Run Log Read ---------------------------------------- */
 
 /**
  * Query recent job run log entries. Admin-only endpoint backing.

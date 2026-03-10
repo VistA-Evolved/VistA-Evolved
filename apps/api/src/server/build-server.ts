@@ -1,5 +1,5 @@
 /**
- * Server — Build Server
+ * Server -- Build Server
  *
  * Phase 173: Assembles the fully-configured Fastify instance by composing
  * plugins, routes, and inline handlers. Does NOT call listen().

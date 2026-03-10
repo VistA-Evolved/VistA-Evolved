@@ -1,5 +1,5 @@
 /**
- * Phase 404 (W23-P6): Bulk Data — Types
+ * Phase 404 (W23-P6): Bulk Data -- Types
  */
 
 export type BulkJobStatus = 'queued' | 'in-progress' | 'completed' | 'failed' | 'cancelled';

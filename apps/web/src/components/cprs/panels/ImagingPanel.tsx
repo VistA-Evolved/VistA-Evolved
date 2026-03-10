@@ -714,7 +714,7 @@ export default function ImagingPanel({ dfn }: Props) {
                         </span>
                       </td>
                       <td style={{ padding: '3px 8px', textAlign: 'center', fontSize: 11 }}>
-                        {item.linkedStudyUid ? '✓' : '—'}
+                        {item.linkedStudyUid ? '✓' : '--'}
                       </td>
                     </tr>
                   ))}
@@ -842,7 +842,7 @@ export default function ImagingPanel({ dfn }: Props) {
                           ? '🔒'
                           : dev.tlsMode === 'optional'
                             ? '🔓'
-                            : '—'}
+                            : '--'}
                       </td>
                       <td style={{ padding: '3px 8px', textAlign: 'center' }}>
                         <span
@@ -874,7 +874,7 @@ export default function ImagingPanel({ dfn }: Props) {
                             {new Date(dev.lastEchoAt).toLocaleDateString()}
                           </span>
                         ) : (
-                          '—'
+                          '--'
                         )}
                       </td>
                     </tr>
@@ -1013,9 +1013,9 @@ export default function ImagingPanel({ dfn }: Props) {
                           {entry.outcome}
                         </span>
                       </td>
-                      <td style={{ padding: '2px 6px', fontSize: 10 }}>{entry.actorName || '—'}</td>
+                      <td style={{ padding: '2px 6px', fontSize: 10 }}>{entry.actorName || '--'}</td>
                       <td style={{ padding: '2px 6px', fontFamily: 'monospace', fontSize: 9 }}>
-                        {entry.studyInstanceUid ? entry.studyInstanceUid.slice(0, 20) + '…' : '—'}
+                        {entry.studyInstanceUid ? entry.studyInstanceUid.slice(0, 20) + '...' : '--'}
                       </td>
                     </tr>
                   ))}
@@ -1243,7 +1243,7 @@ export default function ImagingPanel({ dfn }: Props) {
                             color: 'var(--cprs-text-muted)',
                           }}
                         >
-                          {study.imageCount || '—'}
+                          {study.imageCount || '--'}
                         </td>
                         <td style={{ padding: '3px 4px', textAlign: 'center' }}>
                           <span
@@ -1649,7 +1649,7 @@ export default function ImagingPanel({ dfn }: Props) {
 }
 
 /* ------------------------------------------------------------------ */
-/* ImagingOrderForm — inline order creation (Phase 23)                 */
+/* ImagingOrderForm -- inline order creation (Phase 23)                 */
 /* ------------------------------------------------------------------ */
 
 /* ===== Phase 538: Imaging Capture Tab (SIC-like) ===== */
@@ -1732,7 +1732,7 @@ function ImagingCaptureTab({ dfn }: { dfn: string }) {
             marginLeft: 8,
           }}
         >
-          INTEGRATION PENDING
+          CONFIGURATION REQUIRED
         </span>
       </div>
 
@@ -2063,7 +2063,7 @@ function DetailRow({ label, value, mono }: { label: string; value: string; mono?
 }
 
 function formatDate(raw: string): string {
-  if (!raw) return '—';
+  if (!raw) return '--';
   // DICOM dates are YYYYMMDD
   if (/^\d{8}$/.test(raw)) {
     return `${raw.slice(0, 4)}-${raw.slice(4, 6)}-${raw.slice(6, 8)}`;

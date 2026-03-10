@@ -1,5 +1,5 @@
 /**
- * Denial & Appeals Domain Model — Phase 98
+ * Denial & Appeals Domain Model -- Phase 98
  *
  * VistA-first: VistA IB/AR/PCE remains authoritative billing ledger.
  * This module provides denial workflow overlay with durable persistence.
@@ -10,7 +10,7 @@
 
 import { z } from 'zod';
 
-/* ── Denial Status FSM ──────────────────────────────────────── */
+/* -- Denial Status FSM ---------------------------------------- */
 
 export const DENIAL_STATUSES = [
   'NEW',
@@ -25,7 +25,7 @@ export const DENIAL_STATUSES = [
 
 export type DenialStatus = (typeof DENIAL_STATUSES)[number];
 
-/** Valid transitions — key is current state, value is allowed next states */
+/** Valid transitions -- key is current state, value is allowed next states */
 export const DENIAL_TRANSITIONS: Record<DenialStatus, readonly DenialStatus[]> = {
   NEW: ['TRIAGED', 'APPEALING', 'WRITEOFF', 'CLOSED'],
   TRIAGED: ['APPEALING', 'RESUBMITTED', 'WRITEOFF', 'CLOSED'],
@@ -41,12 +41,12 @@ export function isValidDenialTransition(from: DenialStatus, to: DenialStatus): b
   return DENIAL_TRANSITIONS[from].includes(to);
 }
 
-/* ── Denial Source ──────────────────────────────────────────── */
+/* -- Denial Source -------------------------------------------- */
 
 export const DENIAL_SOURCES = ['MANUAL', 'EDI_835', 'PORTAL_STATUS', 'OTHER'] as const;
 export type DenialSource = (typeof DENIAL_SOURCES)[number];
 
-/* ── Denial Code ────────────────────────────────────────────── */
+/* -- Denial Code ---------------------------------------------- */
 
 export const DENIAL_CODE_TYPES = ['CARC', 'RARC', 'OTHER'] as const;
 export type DenialCodeType = (typeof DENIAL_CODE_TYPES)[number];
@@ -60,7 +60,7 @@ export const DenialCodeSchema = z.object({
 
 export type DenialCode = z.infer<typeof DenialCodeSchema>;
 
-/* ── Financial Fields ───────────────────────────────────────── */
+/* -- Financial Fields ----------------------------------------- */
 
 export const DenialFinancialsSchema = z.object({
   billedAmountCents: z.number().int().min(0),
@@ -72,12 +72,12 @@ export const DenialFinancialsSchema = z.object({
 
 export type DenialFinancials = z.infer<typeof DenialFinancialsSchema>;
 
-/* ── Evidence Reference ─────────────────────────────────────── */
+/* -- Evidence Reference --------------------------------------- */
 
 export const EvidenceRefSchema = z.object({
   refType: z.enum(['document', 'screenshot', 'remittance_hash', 'clinical_note_ref', 'other']),
   label: z.string().min(1).max(200),
-  storedPath: z.string().max(500).optional(), // reference only — no raw PHI
+  storedPath: z.string().max(500).optional(), // reference only -- no raw PHI
   sha256: z.string().max(64).optional(),
   addedAt: z.string(), // ISO 8601
   addedBy: z.string().max(100).optional(),
@@ -85,7 +85,7 @@ export const EvidenceRefSchema = z.object({
 
 export type EvidenceRef = z.infer<typeof EvidenceRefSchema>;
 
-/* ── DenialCase ─────────────────────────────────────────────── */
+/* -- DenialCase ----------------------------------------------- */
 
 export interface DenialCase {
   id: string;
@@ -96,7 +96,7 @@ export interface DenialCase {
   claimRef: string; // internal claim ID or VistA claim ref
   vistaClaimIen: string | null; // VistA IB(350) IEN if available
 
-  // Patient — minimal reference, never logged
+  // Patient -- minimal reference, never logged
   patientDfn: string | null; // VistA DFN; not stored in audit
 
   // Payer
@@ -132,7 +132,7 @@ export interface DenialCase {
   importParserVersion: string | null;
 }
 
-/* ── Create Denial Input ────────────────────────────────────── */
+/* -- Create Denial Input -------------------------------------- */
 
 export const CreateDenialSchema = z.object({
   tenantId: z.string().max(100).optional(),
@@ -156,7 +156,7 @@ export const CreateDenialSchema = z.object({
 
 export type CreateDenialInput = z.infer<typeof CreateDenialSchema>;
 
-/* ── Update Denial Input ────────────────────────────────────── */
+/* -- Update Denial Input -------------------------------------- */
 
 export const UpdateDenialSchema = z.object({
   denialStatus: z.enum(DENIAL_STATUSES).optional(),
@@ -170,7 +170,7 @@ export const UpdateDenialSchema = z.object({
 
 export type UpdateDenialInput = z.infer<typeof UpdateDenialSchema>;
 
-/* ── Denial Action ──────────────────────────────────────────── */
+/* -- Denial Action -------------------------------------------- */
 
 export const DENIAL_ACTION_TYPES = [
   'NOTE',
@@ -206,7 +206,7 @@ export const CreateDenialActionSchema = z.object({
 
 export type CreateDenialActionInput = z.infer<typeof CreateDenialActionSchema>;
 
-/* ── Resubmission Attempt ───────────────────────────────────── */
+/* -- Resubmission Attempt ------------------------------------- */
 
 export const RESUBMISSION_METHODS = ['MAIL', 'PORTAL', 'EDI', 'FAX', 'OTHER'] as const;
 export type ResubmissionMethod = (typeof RESUBMISSION_METHODS)[number];
@@ -231,7 +231,7 @@ export const CreateResubmissionSchema = z.object({
 
 export type CreateResubmissionInput = z.infer<typeof CreateResubmissionSchema>;
 
-/* ── Attachment Reference ───────────────────────────────────── */
+/* -- Attachment Reference ------------------------------------- */
 
 export interface DenialAttachment {
   id: string;
@@ -244,7 +244,7 @@ export interface DenialAttachment {
   addedBy: string | null;
 }
 
-/* ── Appeal Packet ──────────────────────────────────────────── */
+/* -- Appeal Packet -------------------------------------------- */
 
 export interface AppealPacketMeta {
   denialId: string;
@@ -262,16 +262,16 @@ export interface AppealPacketMeta {
   note: string; // "Credentials not stored; portal submission manual unless automation installed"
 }
 
-/* ── SLA Config ─────────────────────────────────────────────── */
+/* -- SLA Config ----------------------------------------------- */
 
 export const DEFAULT_SLA_DAYS = 30;
 
 export interface SlaConfig {
   defaultDays: number;
-  payerOverrides: Record<string, number>; // payerId → days
+  payerOverrides: Record<string, number>; // payerId -> days
 }
 
-/* ── Pagination ─────────────────────────────────────────────── */
+/* -- Pagination ----------------------------------------------- */
 
 export const DenialListQuerySchema = z.object({
   page: z.coerce.number().int().min(1).default(1),
@@ -289,7 +289,7 @@ export const DenialListQuerySchema = z.object({
 
 export type DenialListQuery = z.infer<typeof DenialListQuerySchema>;
 
-/* ── 835 Import ─────────────────────────────────────────────── */
+/* -- 835 Import ----------------------------------------------- */
 
 export const ImportRemittanceDenialSchema = z.object({
   claimRef: z.string().min(1),

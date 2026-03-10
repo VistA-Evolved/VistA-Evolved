@@ -1,5 +1,5 @@
 /**
- * Immutable Audit Store — Phase 35.
+ * Immutable Audit Store -- Phase 35.
  *
  * Append-only, hash-chained audit log for security-relevant events.
  * Each entry includes a SHA-256 hash of the previous entry for tamper evidence.
@@ -152,13 +152,13 @@ export type ImmutableAuditAction =
   | 'handoff.accept'
   | 'handoff.archive'
   | 'handoff.ward-patients'
-  // Phase 140: Portal parity — documents + consents
+  // Phase 140: Portal parity -- documents + consents
   | 'portal.document.list'
   | 'portal.document.generate'
   | 'portal.document.download'
   | 'portal.consent.view'
   | 'portal.consent.update'
-  // Phase 141: Enterprise IAM posture — auth mode + break-glass + SCIM
+  // Phase 141: Enterprise IAM posture -- auth mode + break-glass + SCIM
   | 'iam.auth-mode.validated'
   | 'iam.auth-mode.enforced'
   | 'iam.break-glass.request'
@@ -184,7 +184,24 @@ export type ImmutableAuditAction =
   | 'telehealth.encounter_link'
   | 'telehealth.consent_recorded'
   | 'telehealth.consent_withdrawn'
-  | 'telehealth.session_auto_ended';
+  | 'telehealth.session_auto_ended'
+  // Patient registration events
+  | 'registration.create'
+  | 'registration.update'
+  | 'registration.search'
+  | 'registration.demographics'
+  | 'registration.duplicate_check'
+  // Discharge workflow write events
+  | 'discharge.full'
+  | 'discharge.instructions'
+  | 'discharge.summary'
+  | 'discharge.followup'
+  // Scheduling write events
+  | 'scheduling.sdec_appadd'
+  | 'scheduling.sdec_appdel'
+  // Medication reconciliation events
+  | 'medrec.reconcile'
+  | 'medrec.outside_med';
 
 export type ImmutableAuditOutcome =
   | 'success'
@@ -208,9 +225,9 @@ export interface ImmutableAuditEntry {
   action: ImmutableAuditAction;
   /** Outcome */
   outcome: ImmutableAuditOutcome;
-  /** Actor identifier (DUZ, sub, or "anonymous") — never a name */
+  /** Actor identifier (DUZ, sub, or "anonymous") -- never a name */
   actorId: string;
-  /** Actor display name (sanitized — no PHI) */
+  /** Actor display name (sanitized -- no PHI) */
   actorName: string;
   /** Actor roles */
   actorRoles: string[];
@@ -222,7 +239,7 @@ export interface ImmutableAuditEntry {
   sourceIp?: string;
   /** Tenant context */
   tenantId?: string;
-  /** Structured detail (NO PHI — action categories only) */
+  /** Structured detail (NO PHI -- action categories only) */
   detail?: Record<string, unknown>;
 }
 
@@ -260,7 +277,7 @@ function recoverLastEntry(): { hash: string; seq: number } {
       };
     }
   } catch {
-    // Corrupt or empty file — start fresh
+    // Corrupt or empty file -- start fresh
   }
   return { hash: '', seq: 0 };
 }
@@ -299,12 +316,19 @@ function computeEntryHash(entry: Omit<ImmutableAuditEntry, 'hash'>): string {
 }
 
 /**
- * Hash an IP address (for production — never store raw IPs in audit).
+ * Hash an IP address (for production -- never store raw IPs in audit).
  */
+const _auditRtMode = (process.env.PLATFORM_RUNTIME_MODE || process.env.NODE_ENV || 'dev').toLowerCase();
+const _auditIsProd = _auditRtMode === 'rc' || _auditRtMode === 'prod' || _auditRtMode === 'production';
+if (_auditIsProd && !process.env.AUDIT_IP_SALT) {
+  throw new Error('AUDIT_IP_SALT must be set in rc/prod mode');
+}
+const IP_HASH_SALT = process.env.AUDIT_IP_SALT || 'vista-evolved-ip-salt-dev';
+
 function hashIp(ip: string): string {
   if (!HASH_SOURCE_IP) return ip;
   return createHash('sha256')
-    .update(ip + 'vista-evolved-ip-salt')
+    .update(ip + IP_HASH_SALT)
     .digest('hex')
     .slice(0, 16);
 }
@@ -313,7 +337,7 @@ function hashIp(ip: string): string {
 /* PHI sanitization                                                    */
 /* ------------------------------------------------------------------ */
 
-/** Patterns that indicate PHI — strip from detail values. */
+/** Patterns that indicate PHI -- strip from detail values. */
 const PHI_PATTERNS = [
   /\b\d{3}-\d{2}-\d{4}\b/g, // SSN
   /\b\d{9}\b/g, // SSN without dashes
@@ -495,7 +519,7 @@ export function verifyAuditChain(): {
       };
     }
 
-    // Verify chain linkage (skip first entry — its prevHash is "")
+    // Verify chain linkage (skip first entry -- its prevHash is "")
     if (i > 0 && entry.prevHash !== auditRing[i - 1].hash) {
       return {
         valid: false,

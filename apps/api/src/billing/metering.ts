@@ -1,5 +1,5 @@
 /**
- * Metering Counter Store — per-tenant API/RPC usage tracking
+ * Metering Counter Store -- per-tenant API/RPC usage tracking
  *
  * Phase 284 (Wave 10 P5)
  *
@@ -9,11 +9,12 @@
  * Counters reset on API restart (in-memory). The billing provider
  * (Lago/mock) is the durable store for invoicing purposes.
  *
- * No PHI — counters are tenant-scoped, not patient-scoped.
+ * No PHI -- counters are tenant-scoped, not patient-scoped.
  */
 
 import type { MeterEvent, MeteringRecord } from './types.js';
 import { getBillingProvider } from './index.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Counter store                                                       */
@@ -35,7 +36,7 @@ const MAX_TENANTS = 10_000;
 
 /**
  * Increment a metering counter for a tenant.
- * This is a hot-path function — no async, no I/O.
+ * This is a hot-path function -- no async, no I/O.
  */
 export function incrementMeter(tenantId: string, event: MeterEvent, quantity = 1): void {
   let tc = store.get(tenantId);
@@ -87,7 +88,7 @@ export async function flushMeters(): Promise<{ flushed: number; errors: number }
   try {
     provider = getBillingProvider();
   } catch {
-    // Provider not initialized yet
+    // Provider not initialized yet -- nothing to flush
     return { flushed: 0, errors: 0 };
   }
 
@@ -106,7 +107,8 @@ export async function flushMeters(): Promise<{ flushed: number; errors: number }
         try {
           await provider.reportUsage(record);
           flushed++;
-        } catch {
+        } catch (err) {
+          log.debug('Metering reportUsage failed', { tenantId, event, error: String(err) });
           errors++;
         }
       } else {
@@ -132,7 +134,7 @@ export function startMeteringFlush(): void {
   if (flushTimer) return;
   flushTimer = setInterval(() => {
     flushMeters().catch(() => {
-      /* swallow — logged by provider */
+      /* swallow -- logged by provider */
     });
   }, FLUSH_INTERVAL_MS);
   // Don't keep process alive just for metering flush
@@ -149,7 +151,7 @@ export function stopMeteringFlush(): void {
 }
 
 /**
- * Reset all stores — testing only.
+ * Reset all stores -- testing only.
  */
 export function resetMeteringStore(): void {
   store.clear();

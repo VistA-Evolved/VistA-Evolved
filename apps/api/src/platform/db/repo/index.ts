@@ -1,5 +1,5 @@
 /**
- * Platform DB Repo Barrel — Phase 122
+ * Platform DB Repo Barrel -- Phase 122
  *
  * Re-exports tenant isolation guards and scoped query helpers.
  */

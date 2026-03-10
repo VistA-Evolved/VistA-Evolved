@@ -1,4 +1,13 @@
-'use client';
+import type { Metadata } from 'next';
+
+export const metadata: Metadata = {
+  title: 'Pricing',
+  description: 'Simple, transparent pricing for VistA Evolved EHR. Plans for solo clinics, multi-location practices, hospitals, and health systems. 30-day free trial included.',
+  openGraph: {
+    title: 'Pricing - VistA Evolved',
+    description: 'Simple, transparent pricing for VistA Evolved EHR. Plans for solo clinics, hospitals, and health systems.',
+  },
+};
 
 const tiers = [
   {
@@ -95,17 +104,13 @@ const addOns = [
   { name: 'Telehealth Premium', price: '$149/month' },
 ];
 
+import { Nav } from '../../components/Nav';
+import { Footer } from '../../components/Footer';
+
 export default function PricingPage() {
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' }}>
-      <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem 4rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        <a href="/" style={{ color: 'white', fontSize: '1.5rem', fontWeight: 700, textDecoration: 'none' }}>
-          VistA <span style={{ color: '#38bdf8' }}>Evolved</span>
-        </a>
-        <a href="/signup" style={{ background: '#2563eb', color: 'white', padding: '0.5rem 1.5rem', borderRadius: '8px', textDecoration: 'none', fontWeight: 600 }}>
-          Get Started
-        </a>
-      </nav>
+      <Nav />
 
       <section style={{ textAlign: 'center', padding: '4rem 2rem 2rem' }}>
         <h1 style={{ color: 'white', fontSize: '2.5rem', fontWeight: 800, marginBottom: '1rem' }}>
@@ -167,9 +172,7 @@ export default function PricingPage() {
         </div>
       </section>
 
-      <section style={{ padding: '2rem', textAlign: 'center', borderTop: '1px solid rgba(255,255,255,0.1)' }}>
-        <p style={{ color: '#64748b', fontSize: '0.875rem' }}>All prices in USD. Volume discounts available for health systems.</p>
-      </section>
+      <Footer />
     </div>
   );
 }

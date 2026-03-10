@@ -35,7 +35,7 @@ export async function run(opts = {}) {
     details.push(msg);
   }
 
-  // ── 1. X-Correlation-Id in security.ts ────────────────────
+  // -- 1. X-Correlation-Id in security.ts --------------------
   const securityPath = resolve(API_SRC, 'middleware/security.ts');
   if (!existsSync(securityPath)) {
     fail('security.ts: MISSING');
@@ -54,7 +54,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 2. OTel tracing: PG instrumentation + console exporter ──
+  // -- 2. OTel tracing: PG instrumentation + console exporter --
   const tracingPath = resolve(API_SRC, 'telemetry/tracing.ts');
   if (!existsSync(tracingPath)) {
     fail('tracing.ts: MISSING');
@@ -77,7 +77,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 3. Metrics: required metric families ──────────────────
+  // -- 3. Metrics: required metric families ------------------
   const metricsPath = resolve(API_SRC, 'telemetry/metrics.ts');
   if (!existsSync(metricsPath)) {
     fail('metrics.ts: MISSING');
@@ -100,7 +100,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 4. Pool stats wiring in index.ts ──────────────────────
+  // -- 4. Pool stats wiring in index.ts ----------------------
   const indexPath = resolve(API_SRC, 'index.ts');
   if (!existsSync(indexPath)) {
     fail('index.ts: MISSING');
@@ -113,7 +113,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 5. Audit correlation auto-inject ──────────────────────
+  // -- 5. Audit correlation auto-inject ----------------------
   const auditPath = resolve(API_SRC, 'lib/audit.ts');
   if (!existsSync(auditPath)) {
     fail('audit.ts: MISSING');
@@ -129,7 +129,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 6. Runbook exists ─────────────────────────────────────
+  // -- 6. Runbook exists -------------------------------------
   const runbookPath = resolve(ROOT, 'docs/runbooks/observability.md');
   if (existsSync(runbookPath)) {
     const rb = readFileSync(runbookPath, 'utf8');
@@ -142,7 +142,7 @@ export async function run(opts = {}) {
     fail('docs/runbooks/observability.md: MISSING');
   }
 
-  // ── 7. register.ts ESM entrypoint also has PG instrumentation ──
+  // -- 7. register.ts ESM entrypoint also has PG instrumentation --
   const registerPath = resolve(API_SRC, 'telemetry/register.ts');
   if (!existsSync(registerPath)) {
     fail('register.ts: MISSING');
@@ -155,7 +155,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 8. No PHI in OTel collector config ────────────────────
+  // -- 8. No PHI in OTel collector config --------------------
   const collectorPath = resolve(ROOT, 'services/observability/otel-collector-config.yaml');
   if (existsSync(collectorPath)) {
     const col = readFileSync(collectorPath, 'utf8');

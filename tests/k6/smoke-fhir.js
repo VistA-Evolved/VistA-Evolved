@@ -57,7 +57,7 @@ export default function (data) {
 
   const params = { tags: { name: '' } };
 
-  // 1. FHIR CapabilityStatement (metadata — public, no auth)
+  // 1. FHIR CapabilityStatement (metadata -- public, no auth)
   group('fhir-metadata', function () {
     params.tags.name = 'fhir-metadata';
     const res = http.get(`${BASE_URL}/fhir/metadata`, params);
@@ -93,7 +93,7 @@ export default function (data) {
 
   sleep(0.3);
 
-  // 3. FHIR Patient read (DFN 3 — common sandbox patient)
+  // 3. FHIR Patient read (DFN 3 -- common sandbox patient)
   group('fhir-patient-read', function () {
     params.tags.name = 'fhir-patient-read';
     const res = http.get(`${BASE_URL}/fhir/Patient/3`, params);

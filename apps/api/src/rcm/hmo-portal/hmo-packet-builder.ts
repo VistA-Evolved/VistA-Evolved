@@ -1,25 +1,25 @@
 /**
- * HMO Claim Packet Builder — Phase 97
+ * HMO Claim Packet Builder -- Phase 97
  *
  * Builds HmoClaimPacket from Phase 38 Claim domain objects.
  * Pattern: same as Phase 96 buildClaimPacket() but adapted for HMO
  * (no PhilHealth PIN, no case rates; uses memberId/hmoCoverage instead).
  *
  * VistA-first: All data originates from VistA via the Claim entity.
- * This builder is a read-only projection — it does NOT mutate claims.
+ * This builder is a read-only projection -- it does NOT mutate claims.
  */
 
 import { createHash, randomBytes } from 'node:crypto';
 import type { Claim } from '../domain/claim.js';
 import type { HmoClaimPacket, DepartmentSpecialty } from './types.js';
 
-/* ── ID Generation ──────────────────────────────────────────── */
+/* -- ID Generation -------------------------------------------- */
 
 function newPacketId(): string {
   return `hpkt-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
-/* ── Content Hash ───────────────────────────────────────────── */
+/* -- Content Hash --------------------------------------------- */
 
 function hashPacketContent(packet: Omit<HmoClaimPacket, 'contentHash'>): string {
   const serialized = JSON.stringify({
@@ -34,7 +34,7 @@ function hashPacketContent(packet: Omit<HmoClaimPacket, 'contentHash'>): string 
   return createHash('sha256').update(serialized).digest('hex');
 }
 
-/* ── Charge Line Transformer ────────────────────────────────── */
+/* -- Charge Line Transformer ---------------------------------- */
 
 interface HmoChargeInput {
   category: string;
@@ -69,7 +69,7 @@ function buildChargeLine(input: HmoChargeInput) {
   };
 }
 
-/* ── Build Options ──────────────────────────────────────────── */
+/* -- Build Options -------------------------------------------- */
 
 export interface HmoPacketBuildOptions {
   claim: Claim;
@@ -94,7 +94,7 @@ export interface HmoPacketBuildOptions {
   actor: string;
 }
 
-/* ── Main Builder ───────────────────────────────────────────── */
+/* -- Main Builder --------------------------------------------- */
 
 export function buildHmoClaimPacket(opts: HmoPacketBuildOptions): {
   ok: boolean;
@@ -122,7 +122,7 @@ export function buildHmoClaimPacket(opts: HmoPacketBuildOptions): {
           description: line.procedure.description ?? line.procedure.code,
           code: line.procedure.code,
           quantity: line.procedure.units,
-          unitCharge: line.procedure.charge / 100, // cents → pesos
+          unitCharge: line.procedure.charge / 100, // cents -> pesos
         })
       );
 
@@ -193,7 +193,7 @@ export function buildHmoClaimPacket(opts: HmoPacketBuildOptions): {
   return { ok: true, packet };
 }
 
-/* ── Packet Export: JSON ────────────────────────────────────── */
+/* -- Packet Export: JSON -------------------------------------- */
 
 export function exportHmoPacketJson(packet: HmoClaimPacket): {
   filename: string;
@@ -210,7 +210,7 @@ export function exportHmoPacketJson(packet: HmoClaimPacket): {
   };
 }
 
-/* ── Packet Export: Text Summary ────────────────────────────── */
+/* -- Packet Export: Text Summary ------------------------------ */
 
 function pad(s: string, n: number): string {
   return s.padEnd(n);
@@ -231,7 +231,7 @@ export function exportHmoPacketText(packet: HmoClaimPacket): {
   const lines: string[] = [];
 
   lines.push(sep());
-  lines.push('  HMO CLAIM PACKET — FOR MANUAL PORTAL SUBMISSION');
+  lines.push('  HMO CLAIM PACKET -- FOR MANUAL PORTAL SUBMISSION');
   lines.push(sep());
   lines.push('');
   lines.push(line('Packet ID', packet.packetId));

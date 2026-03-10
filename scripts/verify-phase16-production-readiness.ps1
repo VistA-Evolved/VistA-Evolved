@@ -2,7 +2,7 @@
 .SYNOPSIS
     VistA-Evolved Phase 16 - Production Readiness Verification
 .DESCRIPTION
-    Comprehensive verification covering Phase 10→15B regression checks
+    Comprehensive verification covering Phase 10->15B regression checks
     plus all Phase 16 production readiness requirements:
     - Prompts ordering audit
     - Phase 15B security infrastructure (regression)
@@ -248,7 +248,7 @@ Assert-Check "Runbooks README links backup-restore" ($runbooksReadme -match 'bac
 Assert-Check "Runbooks README links incident-response" ($runbooksReadme -match 'incident-response-phase16\.md')
 
 # =========================================================================
-# PART 8: Reliability — Degraded Banner (Phase 16)
+# PART 8: Reliability -- Degraded Banner (Phase 16)
 # =========================================================================
 Write-Phase "P8" "Reliability & Resilience"
 

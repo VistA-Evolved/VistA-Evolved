@@ -1,5 +1,5 @@
 # Keycloak + PostgreSQL for VistA-Evolved IAM
-# Phase 35 — Enterprise Identity Provider
+# Phase 35 -- Enterprise Identity Provider
 
 services:
   keycloak-db:

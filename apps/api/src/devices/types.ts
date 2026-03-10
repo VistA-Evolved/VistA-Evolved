@@ -1,5 +1,5 @@
 /**
- * Edge Device Gateway — Types
+ * Edge Device Gateway -- Types
  *
  * Phase 379 (W21-P2): Core type definitions for the edge device gateway
  * subsystem. Covers gateway registration, uplink protocol, device observations,
@@ -84,7 +84,7 @@ export interface DeviceObservation {
   gatewayId: string;
   /** Device identifier (serial number or AE title) */
   deviceId: string;
-  /** Patient identifier (DFN or MRN — mapped, never raw from device) */
+  /** Patient identifier (DFN or MRN -- mapped, never raw from device) */
   patientId?: string;
   /** Observation code (LOINC preferred, vendor code if unmapped) */
   code: string;
@@ -125,7 +125,7 @@ export interface GatewayConfig {
   heartbeatIntervalMs: number;
   /** Enabled adapters */
   enabledAdapters: string[];
-  /** Device allowlist (serial numbers) — empty = allow all */
+  /** Device allowlist (serial numbers) -- empty = allow all */
   deviceAllowlist: string[];
   /** Rate limit: max observations per second */
   maxObservationsPerSecond: number;

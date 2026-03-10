@@ -1,5 +1,5 @@
 /**
- * Regulatory Classification Engine — Types (Phase 439)
+ * Regulatory Classification Engine -- Types (Phase 439)
  *
  * Core domain types for the regulatory classification engine.
  * Extends existing RegulatoryFramework from compliance-matrix.ts
@@ -37,7 +37,7 @@ export interface ClassificationRequest {
   dataTier?: DataClassTier;
   /** Tenant ID for per-tenant framework resolution */
   tenantId?: string;
-  /** Country code (ISO 3166-1 alpha-2) — overrides tenant resolution */
+  /** Country code (ISO 3166-1 alpha-2) -- overrides tenant resolution */
   countryCode?: string;
 }
 
@@ -46,7 +46,7 @@ export interface ClassificationRequest {
 /* ------------------------------------------------------------------ */
 
 export interface RegulatoryClassification {
-  /** Applicable frameworks (may be multiple — e.g. HIPAA + NIST for US federal) */
+  /** Applicable frameworks (may be multiple -- e.g. HIPAA + NIST for US federal) */
   frameworks: RegulatoryFramework[];
   /** Data class tier */
   dataTier: DataClassTier;
@@ -68,7 +68,7 @@ export interface RegulatoryClassification {
 
 export interface RegulatoryConstraint {
   framework: RegulatoryFramework;
-  /** Regulation clause reference (e.g. "§164.312(a)(1)") */
+  /** Regulation clause reference (e.g. "S.164.312(a)(1)") */
   clause: string;
   title: string;
   severity: ConstraintSeverity;

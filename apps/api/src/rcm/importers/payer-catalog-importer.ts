@@ -1,18 +1,18 @@
 /**
- * RCM — Payer Catalog Importer Interface
+ * RCM -- Payer Catalog Importer Interface
  *
  * Phase 40 (Superseding): Formal interface for ingesting payer catalogs
  * from clearinghouse rosters, government registries, and CSV/JSON files.
  *
  * Importers:
- *   CsvPayerImporter — Generic CSV file with configurable column mapping
- *   JsonPayerImporter — JSON array of payer objects (our seed file format)
+ *   CsvPayerImporter -- Generic CSV file with configurable column mapping
+ *   JsonPayerImporter -- JSON array of payer objects (our seed file format)
  *   (Future: ClearinghouseRosterImporter, GovernmentRegistryImporter)
  */
 
 import type { Payer, IntegrationMode, PayerCountry, PayerStatus } from '../domain/payer.js';
 
-/* ── Importer Interface ────────────────────────────────────── */
+/* -- Importer Interface -------------------------------------- */
 
 export interface PayerImportResult {
   imported: number;
@@ -38,7 +38,7 @@ export interface PayerCatalogImporter {
   };
 }
 
-/* ── CSV Importer ──────────────────────────────────────────── */
+/* -- CSV Importer -------------------------------------------- */
 
 export interface CsvColumnMapping {
   payerId: string; // column name for payerId (required)
@@ -195,7 +195,7 @@ export class CsvPayerImporter implements PayerCatalogImporter {
   }
 }
 
-/* ── JSON Importer ─────────────────────────────────────────── */
+/* -- JSON Importer ------------------------------------------- */
 
 export class JsonPayerImporter implements PayerCatalogImporter {
   readonly name = 'json-payer-importer';

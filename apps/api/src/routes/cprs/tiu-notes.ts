@@ -13,8 +13,9 @@
  * Endpoints:
  *   GET  /vista/cprs/notes           -- TIU DOCUMENTS BY CONTEXT (signed + unsigned merge)
  *   GET  /vista/cprs/notes/text      -- TIU GET RECORD TEXT
- *   POST /vista/cprs/notes/create    -- TIU CREATE RECORD + TIU SET DOCUMENT TEXT
- *   POST /vista/cprs/notes/sign      -- TIU LOCK RECORD + TIU SIGN RECORD + TIU UNLOCK RECORD
+ *   POST /vista/cprs/notes/create    -- TIU CREATE RECORD + TIU SET DOCUMENT TEXT (wave2-routes.ts)
+ *   POST /vista/cprs/notes/sign      -- TIU LOCK + TIU SIGN RECORD + TIU REQUIRES COSIGNATURE + TIU UNLOCK
+ *   POST /vista/cprs/notes/cosign    -- TIU REQUIRES COSIGNATURE + TIU LOCK + TIU SIGN RECORD + TIU UNLOCK
  *   POST /vista/cprs/notes/addendum  -- TIU CREATE ADDENDUM RECORD + TIU SET DOCUMENT TEXT
  *   GET  /vista/cprs/notes/titles    -- TIU PERSONAL TITLE LIST
  */
@@ -26,7 +27,6 @@ import { optionalRpc } from '../../vista/rpcCapabilities.js';
 import { safeCallRpc, safeCallRpcWithList } from '../../lib/rpc-resilience.js';
 import { audit } from '../../lib/audit.js';
 import { log } from '../../lib/logger.js';
-import { createDraft } from '../write-backs.js';
 import { safeErr } from '../../lib/safe-error.js';
 import { idempotencyGuard, idempotencyOnSend } from '../../middleware/idempotency.js';
 
@@ -236,18 +236,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
 
     const rpcUsed = ['TIU DOCUMENTS BY CONTEXT'];
     const vivianPresence = { 'TIU DOCUMENTS BY CONTEXT': 'present' as const };
-    const check = optionalRpc('TIU DOCUMENTS BY CONTEXT');
     const actor = getActor(request);
-
-    if (!check.available) {
-      return {
-        ok: false,
-        status: 'integration-pending',
-        rpcUsed,
-        vivianPresence,
-        message: 'TIU DOCUMENTS BY CONTEXT is not available in this environment.',
-      };
-    }
 
     try {
       validateCredentials();
@@ -255,6 +244,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
 
       // Fetch signed notes (CONTEXT=1) and unsigned notes (CONTEXT=2)
       // Params: CLASS, CONTEXT, DFN, EARLY, LATE, PERSON, OCCLIM, SEQUENCE
+      const maxNotes = Math.min(Number((request.query as any)?.limit) || 200, 500);
       const signedLines = await safeCallRpc(
         'TIU DOCUMENTS BY CONTEXT',
         [
@@ -264,7 +254,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
           '', // EARLY - no start filter
           '', // LATE - no end filter
           '0', // PERSON - all authors
-          '0', // OCCLIM - no limit
+          String(maxNotes), // OCCLIM - cap per query
           'D', // SEQUENCE - descending (newest first)
         ],
         { idempotent: true }
@@ -279,7 +269,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
           '', // EARLY
           '', // LATE
           '0', // PERSON - all authors
-          '0', // OCCLIM
+          String(maxNotes), // OCCLIM
           'D', // SEQUENCE
         ],
         { idempotent: true }
@@ -331,11 +321,11 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
 
       return {
         ok: true,
+        source: 'vista',
         count: results.length,
         results,
         rpcUsed,
         vivianPresence,
-        source: 'cprs',
       };
     } catch (err: any) {
       disconnect();
@@ -354,18 +344,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
 
     const rpcUsed = ['TIU GET RECORD TEXT'];
     const vivianPresence = { 'TIU GET RECORD TEXT': 'present' as const };
-    const check = optionalRpc('TIU GET RECORD TEXT');
     const actor = getActor(request);
-
-    if (!check.available) {
-      return {
-        ok: false,
-        status: 'integration-pending',
-        rpcUsed,
-        vivianPresence,
-        message: 'TIU GET RECORD TEXT is not available in this environment.',
-      };
-    }
 
     try {
       validateCredentials();
@@ -384,17 +363,17 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
         }
       );
 
-      return { ok: true, ien: String(ien), text, rpcUsed, vivianPresence };
+      return { ok: true, source: 'vista', ien: String(ien), text, rpcUsed, vivianPresence };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
+      return { ok: false, source: 'vista', error: safeErr(err), rpcUsed, vivianPresence };
     }
   });
 
   /* ================================================================
    * POST /vista/cprs/notes/create
    * RPC: TIU CREATE RECORD + TIU SET DOCUMENT TEXT
-   * Already exists in wave2-routes.ts — this route is NOT re-registered.
+   * Already exists in wave2-routes.ts -- this route is NOT re-registered.
    * Wave 2 create is authoritative. Documented here for completeness.
    * ================================================================ */
   // NOTE: wave2-routes.ts already registers POST /vista/cprs/notes/create
@@ -426,7 +405,7 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
 
     const actor = getActor(request);
 
-    /* Phase 154: esCode required for real signing — structured blocker, not 400 */
+    /* Phase 154: esCode required for real signing -- structured blocker, not 400 */
     if (!esCode) {
       auditWrite('clinical.note-sign', 'failure', actor, validDfn!, { mode: 'blocked-no-esCode' });
       return {
@@ -454,7 +433,6 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
         const lockOk = lockResp[0]?.trim() === '1' || lockResp[0]?.trim() === '';
 
         if (!lockOk && lockResp[0]?.trim() !== '0') {
-          // Lock failed but not a hard denial — may be already locked
           log.warn('TIU LOCK RECORD returned unexpected value', { resp: lockResp[0] });
         }
 
@@ -464,13 +442,10 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
             idempotent: false,
           });
 
-          // TIU SIGN RECORD returns empty string on success, error text on failure
           const signResult = signResp.join('\n').trim();
           if (signResult && signResult !== '0') {
             const normalizedFailure = normalizeNoteSignFailure(signResult);
-            // Non-empty response indicates an error
             disconnect();
-            // Always unlock
             try {
               await connect();
               await safeCallRpc('TIU UNLOCK RECORD', [String(docIen)], { idempotent: false });
@@ -479,37 +454,56 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
               disconnect();
             }
 
-            return {
+            auditWrite('clinical.note-sign', 'failure', actor, validDfn!, {
+              mode: 'real',
+              rpc: 'TIU SIGN RECORD',
+              docIen: String(docIen),
+            });
+            return reply.code(502).send({
               ok: false,
+              source: 'vista',
               status: normalizedFailure.status,
               blocker: normalizedFailure.blocker,
               message: normalizedFailure.message,
               error: normalizedFailure.message,
               rpcUsed,
               vivianPresence,
-            };
+            });
+          }
+
+          // Step 2b: Check if cosignature is required
+          let requiresCosign = false;
+          try {
+            const cosignResp = await safeCallRpc(
+              'TIU REQUIRES COSIGNATURE',
+              [String(docIen), String(getDuz())],
+              { idempotent: true }
+            );
+            requiresCosign = cosignResp[0]?.trim() === '1';
+          } catch {
+            // non-fatal
           }
 
           // Step 3: Unlock
           await safeCallRpc('TIU UNLOCK RECORD', [String(docIen)], { idempotent: false });
           disconnect();
 
-          const result = {
-            ok: true,
-            mode: 'real',
-            status: 'signed',
-            documentIen: String(docIen),
-            rpcUsed,
-            vivianPresence,
-          };
           auditWrite('clinical.note-sign', 'success', actor, validDfn!, {
             mode: 'real',
             rpc: 'TIU SIGN RECORD',
             docIen: String(docIen),
           });
-          return result;
+          return {
+            ok: true,
+            source: 'vista',
+            mode: 'real',
+            status: 'signed',
+            documentIen: String(docIen),
+            requiresCosign,
+            rpcUsed: [...rpcUsed, 'TIU REQUIRES COSIGNATURE'],
+            vivianPresence,
+          };
         } catch (signErr: any) {
-          // Always unlock even on error
           try {
             await safeCallRpc('TIU UNLOCK RECORD', [String(docIen)], { idempotent: false });
           } catch {
@@ -517,35 +511,43 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
           }
           disconnect();
           log.warn('TIU SIGN RECORD failed', { error: signErr.message });
-          throw signErr;
+          auditWrite('clinical.note-sign', 'failure', actor, validDfn!, {
+            mode: 'real',
+            rpc: 'TIU SIGN RECORD',
+            docIen: String(docIen),
+          });
+          return reply.code(502).send({
+            ok: false,
+            source: 'vista',
+            error: safeErr(signErr),
+            rpcUsed,
+            vivianPresence,
+          });
         }
       } catch (err: any) {
         disconnect();
-        log.warn('TIU note sign flow failed, falling back to draft', { error: safeErr(err) });
+        auditWrite('clinical.note-sign', 'failure', actor, validDfn!, {
+          mode: 'real',
+          rpc: 'TIU LOCK RECORD',
+        });
+        return reply.code(502).send({
+          ok: false,
+          source: 'vista',
+          error: safeErr(err),
+          rpcUsed,
+          vivianPresence,
+        });
       }
     }
 
-    // Draft fallback
-    const draft = createDraft('order-sign', validDfn!, 'TIU SIGN RECORD', {
-      action: 'note-sign',
-      docIen: String(docIen),
-      attemptedAt: new Date().toISOString(),
-    }, tenantId);
-    auditWrite('clinical.note-sign', 'success', actor, validDfn!, {
-      mode: 'draft',
-      draftId: draft.id,
-    });
-    const result = {
-      ok: true,
-      mode: 'draft',
-      draftId: draft.id,
-      status: 'sign-pending',
-      syncPending: true,
+    auditWrite('clinical.note-sign', 'failure', actor, validDfn!, { mode: 'rpc-unavailable' });
+    return reply.code(502).send({
+      ok: false,
+      source: 'vista',
+      error: 'TIU LOCK RECORD or TIU SIGN RECORD RPCs not available at runtime.',
       rpcUsed,
       vivianPresence,
-      message: 'Note sign saved as server-side draft. TIU SIGN RECORD sync pending.',
-    };
-    return result;
+    });
   });
 
   /* ================================================================
@@ -677,31 +679,28 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
         return result;
       } catch (err: any) {
         disconnect();
-        log.warn('TIU addendum creation failed, falling back to draft', { error: safeErr(err) });
+        auditWrite('clinical.note-addendum', 'failure', actor, validDfn!, {
+          mode: 'real',
+          rpc: 'TIU CREATE ADDENDUM RECORD',
+        });
+        return reply.code(502).send({
+          ok: false,
+          source: 'vista',
+          error: safeErr(err),
+          rpcUsed,
+          vivianPresence,
+        });
       }
     }
 
-    // Draft fallback
-    const draft = createDraft('order-sign', validDfn!, 'TIU CREATE ADDENDUM RECORD', {
-      action: 'note-addendum',
-      parentDocIen: String(parentDocIen),
-      attemptedAt: new Date().toISOString(),
-    }, tenantId);
-    auditWrite('clinical.note-addendum', 'success', actor, validDfn!, {
-      mode: 'draft',
-      draftId: draft.id,
-    });
-    const result = {
-      ok: true,
-      mode: 'draft',
-      draftId: draft.id,
-      status: 'addendum-pending',
-      syncPending: true,
+    auditWrite('clinical.note-addendum', 'failure', actor, validDfn!, { mode: 'rpc-unavailable' });
+    return reply.code(502).send({
+      ok: false,
+      source: 'vista',
+      error: 'TIU CREATE ADDENDUM RECORD or TIU SET DOCUMENT TEXT RPCs not available at runtime.',
       rpcUsed,
       vivianPresence,
-      message: 'Addendum saved as server-side draft. TIU CREATE ADDENDUM RECORD sync pending.',
-    };
-    return result;
+    });
   });
 
   /* ================================================================
@@ -711,18 +710,6 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
   server.get('/vista/cprs/notes/titles', async (request) => {
     const rpcUsed = ['TIU PERSONAL TITLE LIST'];
     const vivianPresence = { 'TIU PERSONAL TITLE LIST': 'present' as const };
-    const check = optionalRpc('TIU PERSONAL TITLE LIST');
-
-    if (!check.available) {
-      return {
-        ok: false,
-        status: 'integration-pending',
-        rpcUsed,
-        vivianPresence,
-        message: 'TIU PERSONAL TITLE LIST is not available in this environment.',
-        defaultTitles: [{ ien: '10', name: 'GENERAL NOTE' }],
-      };
-    }
 
     try {
       validateCredentials();
@@ -774,5 +761,140 @@ export default async function tiuNotesRoutes(server: FastifyInstance): Promise<v
     }
   });
 
-  log.info('Phase 60: TIU notes routes registered (list, text, sign, addendum, titles)');
+  /* ================================================================
+   * POST /vista/cprs/notes/cosign
+   * RPC: TIU REQUIRES COSIGNATURE + TIU LOCK RECORD + TIU SIGN RECORD + TIU UNLOCK RECORD
+   * Cosign a TIU document (called by cosigner, not original author)
+   * ================================================================ */
+  server.post('/vista/cprs/notes/cosign', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const body = (request.body as any) || {};
+    const { dfn, docIen, esCode } = body;
+    const rpcUsed = ['TIU REQUIRES COSIGNATURE', 'TIU LOCK RECORD', 'TIU SIGN RECORD', 'TIU UNLOCK RECORD'];
+    const vivianPresence = {
+      'TIU REQUIRES COSIGNATURE': 'present' as const,
+      'TIU LOCK RECORD': 'present' as const,
+      'TIU SIGN RECORD': 'present' as const,
+      'TIU UNLOCK RECORD': 'present' as const,
+    };
+
+    const errors = validateRequired(body, ['dfn', 'docIen', 'esCode']);
+    const validDfn = validateDfn(dfn);
+    if (!validDfn) errors.push({ field: 'dfn', message: 'dfn must be numeric' });
+    if (docIen && !/^\d+$/.test(String(docIen)))
+      errors.push({ field: 'docIen', message: 'docIen must be numeric' });
+    if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
+
+    const actor = getActor(request);
+
+    try {
+      validateCredentials();
+      await connect();
+      const duz = getDuz();
+
+      // Verify cosignature is actually required
+      const cosignResp = await safeCallRpc(
+        'TIU REQUIRES COSIGNATURE',
+        [String(docIen), duz],
+        { idempotent: true }
+      );
+      const needsCosign = cosignResp[0]?.trim() === '1';
+      if (!needsCosign) {
+        disconnect();
+        return reply.code(400).send({
+          ok: false,
+          source: 'vista',
+          error: 'This document does not require cosignature.',
+          rpcUsed,
+          vivianPresence,
+        });
+      }
+
+      // Lock, cosign (same TIU SIGN RECORD RPC), unlock
+      const lockResp = await safeCallRpc('TIU LOCK RECORD', [String(docIen)], { idempotent: false });
+      const lockOk = lockResp[0]?.trim() === '1' || lockResp[0]?.trim() === '';
+
+      if (!lockOk && lockResp[0]?.trim() !== '0') {
+        log.warn('TIU LOCK RECORD returned unexpected value for cosign', { resp: lockResp[0] });
+      }
+
+      try {
+        const signResp = await safeCallRpc(
+          'TIU SIGN RECORD',
+          [String(docIen), String(esCode)],
+          { idempotent: false }
+        );
+
+        const signResult = signResp.join('\n').trim();
+        if (signResult && signResult !== '0') {
+          const normalizedFailure = normalizeNoteSignFailure(signResult);
+          await safeCallRpc('TIU UNLOCK RECORD', [String(docIen)], { idempotent: false }).catch(() => {});
+          disconnect();
+          auditWrite('clinical.note-cosign', 'failure', actor, validDfn!, {
+            mode: 'real',
+            rpc: 'TIU SIGN RECORD',
+            docIen: String(docIen),
+          });
+          return reply.code(502).send({
+            ok: false,
+            source: 'vista',
+            status: normalizedFailure.status,
+            blocker: normalizedFailure.blocker,
+            message: normalizedFailure.message,
+            error: normalizedFailure.message,
+            rpcUsed,
+            vivianPresence,
+          });
+        }
+
+        await safeCallRpc('TIU UNLOCK RECORD', [String(docIen)], { idempotent: false });
+        disconnect();
+
+        auditWrite('clinical.note-cosign', 'success', actor, validDfn!, {
+          mode: 'real',
+          rpc: 'TIU SIGN RECORD',
+          docIen: String(docIen),
+        });
+        return {
+          ok: true,
+          source: 'vista',
+          mode: 'real',
+          status: 'cosigned',
+          documentIen: String(docIen),
+          rpcUsed,
+          vivianPresence,
+        };
+      } catch (signErr: any) {
+        try {
+          await safeCallRpc('TIU UNLOCK RECORD', [String(docIen)], { idempotent: false });
+        } catch { /* unlock best-effort */ }
+        disconnect();
+        auditWrite('clinical.note-cosign', 'failure', actor, validDfn!, {
+          mode: 'real',
+          rpc: 'TIU SIGN RECORD',
+          docIen: String(docIen),
+        });
+        return reply.code(502).send({
+          ok: false,
+          source: 'vista',
+          error: safeErr(signErr),
+          rpcUsed,
+          vivianPresence,
+        });
+      }
+    } catch (err: any) {
+      disconnect();
+      auditWrite('clinical.note-cosign', 'failure', actor, validDfn!, { mode: 'real' });
+      return reply.code(502).send({
+        ok: false,
+        source: 'vista',
+        error: safeErr(err),
+        rpcUsed,
+        vivianPresence,
+      });
+    }
+  });
+
+  log.info('Phase 60: TIU notes routes registered (list, text, sign, cosign, addendum, titles)');
 }

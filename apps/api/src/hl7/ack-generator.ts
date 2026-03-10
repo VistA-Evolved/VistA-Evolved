@@ -1,5 +1,5 @@
 /**
- * HL7v2 Engine — ACK Generator
+ * HL7v2 Engine -- ACK Generator
  *
  * Phase 239 (Wave 6 P2): Generates HL7v2 ACK/NAK messages per the HL7v2 spec.
  *
@@ -33,7 +33,7 @@ export function generateAck(
   const now = formatHl7DateTime(new Date());
   const ackControlId = `ACK${Date.now()}`;
 
-  // MSH — swap sender/receiver
+  // MSH -- swap sender/receiver
   const mshLine = [
     `MSH${sep}${enc}`,
     msh.receivingApplication, // Swap: was receiving, now sending
@@ -48,7 +48,7 @@ export function generateAck(
     msh.versionId || '2.4',
   ].join(sep);
 
-  // MSA — acknowledgement
+  // MSA -- acknowledgement
   const msaLine = ['MSA', ackCode, original.messageControlId, errorText || ''].join(sep);
 
   // Build message lines

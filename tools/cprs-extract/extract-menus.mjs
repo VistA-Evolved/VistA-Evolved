@@ -1,5 +1,5 @@
 /**
- * extract-menus.mjs — Extract menu labels/items from Delphi forms.
+ * extract-menus.mjs -- Extract menu labels/items from Delphi forms.
  *
  * Sources:
  *   - fFrame.dfm: mnuFrame TMainMenu and all nested TMenuItem objects
@@ -206,7 +206,7 @@ export async function extractMenus() {
   await mkdir(OUTPUT_DIR, { recursive: true });
   await writeFile(join(OUTPUT_DIR, 'menus.json'), JSON.stringify(result, null, 2));
   console.log(
-    `  ✓ menus.json — ${result.summary.mainMenuCount} main menus, ${result.summary.popupMenuCount} popup menus, ${result.summary.totalMenuItemCount} total items`
+    `  ✓ menus.json -- ${result.summary.mainMenuCount} main menus, ${result.summary.popupMenuCount} popup menus, ${result.summary.totalMenuItemCount} total items`
   );
   return result;
 }

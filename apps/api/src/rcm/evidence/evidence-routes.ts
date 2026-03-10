@@ -1,5 +1,5 @@
 /**
- * Integration Evidence Routes — Phase 112: Evidence Pipeline + No-Fake-Integrations Gate
+ * Integration Evidence Routes -- Phase 112: Evidence Pipeline + No-Fake-Integrations Gate
  *
  * REST endpoints for managing per-payer integration evidence entries.
  * Every payer adapter claiming api/portal/fhir support must have backing evidence.
@@ -20,7 +20,7 @@ const EVIDENCE_REQUIRED_MODES = new Set([
 ]);
 
 const evidenceRoutes: FastifyPluginAsync = async (server) => {
-  /* ── LIST all evidence ─────────────────────────── */
+  /* -- LIST all evidence --------------------------- */
   server.get("/rcm/evidence", async (request, reply) => {
     const session = await requireSession(request, reply);
     const tenantId = session.tenantId;
@@ -38,7 +38,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
     return { ok: true, evidence: rows, total: rows.length };
   });
 
-  /* ── GET evidence by payer (BEFORE :id to avoid param collision) ── */
+  /* -- GET evidence by payer (BEFORE :id to avoid param collision) -- */
   server.get("/rcm/evidence/by-payer/:payerId", async (request, reply) => {
     const session = await requireSession(request, reply);
     const { payerId } = request.params as { payerId: string };
@@ -46,7 +46,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
     return { ok: true, payerId, evidence: rows, total: rows.length };
   });
 
-  /* ── COVERAGE: cross-ref payers vs evidence (BEFORE :id) ── */
+  /* -- COVERAGE: cross-ref payers vs evidence (BEFORE :id) -- */
   server.get("/rcm/evidence/coverage", async (request, reply) => {
     const session = await requireSession(request, reply);
     const { payers } = listPayers();
@@ -99,7 +99,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
     };
   });
 
-  /* ── GAPS: payers needing evidence but missing it (BEFORE :id) ── */
+  /* -- GAPS: payers needing evidence but missing it (BEFORE :id) -- */
   server.get("/rcm/evidence/gaps", async (request, reply) => {
     const session = await requireSession(request, reply);
     const { payers } = listPayers();
@@ -129,14 +129,14 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
     return { ok: true, gaps, totalGaps: gaps.length };
   });
 
-  /* ── STATS (BEFORE :id) ────────────────────────── */
+  /* -- STATS (BEFORE :id) -------------------------- */
   server.get("/rcm/evidence/stats", async (request, reply) => {
     const session = await requireSession(request, reply);
     const stats = await repo.getEvidenceStats(session.tenantId);
     return { ok: true, ...stats };
   });
 
-  /* ── GET single evidence entry ─────────────────── */
+  /* -- GET single evidence entry ------------------- */
   server.get("/rcm/evidence/:id", async (request, reply) => {
     const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };
@@ -145,7 +145,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
     return { ok: true, evidence: row };
   });
 
-  /* ── CREATE evidence entry ─────────────────────── */
+  /* -- CREATE evidence entry ----------------------- */
   server.post("/rcm/evidence", async (request, reply) => {
     const session = await requireSession(request, reply);
     const body = (request.body as any) || {};
@@ -188,7 +188,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
     return reply.code(201).send({ ok: true, evidence: row });
   });
 
-  /* ── UPDATE evidence entry ─────────────────────── */
+  /* -- UPDATE evidence entry ----------------------- */
   server.put("/rcm/evidence/:id", async (request, reply) => {
     const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };
@@ -215,7 +215,7 @@ const evidenceRoutes: FastifyPluginAsync = async (server) => {
     return { ok: true, evidence: row };
   });
 
-  /* ── DELETE (archive) evidence entry ────────────── */
+  /* -- DELETE (archive) evidence entry -------------- */
   server.delete("/rcm/evidence/:id", async (request, reply) => {
     const session = await requireSession(request, reply);
     const { id } = request.params as { id: string };

@@ -32,7 +32,7 @@ function getArg(flag) {
 }
 const hasFlag = (f) => args.includes(f);
 
-// ── Regenerate if requested or missing ──
+// -- Regenerate if requested or missing --
 
 if (hasFlag('--regen') || !existsSync(INDEX_PATH)) {
   console.log('Regenerating phase-index.json...');
@@ -44,7 +44,7 @@ if (hasFlag('--regen') || !existsSync(INDEX_PATH)) {
   }
 }
 
-// ── Load index ──
+// -- Load index --
 
 if (!existsSync(INDEX_PATH)) {
   console.error('ERROR: docs/qa/phase-index.json not found.');
@@ -56,7 +56,7 @@ const raw = readFileSync(INDEX_PATH, 'utf-8');
 const index = JSON.parse(raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw);
 const phases = index.phases;
 
-// ── Lookup modes ──
+// -- Lookup modes --
 
 const phaseArg = getArg('--phase');
 const prefixArg = getArg('--prefix');
@@ -180,7 +180,7 @@ function outputResults(results, label) {
   }
 }
 
-// ── Execute lookup ──
+// -- Execute lookup --
 
 if (phaseArg) {
   // Exact match first, then prefix match (e.g. --phase 37 matches 37, 37B, 37C)

@@ -1,5 +1,5 @@
 /**
- * Country-Specific Validation — Phase 443.
+ * Country-Specific Validation -- Phase 443.
  *
  * Per-country validation rules for clinical/billing/demographic data.
  * Each country has a validator that checks data against local regulatory
@@ -7,8 +7,8 @@
  *
  * Validators are registered per country and composed at runtime:
  * 1. Common validators (always run)
- * 2. Country-specific validators (resolved from tenant→country mapping)
- * 3. Framework-specific validators (resolved from country→framework)
+ * 2. Country-specific validators (resolved from tenant->country mapping)
+ * 3. Framework-specific validators (resolved from country->framework)
  */
 
 import type { RegulatoryFramework } from './types.js';

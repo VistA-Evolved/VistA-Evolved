@@ -1,23 +1,24 @@
 /**
- * RCM — Job Queue Abstraction
+ * RCM -- Job Queue Abstraction
  *
  * Phase 40 (Superseding): In-memory job queue with clean adapter interface
  * for later migration to Redis/RabbitMQ/SQS.
  *
  * Job types:
- *   CLAIM_SUBMIT — Submit claim to payer via connector
- *   ELIGIBILITY_CHECK — Run 270/271 eligibility inquiry
- *   STATUS_POLL — Poll claim status via 276/277
- *   ERA_INGEST — Process inbound 835 remittance
- *   ACK_PROCESS — Process 999/TA1 acknowledgments
+ *   CLAIM_SUBMIT -- Submit claim to payer via connector
+ *   ELIGIBILITY_CHECK -- Run 270/271 eligibility inquiry
+ *   STATUS_POLL -- Poll claim status via 276/277
+ *   ERA_INGEST -- Process inbound 835 remittance
+ *   ACK_PROCESS -- Process 999/TA1 acknowledgments
  *
  * Strategy: in-memory FIFO queue with retry + backoff + dead-letter.
  * Production: swap InMemoryJobQueue for RedisJobQueue via env var.
  */
 
 import { randomUUID } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 
-/* ── Job Types ─────────────────────────────────────────────── */
+/* -- Job Types ----------------------------------------------- */
 
 export type RcmJobType =
   | 'CLAIM_SUBMIT'
@@ -54,7 +55,7 @@ export interface RcmJob {
   nextRetryAt?: string;
 }
 
-/* ── Job Queue Interface (adapter pattern) ──────────────────── */
+/* -- Job Queue Interface (adapter pattern) -------------------- */
 
 export interface RcmJobQueue {
   /** Enqueue a job; returns job ID */
@@ -106,7 +107,7 @@ export interface RcmJobQueue {
   purge(beforeTimestamp: string): Promise<number>;
 }
 
-/* ── In-Memory Implementation ──────────────────────────────── */
+/* -- In-Memory Implementation -------------------------------- */
 
 const DEFAULT_MAX_ATTEMPTS = 3;
 const RETRY_BACKOFF_BASE_MS = 5000; // 5s, 10s, 20s exponential
@@ -127,7 +128,7 @@ function getPayloadTenantId(payload: Record<string, unknown>): string {
 
 export class InMemoryJobQueue implements RcmJobQueue {
   private jobs = new Map<string, RcmJob>();
-  private idempotencyIndex = new Map<string, string>(); // key → jobId
+  private idempotencyIndex = new Map<string, string>(); // key -> jobId
 
   async enqueue(params: {
     type: RcmJobType;
@@ -178,7 +179,7 @@ export class InMemoryJobQueue implements RcmJobQueue {
         status: job.status,
         scheduledAt: job.scheduledAt,
       })
-      .catch(() => {});
+      .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
     return job.id;
   }
@@ -303,7 +304,7 @@ export class InMemoryJobQueue implements RcmJobQueue {
   }
 }
 
-/* ── Singleton ─────────────────────────────────────────────── */
+/* -- Singleton ----------------------------------------------- */
 
 let _queue: RcmJobQueue | null = null;
 

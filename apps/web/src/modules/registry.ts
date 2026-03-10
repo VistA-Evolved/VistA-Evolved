@@ -1,14 +1,14 @@
 /**
- * Web-side Module Registry — Phase 76.
+ * Web-side Module Registry -- Phase 76.
  *
  * Client-side module registry that mirrors the API's module definitions.
  * Provides metadata for UI rendering: labels, icons, descriptions,
- * admin page routes, and system-level module → tab-level mapping.
+ * admin page routes, and system-level module -> tab-level mapping.
  *
  * This registry is the single source of truth for:
  *   - Which admin pages exist per module
  *   - Human-readable module labels for the UI
- *   - Module → tab slug mapping for navigation gating
+ *   - Module -> tab slug mapping for navigation gating
  *   - Dependency descriptions for the admin console
  */
 
@@ -269,7 +269,7 @@ export function filterEnabledModules(allModuleIds: string[], enabledIds: Set<str
  */
 export function isTabVisible(tabSlug: string, enabledModuleIds: Set<string>): boolean {
   const moduleId = TAB_TO_MODULE.get(tabSlug);
-  if (!moduleId) return true; // no module owns it → always visible
+  if (!moduleId) return true; // no module owns it -> always visible
   const def = BY_ID.get(moduleId);
   if (def?.alwaysEnabled) return true;
   return enabledModuleIds.has(moduleId);

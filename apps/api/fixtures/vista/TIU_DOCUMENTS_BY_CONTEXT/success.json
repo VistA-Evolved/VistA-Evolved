@@ -1,0 +1,12 @@
+{
+  "rpcName": "TIU DOCUMENTS BY CONTEXT",
+  "caseName": "success",
+  "recordedAt": "2026-03-05T00:00:00Z",
+  "sanitized": true,
+  "params": ["46", "3", "0", "0", "0", "0"],
+  "response": [
+    "1001^PROGRESS NOTE^3260101.1200^SIGNED^GENERAL MEDICINE",
+    "1002^DISCHARGE SUMMARY^3260102.0900^SIGNED^INTERNAL MEDICINE"
+  ],
+  "responseHash": "a1b2c3d4e5f6"
+}

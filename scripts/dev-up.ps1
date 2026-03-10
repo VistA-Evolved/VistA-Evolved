@@ -397,7 +397,7 @@ if ($RuntimeLane -eq "compose") {
     Write-Host "  VistA Web UI : http://127.0.0.1:8001" -ForegroundColor White
 } else {
     Write-Host "  PostgreSQL   : 127.0.0.1:5433" -ForegroundColor White
-    Write-Host "  API          : Start manually: cd apps/api; npx tsx --env-file=.env.local src/index.ts" -ForegroundColor White
+    Write-Host "  API          : Start manually: pnpm api:start:safe" -ForegroundColor White
     Write-Host "  Web          : Start manually: cd apps/web; pnpm dev" -ForegroundColor White
 }
 

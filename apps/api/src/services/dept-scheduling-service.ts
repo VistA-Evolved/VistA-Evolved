@@ -1,5 +1,5 @@
 /**
- * Department Scheduling Service — Phase 352
+ * Department Scheduling Service -- Phase 352
  *
  * Department-scoped scheduling resources: schedule templates, resource
  * allocation (rooms/equipment/staff), scheduling rules, and cross-department
@@ -11,7 +11,7 @@
 
 import { randomUUID } from "node:crypto";
 
-// ─── Types ─────────────────────────────────────────────
+// --- Types ---------------------------------------------
 
 export type DayOfWeek = "monday" | "tuesday" | "wednesday" | "thursday" | "friday" | "saturday" | "sunday";
 
@@ -128,7 +128,7 @@ export interface CrossDeptReferral {
   updatedAt: string;
 }
 
-// ─── Stores ────────────────────────────────────────────
+// --- Stores --------------------------------------------
 
 const templateStore = new Map<string, ScheduleTemplate>();
 const resourceStore = new Map<string, DeptResource>();
@@ -136,7 +136,7 @@ const allocationStore = new Map<string, ResourceAllocation>();
 const ruleStore = new Map<string, SchedulingRule>();
 const referralStore = new Map<string, CrossDeptReferral>();
 
-// ─── Schedule Templates ────────────────────────────────
+// --- Schedule Templates --------------------------------
 
 export function createScheduleTemplate(
   tenantId: string,
@@ -203,7 +203,7 @@ export function deleteScheduleTemplate(id: string, tenantId?: string): boolean {
   return templateStore.delete(id);
 }
 
-// ─── Resources ─────────────────────────────────────────
+// --- Resources -----------------------------------------
 
 export function createResource(
   tenantId: string,
@@ -272,7 +272,7 @@ export function updateResource(
   return r;
 }
 
-// ─── Resource Allocations ──────────────────────────────
+// --- Resource Allocations ------------------------------
 
 export function createAllocation(
   tenantId: string,
@@ -361,7 +361,7 @@ export function updateAllocationStatus(
   return a;
 }
 
-// ─── Scheduling Rules ──────────────────────────────────
+// --- Scheduling Rules ----------------------------------
 
 export function createSchedulingRule(
   tenantId: string,
@@ -480,7 +480,7 @@ export function deleteSchedulingRule(id: string, tenantId?: string): boolean {
   return ruleStore.delete(id);
 }
 
-// ─── Cross-Department Referrals ────────────────────────
+// --- Cross-Department Referrals ------------------------
 
 export function createReferral(
   tenantId: string,
@@ -578,7 +578,7 @@ export function transitionReferral(
   return ref;
 }
 
-// ─── Test helpers ──────────────────────────────────────
+// --- Test helpers --------------------------------------
 
 export function _resetDeptSchedulingStores(): void {
   templateStore.clear();

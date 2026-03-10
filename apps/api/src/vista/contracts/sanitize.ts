@@ -1,5 +1,5 @@
 /**
- * RPC Contract Sanitizer — Phase 250
+ * RPC Contract Sanitizer -- Phase 250
  *
  * Removes/obfuscates PHI from RPC responses before saving as fixtures.
  * Deterministic hashing for identifiers (DFN, ICN) so replay tests are stable.

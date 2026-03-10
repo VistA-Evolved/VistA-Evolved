@@ -1,5 +1,5 @@
 /**
- * AU ECLIPSE Connector — Australian Medicare/DVA Claims Gateway
+ * AU ECLIPSE Connector -- Australian Medicare/DVA Claims Gateway
  *
  * Phase 40 (Superseding): Integration-ready connector for ECLIPSE.
  * Phase 46: Enhanced with PRODA/cert store probes, provider number checks,

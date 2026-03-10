@@ -1,5 +1,5 @@
 /**
- * HL7v2 Routing — Barrel Export
+ * HL7v2 Routing -- Barrel Export
  *
  * Phase 240 (Wave 6 P3): Re-exports all routing components and provides
  * the routing message handler for the MLLP server.
@@ -46,7 +46,7 @@ export async function routingMessageHandler(
   const matchedRoutes = matchRoutes(message);
 
   if (matchedRoutes.length === 0) {
-    // No routes matched — dead-letter
+    // No routes matched -- dead-letter
     deadLetterUnroutable(message, 'No matching routes');
     log.warn('HL7 message unroutable (dead-lettered)', {
       component: 'hl7-routing',

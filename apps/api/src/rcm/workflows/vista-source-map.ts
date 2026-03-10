@@ -1,5 +1,5 @@
 /**
- * VistA Source Map — Phase 94: PH HMO Workflow Automation
+ * VistA Source Map -- Phase 94: PH HMO Workflow Automation
  *
  * Maps every workflow data field to its VistA source (RPC, file, routine)
  * or marks it as "integration_pending" with the target RPC/routine to
@@ -24,7 +24,7 @@ export interface VistaSourceEntry {
 }
 
 export const VISTA_SOURCE_MAP: VistaSourceEntry[] = [
-  // ─── Common (Patient) ────────────────────────────────────
+  // --- Common (Patient) ------------------------------------
   {
     field: 'patientDfn',
     category: 'common',
@@ -51,7 +51,7 @@ export const VISTA_SOURCE_MAP: VistaSourceEntry[] = [
     status: 'available',
   },
 
-  // ─── LOA Fields ──────────────────────────────────────────
+  // --- LOA Fields ------------------------------------------
   {
     field: 'encounterDate',
     category: 'loa',
@@ -120,7 +120,7 @@ export const VISTA_SOURCE_MAP: VistaSourceEntry[] = [
       'Insurance data in ^DPT(DFN,.312) -- IB subsystem present but insurance entries empty in sandbox',
   },
 
-  // ─── Claim Fields ────────────────────────────────────────
+  // --- Claim Fields ----------------------------------------
   {
     field: 'totalCharge',
     category: 'claim',
@@ -196,7 +196,7 @@ export const VISTA_SOURCE_MAP: VistaSourceEntry[] = [
     status: 'available',
   },
 
-  // ─── Remittance Fields ───────────────────────────────────
+  // --- Remittance Fields -----------------------------------
   {
     field: 'paidAmount',
     category: 'remittance',
@@ -228,7 +228,7 @@ export const VISTA_SOURCE_MAP: VistaSourceEntry[] = [
   },
 ];
 
-/* ── Queries ────────────────────────────────────────────────── */
+/* -- Queries -------------------------------------------------- */
 
 export function getVistaSourceMap(category?: string): VistaSourceEntry[] {
   if (!category) return VISTA_SOURCE_MAP;

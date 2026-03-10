@@ -1,16 +1,16 @@
 /**
- * VistA Interop Telemetry routes — Phase 21 + Phase 58 (v2).
+ * VistA Interop Telemetry routes -- Phase 21 + Phase 58 (v2).
  *
  * VistA-sourced read-only HL7/HLO telemetry from:
  *   - File #870  HL LOGICAL LINK         (via VE INTEROP HL7 LINKS)
  *   - File #773  HL7 MESSAGE ADMIN        (via VE INTEROP HL7 MSGS, VE INTEROP MSG LIST)
- *   - File #772  HL7 MESSAGE TEXT         (via VE INTEROP MSG DETAIL — segment summary only)
+ *   - File #772  HL7 MESSAGE TEXT         (via VE INTEROP MSG DETAIL -- segment summary only)
  *   - File #779.1/2/4/9 HLO registries   (via VE INTEROP HLO STATUS)
  *   - File #778  HLO MESSAGES             (count only)
  *   - File #776  HL7 MONITOR              (via VE INTEROP QUEUE DEPTH)
  *
  * These RPCs read the ZVEMIOP M routine (v1.1/Build 2) installed in the VistA sandbox.
- * All reads are strictly read-only — no clinical data is modified.
+ * All reads are strictly read-only -- no clinical data is modified.
  *
  * Security:
  *   - All endpoints require authenticated session + admin/provider role
@@ -19,24 +19,24 @@
  *   - No HL7 message bodies returned from ZVEMIOP.m (segment type counts only)
  *
  * Resilience:
- *   - Circuit breaker (5 failures → open, 30s reset)
+ *   - Circuit breaker (5 failures -> open, 30s reset)
  *   - Timeout (15s per RPC_CONFIG)
  *   - Retry with exponential backoff (2 retries, reads are idempotent)
  *   - Response caching (configurable TTL, default 10s)
  *
  * Phase 21 Routes (legacy):
- *   GET /vista/interop/hl7-links     — logical link inventory
- *   GET /vista/interop/hl7-messages   — message activity summary
- *   GET /vista/interop/hlo-status     — HLO engine status
- *   GET /vista/interop/queue-depth    — queue depth indicators
- *   GET /vista/interop/summary        — combined dashboard summary
+ *   GET /vista/interop/hl7-links     -- logical link inventory
+ *   GET /vista/interop/hl7-messages   -- message activity summary
+ *   GET /vista/interop/hlo-status     -- HLO engine status
+ *   GET /vista/interop/queue-depth    -- queue depth indicators
+ *   GET /vista/interop/summary        -- combined dashboard summary
  *
  * Phase 58 Routes (v2):
- *   GET /vista/interop/v2/hl7/messages         — individual message list with filters
- *   GET /vista/interop/v2/hl7/messages/:id     — single message detail (masked by default)
- *   POST /vista/interop/v2/hl7/messages/:id/unmask — unmask (admin + reason, audited)
- *   GET /vista/interop/v2/hl7/summary          — HL7 dashboard summary (combined)
- *   GET /vista/interop/v2/hlo/summary          — HLO dashboard summary (combined)
+ *   GET /vista/interop/v2/hl7/messages         -- individual message list with filters
+ *   GET /vista/interop/v2/hl7/messages/:id     -- single message detail (masked by default)
+ *   POST /vista/interop/v2/hl7/messages/:id/unmask -- unmask (admin + reason, audited)
+ *   GET /vista/interop/v2/hl7/summary          -- HL7 dashboard summary (combined)
+ *   GET /vista/interop/v2/hlo/summary          -- HLO dashboard summary (combined)
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -84,7 +84,7 @@ const UnmaskBodySchema = z.object({
 /*  PHI Segment Masking (Phase 58)                                     */
 /* ------------------------------------------------------------------ */
 
-/** HL7 segment types that may contain PHI — masked by default. */
+/** HL7 segment types that may contain PHI -- masked by default. */
 const PHI_SEGMENT_TYPES = new Set(['PID', 'NK1', 'GT1', 'IN1', 'IN2', 'ACC']);
 
 /** Direction code to human-readable label */
@@ -188,9 +188,9 @@ function parseKV(segment: string): Record<string, string> {
 /**
  * Call a VE INTEROP RPC with full resilience:
  *   - TTL cache (configurable via INTEROP_CACHE_TTL_MS, default 10s)
- *   - Circuit breaker (5 failures → open, 30s reset via RPC_CONFIG)
+ *   - Circuit breaker (5 failures -> open, 30s reset via RPC_CONFIG)
  *   - Timeout (15s per RPC_CONFIG)
- *   - Retry with exponential backoff (2 retries — reads are idempotent)
+ *   - Retry with exponential backoff (2 retries -- reads are idempotent)
  *   - Per-RPC metrics recording
  *
  * Manages connect/disconnect lifecycle per call.
@@ -539,7 +539,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   });
 
   // ---- GET /vista/interop/summary ----
-  // Combined dashboard endpoint — calls all 4 RPCs, cached as aggregate
+  // Combined dashboard endpoint -- calls all 4 RPCs, cached as aggregate
   server.get('/vista/interop/summary', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin', 'provider'], reply);
@@ -549,7 +549,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
     try {
       // Cache the entire 4-RPC batch as one aggregate result.
       // resilientRpc (inside cachedRpc) provides circuit breaker + timeout + retry.
-      // Individual RPC failures are captured gracefully — partial data is returned.
+      // Individual RPC failures are captured gracefully -- partial data is returned.
       const results = await cachedRpc(
         async () => {
           const batch: Record<string, { ok: boolean; lines: string[]; error?: string }> = {};
@@ -718,13 +718,13 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   });
 
   /* ================================================================== */
-  /*  Phase 58: v2 endpoints — real VistA HL7/HLO data with masking     */
+  /*  Phase 58: v2 endpoints -- real VistA HL7/HLO data with masking     */
   /* ================================================================== */
 
   // ---- GET /vista/interop/v2/hl7/messages ----
   // List individual HL7 messages from VistA file #773 with direction/status filters.
   // Uses VE INTEROP MSG LIST (MSGLIST^ZVEMIOP).
-  // Returns metadata only — NO message bodies.
+  // Returns metadata only -- NO message bodies.
   server.get('/vista/interop/v2/hl7/messages', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin', 'provider'], reply);
@@ -810,7 +810,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
   // ---- GET /vista/interop/v2/hl7/messages/:id ----
   // Single HL7 message detail with segment type summary (masked by default).
   // Uses VE INTEROP MSG DETAIL (MSGDETL^ZVEMIOP).
-  // Returns segment TYPE COUNTS only — no raw segment content.
+  // Returns segment TYPE COUNTS only -- no raw segment content.
   // PHI segment types (PID, NK1, GT1, IN1, IN2, ACC) are flagged as masked.
   server.get('/vista/interop/v2/hl7/messages/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -826,7 +826,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
       const lines = await callInteropRpcCached(
         'VE INTEROP MSG DETAIL',
         [String(msgIen)],
-        5000 // shorter TTL for detail — 5s
+        5000 // shorter TTL for detail -- 5s
       );
 
       const header = (lines[0] || '').split('^');
@@ -904,7 +904,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
         masked: true,
         maskNote:
           'PHI segment types (PID, NK1, GT1, IN1, IN2, ACC) are flagged. ' +
-          'No raw segment content is returned — only type counts.',
+          'No raw segment content is returned -- only type counts.',
         detail,
         rpc: 'VE INTEROP MSG DETAIL',
         rpcsUsed: ['VE INTEROP MSG DETAIL'],
@@ -973,7 +973,7 @@ export default async function vistaInteropRoutes(server: FastifyInstance): Promi
       const lines = await callInteropRpcCached(
         'VE INTEROP MSG DETAIL',
         [String(msgIen)],
-        0 // no cache for unmask — always fresh
+        0 // no cache for unmask -- always fresh
       );
 
       const header = (lines[0] || '').split('^');

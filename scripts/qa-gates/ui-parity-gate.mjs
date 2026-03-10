@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * UI Parity Gap Gate — CI-runnable quality gate
+ * UI Parity Gap Gate -- CI-runnable quality gate
  * Phase 532 (Wave 39 P2)
  *
  * Reads the UI estate catalogs and enforces forward-only coverage.

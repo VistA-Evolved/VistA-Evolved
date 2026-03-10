@@ -1,5 +1,5 @@
 /**
- * RCM — Ack & Status Processor (Phase 43, Phase 126 durability)
+ * RCM -- Ack & Status Processor (Phase 43, Phase 126 durability)
  *
  * Handles ingestion of:
  *   - 999 Implementation Acknowledgements
@@ -27,7 +27,7 @@ import { appendRcmAudit } from '../audit/rcm-audit.js';
 import { buildActionRecommendation } from '../reference/carc-rarc.js';
 import { log } from '../../lib/logger.js';
 
-/* ── DB repo interface (lazy-wired at startup) ──────────────── */
+/* -- DB repo interface (lazy-wired at startup) ---------------- */
 
 interface AckRepo {
   insertAck(data: any): any;
@@ -57,23 +57,23 @@ function dbWarn(op: string, err: any): void {
   }
 }
 
-/* ── Ack Store (in-memory cache) ───────────────────────────── */
+/* -- Ack Store (in-memory cache) ----------------------------- */
 
 const acks = new Map<string, Acknowledgement>();
-const claimAckIndex = new Map<string, string[]>(); // claimId → ack IDs
-const idempotencyIndex = new Map<string, string>(); // idempotencyKey → ack ID
+const claimAckIndex = new Map<string, string[]>(); // claimId -> ack IDs
+const idempotencyIndex = new Map<string, string>(); // idempotencyKey -> ack ID
 
-/* ── Status Store (in-memory cache) ────────────────────────── */
+/* -- Status Store (in-memory cache) -------------------------- */
 
 const statusUpdates = new Map<string, ClaimStatusUpdate>();
-const claimStatusIndex = new Map<string, string[]>(); // claimId → status IDs
+const claimStatusIndex = new Map<string, string[]>(); // claimId -> status IDs
 const statusIdempotencyIndex = new Map<string, string>();
 
 function claimTenantKey(tenantId: string, claimId: string): string {
   return `${tenantId}:${claimId}`;
 }
 
-/* ── Ack Ingestion ─────────────────────────────────────────── */
+/* -- Ack Ingestion ------------------------------------------- */
 
 export interface AckIngestInput {
   tenantId: string;
@@ -165,7 +165,7 @@ export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult>
   let workqueueItemCreated = false;
 
   if (ack.claimId) {
-    const claim = getClaim(ack.claimId, ack.tenantId);
+    const claim = await getClaim(ack.claimId, ack.tenantId);
     if (claim) {
       if (ack.disposition === 'accepted' && claim.status === 'submitted') {
         const updated = transitionClaim(claim, 'accepted', 'system', `Ack ${ack.type} accepted`);
@@ -221,7 +221,7 @@ export async function ingestAck(input: AckIngestInput): Promise<AckIngestResult>
   return { ok: true, ack, claimUpdated, workqueueItemCreated, idempotent: false };
 }
 
-/* ── Status Ingestion ──────────────────────────────────────── */
+/* -- Status Ingestion ---------------------------------------- */
 
 export interface StatusIngestInput {
   tenantId: string;
@@ -321,7 +321,7 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
   let workqueueItemCreated = false;
 
   if (status.claimId) {
-    const claim = getClaim(status.claimId, status.tenantId);
+    const claim = await getClaim(status.claimId, status.tenantId);
     if (claim) {
       const cat = status.categoryCode;
 
@@ -397,12 +397,12 @@ export async function ingestStatusUpdate(input: StatusIngestInput): Promise<Stat
   return { ok: true, statusUpdate: status, claimUpdated, workqueueItemCreated, idempotent: false };
 }
 
-/* ── Query Functions ───────────────────────────────────────── */
+/* -- Query Functions ----------------------------------------- */
 
 export function getAck(tenantId: string, id: string): Acknowledgement | undefined {
   const cached = acks.get(id);
   if (cached && cached.tenantId === tenantId) return cached;
-  // No sync DB fallback for async repos — cache is primary for sync callers
+  // No sync DB fallback for async repos -- cache is primary for sync callers
   return undefined;
 }
 
@@ -460,7 +460,7 @@ export function listStatusUpdates(filters?: {
   return { statusUpdates: result.slice(offset, offset + limit), total };
 }
 
-/* ── Stats ─────────────────────────────────────────────────── */
+/* -- Stats --------------------------------------------------- */
 
 export function getAckStats(tenantId?: string): {
   total: number;

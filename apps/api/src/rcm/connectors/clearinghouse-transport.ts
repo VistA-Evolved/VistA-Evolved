@@ -1,23 +1,23 @@
 /**
- * Clearinghouse Transport Layer — Unified Transport Abstraction
+ * Clearinghouse Transport Layer -- Unified Transport Abstraction
  *
  * Phase 322 (W14-P6): Pluggable transport providers (SFTP, AS2, HTTPS-REST,
  * HTTPS-SOAP), credential vault abstraction, connection testing, and traffic
  * shaping with token-bucket rate limiting.
  *
  * Architecture:
- *  • TransportProvider interface — common contract for all transports
- *  • CredentialVault abstraction — env-var, vault, or custom backends
- *  • ConnectionTest — structured diagnostics including TLS, auth, latency
- *  • TokenBucket rate limiter — per-connector throughput control
- *  • TransportConfig — discriminated union for typed transport configuration
+ *  * TransportProvider interface -- common contract for all transports
+ *  * CredentialVault abstraction -- env-var, vault, or custom backends
+ *  * ConnectionTest -- structured diagnostics including TLS, auth, latency
+ *  * TokenBucket rate limiter -- per-connector throughput control
+ *  * TransportConfig -- discriminated union for typed transport configuration
  */
 
 import crypto from 'node:crypto';
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    1. TRANSPORT CONFIGURATION (discriminated union)
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export interface SftpTransportConfig {
   type: 'sftp';
@@ -102,9 +102,9 @@ export type TransportConfig =
   | HttpsRestTransportConfig
   | HttpsSoapTransportConfig;
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    2. CREDENTIAL VAULT ABSTRACTION
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export interface VaultCredential {
   key: string;
@@ -222,9 +222,9 @@ export function listVaultProviders(): Array<{ id: string; name: string }> {
 registerVaultProvider(new EnvVarVaultProvider());
 registerVaultProvider(new InMemoryVaultProvider());
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    3. TRANSPORT PROVIDER INTERFACE
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export interface TransportResult {
   success: boolean;
@@ -285,13 +285,13 @@ export interface TransportProvider {
   shutdown(): Promise<void>;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    4. BUILT-IN TRANSPORT IMPLEMENTATIONS (scaffold + env-var-based)
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 /**
  * SFTP Transport (scaffold).
- * Actual SFTP ops require ssh2 at runtime — this scaffolds the interface
+ * Actual SFTP ops require ssh2 at runtime -- this scaffolds the interface
  * and will delegate to ssh2-sftp-client when the dependency is installed.
  */
 class SftpTransport implements TransportProvider {
@@ -503,7 +503,7 @@ class HttpsRestTransport implements TransportProvider {
 
 /**
  * AS2 Transport (scaffold).
- * AS2 requires S/MIME + HTTP/S — scaffolded for future implementation.
+ * AS2 requires S/MIME + HTTP/S -- scaffolded for future implementation.
  */
 class As2Transport implements TransportProvider {
   readonly id = 'as2';
@@ -552,9 +552,9 @@ class As2Transport implements TransportProvider {
   }
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    5. TRANSPORT REGISTRY
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 const transportRegistry = new Map<string, TransportProvider>();
 
@@ -579,9 +579,9 @@ registerTransport(new SftpTransport());
 registerTransport(new HttpsRestTransport());
 registerTransport(new As2Transport());
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    6. TOKEN BUCKET RATE LIMITER
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export interface RateLimitConfig {
   /** Max tokens (requests) in the bucket */
@@ -616,7 +616,7 @@ export function configureRateLimit(
 
 export function tryAcquireToken(connectorId: string): boolean {
   const bucket = rateLimitBuckets.get(connectorId);
-  if (!bucket) return true; // No rate limit configured → allow
+  if (!bucket) return true; // No rate limit configured -> allow
 
   // Refill tokens based on elapsed time
   const now = Date.now();
@@ -677,9 +677,9 @@ export function listRateLimits(tenantId?: string): Array<{
   });
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    7. TRANSPORT PROFILE (connects config + transport + vault + rate limit)
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export interface TransportProfile {
   id: string;

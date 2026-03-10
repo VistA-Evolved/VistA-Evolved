@@ -12,7 +12,7 @@
 import { randomUUID, createHash } from "node:crypto";
 import { log } from "../lib/logger.js";
 
-// ─── Event Schema ────────────────────────────────────────
+// --- Event Schema ----------------------------------------
 
 export interface DomainEvent {
   eventId: string;
@@ -51,7 +51,7 @@ export interface DlqEntry {
   maxRetries: number;
 }
 
-// ─── Event Type Registry ─────────────────────────────────
+// --- Event Type Registry ---------------------------------
 
 export const EVENT_TYPES = {
   TENANT_CREATED:     "tenant.created.v1",
@@ -68,7 +68,7 @@ export const EVENT_TYPES = {
 
 export type EventType = (typeof EVENT_TYPES)[keyof typeof EVENT_TYPES];
 
-// ─── Stores ──────────────────────────────────────────────
+// --- Stores ----------------------------------------------
 
 /** Outbox: persists published events for replay */
 const outbox: DomainEvent[] = [];
@@ -89,14 +89,14 @@ const deliveryLog: Array<{
   error?: string;
 }> = [];
 
-// ─── Configuration ───────────────────────────────────────
+// --- Configuration ---------------------------------------
 
 const MAX_OUTBOX_SIZE = 10_000;
 const MAX_DLQ_SIZE = 5_000;
 const MAX_DELIVERY_LOG = 10_000;
 const DEFAULT_MAX_RETRIES = 3;
 
-// ─── PG Write-Through (W41-P3) ──────────────────────────
+// --- PG Write-Through (W41-P3) --------------------------
 
 interface EventBusRepo {
   upsert(data: any): Promise<any>;
@@ -192,7 +192,7 @@ function persistDeliveryLog(entry: { tenantId: string; eventId: string; consumer
   }).catch((e: unknown) => log.warn("Event bus delivery log persist failed", { error: String(e) }));
 }
 
-// ─── Helpers ─────────────────────────────────────────────
+// --- Helpers ---------------------------------------------
 
 /** Hash a subject identifier for PHI safety */
 export function hashSubjectRef(ref: string): string {
@@ -209,7 +209,7 @@ function matchesFilter(eventType: string, filter: string): boolean {
   return eventType === filter;
 }
 
-// ─── Publisher ───────────────────────────────────────────
+// --- Publisher -------------------------------------------
 
 /**
  * Publish a domain event to the bus.
@@ -290,7 +290,7 @@ async function dispatchEvent(event: DomainEvent): Promise<void> {
   }
 }
 
-// ─── DLQ ─────────────────────────────────────────────────
+// --- DLQ -------------------------------------------------
 
 function addToDlq(event: DomainEvent, consumerId: string, error: string): void {
   const entry: DlqEntry = {
@@ -345,7 +345,7 @@ export async function retryDlqEntry(
   }
 }
 
-// ─── Consumer Management ─────────────────────────────────
+// --- Consumer Management ---------------------------------
 
 /** Register an event consumer */
 export function registerConsumer(consumer: EventConsumer): void {
@@ -366,7 +366,7 @@ export function listConsumers(tenantId: string): Omit<EventConsumer, "handler">[
     .map(({ handler, ...rest }) => rest);
 }
 
-// ─── Replay ──────────────────────────────────────────────
+// --- Replay ----------------------------------------------
 
 /**
  * Replay events from the outbox within a time window.
@@ -413,7 +413,7 @@ export async function replayEvents(opts: {
   return { replayed, errors };
 }
 
-// ─── Query ───────────────────────────────────────────────
+// --- Query -----------------------------------------------
 
 /** Get outbox events, optionally filtered */
 export function getOutbox(opts: {
@@ -472,7 +472,7 @@ export function getEventBusStats(tenantId: string): {
   };
 }
 
-// ─── Reset (testing) ─────────────────────────────────────
+// --- Reset (testing) -------------------------------------
 
 export function _resetEventBus(): void {
   outbox.length = 0;

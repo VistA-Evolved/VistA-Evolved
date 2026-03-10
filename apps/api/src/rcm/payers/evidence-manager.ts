@@ -1,5 +1,5 @@
 /**
- * Evidence Manager — Phase 95: Payer Registry Persistence + Audit
+ * Evidence Manager -- Phase 95: Payer Registry Persistence + Audit
  *
  * Manages evidence artifacts (URLs, documents, screenshots) attached
  * to payer records. Provides:
@@ -8,14 +8,14 @@
  *   - Validation of evidence completeness per capability
  *   - Evidence coverage scoring for each payer
  *
- * No file upload in this phase — evidence is URL-based only.
+ * No file upload in this phase -- evidence is URL-based only.
  * File-backed persistence via payer-persistence integration.
  */
 
 import { createHash } from 'node:crypto';
 import type { HmoEvidence, HmoCapabilities, HmoCapabilityStatus } from './ph-hmo-registry.js';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 export interface EvidenceValidation {
   payerId: string;
@@ -33,7 +33,7 @@ export interface EvidenceHash {
   computedAt: string;
 }
 
-/* ── Capability-to-evidence mapping ─────────────────────────── */
+/* -- Capability-to-evidence mapping --------------------------- */
 
 /**
  * Maps capability fields to evidence kinds that would back them.
@@ -50,7 +50,7 @@ const CAPABILITY_EVIDENCE_MAP: Record<keyof HmoCapabilities, string[]> = {
   providerPortal: ['provider_portal', 'website'],
 };
 
-/* ── Hashing ────────────────────────────────────────────────── */
+/* -- Hashing -------------------------------------------------- */
 
 export function hashEvidence(evidence: HmoEvidence): EvidenceHash {
   const payload = JSON.stringify({
@@ -70,7 +70,7 @@ export function hashEvidenceList(evidenceList: HmoEvidence[]): EvidenceHash[] {
   return evidenceList.map(hashEvidence);
 }
 
-/* ── Validation ─────────────────────────────────────────────── */
+/* -- Validation ----------------------------------------------- */
 
 export function validatePayerEvidence(
   payerId: string,
@@ -90,7 +90,7 @@ export function validatePayerEvidence(
   const capKeys = Object.keys(CAPABILITY_EVIDENCE_MAP) as (keyof HmoCapabilities)[];
   for (const capKey of capKeys) {
     const status: HmoCapabilityStatus = capabilities[capKey];
-    // Skip unavailable capabilities — no evidence needed
+    // Skip unavailable capabilities -- no evidence needed
     if (status === 'unavailable') {
       continue;
     }
@@ -123,7 +123,7 @@ export function validatePayerEvidence(
   };
 }
 
-/* ── Deduplication ──────────────────────────────────────────── */
+/* -- Deduplication -------------------------------------------- */
 
 /**
  * Checks if an evidence item is already present (by URL match).
@@ -162,7 +162,7 @@ export function mergeEvidence(
   return { merged, added, skipped };
 }
 
-/* ── Scoring ────────────────────────────────────────────────── */
+/* -- Scoring -------------------------------------------------- */
 
 /**
  * Compute aggregate evidence score across all payers.

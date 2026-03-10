@@ -1,5 +1,5 @@
 /**
- * Patient Communications Routes — Phase 351
+ * Patient Communications Routes -- Phase 351
  *
  * Endpoints for consent management, notification templates,
  * sending notifications, and notification log.
@@ -51,7 +51,7 @@ function requireTenantId(request: FastifyRequest, reply: FastifyReply): string |
 }
 
 export async function patientCommsRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Consent Management ──────────────────────────────
+  // --- Consent Management ------------------------------
 
   server.get('/patient-comms/consent', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
@@ -103,7 +103,7 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
     });
   });
 
-  // ─── Templates ───────────────────────────────────────
+  // --- Templates ---------------------------------------
 
   server.get('/patient-comms/templates', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
@@ -148,7 +148,7 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
     return reply.code(201).send({ ok: true, template: t });
   });
 
-  // ─── Send Notification ───────────────────────────────
+  // --- Send Notification -------------------------------
 
   server.post('/patient-comms/send', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
@@ -181,20 +181,20 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
     return reply.code(code).send({ ok: result.sent, ...result });
   });
 
-  // ─── Notification Log ────────────────────────────────
+  // --- Notification Log --------------------------------
 
   server.get('/patient-comms/log', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
     const { patientDfn, limit } = (req.query as any) || {};
-    // Note: No raw DFN in response — log entries use hashed DFN
+    // Note: No raw DFN in response -- log entries use hashed DFN
     return reply.send({
       ok: true,
       records: getNotificationLog(tenantId, patientDfn, limit ? parseInt(limit, 10) : undefined),
     });
   });
 
-  // ─── Providers ───────────────────────────────────────
+  // --- Providers ---------------------------------------
 
   server.get('/patient-comms/providers', async (_req: FastifyRequest, reply: FastifyReply) => {
     const providers = listProviders().map((p) => ({
@@ -205,7 +205,7 @@ export async function patientCommsRoutes(server: FastifyInstance): Promise<void>
     return reply.send({ ok: true, providers });
   });
 
-  // ─── Health / Config ─────────────────────────────────
+  // --- Health / Config ---------------------------------
 
   server.get('/patient-comms/health', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);

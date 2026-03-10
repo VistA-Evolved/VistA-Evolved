@@ -1,4 +1,4 @@
-# Backup & Restore Drill — Phase 62
+# Backup & Restore Drill -- Phase 62
 
 # USAGE:
 #   .\scripts\ops\backup-drill.ps1 [-OutputDir <path>] [-SkipDocker]
@@ -11,9 +11,9 @@
 #   <OutputDir>/backup-manifest.json
 #   <OutputDir>/app-config-<ts>.tar.gz   (env files, nginx config)
 #   <OutputDir>/audit-logs-<ts>.tar.gz   (JSONL audit trails)
-#   <OutputDir>/vista-globals-<ts>.tar.gz (Docker volume snapshot — dev only)
+#   <OutputDir>/vista-globals-<ts>.tar.gz (Docker volume snapshot -- dev only)
 #
-# This script is a DRILL — it runs a real backup cycle and validates the
+# This script is a DRILL -- it runs a real backup cycle and validates the
 # resulting artifacts without relying on any production infrastructure.
 
 param(

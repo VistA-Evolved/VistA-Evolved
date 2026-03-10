@@ -1,12 +1,12 @@
 /**
- * Credential Encryption — Phase 87: Philippines RCM Foundation
+ * Credential Encryption -- Phase 87: Philippines RCM Foundation
  *
  * Envelope encryption for payer credentials/tokens at rest.
  * Uses AES-256-GCM with random IV per encryption.
  *
  * Design:
  *   - Master key from env var PAYEROPS_CREDENTIAL_KEY (hex, 32 bytes)
- *   - If not set, generates an ephemeral key (dev only — logged warning)
+ *   - If not set, generates an ephemeral key (dev only -- logged warning)
  *   - Each encrypted blob: iv (12 bytes) + authTag (16 bytes) + ciphertext
  *   - Stored as base64 string
  *
@@ -16,6 +16,7 @@
 
 import { createCipheriv, createDecipheriv, randomBytes } from 'node:crypto';
 import { log } from '../../lib/logger.js';
+import { safeErr } from '../../lib/safe-error.js';
 
 const ALGORITHM = 'aes-256-gcm';
 const IV_LENGTH = 12;
@@ -33,7 +34,7 @@ function getMasterKey(): Buffer {
   }
 
   // Dev fallback: generate ephemeral key (lost on restart)
-  log.warn('PAYEROPS_CREDENTIAL_KEY not set — using ephemeral key (credentials lost on restart)');
+  log.warn('PAYEROPS_CREDENTIAL_KEY not set -- using ephemeral key (credentials lost on restart)');
   masterKey = randomBytes(32);
   return masterKey;
 }
@@ -93,6 +94,6 @@ export function testEncryptionHealth(): { ok: boolean; error?: string } {
     }
     return { ok: true };
   } catch (err: any) {
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
 }

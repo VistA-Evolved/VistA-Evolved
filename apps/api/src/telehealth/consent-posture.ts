@@ -1,5 +1,5 @@
 /**
- * Telehealth Consent Posture — Phase 307 (W12-P9)
+ * Telehealth Consent Posture -- Phase 307 (W12-P9)
  *
  * Tracks consent state for telehealth sessions. Every telehealth visit
  * requires documented consent before the video session can proceed.

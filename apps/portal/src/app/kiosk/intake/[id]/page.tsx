@@ -4,19 +4,20 @@ import { useState, useEffect, useCallback, useRef } from 'react';
 import { useParams, useRouter } from 'next/navigation';
 import { API_BASE } from '@/lib/api-config';
 
-const KIOSK_IDLE_TIMEOUT_MS = 5 * 60 * 1000; // 5 min idle → warning
-const KIOSK_LOGOUT_TIMEOUT_MS = 60 * 1000; // 60s after warning → reset
+const KIOSK_IDLE_TIMEOUT_MS = 5 * 60 * 1000; // 5 min idle -> warning
+const KIOSK_LOGOUT_TIMEOUT_MS = 60 * 1000; // 60s after warning -> reset
 
 async function kioskFetch(path: string, options: RequestInit = {}): Promise<any> {
   const res = await fetch(`${API_BASE}${path}`, {
     ...options,
+    credentials: 'include',
     headers: { 'Content-Type': 'application/json', ...options.headers },
   });
   return res.json();
 }
 
 /* ================================================================== */
-/* Kiosk Intake Session — large-target adaptive form with idle timeout  */
+/* Kiosk Intake Session -- large-target adaptive form with idle timeout  */
 /* ================================================================== */
 
 export default function KioskIntakeSessionPage() {

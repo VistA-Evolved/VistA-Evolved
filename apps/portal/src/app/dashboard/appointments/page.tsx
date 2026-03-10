@@ -1,6 +1,6 @@
 /**
- * Appointments Page — Upcoming/past appointments with cancel/reschedule request.
- * VistA scheduling RPCs not available in sandbox — uses demo data with
+ * Appointments Page -- Upcoming/past appointments with cancel/reschedule request.
+ * VistA scheduling RPCs not available in sandbox -- uses demo data with
  * request flows that show "clinic will confirm" messaging.
  * Phase 139: check-in status visibility + lifecycle indicator.
  * Phase 147: writeback mode indicator + honest scheduling badge.
@@ -20,7 +20,7 @@ import {
 
 type View = 'list' | 'request';
 
-/** Phase 147: writeback mode shapes — aligned with API SchedulingMode */
+/** Phase 147: writeback mode shapes -- aligned with API SchedulingMode */
 interface SchedulingMode {
   writebackEnabled: boolean;
   sdesInstalled: boolean;
@@ -435,11 +435,11 @@ function AppointmentCard({
       <div style={{ fontSize: '0.8125rem', color: '#475569' }}>
         {dt.toLocaleDateString()} at{' '}
         {dt.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-        {' · '}
-        {appt.duration}min · {appt.appointmentType?.replace('_', ' ')}
+        {' * '}
+        {appt.duration}min * {appt.appointmentType?.replace('_', ' ')}
       </div>
       <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.125rem' }}>
-        {appt.providerName} — {appt.reason}
+        {appt.providerName} -- {appt.reason}
       </div>
       {appt.status === 'checked_in' && (
         <div

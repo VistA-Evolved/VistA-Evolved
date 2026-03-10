@@ -1,5 +1,5 @@
 /**
- * AI Gateway — Safety Layer (Phase 33)
+ * AI Gateway -- Safety Layer (Phase 33)
  *
  * Blocks disallowed content categories (diagnosis, treatment plans,
  * prescribing guidance, autonomous ordering). Validates both
@@ -15,7 +15,7 @@ import type { DisallowedCategory, AIUseCase, FacilityAIPolicy } from './types.js
 
 /**
  * Pattern sets for detecting disallowed content.
- * Intentionally broad — false positives are acceptable (safety-first).
+ * Intentionally broad -- false positives are acceptable (safety-first).
  */
 const CATEGORY_PATTERNS: Record<DisallowedCategory, RegExp[]> = {
   diagnosis: [
@@ -77,7 +77,7 @@ export interface SafetyCheckResult {
 export function checkRequestSafety(userInput: string, useCase: AIUseCase): SafetyCheckResult {
   const warnings: string[] = [];
 
-  // Portal search is inherently safe — skip heavy checks
+  // Portal search is inherently safe -- skip heavy checks
   if (useCase === 'portal-search') {
     return { allowed: true, warnings };
   }
@@ -113,7 +113,7 @@ export function checkResponseSafety(
   const warnings: string[] = [];
   const categoriesFound: DisallowedCategory[] = [];
 
-  // Portal search responses are navigation-only — less strict
+  // Portal search responses are navigation-only -- less strict
   if (useCase === 'portal-search') {
     // Still check for medical advice
     for (const category of [
@@ -124,8 +124,8 @@ export function checkResponseSafety(
       for (const pattern of CATEGORY_PATTERNS[category]) {
         if (pattern.test(responseText)) {
           categoriesFound.push(category);
-          if (!warnings.includes(`Response contained '${category}' content — filtered`)) {
-            warnings.push(`Response contained '${category}' content — filtered`);
+          if (!warnings.includes(`Response contained '${category}' content -- filtered`)) {
+            warnings.push(`Response contained '${category}' content -- filtered`);
           }
         }
       }
@@ -137,7 +137,7 @@ export function checkResponseSafety(
         if (pattern.test(responseText)) {
           if (!categoriesFound.includes(category)) {
             categoriesFound.push(category);
-            warnings.push(`Response contained '${category}' content — flagged for review`);
+            warnings.push(`Response contained '${category}' content -- flagged for review`);
           }
         }
       }
@@ -170,7 +170,7 @@ export function checkResponseSafety(
 /* Facility policy enforcement                                         */
 /* ------------------------------------------------------------------ */
 
-/** Default facility policy — conservative defaults. */
+/** Default facility policy -- conservative defaults. */
 export const DEFAULT_FACILITY_POLICY: FacilityAIPolicy = {
   aiEnabled: true,
   redactPhi: true,

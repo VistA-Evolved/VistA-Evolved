@@ -1,5 +1,5 @@
 /**
- * Portal Refill Requests — Phase 32 (VistA-first)
+ * Portal Refill Requests -- Phase 32 (VistA-first)
  *
  * Patient-initiated medication refill renewal requests.
  * VistA-first pattern: if PSO RENEW RPC is available, call it;
@@ -12,7 +12,7 @@
  *
  * Since PSO RENEW is not available in the WorldVistA sandbox,
  * requests are stored as portal requests with status tracking.
- * The "pending_filing" banner is explicit — no silent failures.
+ * The "pending_filing" banner is explicit -- no silent failures.
  *
  * Security:
  * - Proxy can request if accessLevel = read_write
@@ -23,6 +23,7 @@
 
 import { randomBytes } from "node:crypto";
 import { portalAudit } from "./portal-audit.js";
+import { log } from "../lib/logger.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -49,7 +50,7 @@ export interface RefillRequest {
   updatedAt: string;
   status: RefillStatus;
   statusNote: string;
-  /** Who submitted — patient or proxy */
+  /** Who submitted -- patient or proxy */
   submittedBy: string;
   submittedByName: string;
   isProxy: boolean;
@@ -99,7 +100,7 @@ function persistRefillRow(req: RefillRequest): void {
       createdAt: req.requestedAt,
       updatedAt: req.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 }
 
 function rateLimitKey(tenantId: string, dfn: string): string {
@@ -284,7 +285,7 @@ export function cancelRefill(refillId: string, patientDfn: string, tenantId: str
       status: req.status,
       completedAt: req.updatedAt,
       updatedAt: req.updatedAt,
-    }).catch(() => {});
+    }).catch((e) => log.warn('PG write-through failed', { error: String(e) }));
   } else {
     persistRefillRow(req);
   }
@@ -340,7 +341,7 @@ export function reviewRefill(
       status: req.status,
       completedAt: req.updatedAt,
       updatedAt: req.updatedAt,
-    }).catch(() => {});
+    }).catch((e) => log.warn('PG write-through failed', { error: String(e) }));
   } else {
     persistRefillRow(req);
   }

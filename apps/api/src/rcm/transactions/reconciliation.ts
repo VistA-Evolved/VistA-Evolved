@@ -13,13 +13,13 @@ import { getTransactionsBySource } from './envelope.js';
 import { getClaim } from '../domain/claim-store.js';
 import { lookupCarc } from '../reference/carc-rarc.js';
 
-/* ── Reconciliation ──────────────────────────────────────────── */
+/* -- Reconciliation -------------------------------------------- */
 
 /**
  * Build a complete reconciliation summary for a claim.
  */
-export function buildReconciliationSummary(claimId: string): ReconciliationSummary | null {
-  const claim = getClaim(claimId);
+export async function buildReconciliationSummary(claimId: string): Promise<ReconciliationSummary | null> {
+  const claim = await getClaim(claimId);
   if (!claim) return null;
 
   // Get all transactions for this claim
@@ -84,7 +84,7 @@ export function buildReconciliationSummary(claimId: string): ReconciliationSumma
   };
 }
 
-/* ── Helpers ──────────────────────────────────────────────────── */
+/* -- Helpers ---------------------------------------------------- */
 
 function determinePaymentStatus(
   claimStatus: string,
@@ -187,7 +187,7 @@ function buildDenialSummary(
   if (!remit) {
     return {
       primaryReasonCode: 'UNKNOWN',
-      primaryReasonDescription: 'Denied — no remittance details available',
+      primaryReasonDescription: 'Denied -- no remittance details available',
       allReasonCodes: [],
       recommendedAction: 'Contact payer for denial reason details',
     };
@@ -216,7 +216,7 @@ function buildDenialSummary(
     primaryReasonDescription: carcEntry?.description ?? 'Unknown denial reason',
     allReasonCodes,
     recommendedAction: carcEntry
-      ? `Review CARC ${primaryCode} — may require corrected claim or appeal`
+      ? `Review CARC ${primaryCode} -- may require corrected claim or appeal`
       : 'Contact payer for denial details',
   };
 }
@@ -226,7 +226,7 @@ function findFirstTimestamp(auditTrail: AuditEntry[], status: string): string | 
   return entry?.timestamp;
 }
 
-/* ── Batch Reconciliation ────────────────────────────────────── */
+/* -- Batch Reconciliation -------------------------------------- */
 
 export interface ReconciliationStats {
   total: number;
@@ -243,7 +243,7 @@ export interface ReconciliationStats {
 /**
  * Build reconciliation stats across multiple claims.
  */
-export function buildReconciliationStats(claimIds: string[]): ReconciliationStats {
+export async function buildReconciliationStats(claimIds: string[]): Promise<ReconciliationStats> {
   const stats: ReconciliationStats = {
     total: 0,
     fullPayment: 0,
@@ -257,7 +257,7 @@ export function buildReconciliationStats(claimIds: string[]): ReconciliationStat
   };
 
   for (const id of claimIds) {
-    const summary = buildReconciliationSummary(id);
+    const summary = await buildReconciliationSummary(id);
     if (!summary) continue;
 
     stats.total++;

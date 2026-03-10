@@ -1,5 +1,5 @@
 /**
- * Device Check Service — Phase 30
+ * Device Check Service -- Phase 30
  *
  * Server-side component for telehealth device compatibility checking.
  * The actual media device enumeration happens client-side (browser APIs).
@@ -9,10 +9,10 @@
  * 3. WebRTC TURN/STUN config for network test
  *
  * Client-side device check flow:
- * 1. GET /telehealth/device-check/requirements → browser/version requirements
+ * 1. GET /telehealth/device-check/requirements -> browser/version requirements
  * 2. Client runs navigator.mediaDevices.enumerateDevices()
  * 3. Client runs RTCPeerConnection test with STUN servers
- * 4. POST /telehealth/device-check/report → logs result for audit
+ * 4. POST /telehealth/device-check/report -> logs result for audit
  */
 
 import type { DeviceCheckResult } from './types.js';

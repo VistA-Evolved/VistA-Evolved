@@ -1,5 +1,5 @@
 /**
- * Export governance — Phase 19B.
+ * Export governance -- Phase 19B.
  *
  * Manages export jobs with full audit trail, policy enforcement,
  * and CSV/JSON generation for report data.
@@ -78,6 +78,10 @@ export function initExportStoreRepo(repo: typeof exportDbRepo): void {
   exportDbRepo = repo;
 }
 let exportSeq = 0;
+const MAX_EXPORT_JOBS = 2000;
+
+// Periodic cleanup of expired export jobs
+setInterval(() => purgeExpired(), 5 * 60 * 1000).unref();
 
 /** Purge expired jobs (older than retention window). */
 function purgeExpired(): void {
@@ -87,6 +91,12 @@ function purgeExpired(): void {
     if (jobTime < cutoff) {
       exportJobs.delete(id);
     }
+  }
+  // Also enforce max entries as safety net
+  while (exportJobs.size > MAX_EXPORT_JOBS) {
+    const oldest = exportJobs.keys().next().value;
+    if (oldest) exportJobs.delete(oldest);
+    else break;
   }
 }
 
@@ -124,7 +134,7 @@ export function checkExportPolicy(
     };
   }
 
-  // PHI check — clinical report exports blocked unless PHI export is enabled
+  // PHI check -- clinical report exports blocked unless PHI export is enabled
   if (reportType === 'clinical' && !EXPORT_CONFIG.allowPhiExport) {
     return {
       allowed: false,
@@ -183,7 +193,7 @@ export function generateJson(rows: Record<string, unknown>[]): string {
 /* ------------------------------------------------------------------ */
 
 /**
- * Create a new export job. Does NOT execute — call executeExportJob() next.
+ * Create a new export job. Does NOT execute -- call executeExportJob() next.
  */
 export function createExportJob(
   actor: { duz: string; name?: string; role?: string },
@@ -215,7 +225,7 @@ export function createExportJob(
       status: job.status,
       createdAt: job.requestedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   // Audit the request
   audit('export.request' as AuditAction, 'success', actor, {

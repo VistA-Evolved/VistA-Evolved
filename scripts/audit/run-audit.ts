@@ -19,7 +19,7 @@ import { writeFileSync, mkdirSync } from 'fs';
 import { join } from 'path';
 import type { AuditMode, AuditModule, AuditSummary, ModuleResult, FindingStatus } from './types.js';
 
-// ── Module imports ───────────────────────────────────────────────
+// -- Module imports -----------------------------------------------
 import { promptsAudit } from './modules/promptsAudit.js';
 import { docsPolicyAudit } from './modules/docsPolicyAudit.js';
 import { rpcGatingAudit } from './modules/rpcGatingAudit.js';
@@ -44,7 +44,7 @@ const ALL_MODULES: AuditModule[] = [
   perfSmokeAudit,
 ];
 
-// ── Arg parsing ──────────────────────────────────────────────────
+// -- Arg parsing --------------------------------------------------
 
 function parseArgs(): AuditMode {
   const modeArg = process.argv.find((a) => a.startsWith('--mode='));
@@ -55,7 +55,7 @@ function parseArgs(): AuditMode {
   return 'offline';
 }
 
-// ── Main ─────────────────────────────────────────────────────────
+// -- Main ---------------------------------------------------------
 
 async function main() {
   const mode = parseArgs();
@@ -117,7 +117,7 @@ async function main() {
     }
   }
 
-  // ── Compute totals ─────────────────────────────────────────────
+  // -- Compute totals ---------------------------------------------
   const allFindings = moduleResults.flatMap((m) => m.findings);
   const totals = {
     pass: allFindings.filter((f) => f.status === 'pass').length,
@@ -139,11 +139,11 @@ async function main() {
     totals,
   };
 
-  // ── Write JSON ─────────────────────────────────────────────────
+  // -- Write JSON -------------------------------------------------
   const jsonPath = join(artifactDir, 'audit-summary.json');
   writeFileSync(jsonPath, JSON.stringify(summary, null, 2), 'utf-8');
 
-  // ── Write TXT ──────────────────────────────────────────────────
+  // -- Write TXT --------------------------------------------------
   const lines: string[] = [];
   lines.push(`Alignment Audit v2.0 -- ${summary.timestamp}`);
   lines.push(`Mode: ${mode}`);
@@ -168,7 +168,7 @@ async function main() {
   const txtPath = join(artifactDir, 'audit-summary.txt');
   writeFileSync(txtPath, lines.join('\n'), 'utf-8');
 
-  // ── Summary ────────────────────────────────────────────────────
+  // -- Summary ----------------------------------------------------
   console.log(`\n=== Summary ===`);
   console.log(`  Pass:     ${totals.pass}`);
   console.log(`  Fail:     ${totals.fail}`);

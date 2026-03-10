@@ -25,7 +25,7 @@ const args = process.argv.slice(2);
 const outIdx = args.indexOf('--out-dir');
 const outDir = outIdx >= 0 && args[outIdx + 1] ? args[outIdx + 1] : DEFAULT_OUT_DIR;
 
-// ── Load phase index ──
+// -- Load phase index --
 
 if (!existsSync(INDEX_PATH)) {
   console.error('ERROR: docs/qa/phase-index.json not found. Run: pnpm qa:phase-index');
@@ -54,7 +54,7 @@ if (existsSync(CANONICAL_MAP_PATH)) {
 // Subphase regex: digits followed by one or more alpha chars (e.g. "15B", "103B", "14D")
 const SUBPHASE_RE = /^(\d+)([A-Za-z].*)$/;
 
-// ── Scan configuration ──
+// -- Scan configuration --
 
 const SCAN_DIRS = [
   'apps/api/src',
@@ -111,7 +111,7 @@ const SCAN_EXTENSIONS = new Set([
 const PHASE_RE = /\bPhase\s+(\d+[A-Z]?\w*)\b/gi;
 const WAVE_RE = /\bWave\s+(\d+)\b/gi;
 
-// ── File walker ──
+// -- File walker --
 
 function walkDir(dir, results = []) {
   if (!existsSync(dir)) return results;
@@ -132,7 +132,7 @@ function walkDir(dir, results = []) {
   return results;
 }
 
-// ── Scan all files ──
+// -- Scan all files --
 
 console.log('\n=== Phase/Wave Comment Traceability Audit ===\n');
 
@@ -151,7 +151,7 @@ allFiles.push(...rootFiles);
 
 console.log(`  Scanning ${allFiles.length} files...\n`);
 
-// ── Collect references ──
+// -- Collect references --
 
 const phaseRefs = new Map(); // token -> [{file, line, context}]
 const waveRefs = new Map(); // wave# -> [{file, line, context}]
@@ -197,7 +197,7 @@ for (const filePath of allFiles) {
   }
 }
 
-// ── Classify phase tokens ──
+// -- Classify phase tokens --
 
 const resolved = [];
 const unresolved = [];
@@ -297,7 +297,7 @@ const allTokensSorted = [...phaseRefs.entries()]
     };
   });
 
-// ── Generate reports ──
+// -- Generate reports --
 
 const jsonReport = {
   generatedAt: new Date().toISOString(),
@@ -323,7 +323,7 @@ const jsonReport = {
 mkdirSync(outDir, { recursive: true });
 writeFileSync(join(outDir, 'phase-comment-audit.json'), JSON.stringify(jsonReport, null, 2) + '\n');
 
-// ── Markdown report ──
+// -- Markdown report --
 
 const md = [];
 md.push('# Phase/Wave Comment Traceability Audit');
@@ -430,7 +430,7 @@ md.push('');
 
 writeFileSync(join(outDir, 'phase-comment-audit.md'), md.join('\n'));
 
-// ── Console summary ──
+// -- Console summary --
 
 console.log('  Results:');
 console.log(`    Phase tokens found:   ${phaseRefs.size}`);

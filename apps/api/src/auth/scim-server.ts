@@ -1,5 +1,5 @@
 /**
- * In-Process SCIM Server — Phase 339 (W16-P3).
+ * In-Process SCIM Server -- Phase 339 (W16-P3).
  *
  * Implements the ScimConnector interface with in-memory stores.
  * Provides SCIM 2.0 user and group lifecycle management.
@@ -9,7 +9,7 @@
  *
  * Design:
  *   - In-memory Maps for users + groups (DB-backed via PG migration v34)
- *   - externalId-based idempotency: duplicate create → return existing
+ *   - externalId-based idempotency: duplicate create -> return existing
  *   - Group membership maps to VistA roles via display name prefix
  *   - Tenant isolation on all operations
  *   - All changes audited via immutable audit trail
@@ -61,7 +61,7 @@ export interface ScimGroup {
 const userStore = new Map<string, ScimUser & { _tenantId: string }>();
 const groupStore = new Map<string, ScimGroup & { _tenantId: string }>();
 
-/** Index: tenantId:externalId → userId for idempotency */
+/** Index: tenantId:externalId -> userId for idempotency */
 const externalIdIndex = new Map<string, string>();
 
 function extIdKey(tenantId: string, externalId: string): string {
@@ -90,7 +90,7 @@ function makeMeta(resourceType: string, id: string): ScimMeta {
 /**
  * Map SCIM group displayName to VistA role.
  * Convention: groups prefixed with "role:" map directly.
- * e.g., "role:admin" → "admin", "role:provider" → "provider"
+ * e.g., "role:admin" -> "admin", "role:provider" -> "provider"
  */
 export function mapGroupToRole(groupDisplayName: string): UserRole | null {
   const lower = groupDisplayName.toLowerCase();
@@ -318,7 +318,7 @@ export class InProcessScimConnector implements ScimConnector {
   }
 
   /* ---------------------------------------------------------------- */
-  /* Group operations (not in base ScimConnector — extension)          */
+  /* Group operations (not in base ScimConnector -- extension)          */
   /* ---------------------------------------------------------------- */
 
   async createGroup(group: ScimGroup, tenantId: string): Promise<ScimGroup> {

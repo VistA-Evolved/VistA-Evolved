@@ -1,5 +1,5 @@
 /**
- * Lab Writeback Contract Tests — Phase 304 (W12-P6)
+ * Lab Writeback Contract Tests -- Phase 304 (W12-P6)
  */
 
 import { describe, it, expect } from 'vitest';

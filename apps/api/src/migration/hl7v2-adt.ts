@@ -8,7 +8,7 @@
 
 import { randomBytes } from 'crypto';
 
-// ── Types ──────────────────────────────────────────────────────────
+// -- Types ----------------------------------------------------------
 
 export type AdtTrigger = 'A01' | 'A02' | 'A03' | 'A08' | 'unknown';
 
@@ -44,7 +44,7 @@ export interface AdtProcessResult {
   error?: string;
 }
 
-// ── In-memory event store ──────────────────────────────────────────
+// -- In-memory event store ------------------------------------------
 
 const adtEvents = new Map<string, AdtEvent>();
 
@@ -58,7 +58,7 @@ export function listAdtEvents(): AdtEvent[] {
   );
 }
 
-// ── HL7v2 parser ───────────────────────────────────────────────────
+// -- HL7v2 parser ---------------------------------------------------
 
 function parseSegments(message: string): Hl7Segment[] {
   // HL7v2 uses \r as segment separator (also accept \n and \r\n)
@@ -93,7 +93,7 @@ function parseTrigger(msh9: string): AdtTrigger {
   return 'unknown';
 }
 
-// ── Process ADT message ────────────────────────────────────────────
+// -- Process ADT message --------------------------------------------
 
 export function processAdtMessage(messageText: string, userId: string): AdtProcessResult {
   const segments = parseSegments(messageText);

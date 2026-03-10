@@ -1,5 +1,5 @@
 /**
- * Feature Flag Provider — Barrel export + initialization (Phase 285)
+ * Feature Flag Provider -- Barrel export + initialization (Phase 285)
  */
 
 export type {
@@ -21,8 +21,8 @@ import { UnleashFeatureFlagProvider } from './unleash-provider.js';
 
 /**
  * Initialize the feature flag provider based on FEATURE_FLAG_PROVIDER env var.
- * - "db"      (default) — database-backed with rollout + targeting
- * - "unleash" — self-hosted Unleash with DB fallback
+ * - "db"      (default) -- database-backed with rollout + targeting
+ * - "unleash" -- self-hosted Unleash with DB fallback
  */
 export function initFeatureFlagProvider(): void {
   const providerType = (process.env.FEATURE_FLAG_PROVIDER || 'db').toLowerCase();

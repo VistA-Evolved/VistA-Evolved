@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * QA Dashboard — Admin UI
+ * QA Dashboard -- Admin UI
  *
  * Phase 96B: QA/Audit OS v1.1
  *
@@ -12,7 +12,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 interface TraceEntry {
   id: string;
@@ -76,7 +76,7 @@ interface DeadClick {
   detectedAt: string;
 }
 
-/* ── Helpers ────────────────────────────────────────────────── */
+/* -- Helpers -------------------------------------------------- */
 
 async function api(path: string, opts?: RequestInit) {
   const res = await fetch(`${API}${path}`, {
@@ -89,7 +89,7 @@ async function api(path: string, opts?: RequestInit) {
 
 type Tab = 'traces' | 'flows' | 'results' | 'deadclicks';
 
-/* ── Component ──────────────────────────────────────────────── */
+/* -- Component ------------------------------------------------ */
 
 export default function QaDashboardPage() {
   const [tab, setTab] = useState<Tab>('traces');
@@ -102,7 +102,7 @@ export default function QaDashboardPage() {
   const [error, setError] = useState('');
   const [qaEnabled, setQaEnabled] = useState<boolean | null>(null);
 
-  /* ── Check QA status ────────────────────────────────────── */
+  /* -- Check QA status -------------------------------------- */
 
   useEffect(() => {
     api('/qa/status')
@@ -112,7 +112,7 @@ export default function QaDashboardPage() {
       .catch(() => setQaEnabled(false));
   }, []);
 
-  /* ── Load traces ────────────────────────────────────────── */
+  /* -- Load traces ------------------------------------------ */
 
   const loadTraces = useCallback(async () => {
     setLoading(true);
@@ -130,7 +130,7 @@ export default function QaDashboardPage() {
     setLoading(false);
   }, []);
 
-  /* ── Load flows ─────────────────────────────────────────── */
+  /* -- Load flows ------------------------------------------- */
 
   const loadFlows = useCallback(async () => {
     setLoading(true);
@@ -143,7 +143,7 @@ export default function QaDashboardPage() {
     setLoading(false);
   }, []);
 
-  /* ── Load results ───────────────────────────────────────── */
+  /* -- Load results ----------------------------------------- */
 
   const loadResults = useCallback(async () => {
     setLoading(true);
@@ -156,7 +156,7 @@ export default function QaDashboardPage() {
     setLoading(false);
   }, []);
 
-  /* ── Load dead clicks ──────────────────────────────────── */
+  /* -- Load dead clicks ------------------------------------ */
 
   const loadDeadClicks = useCallback(async () => {
     try {
@@ -167,7 +167,7 @@ export default function QaDashboardPage() {
     }
   }, []);
 
-  /* ── Tab switch ─────────────────────────────────────────── */
+  /* -- Tab switch ------------------------------------------- */
 
   useEffect(() => {
     if (tab === 'traces') loadTraces();
@@ -176,7 +176,7 @@ export default function QaDashboardPage() {
     if (tab === 'deadclicks') loadDeadClicks();
   }, [tab, loadTraces, loadFlows, loadResults, loadDeadClicks]);
 
-  /* ── Run flow ───────────────────────────────────────────── */
+  /* -- Run flow --------------------------------------------- */
 
   async function runFlow(flowId: string) {
     const data = await api(`/qa/flows/${flowId}/run`, {
@@ -203,7 +203,7 @@ export default function QaDashboardPage() {
     }
   }
 
-  /* ── Styles ─────────────────────────────────────────────── */
+  /* -- Styles ----------------------------------------------- */
 
   const headerStyle: React.CSSProperties = {
     padding: '16px 24px',
@@ -290,7 +290,7 @@ export default function QaDashboardPage() {
       <div style={{ flex: 1, overflow: 'auto', padding: '16px 24px' }}>
         {error && <div style={{ color: '#dc2626', marginBottom: 8, fontSize: 12 }}>{error}</div>}
 
-        {/* ═══ TRACES TAB ═══ */}
+        {/* === TRACES TAB === */}
         {tab === 'traces' && (
           <>
             {stats && (
@@ -380,7 +380,7 @@ export default function QaDashboardPage() {
           </>
         )}
 
-        {/* ═══ FLOWS TAB ═══ */}
+        {/* === FLOWS TAB === */}
         {tab === 'flows' && (
           <>
             <div style={{ marginBottom: 12 }}>
@@ -441,7 +441,7 @@ export default function QaDashboardPage() {
           </>
         )}
 
-        {/* ═══ RESULTS TAB ═══ */}
+        {/* === RESULTS TAB === */}
         {tab === 'results' && (
           <table style={tableStyle}>
             <thead>
@@ -478,7 +478,7 @@ export default function QaDashboardPage() {
           </table>
         )}
 
-        {/* ═══ DEAD CLICKS TAB ═══ */}
+        {/* === DEAD CLICKS TAB === */}
         {tab === 'deadclicks' && (
           <>
             <div style={{ marginBottom: 8, fontSize: 11, color: '#6b7280' }}>

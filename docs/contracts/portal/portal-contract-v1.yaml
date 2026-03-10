@@ -1,15 +1,15 @@
-# Portal Contract v1 — VistA-Evolved Patient Portal
+# Portal Contract v1 -- VistA-Evolved Patient Portal
 # Phase 26: VistA-First Grounding + Skeleton
 # This contract defines modules, data sources, security rules, and guardrails.
 
 version: '1.0'
 phase: 26
-title: 'Patient Portal — VistA-First Contract'
+title: 'Patient Portal -- VistA-First Contract'
 commit_ref: 'Phase26: Portal VistA-first contract + skeleton'
 
-# ─────────────────────────────────────────────────
+# -------------------------------------------------
 # NON-NEGOTIABLE RULES
-# ─────────────────────────────────────────────────
+# -------------------------------------------------
 rules:
   vista_first:
     description: >
@@ -46,9 +46,9 @@ rules:
       AIOTP (CC BY-NC-SA 4.0): Observe patterns ONLY. DO NOT copy code.
     enforcement: 'scripts/license-guard.ps1'
 
-# ─────────────────────────────────────────────────
+# -------------------------------------------------
 # MODULES
-# ─────────────────────────────────────────────────
+# -------------------------------------------------
 modules:
   auth:
     name: 'Portal Authentication'
@@ -71,7 +71,7 @@ modules:
     name: 'Patient Dashboard'
     description: 'Landing page after login showing health summary cards'
     screens:
-      - 'Dashboard home — summary cards for each clinical domain'
+      - 'Dashboard home -- summary cards for each clinical domain'
     vista_source: 'Aggregated reads from multiple RPCs'
     status: 'skeleton'
     phase: 26
@@ -113,7 +113,7 @@ modules:
     screens:
       - 'Active medications list'
       - 'Medication detail'
-      - 'Refill request (future — placeholder)'
+      - 'Refill request (future -- placeholder)'
     vista_rpcs:
       - { rpc: 'ORWPS ACTIVE', route: 'GET /vista/medications', mode: 'read' }
       - { rpc: 'ORWORR GETTXT', route: 'GET /vista/medications (detail)', mode: 'read' }
@@ -124,7 +124,7 @@ modules:
 
   messages:
     name: 'Secure Messages'
-    description: 'Provider messaging (future — placeholder in Phase 26)'
+    description: 'Provider messaging (future -- placeholder in Phase 26)'
     screens:
       - 'Message inbox (placeholder)'
       - 'Compose message (placeholder)'
@@ -134,7 +134,7 @@ modules:
 
   appointments:
     name: 'My Appointments'
-    description: 'View & manage appointments (future — placeholder in Phase 26)'
+    description: 'View & manage appointments (future -- placeholder in Phase 26)'
     screens:
       - 'Upcoming appointments (placeholder)'
       - 'Past appointments (placeholder)'
@@ -145,11 +145,11 @@ modules:
 
   telehealth:
     name: 'Telehealth'
-    description: 'Video visit capability (future — placeholder in Phase 26)'
+    description: 'Video visit capability (future -- placeholder in Phase 26)'
     screens:
       - 'Join video visit (placeholder)'
       - 'Waiting room (placeholder)'
-    vista_source: 'N/A — external video service'
+    vista_source: 'N/A -- external video service'
     reference_pattern: 'Ottehr waiting room UX, Jitsi WebRTC model (AIOTP)'
     status: 'placeholder'
     phase: 26
@@ -166,9 +166,9 @@ modules:
     status: 'skeleton'
     phase: 26
 
-# ─────────────────────────────────────────────────
+# -------------------------------------------------
 # PORTAL-SPECIFIC INFRASTRUCTURE
-# ─────────────────────────────────────────────────
+# -------------------------------------------------
 infrastructure:
   audit:
     description: 'PHI-safe portal access audit trail'
@@ -193,9 +193,9 @@ infrastructure:
       - { name: 'CARTER,DAVID', dfn: '100022' }
       - { name: 'Demo patient (sandbox)', dfn: 'TBD' }
 
-# ─────────────────────────────────────────────────
+# -------------------------------------------------
 # FUTURE PHASES
-# ─────────────────────────────────────────────────
+# -------------------------------------------------
 future:
   phase_27_candidates:
     - 'Secure messaging with VistA SM API'

@@ -1,5 +1,5 @@
 /**
- * PhilHealth PayerAdapter — Phase 69
+ * PhilHealth PayerAdapter -- Phase 69
  *
  * Skeleton adapter for PhilHealth eClaims API (Philippines).
  * Wraps existing philhealth-connector.ts (Phase 38) with

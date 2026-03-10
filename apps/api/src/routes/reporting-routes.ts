@@ -83,7 +83,7 @@ function requireTenantId(request: any, reply: any): string | null {
 /* ================================================================== */
 
 export default async function w19ReportingRoutes(server: FastifyInstance): Promise<void> {
-  /* ── REPORTING API (Phase 365) ────────────────────────────────── */
+  /* -- REPORTING API (Phase 365) ---------------------------------- */
 
   server.get('/analytics/reports', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -156,7 +156,7 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     }
   });
 
-  /* ── DATASETS (Phase 368) ─────────────────────────────────────── */
+  /* -- DATASETS (Phase 368) --------------------------------------- */
 
   server.get('/analytics/datasets', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -173,7 +173,7 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     return reply.send({ ok: true, dataset: ds });
   });
 
-  /* ── ACCESS CONTROLS (Phase 368) ──────────────────────────────── */
+  /* -- ACCESS CONTROLS (Phase 368) -------------------------------- */
 
   server.get('/analytics/access/permissions', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -219,7 +219,7 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     return reply.send({ ok: true, revoked: true });
   });
 
-  /* ── COLUMN MASKING (Phase 368) ───────────────────────────────── */
+  /* -- COLUMN MASKING (Phase 368) --------------------------------- */
 
   server.get('/analytics/access/mask/:datasetId', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -253,7 +253,7 @@ export default async function w19ReportingRoutes(server: FastifyInstance): Promi
     });
   });
 
-  /* ── EXPORT AUDIT (Phase 368) ─────────────────────────────────── */
+  /* -- EXPORT AUDIT (Phase 368) ----------------------------------- */
 
   server.get('/analytics/access/export-audit', async (request, reply) => {
     const session = await requireSession(request, reply);

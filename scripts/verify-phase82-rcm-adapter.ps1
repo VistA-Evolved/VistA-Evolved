@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Phase 82 Verifier — RCM Adapter Expansion v2
+  Phase 82 Verifier -- RCM Adapter Expansion v2
 
 .DESCRIPTION
   Verifies:

@@ -1,5 +1,5 @@
 /**
- * Payer Repository (PostgreSQL) — CRUD for the global payer table
+ * Payer Repository (PostgreSQL) -- CRUD for the global payer table
  *
  * Phase 102: Migrate Prototype Stores to PlatformStore
  * Phase 104: Optimistic concurrency via version column
@@ -162,7 +162,7 @@ export async function updatePayer(
 
   const now = new Date().toISOString();
 
-  // Build the set clause — use camelCase property names matching Drizzle schema
+  // Build the set clause -- use camelCase property names matching Drizzle schema
   const setObj: Record<string, unknown> = {
     updatedAt: new Date(now),
     updatedBy: actor ?? null,

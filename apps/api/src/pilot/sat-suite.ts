@@ -1,14 +1,14 @@
 /**
- * SAT (Site Acceptance Test) Suite — Phase 265 (Wave 8 P9)
+ * SAT (Site Acceptance Test) Suite -- Phase 265 (Wave 8 P9)
  *
  * Formalizes go-live acceptance criteria for pilot hospital deployments.
  * Integrates with existing preflight (Phase 246), posture system (Phase 107),
  * hardening routes (Phase 118), and QA gauntlet (Phase 119).
  *
  * Three layers:
- *  1. SAT Scenario — a named, weighted acceptance criterion with auto-check
- *  2. SAT Run — a complete execution of all scenarios for a site
- *  3. DegradedMode — runtime degradation tracking + automatic mitigation
+ *  1. SAT Scenario -- a named, weighted acceptance criterion with auto-check
+ *  2. SAT Run -- a complete execution of all scenarios for a site
+ *  3. DegradedMode -- runtime degradation tracking + automatic mitigation
  */
 import { createHash } from 'crypto';
 

@@ -1,6 +1,6 @@
 /**
- * Clinical Invariant Tests — Text Truncation Detection
- * Phase 268 — W8-P3
+ * Clinical Invariant Tests -- Text Truncation Detection
+ * Phase 268 -- W8-P3
  *
  * Validates that VistA text fields are not silently truncated
  * during transmission, parsing, or storage. VistA M strings

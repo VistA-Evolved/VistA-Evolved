@@ -395,7 +395,7 @@ function main() {
     _meta: {
       generatedAt: new Date().toISOString(),
       phase: 55,
-      description: 'CPRS Parity Matrix v2 — Delphi + Vivian + API + Web cross-reference',
+      description: 'CPRS Parity Matrix v2 -- Delphi + Vivian + API + Web cross-reference',
       inputs: {
         delphiRpcs: delphiRpcs._meta,
         delphiActions: delphiActions._meta,

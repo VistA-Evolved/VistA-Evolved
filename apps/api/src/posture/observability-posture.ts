@@ -46,7 +46,7 @@ export async function checkObservabilityPosture(): Promise<ObservabilityPosture>
     });
   }
 
-  // Gate 2: Request ID propagation (design attestation — AsyncLocalStorage
+  // Gate 2: Request ID propagation (design attestation -- AsyncLocalStorage
   // is registered at import time; this gate verifies the runtime binding)
   const reqId = getRequestId();
   gates.push({
@@ -76,7 +76,7 @@ export async function checkObservabilityPosture(): Promise<ObservabilityPosture>
     });
   }
 
-  // Gate 4: OTel tracing hooks — reports actual enablement status
+  // Gate 4: OTel tracing hooks -- reports actual enablement status
   const tracingOn = isTracingEnabled();
   gates.push({
     name: 'otel_tracing',
@@ -102,7 +102,7 @@ export async function checkObservabilityPosture(): Promise<ObservabilityPosture>
     });
   }
 
-  // Gate 6: Security headers middleware (design attestation — headers
+  // Gate 6: Security headers middleware (design attestation -- headers
   // are registered in security.ts onRequest hook at server startup)
   gates.push({
     name: 'security_headers',

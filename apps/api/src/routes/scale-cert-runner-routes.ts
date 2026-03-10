@@ -47,7 +47,7 @@ export default async function scaleCertRunnerRoutes(server: FastifyInstance): Pr
     return req.session?.userName || req.session?.duz || 'unknown';
   }
 
-  // ── Certification Runs ─────────────────────────────────────────────
+  // -- Certification Runs ---------------------------------------------
 
   server.post('/platform/cert/run', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -89,7 +89,7 @@ export default async function scaleCertRunnerRoutes(server: FastifyInstance): Pr
     return reply.send({ ok: true, run });
   });
 
-  // ── Profiles ───────────────────────────────────────────────────────
+  // -- Profiles -------------------------------------------------------
 
   server.get('/platform/cert/profiles', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -129,7 +129,7 @@ export default async function scaleCertRunnerRoutes(server: FastifyInstance): Pr
     return reply.code(201).send({ ok: true, profile, scope: 'platform-global' });
   });
 
-  // ── Schedules ──────────────────────────────────────────────────────
+  // -- Schedules ------------------------------------------------------
 
   server.get('/platform/cert/schedules', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -167,7 +167,7 @@ export default async function scaleCertRunnerRoutes(server: FastifyInstance): Pr
     return reply.send({ ok: true, schedule: sched });
   });
 
-  // ── Trends & Badge ─────────────────────────────────────────────────
+  // -- Trends & Badge -------------------------------------------------
 
   server.get('/platform/cert/trends', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -188,11 +188,11 @@ export default async function scaleCertRunnerRoutes(server: FastifyInstance): Pr
     if (!badge)
       return reply
         .code(404)
-        .send({ ok: false, error: 'No certification badge — run certification first' });
+        .send({ ok: false, error: 'No certification badge -- run certification first' });
     return reply.send({ ok: true, badge });
   });
 
-  // ── Gate Catalog ───────────────────────────────────────────────────
+  // -- Gate Catalog ---------------------------------------------------
 
   server.get('/platform/cert/gates', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -200,7 +200,7 @@ export default async function scaleCertRunnerRoutes(server: FastifyInstance): Pr
     return reply.send({ ok: true, gates: getGateCatalog(), scope: 'platform-global' });
   });
 
-  // ── Audit ──────────────────────────────────────────────────────────
+  // -- Audit ----------------------------------------------------------
 
   server.get('/platform/cert/audit', async (req, reply) => {
     const session = await requireSession(req, reply);

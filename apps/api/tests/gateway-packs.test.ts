@@ -45,9 +45,9 @@ import { EclipseAuConnector } from '../src/rcm/connectors/eclipse-au-connector.j
 import { NphcSgConnector } from '../src/rcm/connectors/nphc-sg-connector.js';
 import { AccNzConnector } from '../src/rcm/connectors/acc-nz-connector.js';
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
  * Gateway Readiness
- * ═══════════════════════════════════════════════════════════════════ */
+ * =================================================================== */
 
 describe('Gateway Readiness', () => {
   it('lists 5 gateway IDs', () => {
@@ -127,9 +127,9 @@ describe('Gateway Readiness', () => {
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
  * SOA Generator
- * ═══════════════════════════════════════════════════════════════════ */
+ * =================================================================== */
 
 describe('SOA Generator', () => {
   const validInput: SoaInput = {
@@ -232,9 +232,9 @@ describe('SOA Generator', () => {
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
  * Conformance Harness
- * ═══════════════════════════════════════════════════════════════════ */
+ * =================================================================== */
 
 describe('Conformance Harness', () => {
   it('returns conformance data for 4 gateways', () => {
@@ -278,7 +278,7 @@ describe('Conformance Harness', () => {
       soa: { version: '3.0' },
     });
     // Array-nested fields (cf2.diagnosis[].icd10) use simple dot-path check
-    // which looks for cf2.diagnosis (present) — only top-level checks are authoritative
+    // which looks for cf2.diagnosis (present) -- only top-level checks are authoritative
     expect(result.missingFields.length).toBeLessThanOrEqual(1);
   });
 
@@ -311,9 +311,9 @@ describe('Conformance Harness', () => {
   });
 });
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
  * Connector Upgrades
- * ═══════════════════════════════════════════════════════════════════ */
+ * =================================================================== */
 
 describe('PhilHealth Connector (eClaims 3.0)', () => {
   let connector: PhilHealthConnector;

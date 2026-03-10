@@ -1,5 +1,5 @@
 /**
- * Resilience Certification — Static Analysis Test Suite (Phase 254)
+ * Resilience Certification -- Static Analysis Test Suite (Phase 254)
  *
  * Validates that resilience patterns are correctly implemented in the codebase.
  * These are deterministic structural checks, NOT live integration tests.
@@ -21,7 +21,7 @@ function fileExists(relPath: string): boolean {
   return existsSync(join(ROOT, relPath));
 }
 
-describe('Resilience Certification — Phase 254', () => {
+describe('Resilience Certification -- Phase 254', () => {
   describe('Circuit Breaker', () => {
     const src = readSrc('lib/rpc-resilience.ts');
 

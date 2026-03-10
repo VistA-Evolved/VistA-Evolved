@@ -1,23 +1,23 @@
 /**
- * Reconciliation API Routes — Phase 99
+ * Reconciliation API Routes -- Phase 99
  *
  * Endpoints:
- *   POST /rcm/reconciliation/import       — Import remittance batch (835 or manual)
- *   GET  /rcm/reconciliation/imports       — List remittance imports
- *   GET  /rcm/reconciliation/imports/:id   — Get import detail with payments
- *   GET  /rcm/reconciliation/payments      — Paginated payment list
- *   GET  /rcm/reconciliation/payments/:id  — Get payment detail with matches
- *   POST /rcm/reconciliation/payments/:id/match — Manual match payment to claim
- *   POST /rcm/reconciliation/match-batch   — Run matching engine on an import batch
- *   GET  /rcm/reconciliation/matches/review — List matches needing review
- *   PATCH /rcm/reconciliation/matches/:id  — Confirm / reject match
- *   GET  /rcm/reconciliation/underpayments — Paginated underpayment list
- *   GET  /rcm/reconciliation/underpayments/:id — Get underpayment detail
- *   PATCH /rcm/reconciliation/underpayments/:id — Update underpayment status
- *   POST /rcm/reconciliation/underpayments/:id/send-to-denials — Bridge to Phase 98
- *   GET  /rcm/reconciliation/stats         — Dashboard stats
+ *   POST /rcm/reconciliation/import       -- Import remittance batch (835 or manual)
+ *   GET  /rcm/reconciliation/imports       -- List remittance imports
+ *   GET  /rcm/reconciliation/imports/:id   -- Get import detail with payments
+ *   GET  /rcm/reconciliation/payments      -- Paginated payment list
+ *   GET  /rcm/reconciliation/payments/:id  -- Get payment detail with matches
+ *   POST /rcm/reconciliation/payments/:id/match -- Manual match payment to claim
+ *   POST /rcm/reconciliation/match-batch   -- Run matching engine on an import batch
+ *   GET  /rcm/reconciliation/matches/review -- List matches needing review
+ *   PATCH /rcm/reconciliation/matches/:id  -- Confirm / reject match
+ *   GET  /rcm/reconciliation/underpayments -- Paginated underpayment list
+ *   GET  /rcm/reconciliation/underpayments/:id -- Get underpayment detail
+ *   PATCH /rcm/reconciliation/underpayments/:id -- Update underpayment status
+ *   POST /rcm/reconciliation/underpayments/:id/send-to-denials -- Bridge to Phase 98
+ *   GET  /rcm/reconciliation/stats         -- Dashboard stats
  *
- * All under /rcm/ — existing catch-all covers session auth.
+ * All under /rcm/ -- existing catch-all covers session auth.
  * Mutations wired to appendRcmAudit.
  */
 
@@ -53,7 +53,7 @@ import {
 } from './types.js';
 import type { UnderpaymentStatus } from './types.js';
 
-/* ── Session helper ────────────────────────────────────────── */
+/* -- Session helper ------------------------------------------ */
 
 function getSession(request: FastifyRequest): { duz: string; tenantId: string } {
   const s = (request as any).session;
@@ -73,13 +73,13 @@ function getSession(request: FastifyRequest): { duz: string; tenantId: string } 
   };
 }
 
-/* ── Route Registration ────────────────────────────────────── */
+/* -- Route Registration -------------------------------------- */
 
 export default async function reconciliationRoutes(server: FastifyInstance): Promise<void> {
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * POST /rcm/reconciliation/import
    * Import a remittance batch (EDI 835 JSON or manual)
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.post(
     '/rcm/reconciliation/import',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -158,9 +158,9 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * GET /rcm/reconciliation/imports
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.get(
     '/rcm/reconciliation/imports',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -169,9 +169,9 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * GET /rcm/reconciliation/imports/:id
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.get(
     '/rcm/reconciliation/imports/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -186,9 +186,9 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * GET /rcm/reconciliation/payments
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.get(
     '/rcm/reconciliation/payments',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -202,9 +202,9 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * GET /rcm/reconciliation/payments/:id
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.get(
     '/rcm/reconciliation/payments/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -219,10 +219,10 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * POST /rcm/reconciliation/payments/:id/match
    * Manual match: create a match record for a payment
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.post(
     '/rcm/reconciliation/payments/:id/match',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -265,10 +265,10 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * POST /rcm/reconciliation/match-batch
    * Run matching engine on an import batch
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.post(
     '/rcm/reconciliation/match-batch',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -303,10 +303,10 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * GET /rcm/reconciliation/matches/review
    * List matches needing human review
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.get(
     '/rcm/reconciliation/matches/review',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -315,10 +315,10 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * PATCH /rcm/reconciliation/matches/:id
    * Confirm or reject a match
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.patch(
     '/rcm/reconciliation/matches/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -359,9 +359,9 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * GET /rcm/reconciliation/underpayments
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.get(
     '/rcm/reconciliation/underpayments',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -375,9 +375,9 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * GET /rcm/reconciliation/underpayments/:id
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.get(
     '/rcm/reconciliation/underpayments/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -394,10 +394,10 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * PATCH /rcm/reconciliation/underpayments/:id
    * Update underpayment status with FSM validation
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.patch(
     '/rcm/reconciliation/underpayments/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -452,10 +452,10 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * POST /rcm/reconciliation/underpayments/:id/send-to-denials
    * Bridge: create a Phase 98 denial case from underpayment
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.post(
     '/rcm/reconciliation/underpayments/:id/send-to-denials',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -518,9 +518,9 @@ export default async function reconciliationRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ─────────────────────────────────────────────────
+  /* -------------------------------------------------
    * GET /rcm/reconciliation/stats
-   * ───────────────────────────────────────────────── */
+   * ------------------------------------------------- */
   server.get('/rcm/reconciliation/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const stats = await getReconciliationStats(getSession(request).tenantId);
     return reply.send({ ok: true, stats });

@@ -1,5 +1,5 @@
 /**
- * PayerOps Store — Phase 87+89: Philippines RCM Foundation + LOA Engine v1
+ * PayerOps Store -- Phase 87+89: Philippines RCM Foundation + LOA Engine v1
  *
  * In-memory stores for:
  *   - FacilityPayerEnrollment
@@ -10,13 +10,14 @@
  * documented migration plan to VistA-native or DB persistence).
  *
  * Migration plan:
- *   1. In-memory Map (current — resets on API restart)
+ *   1. In-memory Map (current -- resets on API restart)
  *   2. SQLite file-backed (when multi-instance deploy needed)
  *   3. PostgreSQL (when SaaS multi-tenant needed)
  *   4. VistA file-backed (when VistA IB/AR files available in production)
  */
 
 import { randomBytes } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 import {
   LOA_TRANSITIONS,
   type FacilityPayerEnrollment,
@@ -30,13 +31,13 @@ import {
   type CredentialDocType,
 } from './types.js';
 
-/* ── ID generation ──────────────────────────────────────────── */
+/* -- ID generation -------------------------------------------- */
 
 function newId(prefix: string): string {
   return `${prefix}-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
-/* ── Enrollment Store ───────────────────────────────────────── */
+/* -- Enrollment Store ----------------------------------------- */
 
 const enrollments = new Map<string, FacilityPayerEnrollment>();
 
@@ -109,7 +110,7 @@ export function createEnrollment(data: {
       status: enrollment.status,
       createdAt: enrollment.createdAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   return enrollment;
 }
@@ -153,7 +154,7 @@ export function updateEnrollmentStatus(
   const now = new Date().toISOString();
   enrollment.timeline.push({
     timestamp: now,
-    action: `status_change: ${enrollment.status} → ${newStatus}`,
+    action: `status_change: ${enrollment.status} -> ${newStatus}`,
     actor,
     detail,
   });
@@ -176,7 +177,7 @@ export function addCredentialRefToEnrollment(
   return true;
 }
 
-/* ── LOA Case Store ─────────────────────────────────────────── */
+/* -- LOA Case Store ------------------------------------------- */
 
 const loaCases = new Map<string, LOACase>();
 
@@ -252,7 +253,7 @@ export function createLOACase(data: {
       status: loaCase.status,
       createdAt: loaCase.createdAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   return loaCase;
 }
@@ -340,7 +341,7 @@ export function updateLOAPayerRef(
   return true;
 }
 
-/* ── Phase 89: SLA Computation ──────────────────────────────── */
+/* -- Phase 89: SLA Computation -------------------------------- */
 
 /** Default SLA deadlines by priority (hours from creation) */
 const SLA_HOURS: Record<LOAPriority, number> = {
@@ -383,7 +384,7 @@ export function refreshSLARisk(loa: LOACase): LOACase {
   return loa;
 }
 
-/* ── Phase 89: Patch LOA Draft ──────────────────────────────── */
+/* -- Phase 89: Patch LOA Draft -------------------------------- */
 
 export function patchLOADraft(
   tenantId: string,
@@ -430,7 +431,7 @@ export function patchLOADraft(
   return { ok: true, loaCase: loa };
 }
 
-/* ── Phase 89: LOA Queue ────────────────────────────────────── */
+/* -- Phase 89: LOA Queue -------------------------------------- */
 
 export interface LOAQueueFilter {
   tenantId?: string;
@@ -529,7 +530,7 @@ export function listLOAQueue(filter: LOAQueueFilter = {}): {
   return { items, total, slaBreakdown };
 }
 
-/* ── Phase 89: LOA Pack Storage ─────────────────────────────── */
+/* -- Phase 89: LOA Pack Storage ------------------------------- */
 
 export function addPackToLOA(tenantId: string, loaId: string, pack: LOAPack): boolean {
   const loa = getLOACaseForTenant(tenantId, loaId);
@@ -539,7 +540,7 @@ export function addPackToLOA(tenantId: string, loaId: string, pack: LOAPack): bo
   return true;
 }
 
-/* ── Phase 89: LOA Assignment ───────────────────────────────── */
+/* -- Phase 89: LOA Assignment --------------------------------- */
 
 export function assignLOA(
   tenantId: string,
@@ -561,7 +562,7 @@ export function assignLOA(
   return { ok: true, loaCase: loa };
 }
 
-/* ── Credential Vault Store ─────────────────────────────────── */
+/* -- Credential Vault Store ----------------------------------- */
 
 const credentials = new Map<string, CredentialVaultEntry>();
 
@@ -617,7 +618,7 @@ export function createCredentialEntry(data: {
       credentialType: (entry as any).type ?? 'generic',
       createdAt: (entry as any).createdAt ?? new Date().toISOString(),
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   return entry;
 }
@@ -663,7 +664,7 @@ export function deleteCredentialEntry(tenantId: string, id: string): boolean {
   return credentials.delete(id);
 }
 
-/* ── Renewal Reminder Check ─────────────────────────────────── */
+/* -- Renewal Reminder Check ----------------------------------- */
 
 export function getExpiringCredentials(
   tenantId: string,
@@ -679,7 +680,7 @@ export function getExpiringCredentials(
   });
 }
 
-/* ── Stats ──────────────────────────────────────────────────── */
+/* -- Stats ---------------------------------------------------- */
 
 export function getPayerOpsStats(tenantId?: string): {
   enrollments: { total: number; byStatus: Record<string, number> };

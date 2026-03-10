@@ -1,5 +1,5 @@
 /**
- * ABAC Attribute Extractors — Phase 340 (W16-P4).
+ * ABAC Attribute Extractors -- Phase 340 (W16-P4).
  *
  * Extracts and normalizes attributes from requests, resources, and
  * environment for ABAC policy evaluation.

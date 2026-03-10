@@ -1,5 +1,5 @@
 /**
- * Imaging Audit Trail API Routes — Phase 24.
+ * Imaging Audit Trail API Routes -- Phase 24.
  *
  * Provides compliance admin endpoints for querying and exporting
  * the imaging hash-chained audit trail.

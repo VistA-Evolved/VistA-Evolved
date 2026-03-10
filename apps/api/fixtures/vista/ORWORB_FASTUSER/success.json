@@ -1,0 +1,12 @@
+{
+  "rpcName": "ORWORB FASTUSER",
+  "caseName": "success",
+  "recordedAt": "2026-03-05T00:00:00Z",
+  "sanitized": true,
+  "params": ["1"],
+  "response": [
+    "3^FLAG/ORDER REQUIRES ELEC SIGNATURE^1",
+    "5^NEW ORDER PLACED^2"
+  ],
+  "responseHash": "b3c4d5e6f7a8"
+}

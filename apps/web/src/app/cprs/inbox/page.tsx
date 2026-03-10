@@ -166,7 +166,7 @@ export default function InboxPage() {
               <option value="cosign_needed">Co-Sign Needed</option>
               <option value="notification">Notifications</option>
             </select>
-            <button className={styles.btn} onClick={fetchInbox} disabled={loading}>
+            <button className={styles.btn} onClick={fetchInbox} disabled={loading} title={loading ? 'Inbox refresh is already in progress.' : undefined}>
               {loading ? 'Loading...' : 'Refresh'}
             </button>
           </div>
@@ -200,7 +200,7 @@ export default function InboxPage() {
               marginBottom: 12,
             }}
           >
-            <strong>Integration Pending:</strong> {ackPending.size} item
+            <strong>VistA Writeback Unavailable:</strong> {ackPending.size} item
             {ackPending.size !== 1 ? 's' : ''} could not be persisted to VistA. They remain visible
             until a real acknowledge path is available. VistA persistence requires ORWORB KILL EXPIR
             MSG RPC (not available in sandbox).
@@ -256,7 +256,7 @@ export default function InboxPage() {
                   <td style={{ fontSize: 11, fontWeight: 600 }}>
                     {TYPE_LABELS[item.type] || item.type}
                   </td>
-                  <td style={{ fontSize: 11 }}>{item.patientName || '—'}</td>
+                  <td style={{ fontSize: 11 }}>{item.patientName || '--'}</td>
                   <td style={{ fontSize: 11 }}>{item.summary}</td>
                   <td
                     style={{

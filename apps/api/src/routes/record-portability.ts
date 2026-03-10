@@ -1,22 +1,22 @@
 /**
- * Record Portability Routes — Phase 80
+ * Record Portability Routes -- Phase 80
  *
  * Patient-facing record portability: export summaries, download, share, audit.
  * VistA-first: uses ORWRP REPORT TEXT / Health Summary RPCs where available,
  * falls back to section-level RPCs, and documents pending targets.
  *
  * Routes:
- *   POST /portal/record/export          — Generate summary, return token
- *   GET  /portal/record/export/:token   — Download by token
- *   GET  /portal/record/exports         — List patient's exports
- *   POST /portal/record/export/:token/revoke — Revoke an export
- *   POST /portal/record/share           — Create share link with TTL
- *   POST /portal/record/share/:id/revoke — Revoke share link
- *   GET  /portal/record/shares          — List patient's share links
- *   GET  /portal/record/share/audit     — Access audit for patient's shares
- *   GET  /portal/record/share/preview/:token  — Public: share preview
- *   POST /portal/record/share/verify/:token   — Public: verify + download
- *   GET  /portal/record/stats           — Portability stats
+ *   POST /portal/record/export          -- Generate summary, return token
+ *   GET  /portal/record/export/:token   -- Download by token
+ *   GET  /portal/record/exports         -- List patient's exports
+ *   POST /portal/record/export/:token/revoke -- Revoke an export
+ *   POST /portal/record/share           -- Create share link with TTL
+ *   POST /portal/record/share/:id/revoke -- Revoke share link
+ *   GET  /portal/record/shares          -- List patient's share links
+ *   GET  /portal/record/share/audit     -- Access audit for patient's shares
+ *   GET  /portal/record/share/preview/:token  -- Public: share preview
+ *   POST /portal/record/share/verify/:token   -- Public: verify + download
+ *   GET  /portal/record/stats           -- Portability stats
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -49,7 +49,7 @@ import {
 } from '../services/record-portability-store.js';
 
 /* ================================================================== */
-/* Init — portal session lookup injection (same pattern as portal-core) */
+/* Init -- portal session lookup injection (same pattern as portal-core) */
 /* ================================================================== */
 
 interface PortalSessionData {
@@ -98,7 +98,6 @@ interface SummaryResult {
   pdfBuffer: Buffer;
   sections: string[];
   rpcUsed: string[];
-  pendingTargets: string[];
 }
 
 function parsePortabilityImmunizations(lines: string[]): unknown[] {
@@ -161,10 +160,8 @@ async function fetchSectionData(
 ): Promise<{
   data: unknown[];
   rpcUsed: string[];
-  pendingTargets: string[];
 }> {
   const rpcUsed: string[] = [];
-  const pendingTargets: string[] = [];
 
   try {
     validateCredentials();
@@ -185,7 +182,6 @@ async function fetchSectionData(
             })
             .filter(Boolean),
           rpcUsed,
-          pendingTargets,
         };
 
       case 'problems':
@@ -201,7 +197,6 @@ async function fetchSectionData(
             })
             .filter(Boolean),
           rpcUsed,
-          pendingTargets,
         };
 
       case 'vitals':
@@ -215,7 +210,6 @@ async function fetchSectionData(
             })
             .filter(Boolean),
           rpcUsed,
-          pendingTargets,
         };
 
       case 'medications':
@@ -234,28 +228,26 @@ async function fetchSectionData(
           }
         }
         if (cur) meds.push(cur);
-        return { data: meds, rpcUsed, pendingTargets };
+        return { data: meds, rpcUsed };
 
       case 'demographics':
         lines = await callRpc('ORWPT SELECT', [dfn]);
         rpcUsed.push('ORWPT SELECT');
         const raw = lines[0] || '';
         const p = raw.split('^');
-        if (p[0] === '-1' || !p[0]) return { data: [], rpcUsed, pendingTargets };
+        if (p[0] === '-1' || !p[0]) return { data: [], rpcUsed };
         return {
           data: [{ name: p[0], sex: p[1] || '', dob: p[2] || '' }],
           rpcUsed,
-          pendingTargets,
         };
 
       case 'immunizations':
         try {
           lines = await callRpc('ORQQPX IMMUN LIST', [dfn]);
           rpcUsed.push('ORQQPX IMMUN LIST');
-          return { data: parsePortabilityImmunizations(lines), rpcUsed, pendingTargets };
+          return { data: parsePortabilityImmunizations(lines), rpcUsed };
         } catch {
-          pendingTargets.push('ORQQPX IMMUN LIST');
-          return { data: [], rpcUsed, pendingTargets };
+          return { data: [], rpcUsed: ['ORQQPX IMMUN LIST'] };
         }
 
       case 'labs':
@@ -265,18 +257,16 @@ async function fetchSectionData(
           return {
             data: parsePortabilityLabs(lines),
             rpcUsed,
-            pendingTargets,
           };
         } catch {
-          pendingTargets.push('ORWLRR INTERIM');
-          return { data: [], rpcUsed, pendingTargets };
+          return { data: [], rpcUsed: ['ORWLRR INTERIM'] };
         }
 
       default:
-        return { data: [], rpcUsed, pendingTargets };
+        return { data: [], rpcUsed };
     }
   } catch {
-    return { data: [], rpcUsed, pendingTargets };
+    return { data: [], rpcUsed };
   } finally {
     try {
       disconnect();
@@ -295,7 +285,6 @@ async function generatePatientSummary(
   format: ExportFormat
 ): Promise<SummaryResult> {
   const allRpcUsed: string[] = [];
-  const allPendingTargets: string[] = [];
   const pdfSections: { heading: string; lines: string[] }[] = [];
   const htmlParts: string[] = [];
 
@@ -322,7 +311,6 @@ async function generatePatientSummary(
     if (!EXPORTABLE_SECTIONS.includes(sec)) continue;
     const result = await fetchSectionData(dfn, sec);
     allRpcUsed.push(...result.rpcUsed);
-    allPendingTargets.push(...result.pendingTargets);
 
     let formatted: { heading: string; lines: string[] } = {
       heading: sec,
@@ -345,14 +333,10 @@ async function generatePatientSummary(
         formatted = formatDemographicsForPdf(result.data as any[]);
         break;
       case 'immunizations':
-        formatted = formatImmunizationsForPdf(result.data as any[], {
-          pendingTargets: result.pendingTargets,
-        });
+        formatted = formatImmunizationsForPdf(result.data as any[]);
         break;
       case 'labs':
-        formatted = formatLabsForPdf(result.data as any[], {
-          pendingTargets: result.pendingTargets,
-        });
+        formatted = formatLabsForPdf(result.data as any[]);
         break;
     }
     pdfSections.push(formatted);
@@ -364,14 +348,13 @@ async function generatePatientSummary(
   // Build output
   const title = `Patient Health Summary -- ${patientName}`;
   const pdfBuffer = Buffer.from(buildTextPdf(title, pdfSections));
-  const htmlContent = buildHtmlDocument(title, htmlParts, allRpcUsed, allPendingTargets);
+  const htmlContent = buildHtmlDocument(title, htmlParts, allRpcUsed);
 
   return {
     htmlContent,
     pdfBuffer,
     sections,
     rpcUsed: [...new Set(allRpcUsed)],
-    pendingTargets: [...new Set(allPendingTargets)],
   };
 }
 
@@ -386,8 +369,7 @@ function escapeHtml(text: string): string {
 function buildHtmlDocument(
   title: string,
   bodyParts: string[],
-  rpcUsed: string[],
-  pendingTargets: string[]
+  rpcUsed: string[]
 ): string {
   return `<!DOCTYPE html>
 <html lang="en">
@@ -410,7 +392,6 @@ function buildHtmlDocument(
   <div class="footer">
     <p><strong>Data Sources:</strong></p>
     <p class="rpc-info">RPCs used: ${rpcUsed.length > 0 ? rpcUsed.join(', ') : 'none'}</p>
-    ${pendingTargets.length > 0 ? `<p class="rpc-info">Integration pending: ${pendingTargets.join(', ')}</p>` : ''}
     <p>This document was generated from VistA electronic health records. It may not include all clinical information.</p>
   </div>
 </body>
@@ -423,7 +404,7 @@ function buildHtmlDocument(
 
 export default async function recordPortabilityRoutes(server: FastifyInstance): Promise<void> {
   /* ---------------------------------------------------------------- */
-  /* POST /portal/record/export — generate summary, return token      */
+  /* POST /portal/record/export -- generate summary, return token      */
   /* ---------------------------------------------------------------- */
   server.post('/portal/record/export', async (request, reply) => {
     const session = requirePortalSession(request, reply);
@@ -453,7 +434,6 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
       content,
       sections: summary.sections,
       rpcUsed: summary.rpcUsed,
-      pendingTargets: summary.pendingTargets,
     });
 
     if ('error' in result) {
@@ -466,13 +446,12 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
       format: result.format,
       sections: result.sections,
       rpcUsed: result.rpcUsed,
-      pendingTargets: result.pendingTargets,
       expiresAt: result.expiresAt,
     });
   });
 
   /* ---------------------------------------------------------------- */
-  /* GET /portal/record/export/:token — download by token             */
+  /* GET /portal/record/export/:token -- download by token             */
   /* ---------------------------------------------------------------- */
   server.get('/portal/record/export/:token', async (request, reply) => {
     const session = requirePortalSession(request, reply);
@@ -494,7 +473,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   });
 
   /* ---------------------------------------------------------------- */
-  /* GET /portal/record/exports — list patient's exports              */
+  /* GET /portal/record/exports -- list patient's exports              */
   /* ---------------------------------------------------------------- */
   server.get('/portal/record/exports', async (request, reply) => {
     const session = requirePortalSession(request, reply);
@@ -503,7 +482,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   });
 
   /* ---------------------------------------------------------------- */
-  /* POST /portal/record/export/:token/revoke — revoke an export      */
+  /* POST /portal/record/export/:token/revoke -- revoke an export      */
   /* ---------------------------------------------------------------- */
   server.post('/portal/record/export/:token/revoke', async (request, reply) => {
     const session = requirePortalSession(request, reply);
@@ -516,7 +495,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   });
 
   /* ---------------------------------------------------------------- */
-  /* POST /portal/record/share — create share link                    */
+  /* POST /portal/record/share -- create share link                    */
   /* ---------------------------------------------------------------- */
   server.post('/portal/record/share', async (request, reply) => {
     const session = requirePortalSession(request, reply);
@@ -574,7 +553,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   });
 
   /* ---------------------------------------------------------------- */
-  /* GET /portal/record/shares — list patient's share links           */
+  /* GET /portal/record/shares -- list patient's share links           */
   /* ---------------------------------------------------------------- */
   server.get('/portal/record/shares', async (request, reply) => {
     const session = requirePortalSession(request, reply);
@@ -594,7 +573,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   });
 
   /* ---------------------------------------------------------------- */
-  /* GET /portal/record/share/audit — access audit for patient        */
+  /* GET /portal/record/share/audit -- access audit for patient        */
   /* ---------------------------------------------------------------- */
   server.get('/portal/record/share/audit', async (request, reply) => {
     const session = requirePortalSession(request, reply);
@@ -603,7 +582,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   });
 
   /* ---------------------------------------------------------------- */
-  /* GET /portal/record/share/preview/:token — public preview         */
+  /* GET /portal/record/share/preview/:token -- public preview         */
   /* ---------------------------------------------------------------- */
   server.get('/portal/record/share/preview/:token', async (request, reply) => {
     const { token } = request.params as { token: string };
@@ -615,7 +594,7 @@ export default async function recordPortabilityRoutes(server: FastifyInstance): 
   });
 
   /* ---------------------------------------------------------------- */
-  /* POST /portal/record/share/verify/:token — verify + download      */
+  /* POST /portal/record/share/verify/:token -- verify + download      */
   /* ---------------------------------------------------------------- */
   server.post('/portal/record/share/verify/:token', async (request, reply) => {
     const { token } = request.params as { token: string };

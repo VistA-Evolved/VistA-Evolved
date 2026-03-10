@@ -1,18 +1,18 @@
 /**
- * HL7v2 Engine — API Routes
+ * HL7v2 Engine -- API Routes
  *
  * Phase 239 (Wave 6 P2): Health and status endpoints for the HL7v2 MLLP engine.
  * Phase 279 (Wave 9): FHIR bridge, channel health, and outbound builder routes.
  *
  * Routes:
- *   GET  /hl7/health             — Engine health check
- *   GET  /hl7/connections        — Active MLLP connections (admin only)
- *   GET  /hl7/status             — Detailed engine status (admin only)
- *   GET  /hl7/channel-health     — Channel health summary (admin only)
- *   GET  /hl7/fhir/conversions   — List supported FHIR conversions
- *   POST /hl7/fhir/convert       — Convert HL7v2 message to FHIR R4
- *   GET  /hl7/outbound/types     — List outbound message types
- *   POST /hl7/outbound/build     — Build an outbound HL7v2 message
+ *   GET  /hl7/health             -- Engine health check
+ *   GET  /hl7/connections        -- Active MLLP connections (admin only)
+ *   GET  /hl7/status             -- Detailed engine status (admin only)
+ *   GET  /hl7/channel-health     -- Channel health summary (admin only)
+ *   GET  /hl7/fhir/conversions   -- List supported FHIR conversions
+ *   POST /hl7/fhir/convert       -- Convert HL7v2 message to FHIR R4
+ *   GET  /hl7/outbound/types     -- List outbound message types
+ *   POST /hl7/outbound/build     -- Build an outbound HL7v2 message
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -30,7 +30,7 @@ import { log } from '../lib/logger.js';
 
 export default async function hl7EngineRoutes(server: FastifyInstance): Promise<void> {
   /**
-   * GET /hl7/health — Engine health check.
+   * GET /hl7/health -- Engine health check.
    * Returns basic health status. Available without admin role so monitoring
    * systems can probe it.
    */
@@ -49,7 +49,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * GET /hl7/connections — Active MLLP connections.
+   * GET /hl7/connections -- Active MLLP connections.
    * Admin-only (enforced by AUTH_RULES matching /hl7/* -> admin).
    */
   server.get('/hl7/connections', async (_request, reply) => {
@@ -82,7 +82,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * GET /hl7/status — Detailed engine status.
+   * GET /hl7/status -- Detailed engine status.
    * Admin-only (enforced by AUTH_RULES).
    */
   server.get('/hl7/status', async (_request, reply) => {
@@ -107,7 +107,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /hl7/channel-health — Aggregated channel health summary.
+   * GET /hl7/channel-health -- Aggregated channel health summary.
    * Admin-only (enforced by AUTH_RULES matching /hl7/* -> admin).
    */
   server.get('/hl7/channel-health', async (_request, reply) => {
@@ -125,7 +125,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /hl7/fhir/conversions — List supported FHIR conversion types.
+   * GET /hl7/fhir/conversions -- List supported FHIR conversion types.
    */
   server.get('/hl7/fhir/conversions', async (_request, reply) => {
     return reply.send({
@@ -135,7 +135,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * POST /hl7/fhir/convert — Convert an HL7v2 message to FHIR R4 bundle.
+   * POST /hl7/fhir/convert -- Convert an HL7v2 message to FHIR R4 bundle.
    * Body: { message: string } (raw HL7v2 pipe-delimited message)
    */
   server.post('/hl7/fhir/convert', async (request, reply) => {
@@ -167,7 +167,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /hl7/outbound/types — List supported outbound message types.
+   * GET /hl7/outbound/types -- List supported outbound message types.
    */
   server.get('/hl7/outbound/types', async (_request, reply) => {
     return reply.send({
@@ -177,7 +177,7 @@ export default async function hl7EngineRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * POST /hl7/outbound/build — Build an outbound HL7v2 message.
+   * POST /hl7/outbound/build -- Build an outbound HL7v2 message.
    * Body: { type: "ADT"|"ORU"|"ORM"|"SIU", data: {...} }
    */
   server.post('/hl7/outbound/build', async (request, reply) => {

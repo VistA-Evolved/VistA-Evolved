@@ -1,5 +1,5 @@
 /**
- * PG Telehealth Room Event Repository — Room lifecycle event log
+ * PG Telehealth Room Event Repository -- Room lifecycle event log
  *
  * Phase 127: Portal + Telehealth Durability (Map stores -> Postgres)
  *
@@ -14,7 +14,7 @@ import { pgTelehealthRoomEvent } from '../pg-schema.js';
 
 export type TelehealthRoomEventRow = typeof pgTelehealthRoomEvent.$inferSelect;
 
-/* ── Insert ────────────────────────────────────────────────── */
+/* -- Insert -------------------------------------------------- */
 
 export async function insertRoomEvent(data: {
   id?: string;
@@ -44,7 +44,7 @@ export async function insertRoomEvent(data: {
   return row!;
 }
 
-/* ── Query ─────────────────────────────────────────────────── */
+/* -- Query --------------------------------------------------- */
 
 export async function findRoomEventById(id: string): Promise<TelehealthRoomEventRow | undefined> {
   const db = getPgDb();
@@ -64,7 +64,7 @@ export async function findEventsByRoomId(roomId: string): Promise<TelehealthRoom
     .orderBy(desc(pgTelehealthRoomEvent.createdAt));
 }
 
-/* ── Count ─────────────────────────────────────────────────── */
+/* -- Count --------------------------------------------------- */
 
 export async function countRoomEvents(roomId: string): Promise<number> {
   const db = getPgDb();

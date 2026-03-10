@@ -35,7 +35,7 @@ const EVIDENCE_REQUIRED_MODES = new Set(['direct_api', 'fhir_payer', 'government
 /** Modes where evidence is recommended but not blocking */
 const EVIDENCE_RECOMMENDED_MODES = new Set(['clearinghouse_edi', 'portal_batch']);
 
-// ── Gate results ──────────────────────────────────────
+// -- Gate results --------------------------------------
 
 const results = {
   passed: 0,
@@ -62,7 +62,7 @@ function fail(gate, detail) {
   if (!jsonOutput) console.log(`  FAIL  ${gate}: ${detail}`);
 }
 
-// ── Gate 1: Payer seed files — modes vs evidence ──────
+// -- Gate 1: Payer seed files -- modes vs evidence ------
 
 function checkPayerSeeds() {
   if (!jsonOutput) console.log('\n== Gate 1: Payer Seed Evidence Coverage ==');
@@ -160,7 +160,7 @@ function checkPayerSeeds() {
   }
 }
 
-// ── Gate 2: Connector code — undeclared endpoint references ──
+// -- Gate 2: Connector code -- undeclared endpoint references --
 
 function checkConnectorEndpoints() {
   if (!jsonOutput) console.log('\n== Gate 2: Connector Endpoint Declarations ==');
@@ -210,7 +210,7 @@ function checkConnectorEndpoints() {
   }
 }
 
-// ── Gate 3: Docs — ungrounded integration claims ──────
+// -- Gate 3: Docs -- ungrounded integration claims ------
 
 function checkDocsGrounding() {
   if (!jsonOutput) console.log('\n== Gate 3: Documentation Grounding ==');
@@ -266,7 +266,7 @@ function checkDocsGrounding() {
   }
 }
 
-// ── Gate 4: Evidence template exists ──────────────────
+// -- Gate 4: Evidence template exists ------------------
 
 function checkTemplate() {
   if (!jsonOutput) console.log('\n== Gate 4: Research Template ==');
@@ -279,7 +279,7 @@ function checkTemplate() {
   }
 }
 
-// ── Gate 5: Evidence route code exists ────────────────
+// -- Gate 5: Evidence route code exists ----------------
 
 function checkRouteCode() {
   if (!jsonOutput) console.log('\n== Gate 5: Evidence Route Code ==');
@@ -300,7 +300,7 @@ function checkRouteCode() {
   }
 }
 
-// ── Gate 6: Evidence staleness check (Phase 113B) ─────
+// -- Gate 6: Evidence staleness check (Phase 113B) -----
 
 const STALENESS_THRESHOLD_DAYS = 180;
 
@@ -352,7 +352,7 @@ function checkStaleness() {
   }
 }
 
-// ── Helpers ───────────────────────────────────────────
+// -- Helpers -------------------------------------------
 
 function loadEvidenceEntries() {
   // Load from data/evidence/*.json if any exist
@@ -381,7 +381,7 @@ function loadEvidenceEntries() {
   return entries;
 }
 
-// ── Main ──────────────────────────────────────────────
+// -- Main ----------------------------------------------
 
 if (!jsonOutput) {
   console.log('=== Evidence Gate -- Phase 112 ===');

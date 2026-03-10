@@ -13,7 +13,7 @@
  *   US  -- EDI Clearinghouse (baseline)
  */
 
-/* ── Types ───────────────────────────────────────────────────── */
+/* -- Types ----------------------------------------------------- */
 
 export type GatewayId = 'ph-philhealth' | 'au-eclipse' | 'sg-nphc' | 'nz-acc' | 'us-edi';
 
@@ -40,7 +40,7 @@ export interface GatewayReadiness {
   lastProbeAt: string;
 }
 
-/* ── Check helpers ───────────────────────────────────────────── */
+/* -- Check helpers --------------------------------------------- */
 
 function envPresent(varName: string): boolean {
   const v = process.env[varName];
@@ -63,7 +63,7 @@ function checkEnvVar(
   };
 }
 
-/* ── PH PhilHealth eClaims 3.0 ───────────────────────────────── */
+/* -- PH PhilHealth eClaims 3.0 --------------------------------- */
 
 function probePhilHealth(): GatewayReadiness {
   const checks: ReadinessCheckResult[] = [];
@@ -153,7 +153,7 @@ function probePhilHealth(): GatewayReadiness {
   };
 }
 
-/* ── AU Medicare ECLIPSE ─────────────────────────────────────── */
+/* -- AU Medicare ECLIPSE --------------------------------------- */
 
 function probeEclipse(): GatewayReadiness {
   const checks: ReadinessCheckResult[] = [];
@@ -224,7 +224,7 @@ function probeEclipse(): GatewayReadiness {
   };
 }
 
-/* ── SG NPHC ─────────────────────────────────────────────────── */
+/* -- SG NPHC --------------------------------------------------- */
 
 function probeNphc(): GatewayReadiness {
   const checks: ReadinessCheckResult[] = [];
@@ -285,7 +285,7 @@ function probeNphc(): GatewayReadiness {
   };
 }
 
-/* ── NZ ACC ──────────────────────────────────────────────────── */
+/* -- NZ ACC ---------------------------------------------------- */
 
 function probeAcc(): GatewayReadiness {
   const checks: ReadinessCheckResult[] = [];
@@ -347,7 +347,7 @@ function probeAcc(): GatewayReadiness {
   };
 }
 
-/* ── US EDI (baseline) ───────────────────────────────────────── */
+/* -- US EDI (baseline) ----------------------------------------- */
 
 function probeUsEdi(): GatewayReadiness {
   const checks: ReadinessCheckResult[] = [];
@@ -388,7 +388,7 @@ function probeUsEdi(): GatewayReadiness {
   };
 }
 
-/* ── Overall status computation ──────────────────────────────── */
+/* -- Overall status computation -------------------------------- */
 
 function computeOverall(checks: ReadinessCheckResult[]): ReadinessStatus {
   const hasRed = checks.some((c) => c.status === 'red' && c.required);
@@ -398,7 +398,7 @@ function computeOverall(checks: ReadinessCheckResult[]): ReadinessStatus {
   return 'green';
 }
 
-/* ── Public API ──────────────────────────────────────────────── */
+/* -- Public API ------------------------------------------------ */
 
 const GATEWAY_PROBES: Record<GatewayId, () => GatewayReadiness> = {
   'ph-philhealth': probePhilHealth,

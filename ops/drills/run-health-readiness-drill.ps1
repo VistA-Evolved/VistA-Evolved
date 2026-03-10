@@ -1,10 +1,10 @@
 #!/usr/bin/env pwsh
 <#
   ops/drills/run-health-readiness-drill.ps1
-  Resilience drill: Health vs Readiness Endpoint Verification — Phase 254
+  Resilience drill: Health vs Readiness Endpoint Verification -- Phase 254
 
   Validates: /health always returns ok (liveness), /ready gates on VistA + CB.
-  This drill does NOT stop VistA — it tests the static contract.
+  This drill does NOT stop VistA -- it tests the static contract.
   Requires: API running on :3001.
 #>
 param(

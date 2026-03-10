@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Wave 21 — Device + Modality Integration Platform Certification Runner
+  Wave 21 -- Device + Modality Integration Platform Certification Runner
   Phase 388 (W21-P11): Push-button verification across all 10 implementation phases.
 
 .DESCRIPTION

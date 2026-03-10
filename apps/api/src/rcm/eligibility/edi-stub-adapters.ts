@@ -1,5 +1,5 @@
 /**
- * Phase 100 — EDI Stub Adapters
+ * Phase 100 -- EDI Stub Adapters
  *
  * Stub adapters for EDI 270/271 (eligibility) and 276/277 (claim status).
  * These return "integration_pending" with clear documentation of what
@@ -19,7 +19,7 @@ import type {
   AdapterHealthResult,
 } from '../adapters/payer-adapter.js';
 
-/* ── EDI 270/271 Eligibility Stub ───────────────────────────── */
+/* -- EDI 270/271 Eligibility Stub ----------------------------- */
 
 const EDI_270_CONFIG: PayerAdapterConfig = {
   id: 'edi-270-271',
@@ -123,7 +123,7 @@ export class Edi270271StubAdapter implements PayerAdapter {
   }
 }
 
-/* ── EDI 276/277 Claim Status Stub ──────────────────────────── */
+/* -- EDI 276/277 Claim Status Stub ---------------------------- */
 
 const EDI_276_CONFIG: PayerAdapterConfig = {
   id: 'edi-276-277',

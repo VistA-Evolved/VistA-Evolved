@@ -1,5 +1,5 @@
 /**
- * Denial Store — PG Drizzle Persistence
+ * Denial Store -- PG Drizzle Persistence
  *
  * CRUD operations for denial_case, denial_action, denial_attachment,
  * and resubmission_attempt tables using PG.
@@ -28,7 +28,7 @@ import type {
   CreateDenialInput,
 } from './types.js';
 
-/* ── Helpers ────────────────────────────────────────────────── */
+/* -- Helpers -------------------------------------------------- */
 
 function toCents(dollars: number | undefined): number | undefined {
   if (dollars === undefined) return undefined;
@@ -114,7 +114,7 @@ function rowToResubmission(row: any): ResubmissionAttempt {
   };
 }
 
-/* ── Denial Case CRUD ───────────────────────────────────────── */
+/* -- Denial Case CRUD ----------------------------------------- */
 
 export async function createDenialCase(
   input: CreateDenialInput & { tenantId: string },
@@ -348,7 +348,7 @@ export async function listDenials(tenantId: string, query: DenialListQuery): Pro
   };
 }
 
-/* ── Denial Actions ─────────────────────────────────────────── */
+/* -- Denial Actions ------------------------------------------- */
 
 async function insertAction(
   denialId: string,
@@ -406,7 +406,7 @@ export async function listDenialActions(denialId: string): Promise<DenialAction[
   return rows.map(rowToAction);
 }
 
-/* ── Attachments ────────────────────────────────────────────── */
+/* -- Attachments ---------------------------------------------- */
 
 export async function addAttachment(
   denialId: string,
@@ -445,7 +445,7 @@ export async function listAttachments(denialId: string): Promise<DenialAttachmen
   return rows.map(rowToAttachment);
 }
 
-/* ── Resubmission Attempts ──────────────────────────────────── */
+/* -- Resubmission Attempts ------------------------------------ */
 
 export async function createResubmission(
   denialId: string,
@@ -488,7 +488,7 @@ export async function listResubmissions(denialId: string): Promise<ResubmissionA
   return rows.map(rowToResubmission);
 }
 
-/* ── Stats (for dashboard) ──────────────────────────────────── */
+/* -- Stats (for dashboard) ------------------------------------ */
 
 export async function getDenialStats(tenantId: string): Promise<Record<string, number>> {
   const db = getPgDb();

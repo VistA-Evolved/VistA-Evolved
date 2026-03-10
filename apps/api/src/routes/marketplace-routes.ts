@@ -1,5 +1,5 @@
 /**
- * Plugin Marketplace routes — Phase 360 (W18-P7)
+ * Plugin Marketplace routes -- Phase 360 (W18-P7)
  *
  * REST endpoints for marketplace catalog, approval workflow, installs, reviews.
  * Prefix: /plugin-marketplace
@@ -72,7 +72,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     };
   }
 
-  // ── Health ──────────────────────────────────────────────────────────
+  // -- Health ----------------------------------------------------------
   server.get('/plugin-marketplace/health', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -80,7 +80,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, phase: 360, ...stats });
   });
 
-  // ── Categories ─────────────────────────────────────────────────────
+  // -- Categories -----------------------------------------------------
   server.get(
     '/plugin-marketplace/categories',
     async (_req: FastifyRequest, reply: FastifyReply) => {
@@ -88,7 +88,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     }
   );
 
-  // ── Create listing ─────────────────────────────────────────────────
+  // -- Create listing -------------------------------------------------
   server.post('/plugin-marketplace/listings', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -115,7 +115,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     return reply.code(201).send({ ok: true, listing });
   });
 
-  // ── Get listing ────────────────────────────────────────────────────
+  // -- Get listing ----------------------------------------------------
   server.get(
     '/plugin-marketplace/listings/:id',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -130,7 +130,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     }
   );
 
-  // ── Update listing ─────────────────────────────────────────────────
+  // -- Update listing -------------------------------------------------
   server.patch(
     '/plugin-marketplace/listings/:id',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -152,7 +152,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     }
   );
 
-  // ── Transition listing status ──────────────────────────────────────
+  // -- Transition listing status --------------------------------------
   server.post(
     '/plugin-marketplace/listings/:id/transition',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -180,7 +180,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     }
   );
 
-  // ── Search listings ────────────────────────────────────────────────
+  // -- Search listings ------------------------------------------------
   server.get('/plugin-marketplace/search', async (req: FastifyRequest, reply: FastifyReply) => {
     const query = (req.query as any) || {};
     const results = searchListings({
@@ -192,7 +192,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, listings: results, count: results.length });
   });
 
-  // ── Install from marketplace ───────────────────────────────────────
+  // -- Install from marketplace ---------------------------------------
   server.post(
     '/plugin-marketplace/listings/:id/install',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -208,7 +208,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     }
   );
 
-  // ── Uninstall ──────────────────────────────────────────────────────
+  // -- Uninstall ------------------------------------------------------
   server.delete(
     '/plugin-marketplace/installs/:installId',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -221,7 +221,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     }
   );
 
-  // ── List tenant installs ───────────────────────────────────────────
+  // -- List tenant installs -------------------------------------------
   server.get('/plugin-marketplace/installs', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -232,7 +232,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, installs: list, count: list.length });
   });
 
-  // ── Add review ─────────────────────────────────────────────────────
+  // -- Add review -----------------------------------------------------
   server.post(
     '/plugin-marketplace/listings/:id/reviews',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -260,7 +260,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     }
   );
 
-  // ── Get listing reviews ────────────────────────────────────────────
+  // -- Get listing reviews --------------------------------------------
   server.get(
     '/plugin-marketplace/listings/:id/reviews',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -277,7 +277,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     }
   );
 
-  // ── Audit log ──────────────────────────────────────────────────────
+  // -- Audit log ------------------------------------------------------
   server.get('/plugin-marketplace/audit', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -297,7 +297,7 @@ export async function marketplaceRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, audit: entries, count: entries.length });
   });
 
-  // ── Stats ──────────────────────────────────────────────────────────
+  // -- Stats ----------------------------------------------------------
   server.get('/plugin-marketplace/stats', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;

@@ -1,8 +1,8 @@
 /**
- * Business Action Spans — Phase 77.
+ * Business Action Spans -- Phase 77.
  *
  * Higher-level span helpers for non-RPC business operations.
- * All attributes are PHI-safe — no patient names, SSN, DOB, etc.
+ * All attributes are PHI-safe -- no patient names, SSN, DOB, etc.
  *
  * Uses the underlying OTel SDK from tracing.ts. When tracing is disabled
  * (OTEL_ENABLED != true), all functions are safe no-ops that still execute
@@ -32,7 +32,7 @@ import type { Span } from '@opentelemetry/api';
 /* Attribute sanitization                                              */
 /* ------------------------------------------------------------------ */
 
-/** Safe span attribute type — only primitives allowed */
+/** Safe span attribute type -- only primitives allowed */
 type SafeAttributes = Record<string, string | number | boolean | undefined>;
 
 /**
@@ -46,7 +46,7 @@ function sanitizeAttributes(attrs?: SafeAttributes): Record<string, string | num
     if (value === undefined) continue;
     clean[key] = value;
   }
-  // Runtime PHI guard — throws if any attribute key matches PHI fields
+  // Runtime PHI guard -- throws if any attribute key matches PHI fields
   assertNoPhiInAttributes(clean);
   return clean;
 }

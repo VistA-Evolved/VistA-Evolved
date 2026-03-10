@@ -4,7 +4,7 @@
  */
 
 /* ------------------------------------------------------------------ */
-/* Tab definitions — ordered as they appear in the bottom tab strip   */
+/* Tab definitions -- ordered as they appear in the bottom tab strip   */
 /* ------------------------------------------------------------------ */
 
 export interface ChartTab {
@@ -21,7 +21,7 @@ export interface ChartTab {
 }
 
 /**
- * Canonical tab order — matches CPRS CreateTab() order from fFrame.pas,
+ * Canonical tab order -- matches CPRS CreateTab() order from fFrame.pas,
  * except Cover Sheet is moved to first position (as CPRS displays it).
  */
 export const CHART_TABS: ChartTab[] = [
@@ -74,7 +74,7 @@ export function cleanCaption(caption: string): string {
 }
 
 /* ------------------------------------------------------------------ */
-/* API response types — re-exported from canonical shared types        */
+/* API response types -- re-exported from canonical shared types        */
 /* ------------------------------------------------------------------ */
 
 export type {

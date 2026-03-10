@@ -10,7 +10,7 @@ const DEV_VEHU_VERIFY_CODE = 'PRO1234!!';
 const isDevMode = process.env.NODE_ENV !== 'production';
 
 /**
- * CPRS Login page — Phase 13: real VistA authentication.
+ * CPRS Login page -- Phase 13: real VistA authentication.
  *
  * Sends access/verify codes to POST /auth/login which authenticates
  * against the VistA RPC Broker and creates a server-side session.

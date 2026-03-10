@@ -1,5 +1,5 @@
 /**
- * Contract loader — loads and validates Phase 10 CPRS contract JSON at runtime.
+ * Contract loader -- loads and validates Phase 10 CPRS contract JSON at runtime.
  * Fails fast with clear errors if any required contract file is missing or malformed.
  */
 
@@ -75,7 +75,7 @@ export function getChartTabs(): Array<ContractTab & { slug: string }> {
   return sorted.map((t) => ({ ...t, slug: constantToSlug(t.constant) }));
 }
 
-/** Get the main menu for fFrame (the chart frame — has File/Edit/View/Tools/Help) */
+/** Get the main menu for fFrame (the chart frame -- has File/Edit/View/Tools/Help) */
 export function getFrameMenu(): ContractMenuItem[] {
   // Look for the fFrame menu first (main chart frame)
   const frameMenu = menus.mainMenus.find((m) => m.file.includes('fFrame'));

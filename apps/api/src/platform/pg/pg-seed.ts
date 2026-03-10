@@ -1,5 +1,5 @@
 /**
- * Platform DB — Seed from committed JSON fixtures (PostgreSQL)
+ * Platform DB -- Seed from committed JSON fixtures (PostgreSQL)
  *
  * Phase 102: Migrate Prototype Stores to PlatformStore
  *

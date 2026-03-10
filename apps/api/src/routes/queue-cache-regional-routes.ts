@@ -44,9 +44,9 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return null;
   }
 
-  // ── Job Endpoints ───────────────────────────────────────────────
+  // -- Job Endpoints -----------------------------------------------
 
-  /** POST /platform/queues/enqueue — enqueue a regional job */
+  /** POST /platform/queues/enqueue -- enqueue a regional job */
   server.post('/platform/queues/enqueue', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -75,7 +75,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return reply.code(201).send({ ok: true, job });
   });
 
-  /** POST /platform/queues/claim — claim next job from a region/queue */
+  /** POST /platform/queues/claim -- claim next job from a region/queue */
   server.post('/platform/queues/claim', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -90,7 +90,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return { ok: true, job };
   });
 
-  /** POST /platform/queues/complete — mark job completed or failed */
+  /** POST /platform/queues/complete -- mark job completed or failed */
   server.post('/platform/queues/complete', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -108,7 +108,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     }
   });
 
-  /** POST /platform/queues/retry — retry a failed/dead_letter job */
+  /** POST /platform/queues/retry -- retry a failed/dead_letter job */
   server.post('/platform/queues/retry', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -125,7 +125,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     }
   });
 
-  /** GET /platform/queues/jobs/:id — get a single job */
+  /** GET /platform/queues/jobs/:id -- get a single job */
   server.get('/platform/queues/jobs/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -137,7 +137,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return { ok: true, job };
   });
 
-  /** GET /platform/queues/jobs — list jobs with optional filters */
+  /** GET /platform/queues/jobs -- list jobs with optional filters */
   server.get('/platform/queues/jobs', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -156,7 +156,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return { ok: true, count: jobs.length, jobs };
   });
 
-  /** GET /platform/queues/metrics — queue metrics per region/queue */
+  /** GET /platform/queues/metrics -- queue metrics per region/queue */
   server.get('/platform/queues/metrics', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -167,9 +167,9 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return { ok: true, metrics };
   });
 
-  // ── Failover Transfer Endpoints ─────────────────────────────────
+  // -- Failover Transfer Endpoints ---------------------------------
 
-  /** POST /platform/queues/transfer — transfer jobs between regions */
+  /** POST /platform/queues/transfer -- transfer jobs between regions */
   server.post('/platform/queues/transfer', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -195,7 +195,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return reply.code(201).send({ ok: true, transfer });
   });
 
-  /** GET /platform/queues/transfers — list transfer history */
+  /** GET /platform/queues/transfers -- list transfer history */
   server.get('/platform/queues/transfers', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -206,9 +206,9 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return { ok: true, count: transfers.length, transfers };
   });
 
-  // ── Worker Endpoints ────────────────────────────────────────────
+  // -- Worker Endpoints --------------------------------------------
 
-  /** POST /platform/workers/register — register a regional worker */
+  /** POST /platform/workers/register -- register a regional worker */
   server.post('/platform/workers/register', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -220,7 +220,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return reply.code(201).send({ ok: true, worker });
   });
 
-  /** POST /platform/workers/:id/heartbeat — worker heartbeat */
+  /** POST /platform/workers/:id/heartbeat -- worker heartbeat */
   server.post('/platform/workers/:id/heartbeat', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -230,7 +230,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return { ok: true, worker };
   });
 
-  /** GET /platform/workers — list workers */
+  /** GET /platform/workers -- list workers */
   server.get('/platform/workers', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -244,9 +244,9 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     };
   });
 
-  // ── Cache Partition Endpoints ───────────────────────────────────
+  // -- Cache Partition Endpoints -----------------------------------
 
-  /** POST /platform/cache/partitions — register a cache partition */
+  /** POST /platform/cache/partitions -- register a cache partition */
   server.post('/platform/cache/partitions', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -258,7 +258,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return reply.code(201).send({ ok: true, partition });
   });
 
-  /** PUT /platform/cache/partitions/:region/:name/stats — update cache stats */
+  /** PUT /platform/cache/partitions/:region/:name/stats -- update cache stats */
   server.put('/platform/cache/partitions/:region/:name/stats', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -269,7 +269,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     return { ok: true, partition };
   });
 
-  /** GET /platform/cache/partitions — list cache partitions */
+  /** GET /platform/cache/partitions -- list cache partitions */
   server.get('/platform/cache/partitions', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -283,9 +283,9 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     };
   });
 
-  // ── Summary + Audit ─────────────────────────────────────────────
+  // -- Summary + Audit ---------------------------------------------
 
-  /** GET /platform/queues/summary — regional summary */
+  /** GET /platform/queues/summary -- regional summary */
   server.get('/platform/queues/summary', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -298,7 +298,7 @@ export default async function queueCacheRegionalRoutes(server: FastifyInstance):
     };
   });
 
-  /** GET /platform/queues/audit — queue audit log */
+  /** GET /platform/queues/audit -- queue audit log */
   server.get('/platform/queues/audit', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session) return;

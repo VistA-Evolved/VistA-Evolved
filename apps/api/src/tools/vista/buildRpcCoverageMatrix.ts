@@ -52,8 +52,8 @@ async function fetchLiveCatalog(apiBase: string): Promise<CatalogEntry[]> {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({
-      accessCode: process.env.VISTA_ACCESS_CODE || 'PROV123',
-      verifyCode: process.env.VISTA_VERIFY_CODE || 'PROV123!!',
+      accessCode: process.env.VISTA_ACCESS_CODE || '',
+      verifyCode: process.env.VISTA_VERIFY_CODE || '',
     }),
   });
   const cookies = loginResp.headers.getSetCookie?.() || [];

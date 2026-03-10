@@ -1,5 +1,5 @@
 /**
- * extract-rpcs.mjs — Extract all RPC names and where they're referenced.
+ * extract-rpcs.mjs -- Extract all RPC names and where they're referenced.
  *
  * Sources:
  *   - All .pas files under CPRS-Chart and broader CPRS tree
@@ -23,7 +23,7 @@ import { join, basename } from 'node:path';
 import { globPasFiles, CPRS_CHART_DIR, OUTPUT_DIR } from './lib/paths.mjs';
 
 /**
- * Known screen → tab mappings derived from CPRS tab constants + form names.
+ * Known screen -> tab mappings derived from CPRS tab constants + form names.
  */
 const SCREEN_MAP = {
   fCover: { screen: 'Cover Sheet', tab: 'CT_COVER' },
@@ -149,7 +149,7 @@ function findEnclosingProcedure(src, lineNum) {
 }
 
 /**
- * Build the screen registry: maps screens → actions → RPC names.
+ * Build the screen registry: maps screens -> actions -> RPC names.
  */
 function buildScreenRegistry(allRpcs) {
   const registry = {};
@@ -242,7 +242,7 @@ function generateCoverageReport(catalog, registry, formsResult, tabsResult, menu
     lines.push('');
   }
 
-  lines.push('## Screens → RPC Count', '');
+  lines.push('## Screens -> RPC Count', '');
   lines.push('| Screen | Tab | RPC Count | Source Files |');
   lines.push('|--------|-----|-----------|-------------|');
 
@@ -251,7 +251,7 @@ function generateCoverageReport(catalog, registry, formsResult, tabsResult, menu
   );
   for (const [screen, data] of sortedScreens) {
     lines.push(
-      `| ${screen} | ${data.tab || '—'} | ${Object.keys(data.rpcs).length} | ${data.sourceFiles.length} |`
+      `| ${screen} | ${data.tab || '--'} | ${Object.keys(data.rpcs).length} | ${data.sourceFiles.length} |`
     );
   }
   lines.push('');
@@ -278,22 +278,22 @@ function generateCoverageReport(catalog, registry, formsResult, tabsResult, menu
   lines.push('');
 
   lines.push('## Extraction Patterns Used', '');
-  lines.push("- `sCallV('RPC NAME', [...])` — single-value RPC call");
-  lines.push("- `tCallV(result, 'RPC NAME', [...])` — list RPC call");
-  lines.push("- `CallV('RPC NAME', [...])` — standard RPC call");
-  lines.push("- `CallVistA('RPC NAME', [...], ...)` — newer call pattern");
-  lines.push("- `RemoteProcedure := 'RPC NAME'` — direct broker assignment");
-  lines.push("- `CreateContext('CONTEXT')` — security context establishment");
+  lines.push("- `sCallV('RPC NAME', [...])` -- single-value RPC call");
+  lines.push("- `tCallV(result, 'RPC NAME', [...])` -- list RPC call");
+  lines.push("- `CallV('RPC NAME', [...])` -- standard RPC call");
+  lines.push("- `CallVistA('RPC NAME', [...], ...)` -- newer call pattern");
+  lines.push("- `RemoteProcedure := 'RPC NAME'` -- direct broker assignment");
+  lines.push("- `CreateContext('CONTEXT')` -- security context establishment");
   lines.push('- String constants matching known RPC prefixes (ORW*, TIU*, GMR*, etc.)');
   lines.push('');
 
   lines.push('## Files Produced', '');
-  lines.push('- `tabs.json` — Main chart tabs and sub-tab controls');
-  lines.push('- `menus.json` — Menu structures from all forms');
-  lines.push('- `forms.json` — Complete form inventory with captions');
-  lines.push('- `rpc_catalog.json` — All RPC names with call sites');
-  lines.push('- `screen_registry.json` — Screen → action → RPC mapping');
-  lines.push('- `coverage_report.md` — This file');
+  lines.push('- `tabs.json` -- Main chart tabs and sub-tab controls');
+  lines.push('- `menus.json` -- Menu structures from all forms');
+  lines.push('- `forms.json` -- Complete form inventory with captions');
+  lines.push('- `rpc_catalog.json` -- All RPC names with call sites');
+  lines.push('- `screen_registry.json` -- Screen -> action -> RPC mapping');
+  lines.push('- `coverage_report.md` -- This file');
 
   return lines.join('\n');
 }
@@ -375,7 +375,7 @@ export async function extractRpcs(formsResult, tabsResult, menusResult) {
           _meta: {
             source: 'reference/cprs/Packages/Order Entry Results Reporting/CPRS/CPRS-Chart/',
             extractedAt: new Date().toISOString(),
-            description: 'CPRS screen → action → RPC name mapping',
+            description: 'CPRS screen -> action -> RPC name mapping',
           },
           screens: registry,
           summary: {
@@ -391,10 +391,10 @@ export async function extractRpcs(formsResult, tabsResult, menusResult) {
   ]);
 
   console.log(
-    `  ✓ rpc_catalog.json — ${catalog.summary.uniqueRpcCount} unique RPCs across ${catalog.summary.totalCallSites} call sites`
+    `  ✓ rpc_catalog.json -- ${catalog.summary.uniqueRpcCount} unique RPCs across ${catalog.summary.totalCallSites} call sites`
   );
-  console.log(`  ✓ screen_registry.json — ${Object.keys(registry).length} screens mapped`);
-  console.log(`  ✓ coverage_report.md — summary generated`);
+  console.log(`  ✓ screen_registry.json -- ${Object.keys(registry).length} screens mapped`);
+  console.log(`  ✓ coverage_report.md -- summary generated`);
 
   return { catalog, registry };
 }

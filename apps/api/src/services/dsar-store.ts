@@ -1,18 +1,18 @@
 /**
- * DSAR (Data Subject Access Request) Store — Phase 496 (W34-P6)
+ * DSAR (Data Subject Access Request) Store -- Phase 496 (W34-P6)
  *
  * In-memory store for DSAR requests following the pattern from
  * Phase 23 (imaging worklist). Supports lifecycle transitions:
- *   pending → processing → fulfilled → exported
- *   pending → denied
+ *   pending -> processing -> fulfilled -> exported
+ *   pending -> denied
  *
- * No PHI stored — only opaque patient references and request metadata.
+ * No PHI stored -- only opaque patient references and request metadata.
  */
 
 import { randomBytes } from "node:crypto";
 import { log } from "../lib/logger.js";
 
-// ── Types ──────────────────────────────────────────────────────
+// -- Types ------------------------------------------------------
 
 export type DsarType = "access" | "erasure" | "portability" | "rectification" | "restriction";
 export type DsarStatus = "pending" | "processing" | "fulfilled" | "exported" | "denied";
@@ -21,7 +21,7 @@ export interface DsarRequest {
   id: string;
   tenantId: string;
   requestType: DsarType;
-  /** Opaque patient reference — never logged in audit */
+  /** Opaque patient reference -- never logged in audit */
   subjectRef: string;
   requestedBy: string;
   requestedAt: string;        // ISO 8601
@@ -31,7 +31,7 @@ export interface DsarRequest {
   framework: string;
   rightToErasure: boolean;
   dataPortability: boolean;
-  dueDate: string;            // ISO 8601 — regulatory deadline
+  dueDate: string;            // ISO 8601 -- regulatory deadline
   fulfilledAt: string | null;
   fulfilledBy: string | null;
   denialReason: string | null;
@@ -39,12 +39,12 @@ export interface DsarRequest {
   metadata: Record<string, unknown>;
 }
 
-// ── Store ──────────────────────────────────────────────────────
+// -- Store ------------------------------------------------------
 
 const MAX_REQUESTS = 50_000;
 const store = new Map<string, DsarRequest>();
 
-// ── PG Write-Through (W41-P6) ─────────────────────────────────
+// -- PG Write-Through (W41-P6) ---------------------------------
 
 interface DsarRepo {
   upsert(data: any): Promise<any>;
@@ -116,7 +116,7 @@ function enforceMax(): void {
   }
 }
 
-// ── CRUD ───────────────────────────────────────────────────────
+// -- CRUD -------------------------------------------------------
 
 export function createDsarRequest(
   input: Omit<DsarRequest, "id" | "status" | "statusHistory" | "fulfilledAt" | "fulfilledBy" | "denialReason" | "exportRef">,

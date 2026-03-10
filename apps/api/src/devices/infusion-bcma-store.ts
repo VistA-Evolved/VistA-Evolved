@@ -1,5 +1,5 @@
 /**
- * Infusion / BCMA Safety Bridge — Store
+ * Infusion / BCMA Safety Bridge -- Store
  *
  * Phase 385 (W21-P8): In-memory stores for infusion pump events,
  * BCMA sessions, and right-6 verification results. Follows the
@@ -278,13 +278,13 @@ export function performRight6Check(
     }
   }
 
-  // Right dose — scaffold: pass if medication scanned
+  // Right dose -- scaffold: pass if medication scanned
   const rightDose: BcmaCheckStatus = s.medicationScan ? 'pass' : 'pending';
 
-  // Right route — scaffold: pass (route is visual nurse check)
+  // Right route -- scaffold: pass (route is visual nurse check)
   const rightRoute: BcmaCheckStatus = expected.orderedRoute ? 'pass' : 'pending';
 
-  // Right time — check within 1-hour window
+  // Right time -- check within 1-hour window
   let rightTime: BcmaCheckStatus = 'pending';
   if (expected.scheduledTime) {
     const scheduled = new Date(expected.scheduledTime).getTime();
@@ -311,7 +311,7 @@ export function performRight6Check(
     }
   }
 
-  // Right documentation — must have a valid order IEN
+  // Right documentation -- must have a valid order IEN
   const rightDocumentation: BcmaCheckStatus = expected.orderIen ? 'pass' : 'fail';
   if (rightDocumentation === 'fail') {
     failures.push({

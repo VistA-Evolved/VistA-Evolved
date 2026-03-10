@@ -1,13 +1,12 @@
 /**
- * Immunization Routes — Phase 65: VistA-first immunization history.
+ * Immunization Routes -- Phase 65 + wiring fix.
  *
  * Endpoints:
- *   GET  /vista/immunizations?dfn=N   — Patient immunization history via ORQQPX IMMUN LIST
- *   GET  /vista/immunizations/catalog  — Immunization type picker via PXVIMM IMM SHORT LIST
- *   POST /vista/immunizations?dfn=N   — Add immunization (integration-pending; target: PX SAVE DATA)
+ *   GET  /vista/immunizations?dfn=N   -- Patient immunization history via ORQQPX IMMUN LIST
+ *   GET  /vista/immunizations/catalog  -- Immunization type picker via PXVIMM IMM SHORT LIST
+ *   POST /vista/immunizations?dfn=N   -- Add immunization via ORWPCE SAVE / PX SAVE DATA
  *
  * Auth: session-based (/vista/* catch-all in security.ts).
- * Every response includes rpcUsed[], pendingTargets[], source.
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -117,19 +116,15 @@ export default async function immunizationsRoutes(server: FastifyInstance): Prom
         count: results.length,
         results,
         rpcUsed: ['ORQQPX IMMUN LIST'],
-        pendingTargets: [],
+
       });
     } catch (err: any) {
-      log.warn('ORQQPX IMMUN LIST failed -- returning integration-pending', { err: err.message });
-      return reply.send({
-        ok: true,
+      log.warn('ORQQPX IMMUN LIST failed', { err: err.message });
+      return reply.code(502).send({
+        ok: false,
         source: 'vista',
-        count: 0,
-        results: [],
-        rpcUsed: [],
-        pendingTargets: ['ORQQPX IMMUN LIST'],
-        _integration: 'pending',
-        _error: safeErr(err),
+        error: `Immunization list RPC failed: ${safeErr(err)}`,
+        rpcUsed: ['ORQQPX IMMUN LIST'],
       });
     }
   });
@@ -152,21 +147,15 @@ export default async function immunizationsRoutes(server: FastifyInstance): Prom
           count: results.length,
           results,
           rpcUsed: ['PXVIMM IMM SHORT LIST'],
-          pendingTargets: [],
+  
         });
       } catch (err: any) {
-        log.warn('PXVIMM IMM SHORT LIST failed -- returning integration-pending', {
-          err: err.message,
-        });
-        return reply.send({
-          ok: true,
+        log.warn('PXVIMM IMM SHORT LIST failed', { err: err.message });
+        return reply.code(502).send({
+          ok: false,
           source: 'vista',
-          count: 0,
-          results: [],
-          rpcUsed: [],
-          pendingTargets: ['PXVIMM IMM SHORT LIST'],
-          _integration: 'pending',
-          _error: safeErr(err),
+          error: `Immunization catalog RPC failed: ${safeErr(err)}`,
+          rpcUsed: ['PXVIMM IMM SHORT LIST'],
         });
       }
     }
@@ -174,9 +163,10 @@ export default async function immunizationsRoutes(server: FastifyInstance): Prom
 
   /**
    * POST /vista/immunizations?dfn=N
-   * Add immunization — INTEGRATION PENDING.
-   * Target: PX SAVE DATA (complex PCE encounter save, requires visit context).
-   * Returns honest pending posture with target RPC info.
+   * Add immunization via ORWPCE SAVE (PCE encounter save).
+   * Falls back to PX SAVE DATA if ORWPCE SAVE fails.
+   *
+   * Body: { immunizationIen, encounterStr, visitIen?, locationIen?, adminRoute?, adminSite?, infoSource? }
    */
   server.post('/vista/immunizations', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
@@ -185,26 +175,70 @@ export default async function immunizationsRoutes(server: FastifyInstance): Prom
       return reply.status(400).send({ ok: false, error: 'dfn query parameter required' });
     }
 
-    return reply.status(202).send({
-      ok: false,
-      status: 'integration-pending',
-      message:
-        'Add immunization requires PCE encounter context (PX SAVE DATA). Deferred to Phase 65B.',
-      rpcUsed: [],
-      pendingTargets: [
-        'PX SAVE DATA',
-        'PXVIMM ADMIN ROUTE',
-        'PXVIMM ADMIN SITE',
-        'PXVIMM INFO SOURCE',
-      ],
-      vistaGrounding: {
-        vistaFiles: ['V IMMUNIZATION (9000010.11)', 'IMMUNIZATION (9999999.14)'],
-        targetRoutines: ['PXRPC', 'PXVRPC2'],
-        migrationPath:
-          'Phase 65B: wire PX SAVE DATA with encounter/visit IEN + immunization IEN + admin route/site',
-        sandboxNote:
-          'WorldVistA Docker has IMMUNIZATION file entries but PCE encounter save is untested in sandbox',
-      },
-    });
+    const body = (request.body as any) || {};
+    const immunizationIen = String(body.immunizationIen || '').trim();
+    const encounterStr = String(body.encounterStr || '').trim();
+    if (!immunizationIen) {
+      return reply.status(400).send({ ok: false, error: 'immunizationIen required' });
+    }
+    if (!encounterStr) {
+      return reply.status(400).send({ ok: false, error: 'encounterStr required (visitIEN;date;locIEN)' });
+    }
+
+    const adminRoute = String(body.adminRoute || '').trim();
+    const adminSite = String(body.adminSite || '').trim();
+    const infoSource = String(body.infoSource || '').trim();
+    const rpcUsed: string[] = [];
+
+    // Build PCE data array for ORWPCE SAVE: IMM^operation^immunizationIEN^...
+    const pceItems: string[] = [
+      `IMM^+^${immunizationIen}^^^${adminRoute}^${adminSite}^${infoSource}^^^`,
+    ];
+
+    try {
+      const result = await safeCallRpc('ORWPCE SAVE', [
+        String(dfn),
+        encounterStr,
+        ...pceItems,
+      ], { idempotent: false });
+      rpcUsed.push('ORWPCE SAVE');
+
+      return reply.send({
+        ok: true,
+        source: 'vista',
+        rpcUsed,
+        data: result,
+      });
+    } catch (orwpceErr: any) {
+      log.warn('ORWPCE SAVE failed for immunization, trying PX SAVE DATA', {
+        err: orwpceErr.message,
+      });
+      rpcUsed.push('ORWPCE SAVE');
+
+      try {
+        const pxResult = await safeCallRpc('PX SAVE DATA', [
+          String(dfn),
+          encounterStr,
+          `IMM^+^${immunizationIen}^^^${adminRoute}^${adminSite}^${infoSource}^^^`,
+        ], { idempotent: false });
+        rpcUsed.push('PX SAVE DATA');
+
+        return reply.send({
+          ok: true,
+          source: 'vista',
+          rpcUsed,
+          data: pxResult,
+        });
+      } catch (pxErr: any) {
+        rpcUsed.push('PX SAVE DATA');
+        log.warn('PX SAVE DATA also failed for immunization', { err: pxErr.message });
+        return reply.code(502).send({
+          ok: false,
+          source: 'vista',
+          error: `Immunization save failed: ${pxErr.message || 'RPC error'}`,
+          rpcUsed,
+        });
+      }
+    }
   });
 }

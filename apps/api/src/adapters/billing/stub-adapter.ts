@@ -1,5 +1,5 @@
 /**
- * Stub Billing Adapter — Phase 37C.
+ * Stub Billing Adapter -- Phase 37C.
  */
 
 import type { BillingAdapter, Claim, EOB, EligibilityResult } from './interface.js';

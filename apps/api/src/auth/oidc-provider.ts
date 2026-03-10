@@ -1,15 +1,15 @@
 /**
- * OIDC Provider Configuration — Phase 35.
+ * OIDC Provider Configuration -- Phase 35.
  *
  * Loads OpenID Connect configuration from a Keycloak (or any OIDC-compliant)
  * identity provider. Supports discovery via .well-known endpoint.
  *
  * Environment variables:
- *   OIDC_ISSUER      — Issuer URL (e.g., http://localhost:8180/realms/vista-evolved)
- *   OIDC_CLIENT_ID   — API client ID for audience validation
- *   OIDC_JWKS_URI    — JWKS endpoint (auto-discovered if not set)
- *   OIDC_AUDIENCE    — Expected audience claim (defaults to OIDC_CLIENT_ID)
- *   OIDC_ENABLED     — "true" to enable OIDC (default: "false" for backward compat)
+ *   OIDC_ISSUER      -- Issuer URL (e.g., http://localhost:8180/realms/vista-evolved)
+ *   OIDC_CLIENT_ID   -- API client ID for audience validation
+ *   OIDC_JWKS_URI    -- JWKS endpoint (auto-discovered if not set)
+ *   OIDC_AUDIENCE    -- Expected audience claim (defaults to OIDC_CLIENT_ID)
+ *   OIDC_ENABLED     -- "true" to enable OIDC (default: "false" for backward compat)
  */
 
 import { log } from '../lib/logger.js';
@@ -189,7 +189,7 @@ export interface OidcConfigValidation {
  * In dev/test, missing values produce warnings, not errors.
  */
 export function validateOidcConfig(): OidcConfigValidation {
-  // Avoid importing runtime-mode to prevent circular deps — inline check
+  // Avoid importing runtime-mode to prevent circular deps -- inline check
   const mode = (process.env.PLATFORM_RUNTIME_MODE || 'dev').toLowerCase().trim();
   const isRcProd = mode === 'rc' || mode === 'prod';
 

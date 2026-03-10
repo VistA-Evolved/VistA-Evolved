@@ -1,14 +1,14 @@
 /**
- * HL7v2 → FHIR R4 Bridge — Phase 279 (Wave 9)
+ * HL7v2 -> FHIR R4 Bridge -- Phase 279 (Wave 9)
  *
  * Deterministic conversion from inbound HL7v2 messages to FHIR R4 Bundles.
- * Each converter is a pure function: HL7v2 raw string → FHIR Bundle JSON.
+ * Each converter is a pure function: HL7v2 raw string -> FHIR Bundle JSON.
  *
  * Supported message types:
- *   ADT^A01/A02/A03/A08 → Patient + Encounter Bundle
- *   ORU^R01             → DiagnosticReport + Observation Bundle
- *   ORM^O01             → ServiceRequest Bundle
- *   SIU^S12/S13/S15     → Appointment Bundle
+ *   ADT^A01/A02/A03/A08 -> Patient + Encounter Bundle
+ *   ORU^R01             -> DiagnosticReport + Observation Bundle
+ *   ORM^O01             -> ServiceRequest Bundle
+ *   SIU^S12/S13/S15     -> Appointment Bundle
  *
  * Design:
  *   - Zero external FHIR library dependencies (matching project zero-dep pattern)
@@ -19,7 +19,7 @@
 
 import { randomUUID } from 'crypto';
 
-/* ── HL7 Segment Helpers (local copies to avoid circular import) ── */
+/* -- HL7 Segment Helpers (local copies to avoid circular import) -- */
 
 function getField(segmentLine: string, fieldIndex: number, isMsh = false): string {
   const parts = segmentLine.split('|');
@@ -46,7 +46,7 @@ function findAllSegments(segments: string[], prefix: string): string[] {
   return segments.filter((s) => s.startsWith(prefix + '|'));
 }
 
-/* ── FHIR R4 Types (minimal subset) ───────────────────── */
+/* -- FHIR R4 Types (minimal subset) --------------------- */
 
 export interface FhirBundle {
   resourceType: 'Bundle';
@@ -148,7 +148,7 @@ export interface FhirMessageHeader {
   destination?: Array<{ name: string; endpoint: string }>;
 }
 
-/* ── Conversion Result ─────────────────────────────────── */
+/* -- Conversion Result ----------------------------------- */
 
 export interface FhirConversionResult {
   ok: boolean;
@@ -158,7 +158,7 @@ export interface FhirConversionResult {
   warnings: string[];
 }
 
-/* ── HL7 Date → FHIR DateTime Helper ──────────────────── */
+/* -- HL7 Date -> FHIR DateTime Helper -------------------- */
 
 function hl7DateToFhir(hl7Date: string): string {
   if (!hl7Date || hl7Date.length < 8) return new Date().toISOString();
@@ -207,7 +207,7 @@ function entry(resource: FhirResource, method = 'PUT'): FhirBundleEntry {
   };
 }
 
-/* ── ADT → FHIR Patient + Encounter ───────────────────── */
+/* -- ADT -> FHIR Patient + Encounter --------------------- */
 
 export function convertAdtToFhir(raw: string): FhirConversionResult {
   const warnings: string[] = [];
@@ -301,7 +301,7 @@ export function convertAdtToFhir(raw: string): FhirConversionResult {
   };
 }
 
-/* ── ORU → FHIR DiagnosticReport + Observation ─────────── */
+/* -- ORU -> FHIR DiagnosticReport + Observation ----------- */
 
 export function convertOruToFhir(raw: string): FhirConversionResult {
   const warnings: string[] = [];
@@ -414,7 +414,7 @@ export function convertOruToFhir(raw: string): FhirConversionResult {
   return { ok: true, bundle, sourceMessageType: 'ORU^R01', sourceControlId: controlId, warnings };
 }
 
-/* ── ORM → FHIR ServiceRequest ─────────────────────────── */
+/* -- ORM -> FHIR ServiceRequest --------------------------- */
 
 export function convertOrmToFhir(raw: string): FhirConversionResult {
   const warnings: string[] = [];
@@ -475,7 +475,7 @@ export function convertOrmToFhir(raw: string): FhirConversionResult {
   return { ok: true, bundle, sourceMessageType: 'ORM^O01', sourceControlId: controlId, warnings };
 }
 
-/* ── SIU → FHIR Appointment ────────────────────────────── */
+/* -- SIU -> FHIR Appointment ------------------------------ */
 
 export function convertSiuToFhir(raw: string): FhirConversionResult {
   const warnings: string[] = [];
@@ -553,7 +553,7 @@ export function convertSiuToFhir(raw: string): FhirConversionResult {
   };
 }
 
-/* ── Universal Converter ───────────────────────────────── */
+/* -- Universal Converter --------------------------------- */
 
 /**
  * Convert any supported HL7v2 message to a FHIR R4 Bundle.
@@ -595,7 +595,7 @@ export function convertHl7ToFhir(raw: string): FhirConversionResult {
 }
 
 /**
- * List all supported HL7v2 → FHIR R4 conversions.
+ * List all supported HL7v2 -> FHIR R4 conversions.
  */
 export function listFhirConversions(): Array<{
   hl7Type: string;

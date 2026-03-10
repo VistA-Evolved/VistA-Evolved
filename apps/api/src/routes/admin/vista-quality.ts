@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -21,7 +22,7 @@ export default async function vistaQualityRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE REMINDER LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE REMINDER LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -43,7 +44,7 @@ export default async function vistaQualityRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE REMINDER DETAIL', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE REMINDER DETAIL', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -64,7 +65,7 @@ export default async function vistaQualityRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE QA SITE PARAMS', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE QA SITE PARAMS', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

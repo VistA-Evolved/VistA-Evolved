@@ -1,5 +1,5 @@
 /**
- * Phase 158: Template Engine — Barrel export
+ * Phase 158: Template Engine -- Barrel export
  */
 export { default as templateRoutes } from './template-routes.js';
 export {

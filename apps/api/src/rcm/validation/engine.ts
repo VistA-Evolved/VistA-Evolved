@@ -2,21 +2,21 @@
  * RCM Validation Engine
  *
  * Multi-layer claim validation:
- *   1. Syntax — required fields present, correct types
- *   2. Code sets — ICD-10, CPT/HCPCS, modifiers, POS codes
- *   3. Business rules — gender/age/diagnosis consistency, timely filing
- *   4. Payer-specific — payer enrollment, required modifiers, auth requirements
+ *   1. Syntax -- required fields present, correct types
+ *   2. Code sets -- ICD-10, CPT/HCPCS, modifiers, POS codes
+ *   3. Business rules -- gender/age/diagnosis consistency, timely filing
+ *   4. Payer-specific -- payer enrollment, required modifiers, auth requirements
  *
  * Output: list of edits (issues) with severity, location, suggested fix,
  * and an overall readiness score (0-100).
  *
- * Phase 38 — RCM + Payer Connectivity
+ * Phase 38 -- RCM + Payer Connectivity
  */
 
 import type { Claim } from '../domain/claim.js';
 import { getPayer } from '../payer-registry/registry.js';
 
-/* ─── Types ──────────────────────────────────────────────────────── */
+/* --- Types -------------------------------------------------------- */
 
 export type ValidationSeverity = 'error' | 'warning' | 'info';
 export type ValidationCategory =
@@ -47,7 +47,7 @@ export interface ValidationResult {
   validatedAt: string;
 }
 
-/* ─── Rule definitions ───────────────────────────────────────────── */
+/* --- Rule definitions --------------------------------------------- */
 
 interface ValidationRule {
   id: string;
@@ -81,7 +81,7 @@ function makeEdit(
   };
 }
 
-/* ─── Syntax rules ───────────────────────────────────────────────── */
+/* --- Syntax rules ------------------------------------------------- */
 
 const syntaxRules: ValidationRule[] = [
   {
@@ -193,7 +193,7 @@ const syntaxRules: ValidationRule[] = [
   },
 ];
 
-/* ─── Code set rules ─────────────────────────────────────────────── */
+/* --- Code set rules ----------------------------------------------- */
 
 const ICD10_PATTERN = /^[A-TV-Z][0-9][0-9A-Z](\.[0-9A-Z]{1,4})?$/;
 const CPT_PATTERN = /^[0-9]{5}$/;
@@ -265,7 +265,7 @@ const codeSetRules: ValidationRule[] = [
   },
 ];
 
-/* ─── Business rules ─────────────────────────────────────────────── */
+/* --- Business rules ----------------------------------------------- */
 
 const businessRules: ValidationRule[] = [
   {
@@ -352,7 +352,7 @@ const businessRules: ValidationRule[] = [
   },
 ];
 
-/* ─── Timely filing rules ────────────────────────────────────────── */
+/* --- Timely filing rules ------------------------------------------ */
 
 const timelyFilingRules: ValidationRule[] = [
   {
@@ -370,7 +370,7 @@ const timelyFilingRules: ValidationRule[] = [
         return makeEdit(
           timelyFilingRules[0],
           'serviceDate',
-          `Service date is ${daysSinceService} days ago — may exceed timely filing limits`,
+          `Service date is ${daysSinceService} days ago -- may exceed timely filing limits`,
           'Check payer-specific timely filing requirements'
         );
       }
@@ -378,7 +378,7 @@ const timelyFilingRules: ValidationRule[] = [
         return makeEdit(
           timelyFilingRules[0],
           'serviceDate',
-          `Service date is ${daysSinceService} days ago — approaching filing deadline`,
+          `Service date is ${daysSinceService} days ago -- approaching filing deadline`,
           'Submit promptly to avoid timely filing denial'
         );
       }
@@ -387,7 +387,7 @@ const timelyFilingRules: ValidationRule[] = [
   },
 ];
 
-/* ─── Payer-specific rules ───────────────────────────────────────── */
+/* --- Payer-specific rules ----------------------------------------- */
 
 const payerSpecificRules: ValidationRule[] = [
   {
@@ -443,7 +443,7 @@ const payerSpecificRules: ValidationRule[] = [
         ? makeEdit(
             payerSpecificRules[2],
             'payerId',
-            `Payer '${payer.name}' requires enrollment — verify provider is enrolled`,
+            `Payer '${payer.name}' requires enrollment -- verify provider is enrolled`,
             payer.enrollmentNotes ?? 'Complete payer enrollment'
           )
         : null;
@@ -451,7 +451,7 @@ const payerSpecificRules: ValidationRule[] = [
   },
 ];
 
-/* ─── Authorization rules (Phase 40) ─────────────────────────────── */
+/* --- Authorization rules (Phase 40) ------------------------------- */
 
 const authorizationRules: ValidationRule[] = [
   {
@@ -514,7 +514,7 @@ const authorizationRules: ValidationRule[] = [
   },
 ];
 
-/* ─── Country/market-specific rules (Phase 40 Superseding) ───────── */
+/* --- Country/market-specific rules (Phase 40 Superseding) --------- */
 
 const countrySpecificRules: ValidationRule[] = [
   {
@@ -625,7 +625,7 @@ const countrySpecificRules: ValidationRule[] = [
   },
 ];
 
-/* ─── Master rule list ───────────────────────────────────────────── */
+/* --- Master rule list --------------------------------------------- */
 
 const ALL_RULES: ValidationRule[] = [
   ...syntaxRules,
@@ -637,7 +637,7 @@ const ALL_RULES: ValidationRule[] = [
   ...countrySpecificRules,
 ];
 
-/* ─── Main validation function ───────────────────────────────────── */
+/* --- Main validation function ------------------------------------- */
 
 export function validateClaim(claim: Claim): ValidationResult {
   editCounter = 0;
@@ -648,7 +648,7 @@ export function validateClaim(claim: Claim): ValidationResult {
       const edit = rule.check(claim);
       if (edit) edits.push(edit);
     } catch {
-      // Rule evaluation failure — log but don't block
+      // Rule evaluation failure -- log but don't block
       edits.push({
         id: nextEditId(),
         severity: 'warning',
@@ -687,7 +687,7 @@ export function validateClaim(claim: Claim): ValidationResult {
   };
 }
 
-/* ─── Describe rules (for API introspection) ─────────────────────── */
+/* --- Describe rules (for API introspection) ----------------------- */
 
 export function describeValidationRules(): Array<{
   id: string;

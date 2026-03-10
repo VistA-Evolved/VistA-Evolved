@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    WorldVistA upstream sync — clones/fetches selected repos and pins commit SHAs.
+    WorldVistA upstream sync -- clones/fetches selected repos and pins commit SHAs.
 
 .DESCRIPTION
     Phase 448 (W29-P2). Mirrors selected WorldVistA GitHub repositories into

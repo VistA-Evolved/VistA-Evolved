@@ -6,7 +6,7 @@
  * Shows:
  *   - Current screen's actions and their RPC mapping
  *   - Whether each RPC is present in the live VistA instance
- *   - Integration-pending items with target RPC name and next steps
+ *   - Items requiring configuration with target RPC name and next steps
  *
  * Only rendered when NODE_ENV !== "production" or user has admin role.
  */
@@ -17,7 +17,7 @@ import { useState, useEffect, useCallback } from 'react';
 /*  Types (mirrored from actionRegistry to avoid cross-app import)    */
 /* ------------------------------------------------------------------ */
 
-type ActionStatus = 'wired' | 'integration-pending' | 'unsupported-in-sandbox' | 'stub';
+type ActionStatus = 'wired' | 'requires_config' | 'unsupported-in-sandbox' | 'stub';
 
 interface CprsAction {
   actionId: string;
@@ -49,7 +49,7 @@ interface RpcRegistryEntry {
 function StatusBadge({ status }: { status: ActionStatus }) {
   const colors: Record<ActionStatus, string> = {
     wired: 'bg-green-100 text-green-800 border-green-300',
-    'integration-pending': 'bg-yellow-100 text-yellow-800 border-yellow-300',
+    requires_config: 'bg-yellow-100 text-yellow-800 border-yellow-300',
     'unsupported-in-sandbox': 'bg-blue-100 text-blue-800 border-blue-300',
     stub: 'bg-orange-100 text-orange-800 border-orange-300',
   };
@@ -125,7 +125,7 @@ export default function RpcDebugPanel() {
   const locations = [...new Set(actions.map((a) => a.location))].sort();
 
   const filtered = actions.filter((a) => {
-    if (filter === 'pending' && a.status !== 'integration-pending') return false;
+    if (filter === 'pending' && a.status !== 'requires_config') return false;
     if (filter === 'unsupported' && a.status !== 'unsupported-in-sandbox') return false;
     if (filter === 'wired' && a.status !== 'wired') return false;
     if (filter === 'stub' && a.status !== 'stub') return false;
@@ -144,7 +144,7 @@ export default function RpcDebugPanel() {
   const stats = {
     total: actions.length,
     wired: actions.filter((a) => a.status === 'wired').length,
-    pending: actions.filter((a) => a.status === 'integration-pending').length,
+    pending: actions.filter((a) => a.status === 'requires_config').length,
     unsupported: actions.filter((a) => a.status === 'unsupported-in-sandbox').length,
     stub: actions.filter((a) => a.status === 'stub').length,
     rpcsCatalogSize: catalog.size,

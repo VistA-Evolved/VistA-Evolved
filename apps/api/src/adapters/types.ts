@@ -1,5 +1,5 @@
 /**
- * Adapter Type Definitions — Phase 37C.
+ * Adapter Type Definitions -- Phase 37C.
  *
  * Shared types used across all adapter interfaces.
  */
@@ -12,7 +12,7 @@ export interface BaseAdapter {
   readonly implementationName: string;
   /** True if this is a stub/placeholder implementation */
   readonly _isStub: boolean;
-  /** Health check — returns true if the adapter's backend is reachable */
+  /** Health check -- returns true if the adapter's backend is reachable */
   healthCheck(): Promise<{ ok: boolean; latencyMs: number; detail?: string }>;
 }
 
@@ -129,7 +129,7 @@ export interface EncounterRecord {
 }
 
 /* ================================================================== */
-/* ADT (Admission/Discharge/Transfer) types — Phase 431               */
+/* ADT (Admission/Discharge/Transfer) types -- Phase 431               */
 /* ================================================================== */
 
 /** Ward record shape. */
@@ -197,7 +197,7 @@ export interface WriteResult {
 }
 
 /* ================================================================== */
-/* Pharmacy / MAR / BCMA types — Phase 432                             */
+/* Pharmacy / MAR / BCMA types -- Phase 432                             */
 /* ================================================================== */
 
 /** Inpatient medication order (unit dose / IV). */
@@ -249,7 +249,7 @@ export interface MedAdminRequest {
   witnessDuz?: string;
 }
 
-/** Barcode scan result — resolved medication from BCMA barcode. */
+/** Barcode scan result -- resolved medication from BCMA barcode. */
 export interface BarcodeScanResult {
   found: boolean;
   orderIen?: string;

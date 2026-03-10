@@ -1,10 +1,10 @@
 /**
- * EDI 835 Parser Adapter — Phase 99
+ * EDI 835 Parser Adapter -- Phase 99
  *
  * Implements the Edi835Parser interface with a built-in scaffold parser.
  * The scaffold parser handles structured JSON input (pre-parsed 835).
  *
- * Raw X12 wire format parsing is integration-pending — requires a
+ * Raw X12 wire format parsing is integration-pending -- requires a
  * streaming X12 parser (MIT-licensed) to be added in a future phase.
  *
  * The adapter pattern allows swapping the parser without changing
@@ -18,7 +18,7 @@ import type {
   PaymentCode,
 } from './types.js';
 
-/* ── Scaffold Parser (Structured JSON input) ────────────────── */
+/* -- Scaffold Parser (Structured JSON input) ------------------ */
 
 /**
  * Scaffold 835 parser that accepts pre-structured JSON.
@@ -128,7 +128,7 @@ class ScaffoldEdi835Parser implements Edi835Parser {
   }
 }
 
-/* ── Parser Registry ────────────────────────────────────────── */
+/* -- Parser Registry ------------------------------------------ */
 
 const parsers = new Map<string, Edi835Parser>();
 

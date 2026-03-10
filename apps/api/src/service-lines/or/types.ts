@@ -5,7 +5,7 @@
  * Covers case scheduling, room management, anesthesia tracking.
  */
 
-// ── OR Room ────────────────────────────────────────────────────────
+// -- OR Room --------------------------------------------------------
 
 export type OrRoomStatus = 'available' | 'in-use' | 'turnover' | 'blocked' | 'maintenance';
 
@@ -28,7 +28,7 @@ export interface OrBlock {
   surgeon?: string;
 }
 
-// ── OR Case ────────────────────────────────────────────────────────
+// -- OR Case --------------------------------------------------------
 
 export type OrCaseStatus =
   | 'scheduled'
@@ -72,7 +72,7 @@ export interface OrMilestone {
   recordedBy: string;
 }
 
-// ── Anesthesia ─────────────────────────────────────────────────────
+// -- Anesthesia -----------------------------------------------------
 
 export type AnesthesiaType =
   | 'general'
@@ -98,7 +98,7 @@ export interface AnesthesiaRecord {
   complications: string[];
 }
 
-// ── Board Metrics ──────────────────────────────────────────────────
+// -- Board Metrics --------------------------------------------------
 
 export interface OrBoardMetrics {
   totalCasesToday: number;

@@ -1,9 +1,9 @@
 /**
- * Go-Live Certification Tests — Phase 256
+ * Go-Live Certification Tests -- Phase 256
  *
  * Validates all go-live prerequisites exist: runbooks, verifiers,
  * drill scripts, pilot infrastructure, CI workflows, and documentation.
- * This is a structural certification — not a runtime test.
+ * This is a structural certification -- not a runtime test.
  */
 import { describe, it, expect } from 'vitest';
 import * as fs from 'node:fs';
@@ -21,7 +21,7 @@ function fileContains(rel: string, pattern: string | RegExp): boolean {
   return typeof pattern === 'string' ? content.includes(pattern) : pattern.test(content);
 }
 
-/* ── Go-Live Kit Artifacts ──────────────────────────────────────── */
+/* -- Go-Live Kit Artifacts ---------------------------------------- */
 
 describe('Go-Live Kit Artifacts', () => {
   it('has go-live runbook', () => {
@@ -37,7 +37,7 @@ describe('Go-Live Kit Artifacts', () => {
   });
 });
 
-/* ── Runbook Content ────────────────────────────────────────────── */
+/* -- Runbook Content ---------------------------------------------- */
 
 describe('Go-Live Runbook Content', () => {
   const runbookPath = 'docs/pilot-go-live-kit.md';
@@ -73,7 +73,7 @@ describe('Go-Live Runbook Content', () => {
   });
 });
 
-/* ── Pilot Infrastructure ───────────────────────────────────────── */
+/* -- Pilot Infrastructure ----------------------------------------- */
 
 describe('Pilot Infrastructure (Phase 246)', () => {
   it('has site-config module', () => {
@@ -102,7 +102,7 @@ describe('Pilot Infrastructure (Phase 246)', () => {
   });
 });
 
-/* ── Wave 7 Verifiers ──────────────────────────────────────────── */
+/* -- Wave 7 Verifiers -------------------------------------------- */
 
 describe('Wave 7 Verifiers', () => {
   const verifiers = [
@@ -124,7 +124,7 @@ describe('Wave 7 Verifiers', () => {
   }
 });
 
-/* ── Resilience Drills ──────────────────────────────────────────── */
+/* -- Resilience Drills -------------------------------------------- */
 
 describe('Resilience Drills', () => {
   const drills = [
@@ -142,7 +142,7 @@ describe('Resilience Drills', () => {
   }
 });
 
-/* ── DR Certification ───────────────────────────────────────────── */
+/* -- DR Certification --------------------------------------------- */
 
 describe('DR Certification', () => {
   it('has DR drill script', () => {
@@ -162,7 +162,7 @@ describe('DR Certification', () => {
   });
 });
 
-/* ── CI Workflows ───────────────────────────────────────────────── */
+/* -- CI Workflows ------------------------------------------------- */
 
 describe('CI Workflows', () => {
   const workflows = [
@@ -177,7 +177,7 @@ describe('CI Workflows', () => {
   }
 });
 
-/* ── Go-Live Gate Script Content ────────────────────────────────── */
+/* -- Go-Live Gate Script Content ---------------------------------- */
 
 describe('Go-Live Gate Script', () => {
   const gatePath = 'ops/drills/run-go-live-gate.ps1';
@@ -205,7 +205,7 @@ describe('Go-Live Gate Script', () => {
   });
 });
 
-/* ── Documentation Completeness ─────────────────────────────────── */
+/* -- Documentation Completeness ----------------------------------- */
 
 describe('Documentation Completeness', () => {
   it('has Wave 7 manifest', () => {

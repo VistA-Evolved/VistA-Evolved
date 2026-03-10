@@ -1,5 +1,5 @@
 /**
- * API Route Contract Registry — Phase 251
+ * API Route Contract Registry -- Phase 251
  *
  * Machine-readable contracts for all major API endpoints.
  * Each contract specifies: method, path, auth level, expected response shape.
@@ -31,7 +31,7 @@ export interface RouteContract {
 }
 
 /**
- * Core API route contracts — covers the critical clinical path
+ * Core API route contracts -- covers the critical clinical path
  * plus infrastructure endpoints.
  */
 export const ROUTE_CONTRACTS: RouteContract[] = [

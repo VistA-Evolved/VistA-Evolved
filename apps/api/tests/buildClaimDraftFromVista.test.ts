@@ -17,7 +17,7 @@ import {
   type ClaimDraftResult,
 } from '../src/rcm/vistaBindings/buildClaimDraftFromVista.js';
 
-/* ── Stub RPC Caller ──────────────────────────────────────── */
+/* -- Stub RPC Caller ---------------------------------------- */
 
 function createStubRpc(responses: Record<string, string[]>): RpcCaller {
   return {
@@ -36,7 +36,7 @@ function createFailingRpc(failRpc: string): RpcCaller {
   };
 }
 
-/* ── Parser Tests ─────────────────────────────────────────── */
+/* -- Parser Tests ------------------------------------------- */
 
 describe('parseEncounters', () => {
   it('parses visit lines', () => {
@@ -107,7 +107,7 @@ describe('parseInsurance', () => {
   });
 });
 
-/* ── Builder Tests ────────────────────────────────────────── */
+/* -- Builder Tests ------------------------------------------ */
 
 describe('buildClaimDraftFromVista', () => {
   const fullStub = createStubRpc({
@@ -234,7 +234,7 @@ describe('buildClaimDraftFromVista', () => {
   });
 });
 
-/* ── Coverage Tests ───────────────────────────────────────── */
+/* -- Coverage Tests ----------------------------------------- */
 
 describe('getVistaCoverage', () => {
   it('returns policies when available', async () => {
@@ -254,7 +254,7 @@ describe('getVistaCoverage', () => {
   });
 });
 
-/* ── No PHI Logging Tests ─────────────────────────────────── */
+/* -- No PHI Logging Tests ----------------------------------- */
 
 describe('no PHI in output', () => {
   it('claim draft does not contain SSN, DOB, or patient name in claim ID', async () => {

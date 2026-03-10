@@ -21,8 +21,8 @@ interface WorkflowStepDef {
 }
 
 interface WorkflowStepIntegrationOutcome {
-  mode: 'tiu_draft' | 'integration_pending' | 'none';
-  status: 'completed' | 'failed' | 'not_requested' | 'integration-pending';
+  mode: 'tiu_draft' | 'requires_config' | 'none';
+  status: 'completed' | 'failed' | 'not_requested' | 'requires_config';
   targetRpc?: string;
   message: string;
   rpcUsed?: string[];
@@ -418,7 +418,7 @@ function InstancesTab({ refreshToken }: { refreshToken: number }) {
                   <div>
                     <div style={{ fontWeight: 700, fontSize: 16 }}>{definitions[inst.definitionId]?.name || inst.department}</div>
                     <div style={{ color: '#94a3b8', fontSize: 13 }}>
-                      {inst.department} • patient DFN {inst.patientDfn}
+                      {inst.department} * patient DFN {inst.patientDfn}
                     </div>
                   </div>
                   <div style={{ textAlign: 'right', fontSize: 12, color: '#94a3b8' }}>
@@ -459,7 +459,7 @@ function InstancesTab({ refreshToken }: { refreshToken: number }) {
                           <div>
                             <div style={{ fontWeight: 600 }}>{step.name}</div>
                             <div style={{ fontSize: 12, color: '#94a3b8' }}>
-                              {stepDef?.requiredRole ? `${stepDef.requiredRole} • ` : ''}
+                              {stepDef?.requiredRole ? `${stepDef.requiredRole} * ` : ''}
                               {stepDef?.vistaIntegration?.targetRpc || 'No direct VistA writeback'}
                             </div>
                           </div>

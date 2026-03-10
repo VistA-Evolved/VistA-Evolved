@@ -1,5 +1,5 @@
 /**
- * Phase 52 — E2E Scenario 3: Patient Portal Workflow
+ * Phase 52 -- E2E Scenario 3: Patient Portal Workflow
  *
  * Full end-to-end patient portal workflow:
  *   Login page renders -> Dashboard loads -> View Health Records

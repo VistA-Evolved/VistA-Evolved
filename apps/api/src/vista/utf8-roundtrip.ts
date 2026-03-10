@@ -1,14 +1,14 @@
 /**
- * UTF-8 Round-Trip Test Harness — Phase 498 (W34-P8)
+ * UTF-8 Round-Trip Test Harness -- Phase 498 (W34-P8)
  *
  * Provides a corpus of non-ASCII test strings per locale/script,
  * and validation functions to verify that characters survive
- * the API → VistA RPC → M global → read-back cycle.
+ * the API -> VistA RPC -> M global -> read-back cycle.
  *
  * No PHI in any test strings. All strings are medically neutral sample data.
  */
 
-// ── Test Corpus ────────────────────────────────────────────────
+// -- Test Corpus ------------------------------------------------
 
 export interface Utf8TestString {
   locale: string;
@@ -28,7 +28,7 @@ export function buildTestCorpus(): Utf8TestString[] {
     // Latin-1 / ASCII baseline
     { locale: 'en', script: 'Latin', label: 'ASCII baseline', input: 'Hello World 1234' },
 
-    // Spanish — accented characters
+    // Spanish -- accented characters
     {
       locale: 'es',
       script: 'Latin-Extended',
@@ -36,7 +36,7 @@ export function buildTestCorpus(): Utf8TestString[] {
       input: 'Prueba de acentos: ni\u00F1a, se\u00F1or, caf\u00E9',
     },
 
-    // Filipino — Tagalog with diacritics
+    // Filipino -- Tagalog with diacritics
     {
       locale: 'fil',
       script: 'Latin-Extended',
@@ -44,7 +44,7 @@ export function buildTestCorpus(): Utf8TestString[] {
       input: 'Magandang umaga, kumust\u00E1 ka?',
     },
 
-    // Filipino — extended characters
+    // Filipino -- extended characters
     {
       locale: 'fil',
       script: 'Latin-Extended',
@@ -60,7 +60,7 @@ export function buildTestCorpus(): Utf8TestString[] {
       input: 'Paciente #12345 - atenci\u00F3n m\u00E9dica',
     },
 
-    // Vietnamese — heavy diacritics
+    // Vietnamese -- heavy diacritics
     {
       locale: 'vi',
       script: 'Latin-Extended',
@@ -68,10 +68,10 @@ export function buildTestCorpus(): Utf8TestString[] {
       input: 'Xin ch\u00E0o, c\u1EA3m \u01A1n b\u1EA1n',
     },
 
-    // CJK — Chinese characters
+    // CJK -- Chinese characters
     { locale: 'zh', script: 'CJK', label: 'Chinese characters', input: '\u4F60\u597D\u4E16\u754C' },
 
-    // CJK — Japanese hiragana
+    // CJK -- Japanese hiragana
     {
       locale: 'ja',
       script: 'CJK',
@@ -87,7 +87,7 @@ export function buildTestCorpus(): Utf8TestString[] {
       input: '\u041F\u0440\u0438\u0432\u0435\u0442',
     },
 
-    // Arabic — RTL
+    // Arabic -- RTL
     {
       locale: 'ar',
       script: 'Arabic',
@@ -110,7 +110,7 @@ export function buildTestCorpus(): Utf8TestString[] {
   }));
 }
 
-// ── Validation ─────────────────────────────────────────────────
+// -- Validation -------------------------------------------------
 
 export interface Utf8RoundTripResult {
   locale: string;

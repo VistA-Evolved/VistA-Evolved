@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * HL7 Interop QA Gate — Phase 279 (Wave 9)
+ * HL7 Interop QA Gate -- Phase 279 (Wave 9)
  *
  * Validates the HL7v2 engine production convergence:
  *   1. FHIR bridge module exports conversion functions
@@ -33,7 +33,7 @@ function gate(name, fn) {
       fail++;
     }
   } catch (e) {
-    console.log(`  FAIL  ${name} — ${e.message}`);
+    console.log(`  FAIL  ${name} -- ${e.message}`);
     fail++;
   }
 }

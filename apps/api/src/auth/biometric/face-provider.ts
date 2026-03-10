@@ -1,5 +1,5 @@
 /**
- * Face Verification Provider — Phase 35.
+ * Face Verification Provider -- Phase 35.
  *
  * DISABLED BY DEFAULT. This is a scaffold for future face verification.
  *
@@ -68,13 +68,13 @@ export class FaceVerificationProvider implements BiometricAuthProvider {
 
     if (config.storeRawImages) {
       log.error(
-        'SECURITY: Face verification configured to store raw images — this is prohibited in production'
+        'SECURITY: Face verification configured to store raw images -- this is prohibited in production'
       );
       return false;
     }
 
     if (!config.requireLivenessCheck) {
-      log.warn('Face verification liveness check disabled — replay attacks possible');
+      log.warn('Face verification liveness check disabled -- replay attacks possible');
     }
 
     log.info('FaceVerificationProvider initialized', {

@@ -1,5 +1,5 @@
 /**
- * country-pack-loader.ts — Loads and validates country-pack values.json files.
+ * country-pack-loader.ts -- Loads and validates country-pack values.json files.
  *
  * Country packs live in /country-packs/<CC>/values.json at repo root.
  * Each pack configures regulatory, terminology, residency, module, and UI
@@ -199,7 +199,7 @@ function resolvePacksDir(): string {
     }
     dir = resolve(dir, '..');
   }
-  // Fallback — assume CWD is repo root
+  // Fallback -- assume CWD is repo root
   return resolve(process.cwd(), 'country-packs');
 }
 

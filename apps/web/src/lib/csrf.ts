@@ -1,6 +1,6 @@
 import { API_BASE } from '@/lib/api-config';
 /**
- * CSRF Token Manager — Phase 132
+ * CSRF Token Manager -- Phase 132
  *
  * Session-bound synchronizer token pattern (OWASP recommended).
  *
@@ -8,17 +8,17 @@ import { API_BASE } from '@/lib/api-config';
  *   1. Generated server-side at session creation (randomBytes(32))
  *   2. Stored in the DB-backed session (never in a cookie)
  *   3. Delivered to the client via JSON response body:
- *      - POST /auth/login → response.csrfToken
- *      - GET /auth/session → response.csrfToken
- *      - GET /auth/csrf-token → response.csrfToken (dedicated endpoint)
- *   4. Cached in JS memory (this module) — NOT in cookies, NOT in localStorage
+ *      - POST /auth/login -> response.csrfToken
+ *      - GET /auth/session -> response.csrfToken
+ *      - GET /auth/csrf-token -> response.csrfToken (dedicated endpoint)
+ *   4. Cached in JS memory (this module) -- NOT in cookies, NOT in localStorage
  *   5. Sent back on every mutation as the x-csrf-token header
  *   6. Validated server-side against the session-bound secret
  *
  * Why this is safer than double-submit cookie:
  *   - Cookie injection (subdomain, HTTP MitM) cannot forge the token
  *   - Token is never stored in a cookie, so it's invisible to XSS on
- *     `document.cookie` (though XSS can still read JS vars — CSP helps there)
+ *     `document.cookie` (though XSS can still read JS vars -- CSP helps there)
  *   - Server-side binding means the token is cryptographically tied to the session
  */
 
@@ -51,7 +51,7 @@ export async function getCsrfToken(): Promise<string> {
       }
     }
   } catch {
-    // Server unreachable — return empty
+    // Server unreachable -- return empty
   }
   return '';
 }

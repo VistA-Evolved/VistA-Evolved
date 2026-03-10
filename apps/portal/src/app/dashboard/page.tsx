@@ -1,5 +1,5 @@
 /**
- * Dashboard Home — Summary cards for each clinical domain.
+ * Dashboard Home -- Summary cards for each clinical domain.
  * Each card shows a data-source badge and links to its detail page.
  */
 

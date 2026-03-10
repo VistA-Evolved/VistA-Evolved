@@ -1,5 +1,5 @@
 /**
- * Dashboard layout — wraps all authenticated portal pages.
+ * Dashboard layout -- wraps all authenticated portal pages.
  * Provides the side navigation and main content area.
  */
 

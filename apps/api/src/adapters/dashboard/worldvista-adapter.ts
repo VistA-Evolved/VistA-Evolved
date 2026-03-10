@@ -14,6 +14,13 @@ import type {
   PatientList,
 } from './interface.js';
 
+const safeErrMsg = (err: unknown): string => {
+  const msg = err instanceof Error ? err.message : String(err);
+  return msg.replace(/(?:(?:25[0-5]|2[0-4]\d|[01]?\d\d?)\.){3}(?:25[0-5]|2[0-4]\d|[01]?\d\d?)/g, '[host]')
+    .replace(/\b\d{1,5}\b(?=\s|$|:)/g, (m) => parseInt(m) > 1023 && parseInt(m) < 65536 ? '[port]' : m)
+    .slice(0, 200);
+};
+
 const DASHBOARD_URL = process.env.DASHBOARD_URL || 'http://localhost:3010';
 const TIMEOUT_MS = parseInt(process.env.DASHBOARD_TIMEOUT_MS || '5000', 10);
 
@@ -36,7 +43,7 @@ async function dashboardFetch<T>(path: string): Promise<DashboardResult<T>> {
     const data = (await res.json()) as T;
     return { ok: true, data };
   } catch (err: unknown) {
-    const msg = err instanceof Error ? err.message : String(err);
+    const msg = safeErrMsg(err);
     return { ok: false, error: `Dashboard unreachable: ${msg}` };
   }
 }

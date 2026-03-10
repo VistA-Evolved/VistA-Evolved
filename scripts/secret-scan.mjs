@@ -212,13 +212,13 @@ for (const file of files) {
 
 // ---- Output ----
 if (totalFindings === 0) {
-  console.log('✓ Secret scan passed — no suspicious patterns found.');
+  console.log('✓ Secret scan passed -- no suspicious patterns found.');
   console.log(`  Scanned ${files.length} files.`);
   process.exit(0);
 } else {
-  console.error(`✗ Secret scan FAILED — ${totalFindings} potential secret(s) found:\n`);
+  console.error(`✗ Secret scan FAILED -- ${totalFindings} potential secret(s) found:\n`);
   for (const f of findings) {
-    console.error(`  ${f.file}:${f.line} — ${f.pattern}: ${f.snippet}`);
+    console.error(`  ${f.file}:${f.line} -- ${f.pattern}: ${f.snippet}`);
   }
   console.error(`\nFix these before merging. See docs/runbooks/prod-deploy-phase16.md`);
   process.exit(1);

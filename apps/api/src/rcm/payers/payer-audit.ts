@@ -1,5 +1,5 @@
 /**
- * Payer Audit — Phase 95: Payer Registry Persistence + Audit
+ * Payer Audit -- Phase 95: Payer Registry Persistence + Audit
  *
  * Hash-chained, append-only, PHI-safe audit trail for payer registry
  * changes. Follows the same pattern as rcm-audit.ts (Phase 38) and
@@ -30,7 +30,7 @@ const REPO_ROOT = join(__dirname_resolved, '..', '..', '..', '..', '..');
 const AUDIT_DIR = join(REPO_ROOT, 'logs');
 const AUDIT_FILE = join(AUDIT_DIR, 'payer-audit.jsonl');
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 export type PayerAuditAction =
   | 'payer.imported'
@@ -65,14 +65,14 @@ export interface PayerAuditEvent {
   prevHash: string;
 }
 
-/* ── Store ──────────────────────────────────────────────────── */
+/* -- Store ---------------------------------------------------- */
 
 const MAX_RING_SIZE = 10_000;
 const auditRing: PayerAuditEvent[] = [];
 let lastHash = 'GENESIS';
 let counter = 0;
 
-/* ── Helpers ────────────────────────────────────────────────── */
+/* -- Helpers -------------------------------------------------- */
 
 function sanitizeDetail(detail: unknown): unknown {
   if (detail === null || detail === undefined) return detail;
@@ -109,7 +109,7 @@ function ensureAuditDir(): void {
   if (!existsSync(AUDIT_DIR)) mkdirSync(AUDIT_DIR, { recursive: true });
 }
 
-/* ── Append ─────────────────────────────────────────────────── */
+/* -- Append --------------------------------------------------- */
 
 export function appendPayerAudit(params: {
   action: PayerAuditAction;
@@ -165,7 +165,7 @@ export function appendPayerAudit(params: {
   return event;
 }
 
-/* ── Query ──────────────────────────────────────────────────── */
+/* -- Query ---------------------------------------------------- */
 
 export function getPayerAuditTrail(
   payerId: string,
@@ -219,7 +219,7 @@ export function getAllPayerAudit(options?: {
   return { events: filtered.slice(offset, offset + limit), total };
 }
 
-/* ── Verify chain ───────────────────────────────────────────── */
+/* -- Verify chain --------------------------------------------- */
 
 export function verifyPayerAuditChain(): {
   ok: boolean;
@@ -269,7 +269,7 @@ export function verifyPayerAuditChain(): {
   };
 }
 
-/* ── Stats ──────────────────────────────────────────────────── */
+/* -- Stats ---------------------------------------------------- */
 
 export function getPayerAuditStats(): {
   total: number;

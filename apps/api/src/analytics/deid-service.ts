@@ -1,8 +1,8 @@
 /**
- * De-Identification & Pseudonymization Service — Phase 364 (W19-P3)
+ * De-Identification & Pseudonymization Service -- Phase 364 (W19-P3)
  *
  * Configurable de-id/pseudonymization for analytics datasets.
- * Default mode is "strict" — all direct identifiers removed.
+ * Default mode is "strict" -- all direct identifiers removed.
  *
  * DISCLAIMER: This is an engineering tool, NOT legal or compliance advice.
  * Consult your compliance officer and legal counsel before using
@@ -20,7 +20,7 @@ import {
   DEFAULT_DEID_CONFIG,
 } from './extract-types.js';
 
-// ── Per-tenant config store ─────────────────────────────────────────────
+// -- Per-tenant config store ---------------------------------------------
 
 const tenantDeidConfigs = new Map<string, DeidConfig>();
 const DEFAULT_HMAC_SECRET = randomBytes(32).toString('hex');
@@ -50,7 +50,7 @@ export function listDeidConfigs(): DeidConfig[] {
   return Array.from(tenantDeidConfigs.values());
 }
 
-// ── Core De-identification ──────────────────────────────────────────────
+// -- Core De-identification ----------------------------------------------
 
 /**
  * Apply de-identification to a set of extract records.
@@ -141,7 +141,7 @@ function deidentifyObject(
   return result;
 }
 
-// ── Pseudonymization ────────────────────────────────────────────────────
+// -- Pseudonymization ----------------------------------------------------
 
 /**
  * Deterministic pseudonymization using HMAC-SHA256.
@@ -151,7 +151,7 @@ export function pseudonymize(value: string, secret: string): string {
   return 'PSE-' + createHmac('sha256', secret).update(value).digest('hex').slice(0, 16);
 }
 
-// ── Free-text scrubbing ─────────────────────────────────────────────────
+// -- Free-text scrubbing -------------------------------------------------
 
 /**
  * Scrub inline PHI patterns from free text.
@@ -166,7 +166,7 @@ function scrubFreeText(text: string): string {
   return result;
 }
 
-// ── Denylist Scan ───────────────────────────────────────────────────────
+// -- Denylist Scan -------------------------------------------------------
 
 export interface DenylistResult {
   passed: boolean;
@@ -233,7 +233,7 @@ export function runDenylistScan(records: ExtractRecord[]): DenylistResult {
   };
 }
 
-// ── Hash utility ────────────────────────────────────────────────────────
+// -- Hash utility --------------------------------------------------------
 
 export function hashForAudit(value: string): string {
   return createHash('sha256').update(value).digest('hex').slice(0, 16);

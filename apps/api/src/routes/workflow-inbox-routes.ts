@@ -1,5 +1,5 @@
 /**
- * Workflow Inbox Routes — Phase 350
+ * Workflow Inbox Routes -- Phase 350
  *
  * Unified task inbox endpoints: create, list, assign, transition, counts.
  * Session-scoped for all users; facility/department filtering.
@@ -51,7 +51,7 @@ function getScopedTask(taskId: string, tenantId: string) {
 }
 
 export async function workflowInboxRoutes(server: FastifyInstance): Promise<void> {
-  // ─── List / Filter Tasks ─────────────────────────────
+  // --- List / Filter Tasks -----------------------------
 
   server.get('/workflow/tasks', async (req: FastifyRequest, reply: FastifyReply) => {
     await requireSession(req, reply);
@@ -71,7 +71,7 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
     return reply.send({ ok: true, tasks, count: tasks.length });
   });
 
-  // ─── Get Single Task ─────────────────────────────────
+  // --- Get Single Task ---------------------------------
 
   server.get('/workflow/tasks/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     await requireSession(req, reply);
@@ -85,7 +85,7 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
     return reply.send({ ok: true, task });
   });
 
-  // ─── Task Event History ──────────────────────────────
+  // --- Task Event History ------------------------------
 
   server.get('/workflow/tasks/:id/events', async (req: FastifyRequest, reply: FastifyReply) => {
     await requireSession(req, reply);
@@ -99,7 +99,7 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
     return reply.send({ ok: true, events: getTaskEvents(id, tenantId) });
   });
 
-  // ─── Create Task ─────────────────────────────────────
+  // --- Create Task -------------------------------------
 
   server.post('/workflow/tasks', async (req: FastifyRequest, reply: FastifyReply) => {
     await requireSession(req, reply);
@@ -132,7 +132,7 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
     return reply.code(201).send({ ok: true, task });
   });
 
-  // ─── Task Transitions ────────────────────────────────
+  // --- Task Transitions --------------------------------
 
   server.post('/workflow/tasks/:id/assign', async (req: FastifyRequest, reply: FastifyReply) => {
     await requireSession(req, reply);
@@ -235,7 +235,7 @@ export async function workflowInboxRoutes(server: FastifyInstance): Promise<void
     return reply.send({ ok: true, task });
   });
 
-  // ─── Dashboard Counts ────────────────────────────────
+  // --- Dashboard Counts --------------------------------
 
   server.get('/workflow/counts', async (req: FastifyRequest, reply: FastifyReply) => {
     await requireSession(req, reply);

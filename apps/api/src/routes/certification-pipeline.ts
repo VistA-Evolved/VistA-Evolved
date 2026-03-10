@@ -1,5 +1,5 @@
 /**
- * Certification Pipeline Routes — Phase 323 (W14-P7)
+ * Certification Pipeline Routes -- Phase 323 (W14-P7)
  *
  * 16 REST endpoints for integration certification:
  *  - Suite CRUD: create, list, get, activate, deprecate
@@ -35,7 +35,7 @@ export default async function certificationPipelineRoutes(server: FastifyInstanc
   // Seed built-in suites on first load
   seedBuiltInSuites();
 
-  /* ── Suite endpoints ─────────────────────────────────────────── */
+  /* -- Suite endpoints ------------------------------------------- */
 
   server.post('/certification/suites', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -85,7 +85,7 @@ export default async function certificationPipelineRoutes(server: FastifyInstanc
     return { ok: true, status: 'deprecated' };
   });
 
-  /* ── Certification Run endpoints ─────────────────────────────── */
+  /* -- Certification Run endpoints ------------------------------- */
 
   server.post('/certification/runs', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -147,7 +147,7 @@ export default async function certificationPipelineRoutes(server: FastifyInstanc
     };
   });
 
-  /* ── Certificate endpoints ────────────────────────────────────── */
+  /* -- Certificate endpoints -------------------------------------- */
 
   server.post('/certification/certificates', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -208,7 +208,7 @@ export default async function certificationPipelineRoutes(server: FastifyInstanc
     return { ok: true, status: 'active' };
   });
 
-  /* ── Stats ─────────────────────────────────────────────────────── */
+  /* -- Stats ------------------------------------------------------- */
 
   server.get('/certification/stats', async () => {
     return { ok: true, stats: getCertificationStats() };

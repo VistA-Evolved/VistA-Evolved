@@ -100,7 +100,7 @@ test.describe("Phase 98: RCM Denials & Appeals Loop", () => {
   });
 });
 
-test.describe("Phase 99: RCM Payments + Reconciliation — IMPLEMENT", () => {
+test.describe("Phase 99: RCM Payments + Reconciliation -- IMPLEMENT", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/rcm/reconciliation/import`);
     expect(r0.status(), "/rcm/reconciliation/import not 500").not.toBe(500);

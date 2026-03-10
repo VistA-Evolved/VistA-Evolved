@@ -90,7 +90,7 @@ function requireMatchingTenantParam(
 }
 
 export async function globalRoutingRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Config ───────────────────────────────────────────────────────────
+  // --- Config -----------------------------------------------------------
 
   server.get('/platform/routing/config', async () => {
     return { ok: true, config: getRoutingConfig() };
@@ -114,7 +114,7 @@ export async function globalRoutingRoutes(server: FastifyInstance): Promise<void
     };
   });
 
-  // ─── Route Resolution (test endpoint) ─────────────────────────────────
+  // --- Route Resolution (test endpoint) ---------------------------------
 
   server.post('/platform/routing/resolve', async (request: FastifyRequest) => {
     const body = (request.body as any) || {};
@@ -122,7 +122,7 @@ export async function globalRoutingRoutes(server: FastifyInstance): Promise<void
     return { ok: true, ...result };
   });
 
-  // ─── Audit ────────────────────────────────────────────────────────────
+  // --- Audit ------------------------------------------------------------
 
   server.get('/platform/routing/audit', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -136,7 +136,7 @@ export async function globalRoutingRoutes(server: FastifyInstance): Promise<void
     return { ok: true, entries, count: entries.length };
   });
 
-  // ─── Ingress Management ───────────────────────────────────────────────
+  // --- Ingress Management -----------------------------------------------
 
   server.post(
     '/platform/routing/ingresses',
@@ -186,7 +186,7 @@ export async function globalRoutingRoutes(server: FastifyInstance): Promise<void
     }
   );
 
-  // ─── DNS Management ───────────────────────────────────────────────────
+  // --- DNS Management ---------------------------------------------------
 
   server.post('/platform/routing/dns', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -272,7 +272,7 @@ export async function globalRoutingRoutes(server: FastifyInstance): Promise<void
     }
   );
 
-  // ─── Failover ─────────────────────────────────────────────────────────
+  // --- Failover ---------------------------------------------------------
 
   server.post(
     '/platform/routing/failover',

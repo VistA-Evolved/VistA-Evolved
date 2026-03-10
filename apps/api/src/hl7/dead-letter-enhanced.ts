@@ -1,5 +1,5 @@
 /**
- * HL7v2 Dead-Letter Queue Enhancement — Phase 259 (Wave 8 P3)
+ * HL7v2 Dead-Letter Queue Enhancement -- Phase 259 (Wave 8 P3)
  *
  * Extends the existing DeadLetterEntry with raw message storage + replay.
  * The existing registry.ts DLQ stores only metadata. This module adds:
@@ -13,7 +13,7 @@ import { createHash, randomBytes } from 'crypto';
 import { recordMessageEvent } from './message-event-store.js';
 import { log } from '../lib/logger.js';
 
-/* ── Types ─────────────────────────────────────────────── */
+/* -- Types ----------------------------------------------- */
 
 export interface EnhancedDeadLetterEntry {
   id: string;
@@ -45,7 +45,7 @@ export interface ReplayResult {
   detail: string;
 }
 
-/* ── Raw Message Vault ─────────────────────────────────── */
+/* -- Raw Message Vault ----------------------------------- */
 
 /**
  * Stores raw HL7 messages keyed by DLQ entry ID.
@@ -62,12 +62,12 @@ function vaultEvict(): void {
   }
 }
 
-/* ── Enhanced DLQ Store ────────────────────────────────── */
+/* -- Enhanced DLQ Store ---------------------------------- */
 
 const enhancedDlq: EnhancedDeadLetterEntry[] = [];
 const MAX_DLQ_SIZE = 1000;
 
-/* ── PG Write-Through (W41-P5) ─────────────────────────── */
+/* -- PG Write-Through (W41-P5) --------------------------- */
 
 interface Hl7DlqRepo {
   upsert(data: any): Promise<any>;

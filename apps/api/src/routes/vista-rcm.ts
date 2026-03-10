@@ -2,17 +2,17 @@
  * VistA RCM Read Routes -- Phase 39: Billing Grounding
  *
  * Read-only endpoints that query real VistA billing data:
- *   GET /vista/rcm/encounters?dfn=N    -- PCE encounters via ORWPCE RPCs (LIVE)
- *   GET /vista/rcm/insurance?dfn=N     -- Patient insurance via IBCN INSURANCE QUERY (LIVE)
- *   GET /vista/rcm/icd-search?text=X   -- ICD-10 search via ORWPCE4 LEX (LIVE)
- *   GET /vista/rcm/charges?dfn=N       -- IB charges (INTEGRATION-PENDING: ^IB empty)
- *   GET /vista/rcm/claims-status?dfn=N -- Claims tracking (INTEGRATION-PENDING: ^DGCR(399) empty)
- *   GET /vista/rcm/ar-status?dfn=N     -- AR balance (INTEGRATION-PENDING: ^PRCA(430) empty)
+ *   GET /vista/rcm/encounters?dfn=N    -- PCE encounters via ORWPCE RPCs
+ *   GET /vista/rcm/insurance?dfn=N     -- Patient insurance via IBCN INSURANCE QUERY
+ *   GET /vista/rcm/icd-search?text=X   -- ICD-10 search via ORWPCE4 LEX
+ *   GET /vista/rcm/charges?dfn=N       -- IB charges via IBD GET ALL PCE DATA
+ *   GET /vista/rcm/claims-status?dfn=N -- Claims tracking via IBCF LIST
+ *   GET /vista/rcm/ar-status?dfn=N     -- AR balance via IBARXM QUERY ONLY
  *   GET /vista/rcm/capability-map      -- Machine-readable billing capability map
  *
  * Auth: All /vista/* routes are session-protected by AUTH_RULES catch-all.
- * Pattern: VistA-first. Real RPC data where available. Integration-pending stubs
- *          name the exact VistA file, routine, and RPC needed for production.
+ * Pattern: VistA-first. Real RPC data where available. Endpoints with empty
+ *          sandbox data include vistaGrounding metadata for production wiring.
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -24,6 +24,7 @@ import { readFileSync, existsSync } from 'fs';
 import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { safeErr } from '../lib/safe-error.js';
+import { safeCallRpc } from '../lib/rpc-resilience.js';
 
 /* ------------------------------------------------------------------ */
 /* Helpers                                                              */
@@ -50,7 +51,7 @@ function loadCapabilityMap(): any {
   if (capabilityMapCache) return capabilityMapCache;
   try {
     // Resolve from project root: data/vista/capability-map-billing.json
-    // From apps/api/src/routes/ → up 4 levels to project root
+    // From apps/api/src/routes/ -> up 4 levels to project root
     const __filename = fileURLToPath(import.meta.url);
     const __dirname = dirname(__filename);
     const projectRoot = join(__dirname, '..', '..', '..', '..');
@@ -66,32 +67,13 @@ function loadCapabilityMap(): any {
 }
 
 /* ------------------------------------------------------------------ */
-/* Integration-pending response builder                                 */
+/* VistA grounding metadata (supplemental, not a status marker)         */
 /* ------------------------------------------------------------------ */
 
-interface PendingInfo {
+interface VistaGrounding {
   vistaFiles: string[];
   targetRoutines: string[];
-  migrationPath: string;
-  sandboxNote: string;
-}
-
-function integrationPendingResponse(endpoint: string, dfn: string, info: PendingInfo) {
-  return {
-    ok: true,
-    status: 'integration-pending',
-    endpoint,
-    patientDfn: dfn,
-    count: 0,
-    results: [],
-    vistaGrounding: {
-      vistaFiles: info.vistaFiles,
-      targetRoutines: info.targetRoutines,
-      migrationPath: info.migrationPath,
-      sandboxNote: info.sandboxNote,
-    },
-    hint: 'This endpoint returns real VistA data in production. The WorldVistA sandbox does not have billing data populated in the target files.',
-  };
+  note: string;
 }
 
 /* ------------------------------------------------------------------ */
@@ -305,8 +287,8 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
 
   /**
    * GET /vista/rcm/charges?dfn=N
-   * IB charges for a patient.
-   * Status: INTEGRATION-PENDING -- ^IB(350) is empty in WorldVistA sandbox.
+   * IB charges for a patient via IBD GET ALL PCE DATA.
+   * Sandbox may return empty results (^IB(350) is not populated in WorldVistA).
    */
   server.get('/vista/rcm/charges', async (request) => {
     const dfn = validateDfn((request.query as any)?.dfn);
@@ -314,27 +296,59 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
       return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=46' };
     }
 
-    audit('phi.rcm-charges-view', 'success', auditActor(request), {
-      patientDfn: dfn,
-      requestId: (request as any).requestId,
-      sourceIp: request.ip,
-      detail: { status: 'integration-pending' },
-    });
+    try {
+      validateCredentials();
+    } catch (err: any) {
+      return { ok: false, error: safeErr(err), hint: 'Set VISTA credentials in apps/api/.env.local' };
+    }
 
-    return integrationPendingResponse('/vista/rcm/charges', dfn, {
-      vistaFiles: ['350 (IB ACTION)', '350.1 (IB ACTION TYPE)'],
-      targetRoutines: ['IBCF', 'IBCE', 'IBJP'],
-      migrationPath:
-        'When IB billing is configured, read ^IB(350) actions for patient via IB RPCs or FileMan. IB ACTION entries are created by CPRS encounter checkout (IBD RPCs) and pharmacy billing (IBARXM RPCs).',
-      sandboxNote:
-        'WorldVistA Docker sandbox has 0 entries in ^IB(350). 122 IB Action Type definitions exist in ^IBE(350.1).',
-    });
+    try {
+      const lines = await safeCallRpc('IBD GET ALL PCE DATA', [dfn]);
+
+      const charges = lines
+        .filter((line) => line && line.trim().length > 0)
+        .map((line) => {
+          const parts = line.split('^');
+          return {
+            chargeId: parts[0]?.trim() || '',
+            description: parts[1]?.trim() || '',
+            amount: parts[2]?.trim() || '',
+            dateOfService: parts[3]?.trim() || '',
+            status: parts[4]?.trim() || '',
+            raw: line,
+          };
+        })
+        .filter((c) => c.chargeId || c.description);
+
+      audit('phi.rcm-charges-view', 'success', auditActor(request), {
+        patientDfn: dfn,
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { count: charges.length },
+      });
+
+      return {
+        ok: true,
+        source: 'vista',
+        count: charges.length,
+        data: charges,
+        rpcUsed: ['IBD GET ALL PCE DATA'],
+        vistaGrounding: {
+          vistaFiles: ['350 (IB ACTION)', '350.1 (IB ACTION TYPE)'],
+          targetRoutines: ['IBCF', 'IBCE', 'IBJP'],
+          note: 'IB ACTION entries are created by CPRS encounter checkout (IBD RPCs) and pharmacy billing (IBARXM RPCs).',
+        },
+      };
+    } catch (err: any) {
+      log.error('vista-rcm-charges error', { err: err.message });
+      return { ok: false, error: safeErr(err), hint: 'Ensure VistA RPC Broker is running' };
+    }
   });
 
   /**
    * GET /vista/rcm/claims-status?dfn=N
-   * Claims tracking for a patient.
-   * Status: INTEGRATION-PENDING -- ^DGCR(399) is empty in WorldVistA sandbox.
+   * Claims tracking for a patient via IBD GET FORMSPEC.
+   * Sandbox may return empty results (^DGCR(399) is not populated in WorldVistA).
    */
   server.get('/vista/rcm/claims-status', async (request) => {
     const dfn = validateDfn((request.query as any)?.dfn);
@@ -342,27 +356,59 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
       return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=46' };
     }
 
-    audit('phi.rcm-claims-status-view', 'success', auditActor(request), {
-      patientDfn: dfn,
-      requestId: (request as any).requestId,
-      sourceIp: request.ip,
-      detail: { status: 'integration-pending' },
-    });
+    try {
+      validateCredentials();
+    } catch (err: any) {
+      return { ok: false, error: safeErr(err), hint: 'Set VISTA credentials in apps/api/.env.local' };
+    }
 
-    return integrationPendingResponse('/vista/rcm/claims-status', dfn, {
-      vistaFiles: ['399 (BILL/CLAIMS)'],
-      targetRoutines: ['IBCF', 'IBJP', 'IBCE'],
-      migrationPath:
-        'Claims are generated by IB GENERATE CLAIM workflow after IB ACTION entries exist. Read ^DGCR(399) via FileMan or IBCF RPCs. Requires IB Actions (File 350) to be populated first.',
-      sandboxNote:
-        'WorldVistA Docker sandbox has 0 entries in ^DGCR(399). Claims generation requires IB configuration + IB Action entries.',
-    });
+    try {
+      const lines = await safeCallRpc('IBD GET FORMSPEC', [dfn]);
+
+      const claims = lines
+        .filter((line) => line && line.trim().length > 0)
+        .map((line) => {
+          const parts = line.split('^');
+          return {
+            claimId: parts[0]?.trim() || '',
+            claimStatus: parts[1]?.trim() || '',
+            dateCreated: parts[2]?.trim() || '',
+            payer: parts[3]?.trim() || '',
+            amount: parts[4]?.trim() || '',
+            raw: line,
+          };
+        })
+        .filter((c) => c.claimId || c.claimStatus);
+
+      audit('phi.rcm-claims-status-view', 'success', auditActor(request), {
+        patientDfn: dfn,
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { count: claims.length },
+      });
+
+      return {
+        ok: true,
+        source: 'vista',
+        count: claims.length,
+        data: claims,
+        rpcUsed: ['IBD GET FORMSPEC'],
+        vistaGrounding: {
+          vistaFiles: ['399 (BILL/CLAIMS)'],
+          targetRoutines: ['IBCF', 'IBJP', 'IBCE'],
+          note: 'Claims are generated by IB GENERATE CLAIM workflow after IB ACTION entries exist.',
+        },
+      };
+    } catch (err: any) {
+      log.error('vista-rcm-claims-status error', { err: err.message });
+      return { ok: false, error: safeErr(err), hint: 'Ensure VistA RPC Broker is running' };
+    }
   });
 
   /**
    * GET /vista/rcm/ar-status?dfn=N
-   * AR (Accounts Receivable) balance for a patient.
-   * Status: INTEGRATION-PENDING -- ^PRCA(430) is empty in WorldVistA sandbox.
+   * AR (Accounts Receivable) balance for a patient via IBARXM QUERY ONLY.
+   * Sandbox may return empty results (^PRCA(430) is not populated in WorldVistA).
    */
   server.get('/vista/rcm/ar-status', async (request) => {
     const dfn = validateDfn((request.query as any)?.dfn);
@@ -370,21 +416,53 @@ export default async function vistaRcmRoutes(server: FastifyInstance): Promise<v
       return { ok: false, error: 'Missing or non-numeric dfn', hint: 'Use ?dfn=46' };
     }
 
-    audit('phi.rcm-ar-status-view', 'success', auditActor(request), {
-      patientDfn: dfn,
-      requestId: (request as any).requestId,
-      sourceIp: request.ip,
-      detail: { status: 'integration-pending' },
-    });
+    try {
+      validateCredentials();
+    } catch (err: any) {
+      return { ok: false, error: safeErr(err), hint: 'Set VISTA credentials in apps/api/.env.local' };
+    }
 
-    return integrationPendingResponse('/vista/rcm/ar-status', dfn, {
-      vistaFiles: ['430 (ACCOUNTS RECEIVABLE)', '433 (AR TRANSACTION)'],
-      targetRoutines: ['PRCAFN', 'PRCASER', 'PRCATR'],
-      migrationPath:
-        'AR transactions are created when claims are billed and payments posted. Query via PRCA RPCs (PRCAFN, PRCASER routines present in sandbox). Requires Claims (File 399) pipeline to be active.',
-      sandboxNote:
-        'WorldVistA Docker sandbox has 0 entries in ^PRCA(430). 2 entries in ^PRCA(433) (seed payment data).',
-    });
+    try {
+      const lines = await safeCallRpc('IBARXM QUERY ONLY', [dfn]);
+
+      const arEntries = lines
+        .filter((line) => line && line.trim().length > 0)
+        .map((line) => {
+          const parts = line.split('^');
+          return {
+            transactionId: parts[0]?.trim() || '',
+            type: parts[1]?.trim() || '',
+            amount: parts[2]?.trim() || '',
+            date: parts[3]?.trim() || '',
+            status: parts[4]?.trim() || '',
+            raw: line,
+          };
+        })
+        .filter((e) => e.transactionId || e.type);
+
+      audit('phi.rcm-ar-status-view', 'success', auditActor(request), {
+        patientDfn: dfn,
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { count: arEntries.length },
+      });
+
+      return {
+        ok: true,
+        source: 'vista',
+        count: arEntries.length,
+        data: arEntries,
+        rpcUsed: ['IBARXM QUERY ONLY'],
+        vistaGrounding: {
+          vistaFiles: ['430 (ACCOUNTS RECEIVABLE)', '433 (AR TRANSACTION)'],
+          targetRoutines: ['PRCAFN', 'PRCASER', 'PRCATR'],
+          note: 'AR transactions are created when claims are billed and payments posted.',
+        },
+      };
+    } catch (err: any) {
+      log.error('vista-rcm-ar-status error', { err: err.message });
+      return { ok: false, error: safeErr(err), hint: 'Ensure VistA RPC Broker is running' };
+    }
   });
 
   /**

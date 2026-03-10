@@ -1,18 +1,18 @@
 /**
- * Remittance Routes — Phase 94: PH HMO Workflow Automation
+ * Remittance Routes -- Phase 94: PH HMO Workflow Automation
  *
  * REST endpoints for remittance/EOB intake:
- *   POST  /rcm/remittance               — upload remittance doc
- *   GET   /rcm/remittance               — list remittance docs
- *   GET   /rcm/remittance/stats         — remittance stats
- *   GET   /rcm/remittance/:id           — single doc detail
- *   POST  /rcm/remittance/:id/tag       — tag with line items
- *   POST  /rcm/remittance/:id/review    — review + underpayment check
- *   POST  /rcm/remittance/:id/post      — mark as posted to VistA AR
+ *   POST  /rcm/remittance               -- upload remittance doc
+ *   GET   /rcm/remittance               -- list remittance docs
+ *   GET   /rcm/remittance/stats         -- remittance stats
+ *   GET   /rcm/remittance/:id           -- single doc detail
+ *   POST  /rcm/remittance/:id/tag       -- tag with line items
+ *   POST  /rcm/remittance/:id/review    -- review + underpayment check
+ *   POST  /rcm/remittance/:id/post      -- mark as posted to VistA AR
  *
  * Auth: session-level (matched by /rcm/ catch-all in AUTH_RULES).
  *
- * NOTE: Actual file upload is NOT handled here — the client uploads
+ * NOTE: Actual file upload is NOT handled here -- the client uploads
  * to a secure blob store and passes storageRef. This route handles
  * metadata only. No PHI in logs.
  */
@@ -47,7 +47,7 @@ function resolveActor(request: any, explicitActor?: string): string {
 }
 
 const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
-  /* ── POST /rcm/remittance — upload metadata ────────────── */
+  /* -- POST /rcm/remittance -- upload metadata -------------- */
   server.post('/rcm/remittance', async (request, reply) => {
     const body = (request.body as any) || {};
     const {
@@ -83,7 +83,7 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     return reply.status(201).send({ ok: true, document: doc });
   });
 
-  /* ── GET /rcm/remittance — list ────────────────────────── */
+  /* -- GET /rcm/remittance -- list -------------------------- */
   server.get('/rcm/remittance', async (request, reply) => {
     const query = request.query as {
       status?: string;
@@ -102,13 +102,13 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     return reply.send({ ok: true, ...result });
   });
 
-  /* ── GET /rcm/remittance/stats ─────────────────────────── */
+  /* -- GET /rcm/remittance/stats --------------------------- */
   server.get('/rcm/remittance/stats', async (request, reply) => {
     const stats = getRemittanceStats(resolveTenantId(request));
     return reply.send({ ok: true, ...stats });
   });
 
-  /* ── GET /rcm/remittance/:id — detail ──────────────────── */
+  /* -- GET /rcm/remittance/:id -- detail -------------------- */
   server.get('/rcm/remittance/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const doc = getRemittanceDocumentForTenant(resolveTenantId(request), id);
@@ -116,7 +116,7 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     return reply.send({ ok: true, document: doc });
   });
 
-  /* ── POST /rcm/remittance/:id/tag — tag + associate ────── */
+  /* -- POST /rcm/remittance/:id/tag -- tag + associate ------ */
   server.post('/rcm/remittance/:id/tag', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
@@ -145,7 +145,7 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     }
   });
 
-  /* ── POST /rcm/remittance/:id/review — review + flag ──── */
+  /* -- POST /rcm/remittance/:id/review -- review + flag ---- */
   server.post('/rcm/remittance/:id/review', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
@@ -167,7 +167,7 @@ const remittanceRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     }
   });
 
-  /* ── POST /rcm/remittance/:id/post — mark as posted ────── */
+  /* -- POST /rcm/remittance/:id/post -- mark as posted ------ */
   server.post('/rcm/remittance/:id/post', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};

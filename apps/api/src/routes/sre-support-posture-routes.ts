@@ -70,7 +70,7 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     return session?.userName || session?.duz || 'system';
   }
 
-  // ── Incidents ─────────────────────────────────────────────────────
+  // -- Incidents -----------------------------------------------------
 
   server.get('/platform/sre/incidents', async (_req, reply) => {
     const session = await requireSession(_req, reply);
@@ -158,7 +158,7 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     return reply.send({ ok: true, incident: inc });
   });
 
-  // ── Status Page ───────────────────────────────────────────────────
+  // -- Status Page ---------------------------------------------------
 
   server.get('/platform/sre/status-page', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -180,7 +180,7 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     return reply.send({ ok: true, component: comp });
   });
 
-  // ── Maintenance Windows ───────────────────────────────────────────
+  // -- Maintenance Windows -------------------------------------------
 
   server.get('/platform/sre/maintenance', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -242,7 +242,7 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     return reply.send({ ok: true, maintenanceWindow: mw });
   });
 
-  // ── On-Call ────────────────────────────────────────────────────────
+  // -- On-Call --------------------------------------------------------
 
   server.get('/platform/sre/oncall', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -288,7 +288,7 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     return reply.send({ ok: true, schedule: sched });
   });
 
-  // ── Runbooks ──────────────────────────────────────────────────────
+  // -- Runbooks ------------------------------------------------------
 
   server.get('/platform/sre/runbooks', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -352,7 +352,7 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     return reply.send({ ok: true, runbook: rb });
   });
 
-  // ── SLA Definitions & Reports ─────────────────────────────────────
+  // -- SLA Definitions & Reports -------------------------------------
 
   server.get('/platform/sre/slas', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -403,7 +403,7 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     return reply.send({ ok: true, reports: generateSlaReport(tenantId) });
   });
 
-  // ── Support Tickets ───────────────────────────────────────────────
+  // -- Support Tickets -----------------------------------------------
 
   server.get('/platform/sre/tickets', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -517,7 +517,7 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     return reply.send({ ok: true, ticket: t });
   });
 
-  // ── Tenant Communications ─────────────────────────────────────────
+  // -- Tenant Communications -----------------------------------------
 
   server.get('/platform/sre/communications', async (req, reply) => {
     const session = await requireSession(req, reply);
@@ -555,7 +555,7 @@ export default async function sreSupportPostureRoutes(server: FastifyInstance): 
     return reply.code(201).send({ ok: true, communication: comm });
   });
 
-  // ── Posture & Audit ───────────────────────────────────────────────
+  // -- Posture & Audit -----------------------------------------------
 
   server.get('/platform/sre/posture', async (req, reply) => {
     const session = await requireSession(req, reply);

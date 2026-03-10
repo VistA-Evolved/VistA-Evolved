@@ -1,5 +1,5 @@
 """
-IEEE 11073 SDC Consumer — Sidecar Process
+IEEE 11073 SDC Consumer -- Sidecar Process
 
 Phase 383 (W21-P6): Discovers SDC devices on the local network via
 WS-Discovery, subscribes to BICEPS metrics, normalizes observations
@@ -9,12 +9,12 @@ This is a scaffold implementation. In production, enable device filtering,
 TLS validation, and waveform downsampling.
 
 Environment variables:
-    API_INGEST_URL      — API ingest endpoint (default: http://host.docker.internal:3001/devices/sdc/ingest)
-    SDC_INGEST_SERVICE_KEY — Service auth key for X-Service-Key header
-    SDC_POLL_INTERVAL_MS   — How often to push metrics (default: 5000)
-    SDC_DISCOVERY_TIMEOUT_S — WS-Discovery timeout (default: 10)
-    SDC_WAVEFORM_DOWNSAMPLE — Downsample waveforms (default: true)
-    SDC_LOG_LEVEL          — Logging level (default: INFO)
+    API_INGEST_URL      -- API ingest endpoint (default: http://host.docker.internal:3001/devices/sdc/ingest)
+    SDC_INGEST_SERVICE_KEY -- Service auth key for X-Service-Key header
+    SDC_POLL_INTERVAL_MS   -- How often to push metrics (default: 5000)
+    SDC_DISCOVERY_TIMEOUT_S -- WS-Discovery timeout (default: 10)
+    SDC_WAVEFORM_DOWNSAMPLE -- Downsample waveforms (default: true)
+    SDC_LOG_LEVEL          -- Logging level (default: INFO)
 """
 
 import os

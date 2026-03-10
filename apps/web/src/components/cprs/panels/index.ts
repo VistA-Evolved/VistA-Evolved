@@ -19,3 +19,8 @@ export { default as NursingPanel } from './NursingPanel';
 export { default as MHAPanel } from './MHAPanel';
 export { default as ClinicalProceduresPanel } from './ClinicalProceduresPanel';
 export { default as LongitudinalPanel } from './LongitudinalPanel';
+export { default as VitalsPanel } from './VitalsPanel';
+export { default as AllergiesPanel } from './AllergiesPanel';
+export { default as MedReconciliationPanel } from './MedReconciliationPanel';
+export { default as EPrescribingPanel } from './EPrescribingPanel';
+export { default as EncountersPanel } from './EncountersPanel';

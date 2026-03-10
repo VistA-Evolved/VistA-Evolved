@@ -1,5 +1,5 @@
 /**
- * Payer Registry Store — Phase 88: PH Payer Registry Ingestion
+ * Payer Registry Store -- Phase 88: PH Payer Registry Ingestion
  *
  * Versioned, source-tracked payer registry with:
  *   - payer_registry_sources: ingestion source metadata + hashes
@@ -14,14 +14,15 @@
  */
 
 import { randomBytes, createHash } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 
-/* ── ID generation ──────────────────────────────────────────── */
+/* -- ID generation -------------------------------------------- */
 
 function newId(prefix: string): string {
   return `${prefix}-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 export type PayerSourceType = 'ic_hmo_list' | 'ic_hmo_broker_list' | 'manual' | 'csv_import';
 
@@ -84,7 +85,7 @@ export interface RegistrySnapshot {
   diff: RegistryDiffEntry[];
 }
 
-/* ── Stores ─────────────────────────────────────────────────── */
+/* -- Stores --------------------------------------------------- */
 
 const sources = new Map<string, PayerRegistrySource>();
 const payers = new Map<string, RegistryPayer>();
@@ -97,7 +98,7 @@ export function initRegistryStoreRepo(repo: typeof registryDbRepo): void {
 }
 const snapshots: RegistrySnapshot[] = [];
 
-/* ── Source CRUD ─────────────────────────────────────────────── */
+/* -- Source CRUD ----------------------------------------------- */
 
 export function createSource(data: {
   name: string;
@@ -110,7 +111,7 @@ export function createSource(data: {
 }): PayerRegistrySource {
   const hash = createHash('sha256').update(data.content).digest('hex');
 
-  // Check for duplicate hash — idempotent
+  // Check for duplicate hash -- idempotent
   const existing = Array.from(sources.values()).find(
     (s) => s.sourceType === data.sourceType && s.contentHash === hash
   );
@@ -147,7 +148,7 @@ export function createSource(data: {
       source: (source as any).type ?? 'manual',
       createdAt: (source as any).createdAt ?? new Date().toISOString(),
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   return source;
 }
@@ -166,7 +167,7 @@ export function getLatestSourceByType(type: PayerSourceType): PayerRegistrySourc
     .sort((a, b) => b.version - a.version)[0];
 }
 
-/* ── Payer CRUD ──────────────────────────────────────────────── */
+/* -- Payer CRUD ------------------------------------------------ */
 
 export function upsertRegistryPayer(data: {
   canonicalName: string;
@@ -308,7 +309,7 @@ export function mergeRegistryPayers(
   return { ok: true, merged: target };
 }
 
-/* ── Relationships ───────────────────────────────────────────── */
+/* -- Relationships --------------------------------------------- */
 
 export function addRelationship(data: {
   brokerId: string;
@@ -342,7 +343,7 @@ export function listRelationships(filter?: {
   return result;
 }
 
-/* ── Snapshots ───────────────────────────────────────────────── */
+/* -- Snapshots ------------------------------------------------- */
 
 export function recordSnapshot(data: {
   sourceId: string;
@@ -366,7 +367,7 @@ export function getLatestSnapshot(sourceType: PayerSourceType): RegistrySnapshot
     .sort((a, b) => b.version - a.version)[0];
 }
 
-/* ── Stats ───────────────────────────────────────────────────── */
+/* -- Stats ----------------------------------------------------- */
 
 export function getRegistryStats(): {
   totalPayers: number;

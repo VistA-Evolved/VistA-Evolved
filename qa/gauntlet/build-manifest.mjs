@@ -27,7 +27,7 @@ const INDEX_PATH = join(ROOT, 'docs', 'qa', 'phase-index.json');
 const OVERRIDES_PATH = join(__dirname, 'phase-manifest.overrides.json');
 const OUTPUT_PATH = join(__dirname, 'phase-manifest.json');
 
-// ── Tag inference from folder name keywords ─────────────────
+// -- Tag inference from folder name keywords -----------------
 
 const TAG_KEYWORDS = {
   rcm: ['RCM', 'BILLING', 'PAYER', 'CLAIM', 'EDI'],
@@ -57,7 +57,7 @@ function inferTags(folderName) {
   return tags.length > 0 ? tags : ['general'];
 }
 
-// ── Default gate assignments by tag ─────────────────────────
+// -- Default gate assignments by tag -------------------------
 
 const FAST_GATES = [
   'G0_prompts_integrity',
@@ -95,7 +95,7 @@ function buildSuites(tags) {
   return { fast, rc, full };
 }
 
-// ── Load phase-index if available ───────────────────────────
+// -- Load phase-index if available ---------------------------
 
 let phaseIndex = new Map();
 if (existsSync(INDEX_PATH)) {
@@ -106,7 +106,7 @@ if (existsSync(INDEX_PATH)) {
   }
 }
 
-// ── Scan prompts/ folders ───────────────────────────────────
+// -- Scan prompts/ folders -----------------------------------
 
 const PHASE_FOLDER_RE = /^(\d+)-PHASE-(\d+\w?)-(.+)/;
 const allFolders = readdirSync(PROMPTS_DIR)
@@ -155,7 +155,7 @@ for (const folder of allFolders) {
   });
 }
 
-// ── Merge overrides ─────────────────────────────────────────
+// -- Merge overrides -----------------------------------------
 
 if (existsSync(OVERRIDES_PATH)) {
   const raw = readFileSync(OVERRIDES_PATH, 'utf-8');
@@ -184,7 +184,7 @@ if (existsSync(OVERRIDES_PATH)) {
   }
 }
 
-// ── Write output ────────────────────────────────────────────
+// -- Write output --------------------------------------------
 
 const output = {
   generatedAt: new Date().toISOString(),

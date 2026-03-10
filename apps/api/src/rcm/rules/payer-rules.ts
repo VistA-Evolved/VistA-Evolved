@@ -1,5 +1,5 @@
 /**
- * RCM — Payer Rules Engine (Phase 43)
+ * RCM -- Payer Rules Engine (Phase 43)
  *
  * Configuration-driven per-payer business rules that catch rejections
  * BEFORE submission. Rules encode payer-specific requirements:
@@ -15,8 +15,9 @@
  */
 
 import { randomUUID } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 
-/* ── Rule Types ────────────────────────────────────────────── */
+/* -- Rule Types ---------------------------------------------- */
 
 export type RuleCategory =
   | 'required_field'
@@ -40,7 +41,7 @@ export interface PayerRule {
   severity: RuleSeverity;
   enabled: boolean;
 
-  /** Condition — when does this rule apply */
+  /** Condition -- when does this rule apply */
   condition: RuleCondition;
 
   /** Remediation text */
@@ -77,10 +78,10 @@ export interface RuleEvalResult {
   actionOnFail?: string;
 }
 
-/* ── In-Memory Rule Store ──────────────────────────────────── */
+/* -- In-Memory Rule Store ------------------------------------ */
 
 const rules = new Map<string, PayerRule>();
-const payerIndex = new Map<string, Set<string>>(); // payerId → rule IDs
+const payerIndex = new Map<string, Set<string>>(); // payerId -> rule IDs
 
 /* Phase 146: DB repo wiring */
 let ruleDbRepo: { upsert(d: any): Promise<any> } | null = null;
@@ -88,7 +89,7 @@ export function initPayerRuleStoreRepo(repo: typeof ruleDbRepo): void {
   ruleDbRepo = repo;
 }
 
-/* ── CRUD ──────────────────────────────────────────────────── */
+/* -- CRUD ---------------------------------------------------- */
 
 export function addRule(rule: PayerRule): void {
   rules.set(rule.id, rule);
@@ -103,7 +104,7 @@ export function addRule(rule: PayerRule): void {
       active: true,
       createdAt: new Date().toISOString(),
     })
-    .catch(() => {});
+    .catch((e: unknown) => log.warn('Payer rules PG write-through failed', { error: String(e) }));
 
   if (!payerIndex.has(rule.payerId)) {
     payerIndex.set(rule.payerId, new Set());
@@ -172,7 +173,7 @@ export function getRulesForPayer(payerId: string): PayerRule[] {
     .filter((r) => r && r.enabled);
 }
 
-/* ── Rule Evaluation ───────────────────────────────────────── */
+/* -- Rule Evaluation ----------------------------------------- */
 
 /**
  * Evaluate all applicable rules against a claim.
@@ -290,7 +291,7 @@ function getNestedField(obj: Record<string, unknown>, path: string): unknown {
   return current;
 }
 
-/* ── Seed Rules ────────────────────────────────────────────── */
+/* -- Seed Rules ---------------------------------------------- */
 
 export function seedDefaultRules(): void {
   const now = new Date().toISOString();
@@ -423,7 +424,7 @@ export function seedDefaultRules(): void {
   }
 }
 
-/* ── Stats ─────────────────────────────────────────────────── */
+/* -- Stats --------------------------------------------------- */
 
 export function getRuleStats(): {
   total: number;

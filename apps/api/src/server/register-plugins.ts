@@ -1,9 +1,9 @@
 /**
- * Server — Register Plugins
+ * Server -- Register Plugins
  *
- * Phase 173: Extracted from index.ts — registers all Fastify plugins,
+ * Phase 173: Extracted from index.ts -- registers all Fastify plugins,
  * middleware, content-type parsers, and module system initialization.
- * NO route registration — that lives in register-routes.ts.
+ * NO route registration -- that lives in register-routes.ts.
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -32,6 +32,7 @@ export async function registerPlugins(server: FastifyInstance): Promise<void> {
     origin: corsOriginValidator as any,
     credentials: true,
     methods: ['GET', 'HEAD', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
+    maxAge: 86400,
   });
   server.register(cookie);
   server.register(websocket);

@@ -1,5 +1,5 @@
 /**
- * ManualAssistedAdapter — Base class for HMO Portal Adapters (Phase 97)
+ * ManualAssistedAdapter -- Base class for HMO Portal Adapters (Phase 97)
  *
  * In manual_assisted mode (Phase 97), the adapter:
  *   - Generates export files (JSON, text summary)
@@ -31,7 +31,7 @@ import type {
 import { generateLoaExports } from './loa-engine.js';
 import { exportHmoPacketJson, exportHmoPacketText } from './hmo-packet-builder.js';
 
-/* ── Manual Assisted Base ───────────────────────────────────── */
+/* -- Manual Assisted Base ------------------------------------- */
 
 export interface ManualAdapterConfig {
   payerId: PortalCapableHmoId;

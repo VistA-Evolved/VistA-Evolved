@@ -1,31 +1,31 @@
 /**
- * Portal IAM Routes — Phase 29
+ * Portal IAM Routes -- Phase 29
  *
  * Patient Identity & Access Management, Proxy Workflows, Access Logs.
  *
  * Route groups:
- *   /portal/iam/register           — Create portal account
- *   /portal/iam/login              — Login with portal credentials
- *   /portal/iam/logout             — Destroy portal IAM session
- *   /portal/iam/session            — Get current session
- *   /portal/iam/csrf-token         — Get CSRF token
- *   /portal/iam/password/change    — Change password
- *   /portal/iam/password/reset     — Request password reset
- *   /portal/iam/password/confirm   — Confirm password reset
- *   /portal/iam/mfa/setup          — Setup MFA (TOTP)
- *   /portal/iam/mfa/confirm        — Confirm MFA setup
- *   /portal/iam/mfa/disable        — Disable MFA
- *   /portal/iam/profiles           — List patient profiles
- *   /portal/iam/profiles/:id       — Remove patient profile
- *   /portal/iam/devices            — List device sessions
- *   /portal/iam/devices/:id/revoke — Revoke device session
- *   /portal/iam/devices/revoke-all — Revoke all device sessions
- *   /portal/iam/proxy/invite       — Create proxy invitation
- *   /portal/iam/proxy/invitations  — List invitations
- *   /portal/iam/proxy/invitations/:id/respond — Accept/decline
- *   /portal/iam/proxy/invitations/:id/cancel  — Cancel invitation
- *   /portal/iam/activity           — Get access log
- *   /portal/iam/stats              — Admin stats
+ *   /portal/iam/register           -- Create portal account
+ *   /portal/iam/login              -- Login with portal credentials
+ *   /portal/iam/logout             -- Destroy portal IAM session
+ *   /portal/iam/session            -- Get current session
+ *   /portal/iam/csrf-token         -- Get CSRF token
+ *   /portal/iam/password/change    -- Change password
+ *   /portal/iam/password/reset     -- Request password reset
+ *   /portal/iam/password/confirm   -- Confirm password reset
+ *   /portal/iam/mfa/setup          -- Setup MFA (TOTP)
+ *   /portal/iam/mfa/confirm        -- Confirm MFA setup
+ *   /portal/iam/mfa/disable        -- Disable MFA
+ *   /portal/iam/profiles           -- List patient profiles
+ *   /portal/iam/profiles/:id       -- Remove patient profile
+ *   /portal/iam/devices            -- List device sessions
+ *   /portal/iam/devices/:id/revoke -- Revoke device session
+ *   /portal/iam/devices/revoke-all -- Revoke all device sessions
+ *   /portal/iam/proxy/invite       -- Create proxy invitation
+ *   /portal/iam/proxy/invitations  -- List invitations
+ *   /portal/iam/proxy/invitations/:id/respond -- Accept/decline
+ *   /portal/iam/proxy/invitations/:id/cancel  -- Cancel invitation
+ *   /portal/iam/activity           -- Get access log
+ *   /portal/iam/stats              -- Admin stats
  *
  * Auth model: Portal routes use their own session check (portal IAM session),
  * NOT the clinician session. The global auth gateway skips /portal/* routes.
@@ -77,7 +77,7 @@ interface IamSession {
   userId: string;
   tenantId: string;
   displayName: string;
-  /** Primary patient DFN (self profile) — for backward compat with portal routes */
+  /** Primary patient DFN (self profile) -- for backward compat with portal routes */
   patientDfn: string | null;
   patientName: string | null;
   /** Currently active profile (for proxy switching) */
@@ -104,7 +104,7 @@ setInterval(() => {
       iamSessions.delete(token);
     }
   }
-}, 60_000);
+}, 60_000).unref();
 
 /* ------------------------------------------------------------------ */
 /* IAM Session Helpers                                                  */
@@ -193,7 +193,7 @@ setInterval(() => {
   for (const [ip, bucket] of authAttempts) {
     if (bucket.resetAt <= cutoff) authAttempts.delete(ip);
   }
-}, 60_000);
+}, 60_000).unref();
 
 /* ------------------------------------------------------------------ */
 /* Route Plugin                                                         */

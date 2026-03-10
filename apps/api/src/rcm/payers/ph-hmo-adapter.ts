@@ -1,12 +1,12 @@
 /**
- * PH HMO Adapter — Phase 93: PH HMO Deepening Pack
+ * PH HMO Adapter -- Phase 93: PH HMO Deepening Pack
  *
  * Adapter layer for PH HMO operations. Implements three strategies
  * based on each HMO's integration mode:
  *
- *   1. ManualAdapter   — always available; generates print-ready packets
- *   2. PortalAdapter   — deep links to provider portals + checklists
- *   3. EmailAdapter    — email template generation for LOA/claims
+ *   1. ManualAdapter   -- always available; generates print-ready packets
+ *   2. PortalAdapter   -- deep links to provider portals + checklists
+ *   3. EmailAdapter    -- email template generation for LOA/claims
  *
  * VistA-first: All billing data grounded in VistA IB/AR/PCE.
  * No fabricated APIs. No payer credentials stored in code.
@@ -24,7 +24,7 @@ import {
   type HmoIntegrationMode,
 } from './ph-hmo-registry.js';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 export interface LoaRequestPacket {
   payerId: string;
@@ -86,7 +86,7 @@ export interface AdapterCapabilityReport {
   evidence: Array<{ kind: string; url: string; title: string }>;
 }
 
-/* ── LOA Request Packet Generation ──────────────────────────── */
+/* -- LOA Request Packet Generation ---------------------------- */
 
 const COMMON_LOA_FIELDS = [
   'Member ID / HMO card number',
@@ -150,14 +150,14 @@ export function createLoaRequestPacket(payerId: string): LoaRequestPacket | null
   };
 }
 
-/* ── Claim Packet Generation ────────────────────────────────── */
+/* -- Claim Packet Generation ---------------------------------- */
 
 const COMMON_CLAIM_FIELDS = [
   'LOA number / authorization reference',
   'Member ID / HMO card number',
   'Patient full name',
-  'Diagnosis codes (ICD-10) — all applicable',
-  'Procedure codes (CPT/HCPCS) — all billable',
+  'Diagnosis codes (ICD-10) -- all applicable',
+  'Procedure codes (CPT/HCPCS) -- all billable',
   'Total charges per line item',
   'Date(s) of service',
   'Admitting/attending physician name and PRC license',
@@ -210,7 +210,7 @@ export function createClaimPacket(payerId: string): ClaimPacket | null {
   };
 }
 
-/* ── Capability Report ──────────────────────────────────────── */
+/* -- Capability Report ---------------------------------------- */
 
 function capabilityMethod(status: HmoCapabilityStatus, mode: HmoIntegrationMode): string {
   if (status === 'portal') return 'Provider portal login';
@@ -265,7 +265,7 @@ export function getAdapterCapabilityReport(payerId: string): AdapterCapabilityRe
   };
 }
 
-/* ── Batch Reports ──────────────────────────────────────────── */
+/* -- Batch Reports -------------------------------------------- */
 
 export function getAllCapabilityReports(filter?: {
   status?: string;

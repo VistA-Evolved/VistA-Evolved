@@ -1,5 +1,5 @@
 /**
- * HL7v2 Engine — Message Parser
+ * HL7v2 Engine -- Message Parser
  *
  * Phase 239 (Wave 6 P2): Zero-dependency HL7v2 message parser.
  * Handles segment splitting, field parsing, MSH extraction.
@@ -100,7 +100,7 @@ function parseMsh(segment: Hl7Segment, fieldSep: string): Hl7Msh | null {
   const encodingChars = afterMsh.substring(0, 4);
   const rest = afterMsh.substring(4);
 
-  // Split the rest by field separator — but skip the leading separator
+  // Split the rest by field separator -- but skip the leading separator
   const fields = rest.startsWith(fieldSep)
     ? rest.substring(1).split(fieldSep)
     : rest.split(fieldSep);
@@ -132,7 +132,7 @@ function parseMsh(segment: Hl7Segment, fieldSep: string): Hl7Msh | null {
 export function getField(segment: Hl7Segment, fieldIndex: number): string {
   // For non-MSH segments, field 1 = index 1 in fields array (index 0 = segment name)
   if (segment.name === 'MSH') {
-    // MSH is special — MSH-1 is the separator, MSH-2 is encoding chars
+    // MSH is special -- MSH-1 is the separator, MSH-2 is encoding chars
     // Use the original fields but offset
     if (fieldIndex <= 0) return '';
     if (fieldIndex === 1) return HL7_FIELD_SEP;

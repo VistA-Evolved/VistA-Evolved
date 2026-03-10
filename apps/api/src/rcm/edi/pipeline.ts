@@ -1,5 +1,5 @@
 /**
- * EDI Pipeline — Build -> Validate -> Send -> Track -> Receive
+ * EDI Pipeline -- Build -> Validate -> Send -> Track -> Receive
  *
  * Orchestrates the lifecycle of an EDI transaction from internal claim
  * representation through X12 generation, validation, transmission via
@@ -23,7 +23,7 @@ import { getPayer } from '../payer-registry/registry.js';
 import { randomBytes } from 'node:crypto';
 import { log } from '../../lib/logger.js';
 
-/* ── DB repo interface (lazy-wired at startup) ──────────────── */
+/* -- DB repo interface (lazy-wired at startup) ---------------- */
 
 interface PipelineRepo {
   insertPipelineEntry(data: any): any;
@@ -47,7 +47,7 @@ function dbWarn(op: string, err: any): void {
   }
 }
 
-/* ─── Pipeline store (in-memory cache) ────────────────────────────── */
+/* --- Pipeline store (in-memory cache) ------------------------------ */
 
 const pipelineEntries = new Map<string, PipelineEntry>();
 const claimIndex = new Map<string, string[]>(); // claimId -> entryIds
@@ -56,7 +56,7 @@ function genId(): string {
   return `edi-${Date.now()}-${randomBytes(4).toString('hex')}`;
 }
 
-/* ─── Public: create pipeline entry ──────────────────────────────── */
+/* --- Public: create pipeline entry -------------------------------- */
 
 export function createPipelineEntry(
   tenantId: string,
@@ -85,7 +85,7 @@ export function createPipelineEntry(
   existing.push(entry.id);
   claimIndex.set(claimId, existing);
 
-  // Write-through to DB (Phase 126) — fire-and-forget with .catch
+  // Write-through to DB (Phase 126) -- fire-and-forget with .catch
   if (dbRepo) {
     dbRepo
       .insertPipelineEntry({
@@ -110,7 +110,7 @@ export function createPipelineEntry(
   return entry;
 }
 
-/* ─── Public: advance pipeline stage ──────────────────────────────── */
+/* --- Public: advance pipeline stage -------------------------------- */
 
 export function advancePipelineStage(
   entryId: string,
@@ -132,7 +132,7 @@ export function advancePipelineStage(
     entry.completedAt = new Date().toISOString();
   }
 
-  // Write-through to DB (Phase 126) — fire-and-forget with .catch
+  // Write-through to DB (Phase 126) -- fire-and-forget with .catch
   if (dbRepo) {
     const updates: Record<string, unknown> = {
       stage: entry.stage,
@@ -148,7 +148,7 @@ export function advancePipelineStage(
   return entry;
 }
 
-/* ─── Public: query ──────────────────────────────────────────────── */
+/* --- Public: query ------------------------------------------------ */
 
 export function getPipelineEntry(entryId: string): PipelineEntry | undefined {
   return pipelineEntries.get(entryId);
@@ -182,7 +182,7 @@ export function listPipelineEntries(filters?: {
   return { items, total };
 }
 
-/* ─── Build: Claim → EdiClaim837 ──────────────────────────────────── */
+/* --- Build: Claim -> EdiClaim837 ------------------------------------ */
 
 export function buildClaim837FromDomain(claim: Claim): EdiClaim837 {
   // Build a minimal 837P from the internal claim.
@@ -256,7 +256,7 @@ export function buildClaim837FromDomain(claim: Claim): EdiClaim837 {
   return edi;
 }
 
-/* ─── Build: Eligibility inquiry ──────────────────────────────────── */
+/* --- Build: Eligibility inquiry ------------------------------------ */
 
 export function buildEligibilityInquiry270(
   memberId: string,
@@ -287,7 +287,7 @@ export function buildEligibilityInquiry270(
   };
 }
 
-/* ─── Build: Claim status inquiry ─────────────────────────────────── */
+/* --- Build: Claim status inquiry ----------------------------------- */
 
 export function buildClaimStatusInquiry276(
   claim: Claim,
@@ -305,7 +305,7 @@ export function buildClaimStatusInquiry276(
   };
 }
 
-/* ─── Pipeline stats ──────────────────────────────────────────────── */
+/* --- Pipeline stats ------------------------------------------------ */
 
 export function getPipelineStats(tenantId: string): {
   total: number;
@@ -332,7 +332,7 @@ export function getPipelineStats(tenantId: string): {
   };
 }
 
-/* ─── Reset (for testing) ────────────────────────────────────────── */
+/* --- Reset (for testing) ------------------------------------------ */
 
 /** Returns the backing repo (if wired) for external inspection (e.g. restart gate) */
 export function getPipelineRepo(): PipelineRepo | null {

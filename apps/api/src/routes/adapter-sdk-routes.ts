@@ -1,5 +1,5 @@
 /**
- * Payer Adapter SDK Routes — Phase 261 (Wave 8 P5)
+ * Payer Adapter SDK Routes -- Phase 261 (Wave 8 P5)
  *
  * Admin endpoints for adapter metrics, rate limiting status,
  * sandbox test harness, and adapter health.
@@ -13,7 +13,7 @@ import { listConnectors, getAllConnectors } from '../rcm/connectors/types.js';
 
 export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
   /**
-   * GET /rcm/sdk/adapters — List all registered payer adapters with status
+   * GET /rcm/sdk/adapters -- List all registered payer adapters with status
    */
   server.get('/rcm/sdk/adapters', async (_request, reply) => {
     const adapters = listPayerAdapters();
@@ -31,7 +31,7 @@ export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /rcm/sdk/connectors — List all registered connectors with status
+   * GET /rcm/sdk/connectors -- List all registered connectors with status
    */
   server.get('/rcm/sdk/connectors', async (_request, reply) => {
     const connectors = listConnectors();
@@ -44,7 +44,7 @@ export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /rcm/sdk/test-cases — List available sandbox test cases
+   * GET /rcm/sdk/test-cases -- List available sandbox test cases
    */
   server.get('/rcm/sdk/test-cases', async (_request, reply) => {
     const testCases = listSandboxTestCases();
@@ -56,7 +56,7 @@ export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
   });
 
   /**
-   * POST /rcm/sdk/test-cases/run — Run sandbox test harness
+   * POST /rcm/sdk/test-cases/run -- Run sandbox test harness
    * Body: { testCaseNames?: string[] } (empty = run all)
    */
   server.post('/rcm/sdk/test-cases/run', async (request, reply) => {
@@ -106,7 +106,7 @@ export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /rcm/sdk/rate-limits — View rate limit status across adapters
+   * GET /rcm/sdk/rate-limits -- View rate limit status across adapters
    */
   server.get('/rcm/sdk/rate-limits', async (_request, reply) => {
     const adapters = listPayerAdapters();
@@ -119,7 +119,7 @@ export async function adapterSdkRoutes(server: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /rcm/sdk/capabilities — Summarize adapter capabilities
+   * GET /rcm/sdk/capabilities -- Summarize adapter capabilities
    */
   server.get('/rcm/sdk/capabilities', async (_request, reply) => {
     const adapters = listPayerAdapters();

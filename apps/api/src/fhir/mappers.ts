@@ -1,13 +1,13 @@
 /**
- * FHIR R4 Mappers — Phase 178.
+ * FHIR R4 Mappers -- Phase 178.
  *
  * Pure functions that transform VistA adapter record types into FHIR R4
  * resources. Each mapper is deterministic and side-effect free.
  *
  * Mapping strategy:
  *   - Use VistA IEN as FHIR resource `id` (prefixed with source system)
- *   - Patient DFN → Patient/{dfn}
- *   - Missing data → omit field (FHIR allows most fields to be absent)
+ *   - Patient DFN -> Patient/{dfn}
+ *   - Missing data -> omit field (FHIR allows most fields to be absent)
  *   - Coding systems use standard OIDs where possible
  *   - US Core profiles referenced in resource.meta.profile
  *
@@ -66,7 +66,7 @@ const ALLERGY_CLINICAL_SYSTEM = 'http://terminology.hl7.org/CodeSystem/allergyin
 const ALLERGY_VERIFICATION_SYSTEM =
   'http://terminology.hl7.org/CodeSystem/allergyintolerance-verification';
 
-/** VistA vital type abbreviation → LOINC code map. */
+/** VistA vital type abbreviation -> LOINC code map. */
 const VITAL_TYPE_LOINC: Record<string, { code: string; display: string }> = {
   T: { code: '8310-5', display: 'Body temperature' },
   TEMPERATURE: { code: '8310-5', display: 'Body temperature' },
@@ -163,7 +163,7 @@ export function toFhirAllergyIntolerance(
     if (cat) resource.category = [cat];
   }
 
-  // Severity → criticality
+  // Severity -> criticality
   if (rec.severity) {
     resource.criticality = mapCriticality(rec.severity);
   }
@@ -208,7 +208,7 @@ export function toFhirCondition(rec: ProblemRecord, patientDfn: string): FhirCon
     ],
   };
 
-  // Code — use ICD-10 if available, otherwise text-only
+  // Code -- use ICD-10 if available, otherwise text-only
   const code: FhirCodeableConcept = { text: rec.description };
   if (rec.icdCode) {
     code.coding = [{ system: ICD10_SYSTEM, code: rec.icdCode, display: rec.description }];
@@ -268,7 +268,7 @@ export function toFhirVitalObservation(rec: VitalRecord, patientDfn: string): Fh
 
   if (rec.dateTime) resource.effectiveDateTime = normalizeDate(rec.dateTime);
 
-  // Attempt numeric parse for valueQuantity — must be a clean number
+  // Attempt numeric parse for valueQuantity -- must be a clean number
   const trimmedValue = rec.value.trim();
   const numVal = parseFloat(trimmedValue);
   if (!isNaN(numVal) && /^-?\d+(\.\d+)?$/.test(trimmedValue)) {
@@ -308,7 +308,7 @@ export function toFhirLabObservation(rec: LabResult, patientDfn: string): FhirOb
 
   if (rec.dateTime) resource.effectiveDateTime = normalizeDate(rec.dateTime);
 
-  // Attempt numeric parse — strict: must be a clean number, not ">100" etc.
+  // Attempt numeric parse -- strict: must be a clean number, not ">100" etc.
   const trimmedResult = rec.result.trim();
   const numVal = parseFloat(trimmedResult);
   if (!isNaN(numVal) && /^-?\d+(\.\d+)?$/.test(trimmedResult)) {
@@ -617,7 +617,7 @@ function parseName(fullName: string): NonNullable<FhirPatient['name']>[0] {
 function normalizeDate(raw: string): string {
   // Already ISO? Pass through.
   if (/^\d{4}-\d{2}/.test(raw)) return raw;
-  // VistA FM date: YYYMMDD.HHMMSS → YYYY-MM-DDTHH:MM:SS
+  // VistA FM date: YYYMMDD.HHMMSS -> YYYY-MM-DDTHH:MM:SS
   if (/^\d{7}/.test(raw)) {
     const y = 1700 + parseInt(raw.substring(0, 3), 10);
     const m = raw.substring(3, 5);
@@ -636,7 +636,7 @@ function normalizeDate(raw: string): string {
     }
     return `${y}-${m}-${d}`;
   }
-  // MM/DD/YYYY → YYYY-MM-DD
+  // MM/DD/YYYY -> YYYY-MM-DD
   const usMatch = raw.match(/^(\d{1,2})\/(\d{1,2})\/(\d{4})/);
   if (usMatch) {
     return `${usMatch[3]}-${usMatch[1].padStart(2, '0')}-${usMatch[2].padStart(2, '0')}`;

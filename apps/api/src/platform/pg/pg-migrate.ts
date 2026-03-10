@@ -1,16 +1,16 @@
 /**
- * Platform DB — PostgreSQL Migration Runner
+ * Platform DB -- PostgreSQL Migration Runner
  *
  * Phase 101: Platform Data Architecture Convergence
  *
  * Uses raw SQL DDL statements (CREATE TABLE IF NOT EXISTS) for
- * zero-config startup — same pattern as ../db/migrate.ts for SQLite.
+ * zero-config startup -- same pattern as ../db/migrate.ts for SQLite.
  *
  * Migrations are version-tracked in a _migrations table. Each
  * migration runs exactly once, in order. Safe to call repeatedly.
  *
  * For schema evolution, add new migration entries to MIGRATIONS[].
- * Never modify existing migration SQL — add ALTER TABLE statements
+ * Never modify existing migration SQL -- add ALTER TABLE statements
  * as new migrations.
  */
 
@@ -368,7 +368,7 @@ CREATE INDEX IF NOT EXISTS idx_claim_status_claim ON claim_status_check(claim_re
     version: 5,
     name: 'create_capability_matrix_tables',
     sql: `
--- Capability matrix cell — one row per (payerId x capabilityType)
+-- Capability matrix cell -- one row per (payerId x capabilityType)
 CREATE TABLE IF NOT EXISTS capability_matrix_cell (
   id TEXT PRIMARY KEY,
   tenant_id TEXT NOT NULL DEFAULT 'default',
@@ -385,7 +385,7 @@ CREATE TABLE IF NOT EXISTS capability_matrix_cell (
 CREATE UNIQUE INDEX IF NOT EXISTS idx_cap_matrix_payer_cap ON capability_matrix_cell(payer_id, capability);
 CREATE INDEX IF NOT EXISTS idx_cap_matrix_tenant ON capability_matrix_cell(tenant_id);
 
--- Capability matrix evidence — one-to-many evidence links per cell
+-- Capability matrix evidence -- one-to-many evidence links per cell
 CREATE TABLE IF NOT EXISTS capability_matrix_evidence (
   id TEXT PRIMARY KEY,
   tenant_id TEXT NOT NULL DEFAULT 'default',
@@ -481,7 +481,7 @@ CREATE INDEX IF NOT EXISTS idx_claim_status_status ON claim_status_check(status,
 --
 -- Partitioning DEFERRED to Phase 103B because:
 --   1. Requires CREATE TABLE ... PARTITION BY RANGE (breaks IF NOT EXISTS idempotency)
---   2. Existing tables must be migrated (pg_dump → recreate → restore)
+--   2. Existing tables must be migrated (pg_dump -> recreate -> restore)
 --   3. Needs partition management cron (pg_partman or manual CREATE PARTITION)
 --   4. Current data volumes don't justify the operational complexity yet
 --
@@ -1138,7 +1138,7 @@ END $$;
     version: 14,
     name: 'scheduling_lifecycle',
     sql: `
--- Phase 131: Scheduling lifecycle — operational state machine tracking.
+-- Phase 131: Scheduling lifecycle -- operational state machine tracking.
 -- VistA is source of truth; this table tracks transitions for audit/UI.
 -- States: requested, waitlisted, booked, checked_in, completed, cancelled, no_show
 CREATE TABLE IF NOT EXISTS scheduling_lifecycle (
@@ -1169,7 +1169,7 @@ CREATE INDEX IF NOT EXISTS idx_sched_lc_created ON scheduling_lifecycle(created_
     version: 15,
     name: 'i18n_foundation',
     sql: `
--- Phase 132: I18N foundation — user locale preferences + intake question schema.
+-- Phase 132: I18N foundation -- user locale preferences + intake question schema.
 
 -- Clinician locale preference (per user per tenant)
 CREATE TABLE IF NOT EXISTS user_locale_preference (
@@ -1183,7 +1183,7 @@ CREATE TABLE IF NOT EXISTS user_locale_preference (
 CREATE UNIQUE INDEX IF NOT EXISTS idx_ulp_tenant_duz ON user_locale_preference(tenant_id, user_duz);
 CREATE INDEX IF NOT EXISTS idx_ulp_tenant ON user_locale_preference(tenant_id);
 
--- Intake question schema — locale-aware question definitions for intake forms
+-- Intake question schema -- locale-aware question definitions for intake forms
 CREATE TABLE IF NOT EXISTS intake_question_schema (
   id TEXT PRIMARY KEY,
   tenant_id TEXT NOT NULL DEFAULT 'default',
@@ -1277,7 +1277,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_ppp_tenant_patient ON patient_portal_pref(
     name: 'durability_wave3_critical_stores',
     sql: `
 -- ============================================================
--- Phase 146: Durability Wave 3 — Critical Map Stores to PG
+-- Phase 146: Durability Wave 3 -- Critical Map Stores to PG
 -- Covers portal, RCM, imaging, auth, clinical, intake, infra
 -- ============================================================
 
@@ -1698,7 +1698,7 @@ CREATE INDEX IF NOT EXISTS idx_rlc_payer ON rcm_loa_case(payer_id);
 CREATE INDEX IF NOT EXISTS idx_rlc_patient ON rcm_loa_case(patient_dfn);
 CREATE INDEX IF NOT EXISTS idx_rlc_status ON rcm_loa_case(status);
 
--- RCM: Credential vault (payerOps/store.ts) — encrypted at rest
+-- RCM: Credential vault (payerOps/store.ts) -- encrypted at rest
 CREATE TABLE IF NOT EXISTS rcm_credential_vault (
   id TEXT PRIMARY KEY,
   tenant_id TEXT NOT NULL DEFAULT 'default',
@@ -1993,7 +1993,7 @@ CREATE INDEX IF NOT EXISTS idx_tom_tenant
 `,
   },
 
-  /* ── v21: Phase 154 — CPOE order sign events ─────────────────── */
+  /* -- v21: Phase 154 -- CPOE order sign events ------------------- */
   {
     version: 21,
     name: 'phase154_cpoe_order_sign_event',
@@ -2200,7 +2200,7 @@ CREATE INDEX IF NOT EXISTS idx_workflow_inst_status
 `,
   },
 
-  // ── Phase 174: RCM SQLite-to-PG parity tables ────────────────
+  // -- Phase 174: RCM SQLite-to-PG parity tables ----------------
   {
     version: 26,
     name: 'phase174_rcm_pg_parity',
@@ -2580,7 +2580,7 @@ CREATE INDEX IF NOT EXISTS idx_mal_tenant_created
 `,
   },
 
-  // ── Phase 275: Tenant Config Control Plane ────────────────
+  // -- Phase 275: Tenant Config Control Plane ----------------
   {
     version: 27,
     name: 'phase275_tenant_config',
@@ -2754,7 +2754,7 @@ CREATE INDEX IF NOT EXISTS idx_itr_partner ON integration_test_run(partner_id);
 CREATE INDEX IF NOT EXISTS idx_itr_tenant ON integration_test_run(tenant_id);
 `,
   },
-  // ─── v32: Phase 328 — Multi-Cluster Registry ───────────────────────────
+  // --- v32: Phase 328 -- Multi-Cluster Registry ---------------------------
   {
     version: 32,
     name: 'phase328_multi_cluster_registry',
@@ -3223,7 +3223,7 @@ CREATE INDEX IF NOT EXISTS idx_wte_task ON workflow_task_event(task_id);
 CREATE INDEX IF NOT EXISTS idx_wte_tenant ON workflow_task_event(tenant_id);
 `,
   },
-  // ── v42 — Phase 351: Patient Communications ──
+  // -- v42 -- Phase 351: Patient Communications --
   {
     version: 42,
     name: 'phase351_patient_comms',
@@ -3388,7 +3388,7 @@ CREATE INDEX IF NOT EXISTS idx_cdr_to ON cross_dept_referral(tenant_id, to_depar
 CREATE INDEX IF NOT EXISTS idx_cdr_status ON cross_dept_referral(tenant_id, status);
 `,
   },
-  // ── Phase 355: Event Bus ──
+  // -- Phase 355: Event Bus --
   {
     version: 44,
     name: 'phase355_event_bus',
@@ -3480,7 +3480,7 @@ CREATE INDEX IF NOT EXISTS idx_wdl_status ON webhook_delivery_log(tenant_id, sta
 `,
   },
 
-  // ── v46: FHIR Subscriptions (Phase 357) ──
+  // -- v46: FHIR Subscriptions (Phase 357) --
   {
     version: 46,
     name: 'fhir_subscriptions',
@@ -3523,7 +3523,7 @@ CREATE INDEX IF NOT EXISTS idx_fnot_status ON fhir_notification(tenant_id, statu
 `,
   },
 
-  // ── v47: Plugin SDK (Phase 358) ──
+  // -- v47: Plugin SDK (Phase 358) --
   {
     version: 47,
     name: 'plugin_sdk',
@@ -3564,7 +3564,7 @@ CREATE INDEX IF NOT EXISTS idx_pal_created ON plugin_audit_log(tenant_id, create
 `,
   },
 
-  // ── v48: UI Extension Slots (Phase 359) ──
+  // -- v48: UI Extension Slots (Phase 359) --
   {
     version: 48,
     name: 'ui_extension_slots',
@@ -3602,7 +3602,7 @@ CREATE INDEX IF NOT EXISTS idx_usp_tenant ON ui_slot_policy(tenant_id);
 `,
   },
 
-  // ── v49: Plugin Marketplace (Phase 360) ──
+  // -- v49: Plugin Marketplace (Phase 360) --
   {
     version: 49,
     name: 'plugin_marketplace',
@@ -3668,7 +3668,7 @@ CREATE INDEX IF NOT EXISTS idx_mpa_created ON marketplace_audit_log(created_at);
 `,
   },
 
-  // ── v50: Analytics Data Platform (Wave 19, Phases 362-369) ──
+  // -- v50: Analytics Data Platform (Wave 19, Phases 362-369) --
   {
     version: 50,
     name: 'analytics_data_platform',
@@ -3768,7 +3768,7 @@ CREATE INDEX IF NOT EXISTS idx_aea_exported ON analytics_export_audit(tenant_id,
 `,
   },
 
-  // ── v51: Phase 492 (W34-P2) — Tenant Country Pack Binding ──
+  // -- v51: Phase 492 (W34-P2) -- Tenant Country Pack Binding --
   {
     version: 51,
     name: 'phase492_tenant_country_binding',
@@ -3789,7 +3789,7 @@ CREATE INDEX IF NOT EXISTS idx_tenant_config_pack
 `,
   },
 
-  // ── v52: Phase 514 (W37-P2) — Payer Dossiers + Onboarding Tasks ──
+  // -- v52: Phase 514 (W37-P2) -- Payer Dossiers + Onboarding Tasks --
   {
     version: 52,
     name: 'phase514_payer_dossiers',
@@ -3842,7 +3842,7 @@ CREATE INDEX IF NOT EXISTS idx_onboard_status ON payer_onboarding_task(status);
 `,
   },
 
-  // ── v53: Phase 523 (W38-C2) — ED Durability ──
+  // -- v53: Phase 523 (W38-C2) -- ED Durability --
   {
     version: 53,
     name: 'phase523_ed_durability',
@@ -3890,7 +3890,7 @@ CREATE INDEX IF NOT EXISTS idx_ed_bed_status ON ed_bed(status);
 `,
   },
 
-  // ── v54: Phase 524 (W38-C3) — OR/Anesthesia Durability ──
+  // -- v54: Phase 524 (W38-C3) -- OR/Anesthesia Durability --
   {
     version: 54,
     name: 'phase524_or_durability',
@@ -3952,7 +3952,7 @@ CREATE INDEX IF NOT EXISTS idx_or_block_room ON or_block(room_id);
 `,
   },
 
-  // ── v55: Phase 525 (W38-C4) — ICU Durability ──
+  // -- v55: Phase 525 (W38-C4) -- ICU Durability --
   {
     version: 55,
     name: 'phase525_icu_durability',
@@ -4067,7 +4067,7 @@ CREATE INDEX IF NOT EXISTS idx_icu_score_type ON icu_score(score_type);
 `,
   },
 
-  // ── v56: Phase 526 (W38-C5) — Device Registry Durability ──
+  // -- v56: Phase 526 (W38-C5) -- Device Registry Durability --
   {
     version: 56,
     name: 'phase526_device_registry_durability',
@@ -4147,7 +4147,7 @@ CREATE INDEX IF NOT EXISTS idx_dal_timestamp ON device_audit_log(timestamp);
 `,
   },
 
-  // ── v57: Phase 528 (W38-C7) — Radiology Durability ──
+  // -- v57: Phase 528 (W38-C7) -- Radiology Durability --
   {
     version: 57,
     name: 'phase528_radiology_durability',
@@ -4318,10 +4318,10 @@ CREATE INDEX IF NOT EXISTS idx_pr_reviewer ON peer_review(reviewer_duz);
 `,
   },
 
-  // ═══════════════════════════════════════════════════════════
-  // v58 — Wave 41: Durable Ops Stores (scheduling writeback,
+  // ===========================================================
+  // v58 -- Wave 41: Durable Ops Stores (scheduling writeback,
   //        HL7 dead-letter + vault, DSAR requests, bulk exports)
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
   {
     version: 58,
     name: 'wave41_durable_ops_stores',
@@ -4418,10 +4418,10 @@ CREATE INDEX IF NOT EXISTS idx_bej_status ON bulk_export_job(tenant_id, status);
 `,
   },
 
-  // ═══════════════════════════════════════════════════════════
-  // v59 — ADT-1: Durable ADT movement store (admit/transfer/discharge)
+  // ===========================================================
+  // v59 -- ADT-1: Durable ADT movement store (admit/transfer/discharge)
   // PG-backed stubs for DGPM write RPCs not available in sandbox.
-  // ═══════════════════════════════════════════════════════════
+  // ===========================================================
   {
     version: 59,
     name: 'adt_movement_store',
@@ -4713,6 +4713,150 @@ CREATE TABLE IF NOT EXISTS tenant_provision_event (
 CREATE INDEX IF NOT EXISTS idx_tpe_catalog ON tenant_provision_event(tenant_id, catalog_id);
 `,
   },
+  {
+    version: 65,
+    name: 'billing_subscription_customer',
+    sql: `
+-- SaaS billing: durable subscription + customer records.
+-- Phase D: Persists billing state across API restarts and supports webhook updates.
+
+CREATE TABLE IF NOT EXISTS billing_customer (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  external_customer_id TEXT,
+  provider TEXT NOT NULL DEFAULT 'mock',
+  email TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_bc_tenant ON billing_customer(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_bc_external ON billing_customer(external_customer_id) WHERE external_customer_id IS NOT NULL;
+
+CREATE TABLE IF NOT EXISTS billing_subscription (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  customer_id TEXT NOT NULL REFERENCES billing_customer(id),
+  plan_id TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'trialing',
+  external_subscription_id TEXT,
+  provider TEXT NOT NULL DEFAULT 'mock',
+  current_period_start TIMESTAMPTZ,
+  current_period_end TIMESTAMPTZ,
+  trial_end TIMESTAMPTZ,
+  cancelled_at TIMESTAMPTZ,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE UNIQUE INDEX IF NOT EXISTS idx_bs_tenant ON billing_subscription(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_bs_status ON billing_subscription(status);
+CREATE INDEX IF NOT EXISTS idx_bs_external ON billing_subscription(external_subscription_id) WHERE external_subscription_id IS NOT NULL;
+
+CREATE TABLE IF NOT EXISTS billing_invoice (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL,
+  subscription_id TEXT NOT NULL REFERENCES billing_subscription(id),
+  external_invoice_id TEXT,
+  amount_cents INTEGER NOT NULL DEFAULT 0,
+  currency TEXT NOT NULL DEFAULT 'USD',
+  status TEXT NOT NULL DEFAULT 'draft',
+  period_start TIMESTAMPTZ,
+  period_end TIMESTAMPTZ,
+  paid_at TIMESTAMPTZ,
+  external_url TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_bi_tenant ON billing_invoice(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_bi_subscription ON billing_invoice(subscription_id);
+CREATE INDEX IF NOT EXISTS idx_bi_external ON billing_invoice(external_invoice_id) WHERE external_invoice_id IS NOT NULL;
+`,
+  },
+  {
+    version: 66,
+    name: 'inpatient_durability_tables',
+    sql: `
+-- Inpatient domain durability: bed assignments, ADT events, flowsheet rows, vitals entries.
+-- Phase 577: Move critical inpatient in-memory stores to PG write-through.
+
+CREATE TABLE IF NOT EXISTS inpatient_bed_assignment (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  location_id TEXT NOT NULL,
+  bed_label TEXT NOT NULL,
+  status TEXT NOT NULL DEFAULT 'available',
+  patient_dfn TEXT,
+  patient_name TEXT,
+  admitting_provider_duz TEXT,
+  ward_name TEXT NOT NULL DEFAULT '',
+  room_number TEXT NOT NULL DEFAULT '',
+  admit_date_time TEXT,
+  discharge_date_time TEXT,
+  precautions JSONB NOT NULL DEFAULT '[]',
+  acuity TEXT,
+  updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_iba_tenant ON inpatient_bed_assignment(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_iba_location ON inpatient_bed_assignment(tenant_id, location_id);
+CREATE INDEX IF NOT EXISTS idx_iba_patient ON inpatient_bed_assignment(patient_dfn) WHERE patient_dfn IS NOT NULL;
+CREATE INDEX IF NOT EXISTS idx_iba_status ON inpatient_bed_assignment(status);
+
+CREATE TABLE IF NOT EXISTS inpatient_adt_event (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  event_type TEXT NOT NULL,
+  from_location_id TEXT,
+  to_location_id TEXT,
+  from_bed_label TEXT,
+  to_bed_label TEXT,
+  provider_duz TEXT NOT NULL,
+  reason TEXT NOT NULL DEFAULT '',
+  vista_movement_ien TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_iade_tenant ON inpatient_adt_event(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_iade_patient ON inpatient_adt_event(tenant_id, patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_iade_type ON inpatient_adt_event(event_type);
+CREATE INDEX IF NOT EXISTS idx_iade_created ON inpatient_adt_event(created_at);
+
+CREATE TABLE IF NOT EXISTS inpatient_flowsheet_row (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  flowsheet_id TEXT NOT NULL,
+  values_json JSONB NOT NULL DEFAULT '{}',
+  flags_json JSONB NOT NULL DEFAULT '{}',
+  recorded_by TEXT NOT NULL,
+  recorded_at TIMESTAMPTZ NOT NULL,
+  source TEXT NOT NULL DEFAULT 'manual',
+  device_observation_id TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ifr_tenant ON inpatient_flowsheet_row(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ifr_patient ON inpatient_flowsheet_row(tenant_id, patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_ifr_flowsheet ON inpatient_flowsheet_row(flowsheet_id);
+CREATE INDEX IF NOT EXISTS idx_ifr_recorded ON inpatient_flowsheet_row(recorded_at);
+
+CREATE TABLE IF NOT EXISTS inpatient_vitals_entry (
+  id TEXT PRIMARY KEY,
+  tenant_id TEXT NOT NULL DEFAULT 'default',
+  patient_dfn TEXT NOT NULL,
+  vitals_json JSONB NOT NULL DEFAULT '{}',
+  units_json JSONB NOT NULL DEFAULT '{}',
+  recorded_by TEXT NOT NULL,
+  recorded_at TIMESTAMPTZ NOT NULL,
+  source TEXT NOT NULL DEFAULT 'manual',
+  writeback_status TEXT NOT NULL DEFAULT 'not_attempted',
+  vista_vitals_ien TEXT,
+  writeback_error TEXT,
+  created_at TIMESTAMPTZ NOT NULL DEFAULT NOW()
+);
+CREATE INDEX IF NOT EXISTS idx_ive_tenant ON inpatient_vitals_entry(tenant_id);
+CREATE INDEX IF NOT EXISTS idx_ive_patient ON inpatient_vitals_entry(tenant_id, patient_dfn);
+CREATE INDEX IF NOT EXISTS idx_ive_recorded ON inpatient_vitals_entry(recorded_at);
+CREATE INDEX IF NOT EXISTS idx_ive_writeback ON inpatient_vitals_entry(writeback_status);
+`,
+  },
 ];
 
 /**
@@ -4868,7 +5012,8 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   'scrub_rule',
   'scrub_result',
   'rcm_durable_job',
-  // Phase 174: Module entitlements (module_catalog is global — no tenant_id)
+  // Phase 174: Module entitlements (module_catalog is global reference data)
+  'module_catalog',
   'tenant_module',
   'tenant_feature_flag',
   'module_audit_log',
@@ -5004,6 +5149,11 @@ export const CANONICAL_RLS_TABLES: readonly string[] = [
   'tenant_security_policy_change',
   'sensitivity_tag',
   'access_reason',
+  // Phase 577: Inpatient durability
+  'inpatient_bed_assignment',
+  'inpatient_adt_event',
+  'inpatient_flowsheet_row',
+  'inpatient_vitals_entry',
 ] as const;
 
 /**
@@ -5123,7 +5273,7 @@ export async function applyRlsPolicies(): Promise<{ applied: string[]; errors: s
       await pool.query(`SELECT create_tenant_rls_policy('${table}')`);
       applied.push(table);
     } catch (err: any) {
-      // Policy may already exist — that's OK
+      // Policy may already exist -- that's OK
       if (err.message?.includes('already exists')) {
         applied.push(table);
       } else {

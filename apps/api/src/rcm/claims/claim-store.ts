@@ -1,10 +1,10 @@
 /**
- * Claims Lifecycle v1 — Hybrid Store (Phase 91 + Phase 121)
+ * Claims Lifecycle v1 -- Hybrid Store (Phase 91 + Phase 121)
  *
  * In-memory ClaimCase store with lifecycle state machine enforcement,
  * event tracking, attachment management, and denial record indexing.
  *
- * Phase 121: Durability Wave 1 — hybrid cache + DB persistence.
+ * Phase 121: Durability Wave 1 -- hybrid cache + DB persistence.
  * Write-through: every mutation writes to both cache and DB.
  * Read: cache-first, DB fallback on cache miss.
  * Migration path: VistA IB/PRCA files when available.
@@ -22,7 +22,7 @@ import type {
 import { isValidLifecycleTransition } from './claim-types.js';
 import { log } from '../../lib/logger.js';
 
-/* ── DB repo interface (lazy-wired at startup) ──────────────── */
+/* -- DB repo interface (lazy-wired at startup) ---------------- */
 
 interface ClaimCaseRepo {
   insertClaimCase(data: any): any;
@@ -48,7 +48,7 @@ function dbWarn(op: string, err: any): void {
   }
 }
 
-/* ── Helper: ClaimCase → DB row conversion ──────────────────── */
+/* -- Helper: ClaimCase -> DB row conversion -------------------- */
 
 function caseToDbRow(cc: ClaimCase): Record<string, unknown> {
   return {
@@ -121,42 +121,41 @@ function dbRowToCase(row: any): ClaimCase {
   } as ClaimCase;
 }
 
-/** Persist the current state of a case to DB */
+/** Persist the current state of a case to DB (fire-and-forget write-through) */
 function persistCaseToDb(cc: ClaimCase): void {
   if (!dbRepo) return;
-  try {
-    dbRepo.updateClaimCase(cc.id, {
-      lifecycleStatus: cc.lifecycleStatus,
-      totalCharge: cc.totalCharge,
-      scrubHistoryJson: JSON.stringify(cc.scrubHistory ?? []),
-      lastScrubResultJson: cc.lastScrubResult ? JSON.stringify(cc.lastScrubResult) : undefined,
-      attachmentsJson: JSON.stringify(cc.attachments ?? []),
-      eventsJson: JSON.stringify(cc.events ?? []),
-      denialsJson: JSON.stringify(cc.denials ?? []),
-      diagnosesJson: JSON.stringify(cc.diagnoses ?? []),
-      proceduresJson: JSON.stringify(cc.procedures ?? []),
-      priority: cc.priority,
-      // VistA grounding + clinical fields
-      vistaEncounterIen: cc.vistaEncounterIen,
-      vistaChargeIen: cc.vistaChargeIen,
-      vistaArIen: cc.vistaArIen,
-      payerName: cc.payerName,
-      patientName: cc.patientName,
-      baseClaimId: cc.baseClaimId,
-    });
-  } catch (e) {
-    dbWarn('updateClaimCase', e);
-  }
+  void dbRepo.updateClaimCase(cc.id, {
+    lifecycleStatus: cc.lifecycleStatus,
+    totalCharge: cc.totalCharge,
+    scrubHistoryJson: JSON.stringify(cc.scrubHistory ?? []),
+    lastScrubResultJson: cc.lastScrubResult ? JSON.stringify(cc.lastScrubResult) : undefined,
+    attachmentsJson: JSON.stringify(cc.attachments ?? []),
+    eventsJson: JSON.stringify(cc.events ?? []),
+    denialsJson: JSON.stringify(cc.denials ?? []),
+    diagnosesJson: JSON.stringify(cc.diagnoses ?? []),
+    proceduresJson: JSON.stringify(cc.procedures ?? []),
+    priority: cc.priority,
+    // VistA grounding + clinical fields
+    vistaEncounterIen: cc.vistaEncounterIen,
+    vistaChargeIen: cc.vistaChargeIen,
+    vistaArIen: cc.vistaArIen,
+    payerName: cc.payerName,
+    patientName: cc.patientName,
+    baseClaimId: cc.baseClaimId,
+  }).catch((e: unknown) => dbWarn('updateClaimCase', e));
 }
 
-/* ── In-Memory Stores ──────────────────────────────────────── */
+/* -- In-Memory Stores ---------------------------------------- */
+
+const MAX_CLAIM_CASES = 50_000;
+const MAX_DENIALS = 100_000;
 
 const cases = new Map<string, ClaimCase>();
-const tenantIndex = new Map<string, Set<string>>(); // tenantId → caseIds
-const denialIndex = new Map<string, Set<string>>(); // claimCaseId → denialIds
-const allDenials = new Map<string, DenialRecord>(); // denialId → DenialRecord
+const tenantIndex = new Map<string, Set<string>>(); // tenantId -> caseIds
+const denialIndex = new Map<string, Set<string>>(); // claimCaseId -> denialIds
+const allDenials = new Map<string, DenialRecord>(); // denialId -> DenialRecord
 
-/* ── Factory ───────────────────────────────────────────────── */
+/* -- Factory ------------------------------------------------- */
 
 export interface CreateClaimCaseParams {
   tenantId: string;
@@ -254,27 +253,34 @@ export function createClaimCase(params: CreateClaimCaseParams): ClaimCase {
 
   cases.set(id, cc);
 
+  // FIFO eviction
+  while (cases.size > MAX_CLAIM_CASES) {
+    const oldest = cases.keys().next().value as string;
+    const evicted = cases.get(oldest);
+    cases.delete(oldest);
+    if (evicted) {
+      const tSet = tenantIndex.get(evicted.tenantId);
+      if (tSet) { tSet.delete(oldest); if (tSet.size === 0) tenantIndex.delete(evicted.tenantId); }
+    }
+  }
+
   // Tenant index
   if (!tenantIndex.has(cc.tenantId)) {
     tenantIndex.set(cc.tenantId, new Set());
   }
   tenantIndex.get(cc.tenantId)!.add(id);
 
-  // Write-through to DB
+  // Write-through to DB (fire-and-forget, .catch for async rejection handling)
   if (dbRepo) {
-    try {
-      dbRepo.insertClaimCase(caseToDbRow(cc));
-    } catch (e) {
-      dbWarn('insertClaimCase', e);
-    }
+    void dbRepo.insertClaimCase(caseToDbRow(cc)).catch((e: unknown) => dbWarn('insertClaimCase', e));
   }
 
   return cc;
 }
 
-/* ── CRUD ──────────────────────────────────────────────────── */
+/* -- CRUD ---------------------------------------------------- */
 
-export function getClaimCase(id: string, tenantId?: string): ClaimCase | undefined {
+export async function getClaimCase(id: string, tenantId?: string): Promise<ClaimCase | undefined> {
   // Cache-first
   const cached = cases.get(id);
   if (cached) {
@@ -285,7 +291,7 @@ export function getClaimCase(id: string, tenantId?: string): ClaimCase | undefin
   // DB fallback
   if (dbRepo) {
     try {
-      const row = dbRepo.findClaimCaseById(id);
+      const row = await dbRepo.findClaimCaseById(id);
       if (row) {
         const cc = dbRowToCase(row);
         if (tenantId && cc.tenantId !== tenantId) return undefined;
@@ -307,12 +313,12 @@ export function getClaimCase(id: string, tenantId?: string): ClaimCase | undefin
   return undefined;
 }
 
-export function updateClaimCase(
+export async function updateClaimCase(
   tenantId: string,
   id: string,
   updates: Partial<ClaimCase>
-): ClaimCase | undefined {
-  const existing = getClaimCase(id, tenantId);
+): Promise<ClaimCase | undefined> {
+  const existing = await getClaimCase(id, tenantId);
   if (!existing) return undefined;
 
   const updated: ClaimCase = {
@@ -331,7 +337,7 @@ export function updateClaimCase(
   return updated;
 }
 
-/* ── Lifecycle Transitions ─────────────────────────────────── */
+/* -- Lifecycle Transitions ----------------------------------- */
 
 export interface TransitionResult {
   ok: boolean;
@@ -339,20 +345,20 @@ export interface TransitionResult {
   error?: string;
 }
 
-export function transitionClaimCase(
+export async function transitionClaimCase(
   tenantId: string,
   id: string,
   toStatus: ClaimLifecycleStatus,
   actor: string,
   detail?: Record<string, unknown>
-): TransitionResult {
-  const cc = getClaimCase(id, tenantId);
+): Promise<TransitionResult> {
+  const cc = await getClaimCase(id, tenantId);
   if (!cc) return { ok: false, error: 'Claim case not found' };
 
   if (!isValidLifecycleTransition(cc.lifecycleStatus, toStatus)) {
     return {
       ok: false,
-      error: `Invalid transition: ${cc.lifecycleStatus} → ${toStatus}`,
+      error: `Invalid transition: ${cc.lifecycleStatus} -> ${toStatus}`,
     };
   }
 
@@ -433,14 +439,14 @@ export function transitionClaimCase(
   return { ok: true, claimCase: updated };
 }
 
-/* ── Scrub Results ─────────────────────────────────────────── */
+/* -- Scrub Results ------------------------------------------- */
 
-export function recordScrubResult(
+export async function recordScrubResult(
   tenantId: string,
   claimCaseId: string,
   result: ClaimScrubResult
-): ClaimCase | undefined {
-  const cc = getClaimCase(claimCaseId, tenantId);
+): Promise<ClaimCase | undefined> {
+  const cc = await getClaimCase(claimCaseId, tenantId);
   if (!cc) return undefined;
 
   const event: ClaimEvent = {
@@ -469,15 +475,15 @@ export function recordScrubResult(
   return updated;
 }
 
-/* ── Attachments ───────────────────────────────────────────── */
+/* -- Attachments --------------------------------------------- */
 
-export function addAttachment(
+export async function addAttachment(
   tenantId: string,
   claimCaseId: string,
   attachment: Omit<ClaimAttachment, 'id' | 'claimCaseId'>,
   actor: string
-): ClaimCase | undefined {
-  const cc = getClaimCase(claimCaseId, tenantId);
+): Promise<ClaimCase | undefined> {
+  const cc = await getClaimCase(claimCaseId, tenantId);
   if (!cc) return undefined;
 
   const att: ClaimAttachment = {
@@ -506,14 +512,14 @@ export function addAttachment(
   return updated;
 }
 
-/* ── Denials ───────────────────────────────────────────────── */
+/* -- Denials ------------------------------------------------- */
 
-export function addDenial(
+export async function addDenial(
   tenantId: string,
   claimCaseId: string,
   denial: Omit<DenialRecord, 'id' | 'claimCaseId'>
-): DenialRecord | undefined {
-  const cc = getClaimCase(claimCaseId, tenantId);
+): Promise<DenialRecord | undefined> {
+  const cc = await getClaimCase(claimCaseId, tenantId);
   if (!cc) return undefined;
 
   const dr: DenialRecord = {
@@ -523,6 +529,10 @@ export function addDenial(
   };
 
   allDenials.set(dr.id, dr);
+  while (allDenials.size > MAX_DENIALS) {
+    const oldest = allDenials.keys().next().value as string;
+    allDenials.delete(oldest);
+  }
   if (!denialIndex.has(claimCaseId)) {
     denialIndex.set(claimCaseId, new Set());
   }
@@ -548,16 +558,16 @@ export function addDenial(
   return dr;
 }
 
-export function resolveDenial(
+export async function resolveDenial(
   tenantId: string,
   denialId: string,
   resolvedBy: string,
   resolutionNote: string
-): DenialRecord | undefined {
+): Promise<DenialRecord | undefined> {
   const dr = allDenials.get(denialId);
   if (!dr) return undefined;
 
-  const cc = getClaimCase(dr.claimCaseId, tenantId);
+  const cc = await getClaimCase(dr.claimCaseId, tenantId);
   if (!cc) return undefined;
 
   const updated: DenialRecord = {
@@ -579,7 +589,7 @@ export function resolveDenial(
   return updated;
 }
 
-/* ── Queries ───────────────────────────────────────────────── */
+/* -- Queries ------------------------------------------------- */
 
 export interface ListClaimCasesFilters {
   tenantId: string;
@@ -592,24 +602,26 @@ export interface ListClaimCasesFilters {
   offset?: number;
 }
 
-export function listClaimCases(filters: ListClaimCasesFilters): {
+export async function listClaimCases(filters: ListClaimCasesFilters): Promise<{
   items: ClaimCase[];
   total: number;
-} {
+}> {
   const tenantSet = tenantIndex.get(filters.tenantId);
   if (!tenantSet || tenantSet.size === 0) {
     // Try DB if cache is empty for this tenant
     if (dbRepo) {
       try {
-        const rows = dbRepo.findClaimCasesByTenant(filters.tenantId, {
+        const rows = await dbRepo.findClaimCasesByTenant(filters.tenantId, {
           status: filters.status,
           patientDfn: filters.patientDfn,
           payerId: filters.payerId,
           limit: filters.limit ?? 50,
           offset: filters.offset ?? 0,
         });
-        const total = dbRepo.countClaimCasesByTenant(filters.tenantId);
-        const items = rows.map(dbRowToCase);
+        const rowsArr = Array.isArray(rows) ? rows : [];
+        const totalRaw = await dbRepo.countClaimCasesByTenant(filters.tenantId);
+        const total = Number(totalRaw) || 0;
+        const items = rowsArr.map(dbRowToCase);
         // Rehydrate cache
         for (const cc of items) {
           cases.set(cc.id, cc);
@@ -680,7 +692,7 @@ export function listDenials(filters: {
   return { items: items.slice(offset, offset + limit), total };
 }
 
-/* ── Stats ─────────────────────────────────────────────────── */
+/* -- Stats --------------------------------------------------- */
 
 export function getClaimCaseStats(tenantId: string): {
   total: number;
@@ -733,7 +745,7 @@ export function getClaimCaseStats(tenantId: string): {
   };
 }
 
-/* ── Store Stats ───────────────────────────────────────────── */
+/* -- Store Stats --------------------------------------------- */
 
 export function getStoreInfo(): {
   totalCases: number;
@@ -747,7 +759,7 @@ export function getStoreInfo(): {
   };
 }
 
-/** Reset all stores — used in tests */
+/** Reset all stores -- used in tests */
 export function resetClaimCaseStore(): void {
   cases.clear();
   tenantIndex.clear();
@@ -755,7 +767,7 @@ export function resetClaimCaseStore(): void {
   allDenials.clear();
 }
 
-/* ── Detail Redaction ──────────────────────────────────────── */
+/* -- Detail Redaction ---------------------------------------- */
 
 function redactDetail(detail: Record<string, unknown>): Record<string, unknown> {
   const redacted: Record<string, unknown> = {};

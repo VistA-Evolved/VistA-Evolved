@@ -1,5 +1,5 @@
 /**
- * Edge Device Gateway — Routes
+ * Edge Device Gateway -- Routes
  *
  * Phase 379 (W21-P2): REST endpoints for edge gateway management,
  * uplink message ingest, observation queries, and gateway health.
@@ -29,6 +29,7 @@ import {
   getStoreStats,
 } from './gateway-store.js';
 import type { UplinkEnvelope, DeviceObservation, GatewayStatus } from './types.js';
+import { requireDeviceServiceKey } from './service-key-guard.js';
 import * as crypto from 'node:crypto';
 
 const DEFAULT_TENANT = 'default';
@@ -47,10 +48,10 @@ function generateId(prefix: string): string {
 
 export default async function edgeGatewayRoutes(server: FastifyInstance): Promise<void> {
   // -----------------------------------------------------------------------
-  // Gateway Management (admin auth — enforced by AUTH_RULES)
+  // Gateway Management (admin auth -- enforced by AUTH_RULES)
   // -----------------------------------------------------------------------
 
-  /** POST /edge-gateways — Register a new edge gateway */
+  /** POST /edge-gateways -- Register a new edge gateway */
   server.post('/edge-gateways', async (request, reply) => {
     const body = (request.body as any) || {};
     const { name, facilityCode, adapters } = body;
@@ -61,14 +62,14 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
     return reply.code(201).send({ ok: true, gateway: gw });
   });
 
-  /** GET /edge-gateways — List all gateways */
+  /** GET /edge-gateways -- List all gateways */
   server.get('/edge-gateways', async (request, reply) => {
     const tid = tenantId(request);
     const items = listGateways(tid);
     return { ok: true, gateways: items, total: items.length };
   });
 
-  /** GET /edge-gateways/:id — Get a single gateway */
+  /** GET /edge-gateways/:id -- Get a single gateway */
   server.get('/edge-gateways/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const gw = getGateway(id);
@@ -76,7 +77,7 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
     return { ok: true, gateway: gw };
   });
 
-  /** PATCH /edge-gateways/:id/status — Update gateway status */
+  /** PATCH /edge-gateways/:id/status -- Update gateway status */
   server.patch('/edge-gateways/:id/status', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
@@ -89,7 +90,7 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
     return { ok: true, gateway: gw };
   });
 
-  /** POST /edge-gateways/:id/revoke — Revoke a gateway */
+  /** POST /edge-gateways/:id/revoke -- Revoke a gateway */
   server.post('/edge-gateways/:id/revoke', async (request, reply) => {
     const { id } = request.params as { id: string };
     const revoked = revokeGateway(id);
@@ -97,7 +98,7 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
     return { ok: true, status: 'revoked' };
   });
 
-  /** DELETE /edge-gateways/:id — Remove a gateway */
+  /** DELETE /edge-gateways/:id -- Remove a gateway */
   server.delete('/edge-gateways/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const deleted = deleteGateway(id);
@@ -109,7 +110,7 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
   // Gateway Health
   // -----------------------------------------------------------------------
 
-  /** GET /edge-gateways/:id/health — Gateway health snapshot */
+  /** GET /edge-gateways/:id/health -- Gateway health snapshot */
   server.get('/edge-gateways/:id/health', async (request, reply) => {
     const { id } = request.params as { id: string };
     const health = getGatewayHealth(id);
@@ -121,7 +122,7 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
   // Gateway Config (pull model: gateway requests its config)
   // -----------------------------------------------------------------------
 
-  /** GET /edge-gateways/:id/config — Get gateway config */
+  /** GET /edge-gateways/:id/config -- Get gateway config */
   server.get('/edge-gateways/:id/config', async (request, reply) => {
     const { id } = request.params as { id: string };
     const gw = getGateway(id);
@@ -130,7 +131,7 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
     return { ok: true, config };
   });
 
-  /** PUT /edge-gateways/:id/config — Update gateway config */
+  /** PUT /edge-gateways/:id/config -- Update gateway config */
   server.put('/edge-gateways/:id/config', async (request, reply) => {
     const { id } = request.params as { id: string };
     const gw = getGateway(id);
@@ -141,11 +142,12 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
   });
 
   // -----------------------------------------------------------------------
-  // Heartbeat (service auth — gateway-to-server)
+  // Heartbeat (service auth -- gateway-to-server)
   // -----------------------------------------------------------------------
 
-  /** POST /edge-gateways/:id/heartbeat — Record gateway heartbeat */
+  /** POST /edge-gateways/:id/heartbeat -- Record gateway heartbeat */
   server.post('/edge-gateways/:id/heartbeat', async (request, reply) => {
+    if (!requireDeviceServiceKey(request, reply)) return reply;
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
     const gw = recordHeartbeat(id, body.firmwareVersion);
@@ -154,11 +156,12 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
   });
 
   // -----------------------------------------------------------------------
-  // Uplink Ingest (service auth — gateway-to-server)
+  // Uplink Ingest (service auth -- gateway-to-server)
   // -----------------------------------------------------------------------
 
-  /** POST /edge-gateways/uplink — Ingest an uplink message from a gateway */
+  /** POST /edge-gateways/uplink -- Ingest an uplink message from a gateway */
   server.post('/edge-gateways/uplink', async (request, reply) => {
+    if (!requireDeviceServiceKey(request, reply)) return reply;
     const body = (request.body as any) || {};
     const { messageId, gatewayId, type, sourceProtocol, payload, gatewayTimestamp } = body;
     if (!messageId || !gatewayId || !type) {
@@ -184,7 +187,7 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
     return reply.code(202).send({ ok: true, messageId });
   });
 
-  /** GET /edge-gateways/uplink/buffer — View uplink buffer */
+  /** GET /edge-gateways/uplink/buffer -- View uplink buffer */
   server.get('/edge-gateways/uplink/buffer', async (request, reply) => {
     const query = request.query as { gatewayId?: string; limit?: string };
     const messages = getUplinkBuffer(query.gatewayId, parseInt(query.limit || '100', 10));
@@ -195,7 +198,7 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
   // Observations
   // -----------------------------------------------------------------------
 
-  /** POST /edge-gateways/observations — Store a normalized observation */
+  /** POST /edge-gateways/observations -- Store a normalized observation */
   server.post('/edge-gateways/observations', async (request, reply) => {
     const body = (request.body as any) || {};
     const { gatewayId, deviceId, code, codeSystem, value, unit, sourceProtocol } = body;
@@ -229,7 +232,7 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
     return reply.code(201).send({ ok: true, observation: obs });
   });
 
-  /** GET /edge-gateways/observations — Query observations */
+  /** GET /edge-gateways/observations -- Query observations */
   server.get('/edge-gateways/observations', async (request, reply) => {
     const query = request.query as {
       gatewayId?: string;
@@ -247,7 +250,7 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
     return { ok: true, observations: results, total: results.length };
   });
 
-  /** GET /edge-gateways/observations/:id — Get single observation */
+  /** GET /edge-gateways/observations/:id -- Get single observation */
   server.get('/edge-gateways/observations/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const obs = getObservation(id);
@@ -259,7 +262,7 @@ export default async function edgeGatewayRoutes(server: FastifyInstance): Promis
   // Store Diagnostics
   // -----------------------------------------------------------------------
 
-  /** GET /edge-gateways/stats — Store statistics */
+  /** GET /edge-gateways/stats -- Store statistics */
   server.get('/edge-gateways/stats', async (request, reply) => {
     return { ok: true, stats: getStoreStats() };
   });

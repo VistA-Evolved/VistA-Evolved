@@ -67,22 +67,33 @@ CLAIMCNT(RESULT) ;Get claim counts from File #399
  Q
  ;
 INSCRT(RESULT,NAME,CITY,STATE,ZIP,PHONE) ;Create insurance company in File #36
- N U,FDA,IENS,ERR,NEWIEN
+ ; File #36 requires: .01 NAME, .111 STREET, 1 REIMBURSE, 2 SIG REQ, 3.01 TRANSMIT
+ ; Use DIC to create entry, then FILE^DIE for remaining fields
+ N U,DIC,DLAYGO,X,Y,DA,FDA,IENS,ERR
  S U="^"
  S NAME=$G(NAME),CITY=$G(CITY),STATE=$G(STATE)
  S ZIP=$G(ZIP),PHONE=$G(PHONE)
  I NAME="" S RESULT(0)="-1^Insurance company name required" Q
- S IENS="+1,"
- S FDA(36,IENS,.01)=NAME
+ ; Create via DIC lookup/add
+ S DIC="^DIC(36,",DIC(0)="L",DLAYGO=36
+ S X=NAME
+ K DO D ^DIC K DLAYGO
+ I Y<0 S RESULT(0)="-1^Could not create insurance entry" Q
+ S DA=+Y
+ ; Set required fields plus optional address fields via FILE^DIE
+ ; Field 1 REIMBURSE: Y/*/N/** ; Field 2 SIG REQ: 0/1
+ ; Field 3.01 TRANSMIT has EDI key validation - skip on create
+ S IENS=DA_","
+ S FDA(36,IENS,1)="Y"
+ S FDA(36,IENS,2)=0
  I CITY'="" S FDA(36,IENS,.111)=CITY
  I STATE'="" S FDA(36,IENS,.112)=STATE
  I ZIP'="" S FDA(36,IENS,.113)=ZIP
  I PHONE'="" S FDA(36,IENS,.131)=PHONE
- S NEWIEN(1)=""
- D UPDATE^DIE("E","FDA","NEWIEN","ERR")
+ D FILE^DIE("E","FDA","ERR")
  I $D(ERR) S RESULT(0)="-1^"_$G(ERR("DIERR",1,"TEXT",1)) Q
  S RESULT(0)="1^OK"
- S RESULT(1)="IEN^"_$G(NEWIEN(1))
+ S RESULT(1)="IEN^"_DA
  S RESULT(2)="NAME^"_NAME
  Q
  ;
@@ -99,7 +110,7 @@ INSEDT(RESULT,INSIEN,FIELD,VALUE) ;Edit insurance company in File #36
  I FIELD="STATE" S FLDNUM=.112
  I FIELD="ZIP" S FLDNUM=.113
  I FIELD="PHONE" S FLDNUM=.131
- I FIELD="REIMBURSE" S FLDNUM=.02
+ I FIELD="REIMBURSE" S FLDNUM=1
  I FLDNUM="" S RESULT(0)="-1^Unknown field: "_FIELD Q
  S IENS=INSIEN_","
  S FDA(36,IENS,FLDNUM)=VALUE

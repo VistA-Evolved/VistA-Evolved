@@ -340,17 +340,17 @@ export default function OrdersPanel({ dfn }: Props) {
         });
         setMedMsg(`${type} order placed successfully`);
         fetchVistaOrders();
-      } else if (data.mode === 'draft' || data.integrationPending || data.status === 'unsupported-in-sandbox') {
+      } else if (data.mode === 'draft' || data.status === 'unsupported-in-sandbox') {
         cache.addDraftOrder(dfn, {
           id: data.draftId || `${type}-${Date.now()}`,
           type,
           name: draftName.trim(),
           status: 'draft',
-          details: data.message || data.pendingNote || 'Integration pending',
+          details: data.message || data.pendingNote || 'Order saved as draft.',
           createdAt: new Date().toISOString(),
           source: 'server-draft',
         });
-        setMedMsg(`${type} order saved as draft -- integration pending`);
+        setMedMsg(`${type} order saved as draft`);
       } else {
         setMedMsg(`Error: ${data.error || 'Order failed'}`);
       }
@@ -381,10 +381,6 @@ export default function OrdersPanel({ dfn }: Props) {
       const data = await res.json();
       if (data.ok && data.checks?.length) {
         setOrderChecks(data.checks);
-      } else if (data.integrationPending) {
-        setOrderChecks([
-          { type: 'info', message: 'Order checks -- integration pending', level: 'info' },
-        ]);
       } else {
         setOrderChecks([{ type: 'info', message: 'No order checks found', level: 'info' }]);
       }
@@ -489,18 +485,13 @@ export default function OrdersPanel({ dfn }: Props) {
         setSignMsg(`Signing blocked: ${data.message || 'e-signature verification failed'}`);
       } else if (data.status === 'sign-failed') {
         setSignMsg(
-          `Signing failed: ${data.message || data.error || 'RPC call failed — retry or contact support'}`
+          `Signing failed: ${data.message || data.error || 'RPC call failed -- retry or contact support'}`
         );
       } else if (
-        data.status === 'integration-pending' ||
         data.status === 'unsupported-in-sandbox'
       ) {
-        const label =
-          data.status === 'unsupported-in-sandbox'
-            ? 'unsupported in sandbox'
-            : 'integration pending';
         setSignMsg(
-          `Signing -- ${label}: ${data.pendingNote || data.message || 'ORWOR1 SIG not available'}`
+          `Signing -- unsupported in sandbox: ${data.pendingNote || data.message || 'ORWOR1 SIG not available'}`
         );
       } else if (data.ok) {
         setSignMsg(data.message || 'Order sign processed');
@@ -550,7 +541,7 @@ export default function OrdersPanel({ dfn }: Props) {
         setDcMsg(`Discontinue failed: ${data.error || 'unknown error'}`);
       }
     } catch {
-      setDcMsg('Discontinue -- integration pending: ORWDXA DC endpoint not available');
+      setDcMsg('Discontinue failed: ORWDXA DC endpoint not available');
     } finally {
       setDcLoading(false);
     }
@@ -739,11 +730,6 @@ export default function OrdersPanel({ dfn }: Props) {
                   rows={3}
                 />
               </div>
-              <p className={styles.pendingText}>
-                Order will be placed via VistA if backend is available.
-                <br />
-                Otherwise saved as draft with integration-pending status.
-              </p>
               <button
                 className={styles.btnPrimary}
                 onClick={() => handleTypedOrder(activeType)}

@@ -1,5 +1,5 @@
 /**
- * Wave 37 Verification Script — Phase 513-521
+ * Wave 37 Verification Script -- Phase 513-521
  * International Revenue Cycle + Billing + Payer Ops v2
  *
  * Validates all 9 phases (B1-B9) by checking file existence,
@@ -41,14 +41,14 @@ function fileContains(relPath, needle) {
 
 console.log('\n=== Wave 37 Verification (Phases 513-521) ===\n');
 
-/* ── B1: RCM Reality Scan (Phase 513) ──────────────────────── */
+/* -- B1: RCM Reality Scan (Phase 513) ------------------------ */
 console.log('--- B1 (Phase 513): RCM Reality Scan ---');
 check('G1  Readiness scan script exists', fileExists('scripts/rcm/rcm-readiness-scan.mjs'));
 check('G2  QA gate script exists', fileExists('scripts/qa-gates/rcm-readiness-gate.mjs'));
 check('G3  Readiness matrix JSON exists', fileExists('data/rcm/rcm-readiness-matrix.json'));
 check('G4  Readiness matrix MD exists', fileExists('docs/rcm/rcm-readiness-matrix.md'));
 
-/* ── B2: Payer Dossiers (Phase 514) ────────────────────────── */
+/* -- B2: Payer Dossiers (Phase 514) -------------------------- */
 console.log('\n--- B2 (Phase 514): Payer Dossiers ---');
 check('G5  Dossier repo exists', fileExists('apps/api/src/platform/pg/repo/dossier-repo.ts'));
 check('G6  Dossier routes exist', fileExists('apps/api/src/routes/dossier-routes.ts'));
@@ -65,7 +65,7 @@ check(
   fileContains('apps/api/src/platform/pg/pg-migrate.ts', 'payer_dossier')
 );
 
-/* ── B3: PhilHealth Transport (Phase 515) ──────────────────── */
+/* -- B3: PhilHealth Transport (Phase 515) -------------------- */
 console.log('\n--- B3 (Phase 515): PhilHealth Transport ---');
 check(
   'G10 Transport client exists',
@@ -84,7 +84,7 @@ check(
   fileContains('apps/api/src/rcm/philhealth-eclaims3/transport.ts', 'TLS')
 );
 
-/* ── B4: PH Claim Pack Export v2 (Phase 516) ───────────────── */
+/* -- B4: PH Claim Pack Export v2 (Phase 516) ----------------- */
 console.log('\n--- B4 (Phase 516): PH Claim Pack Export ---');
 check('G14 Zip bundler exists', fileExists('apps/api/src/rcm/philhealth-eclaims3/zip-bundler.ts'));
 check(
@@ -96,7 +96,7 @@ check(
   fileContains('apps/api/src/rcm/philhealth-eclaims3/zip-bundler.ts', 'manifest')
 );
 
-/* ── B5: PH HMO Ops v2 (Phase 517) ────────────────────────── */
+/* -- B5: PH HMO Ops v2 (Phase 517) -------------------------- */
 console.log('\n--- B5 (Phase 517): PH HMO Ops v2 ---');
 check(
   'G17 Submission checklist exists',
@@ -111,7 +111,7 @@ check(
   fileContains('apps/api/src/rcm/hmo-portal/submission-checklist.ts', 'loa')
 );
 
-/* ── B6: US X12 Ingest v2 (Phase 518) ─────────────────────── */
+/* -- B6: US X12 Ingest v2 (Phase 518) ----------------------- */
 console.log('\n--- B6 (Phase 518): US X12 Ingest v2 ---');
 check('G20 X12 wire parser exists', fileExists('apps/api/src/rcm/edi/x12-wire-parser.ts'));
 check(
@@ -132,7 +132,7 @@ check(
   fileContains('apps/api/src/rcm/edi/x12-wire-parser.ts', 'normalize277')
 );
 
-/* ── B7: Clearinghouse Adapter v2 (Phase 519) ─────────────── */
+/* -- B7: Clearinghouse Adapter v2 (Phase 519) --------------- */
 console.log('\n--- B7 (Phase 519): Clearinghouse Adapter v2 ---');
 check(
   'G26 Gateway v2 exists',
@@ -155,7 +155,7 @@ check(
   fileContains('apps/api/src/rcm/connectors/clearinghouse-gateway-v2.ts', 'StediAdapter')
 );
 
-/* ── B8: Denials/Appeals Hardening (Phase 520) ─────────────── */
+/* -- B8: Denials/Appeals Hardening (Phase 520) --------------- */
 console.log('\n--- B8 (Phase 520): Denials/Appeals Hardening ---');
 check(
   'G31 Pipeline hardener exists',
@@ -186,7 +186,7 @@ check(
   fileContains('apps/api/src/rcm/denials/denial-pipeline-hardener.ts', 'processedHashes')
 );
 
-/* ── B9: Global Pack Conformance (Phase 521) ───────────────── */
+/* -- B9: Global Pack Conformance (Phase 521) ----------------- */
 console.log('\n--- B9 (Phase 521): Global Pack Conformance ---');
 check('G38 Pack generator script', fileExists('scripts/rcm/generate-country-pack.mjs'));
 check('G39 Conformance runner script', fileExists('scripts/rcm/country-conformance-runner.mjs'));
@@ -198,7 +198,7 @@ check(
   fileContains('scripts/rcm/country-conformance-runner.mjs', 'KNOWN_COUNTRIES')
 );
 
-/* ── Route registration ────────────────────────────────────── */
+/* -- Route registration -------------------------------------- */
 console.log('\n--- Route Registration ---');
 check(
   'G44 Dossier routes registered',
@@ -217,7 +217,7 @@ check(
   fileContains('apps/api/src/server/register-routes.ts', 'denialPipelineRoutes')
 );
 
-/* ── Prompts ───────────────────────────────────────────────── */
+/* -- Prompts ------------------------------------------------- */
 console.log('\n--- Prompt Infrastructure ---');
 check('G48 Wave 37 manifest exists', fileExists('prompts/WAVE_37_MANIFEST.md'));
 for (let p = 513; p <= 521; p++) {
@@ -229,7 +229,7 @@ check(
   fileContains('docs/qa/prompt-phase-range-reservations.json', '513')
 );
 
-/* ── Summary ───────────────────────────────────────────────── */
+/* -- Summary ------------------------------------------------- */
 console.log(`\n  ${pass} PASS / ${fail} FAIL / ${warn} WARN`);
 console.log(`\n  RESULT: ${fail === 0 ? 'GATE PASSED' : 'GATE FAILED'}\n`);
 

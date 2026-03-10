@@ -1,15 +1,15 @@
 /**
- * PhilHealth eClaims Serializer — CF1-CF4 Bundle Generator
+ * PhilHealth eClaims Serializer -- CF1-CF4 Bundle Generator
  *
  * Phase 40: Transforms EdiClaim837 domain objects into PhilHealth eClaims
  * JSON bundle format (CF1-CF4 forms).
  *
- * PhilHealth does NOT use X12 — they have their own eClaims API with
+ * PhilHealth does NOT use X12 -- they have their own eClaims API with
  * four claim forms:
- *   CF1 — Facility/institutional info
- *   CF2 — Outpatient claim (mapped from 837P) or Inpatient claim (837I)
- *   CF3 — Professional fee claim (attending physician, used with 837I)
- *   CF4 — Medicines/supplies detail (line items)
+ *   CF1 -- Facility/institutional info
+ *   CF2 -- Outpatient claim (mapped from 837P) or Inpatient claim (837I)
+ *   CF3 -- Professional fee claim (attending physician, used with 837I)
+ *   CF4 -- Medicines/supplies detail (line items)
  *
  * This serializer generates the JSON structure expected by the PhilHealth
  * eClaims API. The actual API submission is handled by the PhilHealth
@@ -20,7 +20,7 @@
 
 import type { EdiClaim837 } from './types.js';
 
-/* ── PhilHealth Bundle Types ────────────────────────────────── */
+/* -- PhilHealth Bundle Types ---------------------------------- */
 
 export interface PhilHealthCF1 {
   formType: 'CF1';
@@ -118,7 +118,7 @@ export interface PhilHealthClaimBundle {
   };
 }
 
-/* ── Build PhilHealth Bundle from EdiClaim837 ───────────────── */
+/* -- Build PhilHealth Bundle from EdiClaim837 ----------------- */
 
 export function buildPhilHealthBundle(
   claim: EdiClaim837,
@@ -137,7 +137,7 @@ export function buildPhilHealthBundle(
   const isInpatient = claim.transactionSet === '837I';
   const now = new Date().toISOString();
 
-  // CF1 — Facility + Patient
+  // CF1 -- Facility + Patient
   const cf1: PhilHealthCF1 = {
     formType: 'CF1',
     facilityCode: opts.facilityCode,
@@ -156,7 +156,7 @@ export function buildPhilHealthBundle(
     patientType: isInpatient ? 'I' : 'O',
   };
 
-  // CF2 — Claim details
+  // CF2 -- Claim details
   const cf2: PhilHealthCF2 = {
     formType: 'CF2',
     claimType: isInpatient ? 'inpatient' : 'outpatient',
@@ -170,7 +170,7 @@ export function buildPhilHealthBundle(
     totalActualCharges: claim.claimInfo.totalChargeAmount,
   };
 
-  // CF3 — Professional fees (inpatient only, but include if we have data)
+  // CF3 -- Professional fees (inpatient only, but include if we have data)
   let cf3: PhilHealthCF3 | undefined;
   if (isInpatient && claim.serviceLines.length > 0) {
     cf3 = {

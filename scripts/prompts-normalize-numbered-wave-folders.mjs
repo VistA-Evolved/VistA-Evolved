@@ -32,7 +32,7 @@ const BACKUP_DIR = join(ROOT, 'artifacts', 'prompts-normalize', 'backups');
 
 const DRY_RUN = process.argv.includes('--dry-run');
 
-// ── Wave manifest parsing ─────────────────────────────────────
+// -- Wave manifest parsing -------------------------------------
 
 function parseManifest(waveNum) {
   const path = join(PROMPTS, `WAVE_${waveNum}_MANIFEST.md`);
@@ -60,7 +60,7 @@ function parseManifest(waveNum) {
   return map;
 }
 
-// ── Standard file renames ─────────────────────────────────────
+// -- Standard file renames -------------------------------------
 
 const FILE_RENAMES = [
   { pattern: /^\d+-01-IMPLEMENT\.md$/i, target: 'IMPLEMENT.md' },
@@ -93,7 +93,7 @@ function normalizeFiles(folderPath, phaseNum) {
   return actions;
 }
 
-// ── Main ──────────────────────────────────────────────────────
+// -- Main ------------------------------------------------------
 
 function main() {
   console.log(`Prompts Normalize: Numbered Wave Folders${DRY_RUN ? ' (DRY RUN)' : ''}\n`);

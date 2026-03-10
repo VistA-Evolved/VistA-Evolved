@@ -1,5 +1,5 @@
 /**
- * Intake OS — Core Types (Phase 28)
+ * Intake OS -- Core Types (Phase 28)
  *
  * FHIR Questionnaire/QuestionnaireResponse-aligned types for the
  * enterprise intake system. All clinical data is "patient-reported draft"

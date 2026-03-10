@@ -1,5 +1,5 @@
 /**
- * Contract Validator — Phase 26
+ * Contract Validator -- Phase 26
  *
  * Validates portal-contract-v1.yaml:
  *   1. Parses as valid YAML
@@ -19,7 +19,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 
 // ---------- Minimal YAML parser (no deps) ----------
-// Handles up to 3 levels of nesting — enough for the contract file.
+// Handles up to 3 levels of nesting -- enough for the contract file.
 // Level 0: top-level keys (no indent)
 // Level 1: second-level keys (2-space indent)
 // Level 2: third-level keys (4-space indent)
@@ -58,7 +58,7 @@ function parseSimpleYaml(text: string): Record<string, unknown> {
     // Skip YAML list items (we only care about map keys)
     if (/^\s*-\s/.test(line)) continue;
 
-    // Level 0 — top-level key (no indent): "key: value" or "key:"
+    // Level 0 -- top-level key (no indent): "key: value" or "key:"
     const l0Match = line.match(/^([a-z_]+):\s*(.*)/);
     if (l0Match) {
       flushL0();
@@ -73,7 +73,7 @@ function parseSimpleYaml(text: string): Record<string, unknown> {
       continue;
     }
 
-    // Level 1 — second-level key (2-space indent): "  key: value" or "  key:"
+    // Level 1 -- second-level key (2-space indent): "  key: value" or "  key:"
     if (inL0) {
       const l1Match = line.match(/^  ([a-z_]+):\s*(.*)/);
       if (l1Match) {
@@ -90,7 +90,7 @@ function parseSimpleYaml(text: string): Record<string, unknown> {
       }
     }
 
-    // Level 2 — third-level key (4-space indent): "    key: value"
+    // Level 2 -- third-level key (4-space indent): "    key: value"
     if (inL1) {
       const l2Match = line.match(/^    ([a-z_]+):\s*(.*)/);
       if (l2Match) {

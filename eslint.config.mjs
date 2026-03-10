@@ -1,5 +1,5 @@
 // @ts-check
-// ESLint 9 flat config — VistA-Evolved root
+// ESLint 9 flat config -- VistA-Evolved root
 // Covers apps/api (no sub-config) + shared rules for the monorepo.
 // apps/web and apps/portal have their own eslint.config.mjs (Next.js).
 
@@ -11,7 +11,7 @@ import securityPlugin from 'eslint-plugin-security';
 import prettierConfig from 'eslint-config-prettier';
 
 export default [
-  // ── Global ignores ──────────────────────────────────────────────────
+  // -- Global ignores --------------------------------------------------
   {
     ignores: [
       '**/node_modules/**',
@@ -31,7 +31,7 @@ export default [
     ],
   },
 
-  // ── TypeScript files (apps/api + packages) ──────────────────────────
+  // -- TypeScript files (apps/api + packages) --------------------------
   {
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
@@ -49,7 +49,7 @@ export default [
       security: securityPlugin,
     },
     rules: {
-      // ── TypeScript ────────────────────────────────────────────────
+      // -- TypeScript ------------------------------------------------
       '@typescript-eslint/no-explicit-any': 'warn',
       '@typescript-eslint/no-unused-vars': [
         'error',
@@ -60,7 +60,7 @@ export default [
         },
       ],
 
-      // ── Security (healthcare production rules) ────────────────────
+      // -- Security (healthcare production rules) --------------------
       'security/detect-object-injection': 'warn',
       'security/detect-non-literal-fs-filename': 'warn',
       'security/detect-non-literal-regexp': 'warn',
@@ -70,15 +70,15 @@ export default [
       'security/detect-child-process': 'error',
       'security/detect-pseudoRandomBytes': 'warn',
 
-      // ── Console (will clean up in P3-3) ───────────────────────────
+      // -- Console (will clean up in P3-3) ---------------------------
       'no-console': 'warn',
 
-      // ── React hooks ───────────────────────────────────────────────
+      // -- React hooks -----------------------------------------------
       'react-hooks/rules-of-hooks': 'error',
       'react-hooks/exhaustive-deps': 'warn',
     },
   },
 
-  // ── Prettier compat (disables formatting rules that conflict) ─────
+  // -- Prettier compat (disables formatting rules that conflict) -----
   prettierConfig,
 ];

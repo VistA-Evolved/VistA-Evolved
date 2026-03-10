@@ -1,5 +1,5 @@
 /**
- * HL7v2 Engine — MLLP Client
+ * HL7v2 Engine -- MLLP Client
  *
  * Phase 239 (Wave 6 P2): Zero-dependency MLLP TCP client for sending HL7v2
  * messages to remote systems. Supports connection pooling, reconnection
@@ -9,7 +9,7 @@
  *   <0x0B> message_bytes <0x1C><0x0D>
  *
  * Security:
- *   - PHI NEVER in logs — only control IDs and message type metadata
+ *   - PHI NEVER in logs -- only control IDs and message type metadata
  *   - TLS configurable for MLLPS connections
  */
 

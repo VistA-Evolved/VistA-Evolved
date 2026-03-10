@@ -1,5 +1,5 @@
 /**
- * Task: retention_cleanup — Phase 116
+ * Task: retention_cleanup -- Phase 116
  *
  * Purges expired / stale data across multiple stores:
  *  - Expired sessions (PG session store)

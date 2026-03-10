@@ -1,5 +1,5 @@
 /**
- * Phase 167: Specialty Pack Hardening — Artifact Rubrics & Validators
+ * Phase 167: Specialty Pack Hardening -- Artifact Rubrics & Validators
  *
  * Defines minimum required artifacts per clinical setting and enforces
  * them against specialty packs. Each rubric specifies required sections,
@@ -20,7 +20,7 @@ type ValidatableTemplate = Pick<ClinicalTemplate, 'name' | 'sections'> & {
   setting?: TemplateSetting;
 };
 
-// ── Rubric Definitions ──────────────────────────────────────
+// -- Rubric Definitions --------------------------------------
 
 export interface ArtifactRequirement {
   /** Section ID or template type that must be present */
@@ -66,7 +66,7 @@ export interface ValidationReport {
   results: PackValidationResult[];
 }
 
-// ── Rubrics per Setting ─────────────────────────────────────
+// -- Rubrics per Setting -------------------------------------
 
 export const OUTPATIENT_RUBRIC: SettingRubric = {
   setting: 'outpatient',
@@ -120,7 +120,7 @@ export const ED_RUBRIC: SettingRubric = {
 
 export const ALL_RUBRICS: SettingRubric[] = [OUTPATIENT_RUBRIC, INPATIENT_RUBRIC, ED_RUBRIC];
 
-// ── Validation Logic ────────────────────────────────────────
+// -- Validation Logic ----------------------------------------
 
 function getRubricForSetting(setting: TemplateSetting): SettingRubric {
   switch (setting) {

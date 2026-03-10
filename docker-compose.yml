@@ -1,5 +1,5 @@
 # =============================================================================
-# VistA-Evolved — Development Docker Compose
+# VistA-Evolved -- Development Docker Compose
 # =============================================================================
 # One command starts everything:
 #   docker compose up --build
@@ -12,11 +12,11 @@
 #   2. Docker Desktop running
 #
 # Service map:
-#   vista    — VistA EHR (RPC Broker + Web UI)
-#   postgres — PostgreSQL 15 (platform state)
-#   redis    — Redis 7 (cache / sessions)
-#   api      — Fastify API server (hot-reload)
-#   web      — Next.js CPRS clinician UI (hot-reload)
+#   vista    -- VistA EHR (RPC Broker + Web UI)
+#   postgres -- PostgreSQL 15 (platform state)
+#   redis    -- Redis 7 (cache / sessions)
+#   api      -- Fastify API server (hot-reload)
+#   web      -- Next.js CPRS clinician UI (hot-reload)
 # =============================================================================
 
 services:

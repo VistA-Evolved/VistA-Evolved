@@ -1,5 +1,5 @@
 /**
- * Phase 100 — Eligibility + Claim Status Durable Store
+ * Phase 100 -- Eligibility + Claim Status Durable Store
  *
  * PG-backed persistence for eligibility checks and claim status
  * checks. Replaces the in-memory ring buffers from Phase 69 with
@@ -17,7 +17,7 @@ import type {
   ClaimStatusStats,
 } from './types.js';
 
-/* ── Eligibility Check Store ────────────────────────────────── */
+/* -- Eligibility Check Store ---------------------------------- */
 
 export async function insertEligibilityCheck(
   rec: Omit<EligibilityCheckRecord, 'id' | 'createdAt'>
@@ -187,7 +187,7 @@ function mapEligRow(row: any): EligibilityCheckRecord {
   };
 }
 
-/* ── Claim Status Check Store ───────────────────────────────── */
+/* -- Claim Status Check Store --------------------------------- */
 
 export async function insertClaimStatusCheck(
   rec: Omit<ClaimStatusCheckRecord, 'id' | 'createdAt'>

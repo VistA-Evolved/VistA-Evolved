@@ -1,5 +1,5 @@
 /**
- * PhilHealth Claim Pack Zip Bundler — Phase 516 (Wave 37 B4)
+ * PhilHealth Claim Pack Zip Bundler -- Phase 516 (Wave 37 B4)
  *
  * Creates downloadable zip archives from eClaims 3.0 ExportBundle.
  * Uses Node.js built-in zlib (no external deps) with a minimal
@@ -12,7 +12,7 @@ import { deflateRawSync } from 'node:zlib';
 import { createHash } from 'node:crypto';
 import type { ExportBundle } from './types.js';
 
-/* ── Minimal ZIP builder (no external deps) ──────────────── */
+/* -- Minimal ZIP builder (no external deps) ---------------- */
 
 /**
  * Build a zip file from a list of named entries.
@@ -114,7 +114,7 @@ function getCrc32Table(): Uint32Array {
   return _crc32Table;
 }
 
-/* ── Manifest generator ──────────────────────────────────── */
+/* -- Manifest generator ------------------------------------ */
 
 interface BundleManifest {
   bundleId: string;
@@ -146,7 +146,7 @@ function generateManifest(bundle: ExportBundle): BundleManifest {
   };
 }
 
-/* ── Public API ──────────────────────────────────────────── */
+/* -- Public API -------------------------------------------- */
 
 export interface ZipBundleResult {
   zipBuffer: Buffer;

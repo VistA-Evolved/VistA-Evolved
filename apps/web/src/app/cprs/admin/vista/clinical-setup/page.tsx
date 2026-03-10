@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { API_BASE } from '@/lib/api-config';
 
 type Tab = 'order-sets' | 'consults' | 'tiu-defs' | 'tiu-templates' | 'health-summary';

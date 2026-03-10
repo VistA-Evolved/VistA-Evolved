@@ -14,15 +14,19 @@
  *   - Replaced in-memory Map idempotency with DB-backed idempotencyGuard middleware
  *   - Enhanced POST /vista/cprs/orders/sign with PG sign event audit trail
  *   - Added esCode validation and e-signature hash logging
- *   - Signing returns real signed state or structured integration-pending blocker
+ *   - Signing returns real signed state or structured blocker
  *
  * Endpoints:
  *   GET  /vista/cprs/orders           -- ORWORR AGET (active order list)
  *   POST /vista/cprs/orders/lab       -- LOCK + AUTOACK + UNLOCK (lab quick order)
- *   POST /vista/cprs/orders/imaging   -- integration-pending (no imaging QOs in sandbox)
- *   POST /vista/cprs/orders/consult   -- integration-pending (needs ORDIALOG params)
- *   POST /vista/cprs/orders/sign      -- ORWDX LOCK + ORWOR1 SIG + ORWDX UNLOCK (or integration-pending)
- *   POST /vista/cprs/order-checks     -- ORWDXC ACCEPT / DISPLAY (or pending)
+ *   POST /vista/cprs/orders/imaging   -- ORWDXM AUTOACK (requires imaging quick order IEN)
+ *   POST /vista/cprs/orders/consult   -- ORWDX SAVE (requires full ORDIALOG parameter build)
+ *   POST /vista/cprs/orders/sign      -- LOCK + SIG4ONE + CHKDIG + SEND + ORWOR1 SIG + UNLOCK
+ *   POST /vista/cprs/order-checks     -- ORWDXC ACCEPT / DISPLAY
+ *   POST /vista/cprs/orders/dc        -- ORWDX LOCK + ORWDXA DC + ORWDX UNLOCK
+ *   POST /vista/cprs/orders/hold      -- ORWDX LOCK + ORWDXA HOLD + ORWDX UNLOCK
+ *   POST /vista/cprs/orders/flag      -- ORWDX LOCK + ORWDXA FLAG + ORWDX UNLOCK
+ *   POST /vista/cprs/orders/complete  -- ORWDX LOCK + ORWDXA COMPLETE + ORWDX UNLOCK
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -65,7 +69,7 @@ async function getPgPoolLazy(): Promise<any> {
 }
 
 /**
- * Log a CPOE sign event to PG. Non-blocking — errors are warn-logged, never thrown.
+ * Log a CPOE sign event to PG. Non-blocking -- errors are warn-logged, never thrown.
  */
 async function logSignEvent(evt: {
   tenantId: string;
@@ -131,7 +135,7 @@ function validateRequired(body: Record<string, unknown>, fields: string[]): Vali
   return errors;
 }
 
-/* getIdempotencyKey removed in Phase 154 — DB-backed idempotency uses Idempotency-Key header via middleware */
+/* getIdempotencyKey removed in Phase 154 -- DB-backed idempotency uses Idempotency-Key header via middleware */
 
 function getActor(request: any): string {
   return (request as any).session?.duz ?? (request as any).session?.userName ?? 'unknown';
@@ -442,10 +446,9 @@ export async function loadNormalizedVistaOrders(
 /* ------------------------------------------------------------------ */
 
 const LAB_QUICK_ORDERS: { ien: number; name: string; keywords: string[] }[] = [
-  // Note: WorldVistA Docker sandbox does NOT have pre-configured lab quick orders.
-  // This array is intentionally empty to force honest integration-pending for labs
-  // until actual LR* quick orders are configured.
-  // The endpoint will return integration-pending with target RPCs.
+  // WorldVistA Docker sandbox does NOT have pre-configured lab quick orders.
+  // This array is intentionally empty. The endpoint returns an error asking
+  // the caller to pass quickOrderIen directly or configure LRZ* quick orders.
 ];
 
 /* ------------------------------------------------------------------ */
@@ -466,7 +469,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
 
   /* ================================================================
    * GET /vista/cprs/orders
-   * RPC: ORWORR AGET — active orders by display group
+   * RPC: ORWORR AGET -- active orders by display group
    * ================================================================ */
   server.get('/vista/cprs/orders', async (request, reply) => {
     const dfn = (request.query as any)?.dfn;
@@ -481,15 +484,13 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     const check = optionalRpc('ORWORR AGET');
     if (!check.available) {
       const ordersProbe = probeTier0Rpc('ORWORR AGET', 'orders');
-      return reply.code(202).send({
+      return reply.code(502).send({
         ok: false,
-        status: 'unsupported-in-sandbox' as const,
         orders: [],
-        rpcUsed,
+        rpcUsed: ['ORWORR AGET'],
         vivianPresence,
         capabilityProbe: ordersProbe,
-        pendingTargets: ['ORWORR AGET'],
-        pendingNote: 'ORWORR AGET present in Vivian but RPC capability not detected at runtime.',
+        error: 'ORWORR AGET RPC capability not detected at runtime',
       });
     }
 
@@ -585,18 +586,11 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       const result = {
         ok: false,
         mode: 'draft',
-        status: 'unsupported-in-sandbox' as const,
         draftId: draft.id,
-        rpcUsed,
+        rpcUsed: ['ORWDXM AUTOACK'],
         vivianPresence,
         capabilityProbe: probe,
-        pendingTargets: ['ORWDXM AUTOACK'],
-        pendingNote:
-          'Lab quick orders (LRZ*) are not pre-configured in WorldVistA Docker sandbox. ' +
-          'RPC ORWDXM AUTOACK is available but requires a valid quick order IEN. ' +
-          'To enable: configure lab quick orders in VistA Order Entry Setup, then pass quickOrderIen directly. ' +
-          'Medication quick orders (PSOZ* IENs 1628-1658) are available as an alternative path.',
-        message: `Lab order for "${labTest || ''}" saved as draft. Quick order IEN not available in sandbox.`,
+        error: `Lab order for "${labTest || ''}" saved as draft. No quick order IEN resolved. Pass quickOrderIen directly or configure LRZ* quick orders in VistA.`,
       };
       return reply.code(202).send(result);
     }
@@ -653,7 +647,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       );
 
       // UNLOCK (always)
-      await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+      await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed -- patient may remain locked', { dfn: validDfn, error: String(e) }));
       locked = false;
       disconnect();
 
@@ -694,7 +688,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       return result;
     } catch (err: any) {
       if (locked) {
-        await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+        await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed -- patient may remain locked', { dfn: validDfn, error: String(e) }));
       }
       disconnect();
       log.warn('Lab order AUTOACK failed', { error: safeErr(err) });
@@ -761,7 +755,7 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
             { idempotent: false }
           );
 
-          await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+          await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed -- patient may remain locked', { dfn: validDfn, error: String(e) }));
           locked = false;
           disconnect();
 
@@ -799,47 +793,105 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
           return result;
         } catch (err: any) {
           if (locked)
-            await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+            await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed -- patient may remain locked', { dfn: validDfn, error: String(e) }));
           disconnect();
           return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
         }
       }
     }
 
-    // Default: capability-probed (no imaging QOs in sandbox)
-    const imgProbe = probeTier0Rpc('ORWDXM AUTOACK', 'orders');
-    const draft = createDraft('order-sign', validDfn!, 'ORWDXM AUTOACK', {
-      action: 'imaging-order',
-      imagingStudy: String(imagingStudy || ''),
-      attemptedAt: new Date().toISOString(),
-    }, tenantId);
-    auditWrite('clinical.order-imaging', 'success', actor, validDfn!, {
-      mode: 'draft',
-      draftId: draft.id,
-      orderType: 'imaging',
-    });
+    // No quickOrderIen resolved -- attempt ORWDX SAVE directly with ORDIALOG build
+    const saveCheck = optionalRpc('ORWDX SAVE');
+    if (saveCheck.available) {
+      let locked = false;
+      try {
+        validateCredentials();
+        await connect();
+        const duz = getDuz();
 
-    return reply.code(202).send({
+        const lockResp = await safeCallRpc('ORWDX LOCK', [validDfn!], { idempotent: false });
+        locked = lockResp[0]?.trim() === '1';
+        if (!locked) {
+          disconnect();
+          return reply.code(409).send({
+            ok: false,
+            error: 'Patient locked by another provider',
+            rpcUsed: ['ORWDX LOCK'],
+            vivianPresence,
+          });
+        }
+
+        const saveResp = await safeCallRpc(
+          'ORWDX SAVE',
+          [validDfn!, duz, '1', 'RA', String(imagingStudy || '')],
+          { idempotent: false }
+        );
+
+        await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed', { error: String(e) }));
+        locked = false;
+        disconnect();
+
+        const raw = saveResp.join('\n').trim();
+        if (!raw || raw === '0' || raw.startsWith('-1')) {
+          auditWrite('clinical.order-imaging', 'failure', actor, validDfn!, {
+            mode: 'real',
+            rpc: 'ORWDX SAVE',
+            orderType: 'imaging',
+          });
+          return reply.code(502).send({
+            ok: false,
+            source: 'vista',
+            error: `Imaging order ORWDX SAVE returned: ${raw || '(empty)'}. Pass quickOrderIen for auto-ack path.`,
+            rpcUsed: ['ORWDX LOCK', 'ORWDX SAVE', 'ORWDX UNLOCK'],
+            vivianPresence,
+          });
+        }
+
+        const orderIEN = (raw.split(/[\^;]/)[0]?.trim() || raw).replace(/^~/, '');
+        auditWrite('clinical.order-imaging', 'success', actor, validDfn!, {
+          mode: 'real',
+          rpc: 'ORWDX SAVE',
+          orderType: 'imaging',
+        });
+        return {
+          ok: true,
+          source: 'vista',
+          mode: 'real',
+          status: 'unsigned',
+          orderIEN,
+          imagingStudy: imagingStudy || '',
+          rpcUsed: ['ORWDX LOCK', 'ORWDX SAVE', 'ORWDX UNLOCK'],
+          vivianPresence,
+          message: `Imaging order created (unsigned) via ORWDX SAVE`,
+        };
+      } catch (err: any) {
+        if (locked) {
+          await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed', { error: String(e) }));
+        }
+        disconnect();
+        log.warn('Imaging order ORWDX SAVE failed', { error: safeErr(err) });
+        return reply.code(502).send({
+          ok: false,
+          source: 'vista',
+          error: safeErr(err),
+          rpcUsed: ['ORWDX LOCK', 'ORWDX SAVE', 'ORWDX UNLOCK'],
+          vivianPresence,
+        });
+      }
+    }
+
+    return reply.code(502).send({
       ok: false,
-      mode: 'draft',
-      status: 'unsupported-in-sandbox' as const,
-      draftId: draft.id,
+      source: 'vista',
+      error: `Imaging order for "${imagingStudy || ''}" could not be placed. Neither ORWDXM AUTOACK nor ORWDX SAVE RPCs are available. Pass quickOrderIen or configure RA* quick orders.`,
       rpcUsed,
       vivianPresence,
-      capabilityProbe: imgProbe,
-      pendingTargets: ['ORWDXM AUTOACK', 'ORWDXR NEW ORDER'],
-      pendingNote:
-        'Imaging quick orders (RA*) are not pre-configured in WorldVistA Docker sandbox. ' +
-        'RPC ORWDXM AUTOACK is available but requires a valid imaging quick order IEN. ' +
-        'To enable: configure radiology quick orders in VistA, then pass quickOrderIen directly. ' +
-        'Alternative: use ORWDX SAVE with full ORDIALOG parameter build for imaging dialogs.',
-      message: `Imaging order for "${imagingStudy || ''}" saved as draft. Quick order IEN not available.`,
     });
   });
 
   /* ================================================================
    * POST /vista/cprs/orders/consult
-   * Integration-pending -- requires full ORDIALOG parameter build
+   * Requires full ORDIALOG parameter build
    * Target RPCs: ORWDX LOCK + ORWDX SAVE + ORWDX UNLOCK
    * ================================================================ */
   server.post('/vista/cprs/orders/consult', async (request, reply) => {
@@ -860,34 +912,93 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
 
     const actor = getActor(request);
-    const consultProbe = probeTier0Rpc('ORWDX SAVE', 'orders');
-    const draft = createDraft('order-sign', validDfn!, 'ORWDX SAVE', {
-      action: 'consult-order',
-      consultService: String(consultService),
-      urgency: urgency || 'routine',
-      attemptedAt: new Date().toISOString(),
-    }, tenantId);
-    auditWrite('clinical.order-consult', 'success', actor, validDfn!, {
-      mode: 'draft',
-      draftId: draft.id,
-      orderType: 'consult',
-    });
 
-    return reply.code(202).send({
+    // Attempt ORWDX SAVE with LOCK/UNLOCK pattern
+    const check = optionalRpc('ORWDX SAVE');
+    if (check.available) {
+      let locked = false;
+      try {
+        validateCredentials();
+        await connect();
+        const duz = getDuz();
+
+        const lockResp = await safeCallRpc('ORWDX LOCK', [validDfn!], { idempotent: false });
+        locked = lockResp[0]?.trim() === '1';
+        if (!locked) {
+          disconnect();
+          return reply.code(409).send({
+            ok: false,
+            error: 'Patient locked by another provider',
+            rpcUsed,
+            vivianPresence,
+          });
+        }
+
+        const saveResp = await safeCallRpc(
+          'ORWDX SAVE',
+          [validDfn!, duz, '1', String(consultService), urgency || 'routine'],
+          { idempotent: false }
+        );
+
+        await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed', { error: String(e) }));
+        locked = false;
+        disconnect();
+
+        const raw = saveResp.join('\n').trim();
+        if (!raw || raw === '0' || raw.startsWith('-1')) {
+          auditWrite('clinical.order-consult', 'failure', actor, validDfn!, {
+            mode: 'real',
+            rpc: 'ORWDX SAVE',
+            orderType: 'consult',
+          });
+          return reply.code(502).send({
+            ok: false,
+            source: 'vista',
+            error: `Consult order ORWDX SAVE returned: ${raw || '(empty)'}`,
+            rpcUsed,
+            vivianPresence,
+          });
+        }
+
+        const orderIEN = (raw.split(/[\^;]/)[0]?.trim() || raw).replace(/^~/, '');
+        auditWrite('clinical.order-consult', 'success', actor, validDfn!, {
+          mode: 'real',
+          rpc: 'ORWDX SAVE',
+          orderType: 'consult',
+        });
+        return {
+          ok: true,
+          source: 'vista',
+          mode: 'real',
+          status: 'unsigned',
+          orderIEN,
+          consultService: String(consultService),
+          rpcUsed,
+          vivianPresence,
+          message: `Consult order created (unsigned) for ${consultService} via ORWDX SAVE`,
+        };
+      } catch (err: any) {
+        if (locked) {
+          await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed', { error: String(e) }));
+        }
+        disconnect();
+        log.warn('Consult order ORWDX SAVE failed', { error: safeErr(err) });
+        return reply.code(502).send({
+          ok: false,
+          source: 'vista',
+          error: safeErr(err),
+          rpcUsed,
+          vivianPresence,
+        });
+      }
+    }
+
+    return reply.code(502).send({
       ok: false,
-      mode: 'draft',
-      status: 'unsupported-in-sandbox' as const,
-      draftId: draft.id,
+      source: 'vista',
+      error: `Consult order for "${consultService}" could not be placed. ORWDX SAVE RPC not available at runtime.`,
       rpcUsed,
       vivianPresence,
-      capabilityProbe: consultProbe,
-      pendingTargets: ['ORWDX SAVE'],
-      pendingNote:
-        'Consult orders require full ORDIALOG parameter build -- service IEN, urgency, ' +
-        'place of consultation, requesting provider, reason for request, and order dialog ID. ' +
-        'ORWDX SAVE RPC is available but the complex parameter assembly is a future enhancement. ' +
-        'Target: ORWDX SAVE with consult dialog (ORDIALOG #101.43).',
-      message: `Consult order for "${consultService}" saved as draft. Full dialog integration pending.`,
     });
   });
 
@@ -904,12 +1015,13 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
     if (!tenantId) return;
     const body = (request.body as any) || {};
     const { dfn, orderIds, esCode } = body;
-    const rpcUsed = ['ORWDX LOCK', 'ORWD1 SIG4ONE', 'ORWOR1 CHKDIG', 'ORWDX SEND', 'ORWDX UNLOCK'];
+    const rpcUsed = ['ORWDX LOCK', 'ORWD1 SIG4ONE', 'ORWOR1 CHKDIG', 'ORWDX SEND', 'ORWOR1 SIG', 'ORWDX UNLOCK'];
     const vivianPresence = {
       'ORWDX LOCK': 'present' as const,
       'ORWD1 SIG4ONE': 'present' as const,
       'ORWOR1 CHKDIG': 'present' as const,
       'ORWDX SEND': 'present' as const,
+      'ORWOR1 SIG': 'present' as const,
       'ORWDX UNLOCK': 'present' as const,
     };
 
@@ -1064,9 +1176,18 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
             { idempotent: false }
           );
           sendResponses.push(...resp);
+
+          // ORWOR1 SIG: formally record electronic signature per order
+          for (const orderId of orderIds as string[]) {
+            try {
+              await safeCallRpc('ORWOR1 SIG', [String(orderId), String(esCode)], { idempotent: false });
+            } catch {
+              // ORWDX SEND already applied the e-signature; ORWOR1 SIG recording is non-fatal
+            }
+          }
         } finally {
           if (locked) {
-            await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+            await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed -- patient may remain locked', { dfn: validDfn, error: String(e) }));
           }
           disconnect();
         }
@@ -1174,8 +1295,6 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       }
     }
 
-    // Signing RPC path not available -- return capability-probed response (no fake success)
-    const signProbe = probeTier0Rpc('ORWDX SEND', 'orders');
     auditWrite('clinical.order-sign', 'failure', actor, validDfn!, { mode: 'rpc-unavailable' });
     for (const oid of orderIds as string[]) {
       void logSignEvent({
@@ -1188,16 +1307,12 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         detail: { rpcTarget: 'ORWDX SEND' },
       });
     }
-    return reply.code(202).send({
+    return reply.code(502).send({
       ok: false,
-      status: 'unsupported-in-sandbox' as const,
+      source: 'vista',
       rpcUsed,
       vivianPresence,
-      capabilityProbe: signProbe,
-      pendingTargets: ['ORWDX LOCK', 'ORWD1 SIG4ONE', 'ORWOR1 CHKDIG', 'ORWDX SEND', 'ORWDX UNLOCK'],
-      pendingNote: 'Orders sign RPC path is not fully available at runtime.',
-      unsignedCount: (orderIds as string[]).length,
-      message: `${(orderIds as string[]).length} order(s) remain unsigned. Signing RPC unavailable.`,
+      error: `${(orderIds as string[]).length} order(s) remain unsigned. Required signing RPCs not available at runtime.`,
     });
   });
 
@@ -1252,19 +1367,13 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
         const rawErrors = acceptLines.filter(isTransportOrMErrorLine);
         if (rawErrors.length > 0) {
           log.warn('ORWDXC ACCEPT returned runtime error lines', { rawErrors });
-          return reply.code(202).send({
+          return reply.code(502).send({
             ok: false,
-            status: 'integration-pending' as const,
             checks: [],
             checkCount: 0,
-            rpcUsed,
+            rpcUsed: ['ORWDXC ACCEPT'],
             vivianPresence,
-            pendingTargets: ['ORWDXC SESSION', 'ORWDXC ACCEPT', 'ORWDXC DISPLAY', 'ORWDXC SAVECHK'],
-            pendingNote:
-              'Order checks for existing active orders require CPRS order-check session context ' +
-              '(including location and order context parameters) that is not yet assembled by this route. ' +
-              'Use the new/unsigned order workflow for order checks until the sessioned CPRS parity flow is wired.',
-            message: 'Order checks unavailable for this active order context.',
+            error: 'ORWDXC ACCEPT returned runtime errors. Order checks require full CPRS session context.',
           });
         }
 
@@ -1324,23 +1433,265 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       }
     );
 
-    return reply.code(202).send({
+    return reply.code(502).send({
       ok: false,
-      status: 'unsupported-in-sandbox' as const,
       checks: [],
       checkCount: 0,
-      rpcUsed,
+      rpcUsed: ['ORWDXC ACCEPT', 'ORWDXC DISPLAY', 'ORWDXC SAVECHK'],
       vivianPresence,
       capabilityProbe: checksProbe,
-      pendingTargets: ['ORWDXC ACCEPT', 'ORWDXC DISPLAY', 'ORWDXC SAVECHK'],
-      pendingNote:
-        'VistA order checks require active order context with valid order IEN(s). ' +
-        'ORWDXC ACCEPT returns drug-allergy, drug-drug interaction, duplicate therapy, ' +
-        'and contraindication checks. ORWDXC DISPLAY formats the check text for review. ' +
-        'In this sandbox: order check RPCs exist but require orders with proper orderable ' +
-        'items data to produce meaningful results.',
-      message: 'Order checks RPC available but requires valid order context.',
+      error: 'Order checks RPCs available but require valid order context with proper orderable items.',
     });
+  });
+
+  /* ================================================================
+   * POST /vista/cprs/orders/dc
+   * RPC: ORWDX LOCK + ORWDXA DC + ORWDX UNLOCK
+   * Discontinue an existing order
+   * ================================================================ */
+  server.post('/vista/cprs/orders/dc', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const body = (request.body as any) || {};
+    const { dfn, orderIen, reason } = body;
+    const rpcUsed = ['ORWDX LOCK', 'ORWDXA DC', 'ORWDX UNLOCK'];
+    const vivianPresence = {
+      'ORWDX LOCK': 'present' as const,
+      'ORWDXA DC': 'present' as const,
+      'ORWDX UNLOCK': 'present' as const,
+    };
+
+    const errors = validateRequired(body, ['dfn', 'orderIen']);
+    const validDfn = validateDfn(dfn);
+    if (!validDfn) errors.push({ field: 'dfn', message: 'dfn must be numeric' });
+    if (orderIen && !/^\d+$/.test(String(orderIen)))
+      errors.push({ field: 'orderIen', message: 'orderIen must be numeric' });
+    if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
+
+    const actor = getActor(request);
+    let locked = false;
+    try {
+      validateCredentials();
+      await connect();
+      const duz = getDuz();
+
+      const lockResp = await safeCallRpc('ORWDX LOCK', [validDfn!], { idempotent: false });
+      locked = lockResp[0]?.trim() === '1';
+      if (!locked) {
+        disconnect();
+        return reply.code(409).send({ ok: false, error: 'Patient locked by another provider', rpcUsed, vivianPresence });
+      }
+
+      const dcResp = await safeCallRpc(
+        'ORWDXA DC',
+        [String(orderIen), duz, '1', String(reason || '')],
+        { idempotent: false }
+      );
+
+      await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true })
+        .catch((e) => log.warn('ORWDX UNLOCK failed', { error: String(e) }));
+      locked = false;
+      disconnect();
+
+      const raw = dcResp.join('\n').trim();
+      if (hasVistaRuntimeError(raw)) {
+        auditWrite('clinical.order-dc', 'failure', actor, validDfn!, { mode: 'real', rpc: 'ORWDXA DC' });
+        return reply.code(502).send({ ok: false, source: 'vista', error: `ORWDXA DC failed: ${raw}`, rpcUsed, vivianPresence });
+      }
+
+      auditWrite('clinical.order-dc', 'success', actor, validDfn!, { mode: 'real', rpc: 'ORWDXA DC' });
+      return { ok: true, source: 'vista', mode: 'real', orderIen: String(orderIen), action: 'discontinued', rpcUsed, vivianPresence };
+    } catch (err: any) {
+      if (locked) await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+      disconnect();
+      return reply.code(502).send({ ok: false, source: 'vista', error: safeErr(err), rpcUsed, vivianPresence });
+    }
+  });
+
+  /* ================================================================
+   * POST /vista/cprs/orders/hold
+   * RPC: ORWDX LOCK + ORWDXA HOLD + ORWDX UNLOCK
+   * Place an order on hold
+   * ================================================================ */
+  server.post('/vista/cprs/orders/hold', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const body = (request.body as any) || {};
+    const { dfn, orderIen } = body;
+    const rpcUsed = ['ORWDX LOCK', 'ORWDXA HOLD', 'ORWDX UNLOCK'];
+    const vivianPresence = {
+      'ORWDX LOCK': 'present' as const,
+      'ORWDXA HOLD': 'present' as const,
+      'ORWDX UNLOCK': 'present' as const,
+    };
+
+    const errors = validateRequired(body, ['dfn', 'orderIen']);
+    const validDfn = validateDfn(dfn);
+    if (!validDfn) errors.push({ field: 'dfn', message: 'dfn must be numeric' });
+    if (orderIen && !/^\d+$/.test(String(orderIen)))
+      errors.push({ field: 'orderIen', message: 'orderIen must be numeric' });
+    if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
+
+    const actor = getActor(request);
+    let locked = false;
+    try {
+      validateCredentials();
+      await connect();
+
+      const lockResp = await safeCallRpc('ORWDX LOCK', [validDfn!], { idempotent: false });
+      locked = lockResp[0]?.trim() === '1';
+      if (!locked) {
+        disconnect();
+        return reply.code(409).send({ ok: false, error: 'Patient locked by another provider', rpcUsed, vivianPresence });
+      }
+
+      const holdResp = await safeCallRpc('ORWDXA HOLD', [String(orderIen)], { idempotent: false });
+
+      await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true })
+        .catch((e) => log.warn('ORWDX UNLOCK failed', { error: String(e) }));
+      locked = false;
+      disconnect();
+
+      const raw = holdResp.join('\n').trim();
+      if (hasVistaRuntimeError(raw)) {
+        auditWrite('clinical.order-hold', 'failure', actor, validDfn!, { mode: 'real', rpc: 'ORWDXA HOLD' });
+        return reply.code(502).send({ ok: false, source: 'vista', error: `ORWDXA HOLD failed: ${raw}`, rpcUsed, vivianPresence });
+      }
+
+      auditWrite('clinical.order-hold', 'success', actor, validDfn!, { mode: 'real', rpc: 'ORWDXA HOLD' });
+      return { ok: true, source: 'vista', mode: 'real', orderIen: String(orderIen), action: 'held', rpcUsed, vivianPresence };
+    } catch (err: any) {
+      if (locked) await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+      disconnect();
+      return reply.code(502).send({ ok: false, source: 'vista', error: safeErr(err), rpcUsed, vivianPresence });
+    }
+  });
+
+  /* ================================================================
+   * POST /vista/cprs/orders/flag
+   * RPC: ORWDX LOCK + ORWDXA FLAG + ORWDX UNLOCK
+   * Flag an order for attention
+   * ================================================================ */
+  server.post('/vista/cprs/orders/flag', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const body = (request.body as any) || {};
+    const { dfn, orderIen, flagReason } = body;
+    const rpcUsed = ['ORWDX LOCK', 'ORWDXA FLAG', 'ORWDX UNLOCK'];
+    const vivianPresence = {
+      'ORWDX LOCK': 'present' as const,
+      'ORWDXA FLAG': 'present' as const,
+      'ORWDX UNLOCK': 'present' as const,
+    };
+
+    const errors = validateRequired(body, ['dfn', 'orderIen', 'flagReason']);
+    const validDfn = validateDfn(dfn);
+    if (!validDfn) errors.push({ field: 'dfn', message: 'dfn must be numeric' });
+    if (orderIen && !/^\d+$/.test(String(orderIen)))
+      errors.push({ field: 'orderIen', message: 'orderIen must be numeric' });
+    if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
+
+    const actor = getActor(request);
+    let locked = false;
+    try {
+      validateCredentials();
+      await connect();
+      const duz = getDuz();
+
+      const lockResp = await safeCallRpc('ORWDX LOCK', [validDfn!], { idempotent: false });
+      locked = lockResp[0]?.trim() === '1';
+      if (!locked) {
+        disconnect();
+        return reply.code(409).send({ ok: false, error: 'Patient locked by another provider', rpcUsed, vivianPresence });
+      }
+
+      const flagResp = await safeCallRpc(
+        'ORWDXA FLAG',
+        [String(orderIen), String(flagReason), duz],
+        { idempotent: false }
+      );
+
+      await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true })
+        .catch((e) => log.warn('ORWDX UNLOCK failed', { error: String(e) }));
+      locked = false;
+      disconnect();
+
+      const raw = flagResp.join('\n').trim();
+      if (hasVistaRuntimeError(raw)) {
+        auditWrite('clinical.order-flag', 'failure', actor, validDfn!, { mode: 'real', rpc: 'ORWDXA FLAG' });
+        return reply.code(502).send({ ok: false, source: 'vista', error: `ORWDXA FLAG failed: ${raw}`, rpcUsed, vivianPresence });
+      }
+
+      auditWrite('clinical.order-flag', 'success', actor, validDfn!, { mode: 'real', rpc: 'ORWDXA FLAG' });
+      return { ok: true, source: 'vista', mode: 'real', orderIen: String(orderIen), action: 'flagged', rpcUsed, vivianPresence };
+    } catch (err: any) {
+      if (locked) await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+      disconnect();
+      return reply.code(502).send({ ok: false, source: 'vista', error: safeErr(err), rpcUsed, vivianPresence });
+    }
+  });
+
+  /* ================================================================
+   * POST /vista/cprs/orders/complete
+   * RPC: ORWDX LOCK + ORWDXA COMPLETE + ORWDX UNLOCK
+   * Mark an order as complete
+   * ================================================================ */
+  server.post('/vista/cprs/orders/complete', async (request, reply) => {
+    const tenantId = requireTenantId(request, reply);
+    if (!tenantId) return;
+    const body = (request.body as any) || {};
+    const { dfn, orderIen, esCode } = body;
+    const rpcUsed = ['ORWDX LOCK', 'ORWDXA COMPLETE', 'ORWDX UNLOCK'];
+    const vivianPresence = {
+      'ORWDX LOCK': 'present' as const,
+      'ORWDXA COMPLETE': 'present' as const,
+      'ORWDX UNLOCK': 'present' as const,
+    };
+
+    const errors = validateRequired(body, ['dfn', 'orderIen']);
+    const validDfn = validateDfn(dfn);
+    if (!validDfn) errors.push({ field: 'dfn', message: 'dfn must be numeric' });
+    if (orderIen && !/^\d+$/.test(String(orderIen)))
+      errors.push({ field: 'orderIen', message: 'orderIen must be numeric' });
+    if (errors.length) return reply.code(400).send({ ok: false, errors, rpcUsed, vivianPresence });
+
+    const actor = getActor(request);
+    let locked = false;
+    try {
+      validateCredentials();
+      await connect();
+
+      const lockResp = await safeCallRpc('ORWDX LOCK', [validDfn!], { idempotent: false });
+      locked = lockResp[0]?.trim() === '1';
+      if (!locked) {
+        disconnect();
+        return reply.code(409).send({ ok: false, error: 'Patient locked by another provider', rpcUsed, vivianPresence });
+      }
+
+      const completeResp = await safeCallRpc(
+        'ORWDXA COMPLETE',
+        [String(orderIen), String(esCode || '')],
+        { idempotent: false }
+      );
+
+      await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true })
+        .catch((e) => log.warn('ORWDX UNLOCK failed', { error: String(e) }));
+      locked = false;
+      disconnect();
+
+      const raw = completeResp.join('\n').trim();
+      if (hasVistaRuntimeError(raw)) {
+        auditWrite('clinical.order-complete', 'failure', actor, validDfn!, { mode: 'real', rpc: 'ORWDXA COMPLETE' });
+        return reply.code(502).send({ ok: false, source: 'vista', error: `ORWDXA COMPLETE failed: ${raw}`, rpcUsed, vivianPresence });
+      }
+
+      auditWrite('clinical.order-complete', 'success', actor, validDfn!, { mode: 'real', rpc: 'ORWDXA COMPLETE' });
+      return { ok: true, source: 'vista', mode: 'real', orderIen: String(orderIen), action: 'completed', rpcUsed, vivianPresence };
+    } catch (err: any) {
+      if (locked) await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+      disconnect();
+      return reply.code(502).send({ ok: false, source: 'vista', error: safeErr(err), rpcUsed, vivianPresence });
+    }
   });
 
   log.info('CPOE Parity routes registered (Phase 59)', {
@@ -1351,6 +1702,10 @@ export default async function ordersCpoeRoutes(server: FastifyInstance): Promise
       'POST /vista/cprs/orders/consult',
       'POST /vista/cprs/orders/sign',
       'POST /vista/cprs/order-checks',
+      'POST /vista/cprs/orders/dc',
+      'POST /vista/cprs/orders/hold',
+      'POST /vista/cprs/orders/flag',
+      'POST /vista/cprs/orders/complete',
     ],
   });
 }

@@ -1,5 +1,5 @@
 /**
- * PG RCM Claim Case Repository — Async durable claim lifecycle cases
+ * PG RCM Claim Case Repository -- Async durable claim lifecycle cases
  *
  * Phase 126: RCM Durability Wave (Map stores -> Postgres)
  *
@@ -13,7 +13,7 @@ import { pgRcmClaimCase } from '../pg-schema.js';
 
 export type RcmClaimCaseRow = typeof pgRcmClaimCase.$inferSelect;
 
-/* ── Create ────────────────────────────────────────────────── */
+/* -- Create -------------------------------------------------- */
 
 export async function insertClaimCase(data: {
   id: string;
@@ -72,7 +72,7 @@ export async function insertClaimCase(data: {
   return row!;
 }
 
-/* ── Lookup ────────────────────────────────────────────────── */
+/* -- Lookup -------------------------------------------------- */
 
 export async function findClaimCaseById(id: string): Promise<RcmClaimCaseRow | undefined> {
   const db = getPgDb();
@@ -111,7 +111,7 @@ export async function countClaimCasesByTenant(tenantId: string): Promise<number>
   return result[0]?.count ?? 0;
 }
 
-/* ── Update ────────────────────────────────────────────────── */
+/* -- Update -------------------------------------------------- */
 
 export async function updateClaimCase(
   id: string,
@@ -137,7 +137,7 @@ export async function updateClaimCase(
   return findClaimCaseById(id);
 }
 
-/* ── Count ─────────────────────────────────────────────────── */
+/* -- Count --------------------------------------------------- */
 
 export async function countAllClaimCases(): Promise<number> {
   const db = getPgDb();

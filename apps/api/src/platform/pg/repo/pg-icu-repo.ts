@@ -1,5 +1,5 @@
 /**
- * PG ICU Repository — Async durable Intensive Care Unit state
+ * PG ICU Repository -- Async durable Intensive Care Unit state
  *
  * Phase 525 (W38-C4): ICU Durability
  *
@@ -26,7 +26,7 @@ export type IcuVentRecordRow = typeof pgIcuVentRecord.$inferSelect;
 export type IcuIoRecordRow = typeof pgIcuIoRecord.$inferSelect;
 export type IcuScoreRow = typeof pgIcuScore.$inferSelect;
 
-/* ═══════════════════ ICU ADMISSION ═══════════════════ */
+/* =================== ICU ADMISSION =================== */
 
 export async function insertIcuAdmission(data: {
   id: string;
@@ -148,7 +148,7 @@ export async function deleteIcuAdmission(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ ICU BED ═══════════════════ */
+/* =================== ICU BED =================== */
 
 export async function insertIcuBed(data: {
   id: string;
@@ -220,7 +220,7 @@ export async function deleteIcuBed(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ ICU FLOWSHEET ENTRY ═══════════════════ */
+/* =================== ICU FLOWSHEET ENTRY =================== */
 
 export async function insertIcuFlowsheetEntry(data: {
   id: string;
@@ -299,7 +299,7 @@ export async function deleteIcuFlowsheetEntry(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ ICU VENT RECORD ═══════════════════ */
+/* =================== ICU VENT RECORD =================== */
 
 export async function insertIcuVentRecord(data: {
   id: string;
@@ -368,7 +368,7 @@ export async function deleteIcuVentRecord(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ ICU I/O RECORD ═══════════════════ */
+/* =================== ICU I/O RECORD =================== */
 
 export async function insertIcuIoRecord(data: {
   id: string;
@@ -442,7 +442,7 @@ export async function deleteIcuIoRecord(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ ICU SCORE ═══════════════════ */
+/* =================== ICU SCORE =================== */
 
 export async function insertIcuScore(data: {
   id: string;

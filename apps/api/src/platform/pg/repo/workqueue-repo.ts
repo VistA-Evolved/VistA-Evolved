@@ -1,5 +1,5 @@
 /**
- * PG Workqueue Repository — Async durable work queue for multi-instance
+ * PG Workqueue Repository -- Async durable work queue for multi-instance
  *
  * Phase 117: Postgres-first prod posture
  *

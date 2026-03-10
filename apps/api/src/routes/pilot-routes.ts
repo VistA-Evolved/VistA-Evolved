@@ -1,14 +1,14 @@
 /**
- * Pilot Routes — Phase 246: Pilot Hospital Hardening
+ * Pilot Routes -- Phase 246: Pilot Hospital Hardening
  *
  * Routes:
- *   GET  /admin/pilot/sites             — List all pilot sites
- *   POST /admin/pilot/sites             — Create a new pilot site
- *   GET  /admin/pilot/sites/:id         — Get site detail
- *   PATCH /admin/pilot/sites/:id        — Update site config
- *   DELETE /admin/pilot/sites/:id       — Delete site
- *   POST /admin/pilot/sites/:id/preflight — Run preflight checks
- *   GET  /admin/pilot/summary           — Summary stats
+ *   GET  /admin/pilot/sites             -- List all pilot sites
+ *   POST /admin/pilot/sites             -- Create a new pilot site
+ *   GET  /admin/pilot/sites/:id         -- Get site detail
+ *   PATCH /admin/pilot/sites/:id        -- Update site config
+ *   DELETE /admin/pilot/sites/:id       -- Delete site
+ *   POST /admin/pilot/sites/:id/preflight -- Run preflight checks
+ *   GET  /admin/pilot/summary           -- Summary stats
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -45,7 +45,7 @@ function requireTenantId(request: any, reply: any): string | null {
 }
 
 export default async function pilotRoutes(server: FastifyInstance): Promise<void> {
-  /* ── GET /admin/pilot/sites ─────────────────────────────────── */
+  /* -- GET /admin/pilot/sites ----------------------------------- */
   server.get('/admin/pilot/sites', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -56,7 +56,7 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
     return { ok: true, sites };
   });
 
-  /* ── POST /admin/pilot/sites ────────────────────────────────── */
+  /* -- POST /admin/pilot/sites ---------------------------------- */
   server.post('/admin/pilot/sites', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -76,7 +76,7 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
     }
   });
 
-  /* ── GET /admin/pilot/sites/:id ─────────────────────────────── */
+  /* -- GET /admin/pilot/sites/:id ------------------------------- */
   server.get('/admin/pilot/sites/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -90,7 +90,7 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
     return { ok: true, site };
   });
 
-  /* ── PATCH /admin/pilot/sites/:id ───────────────────────────── */
+  /* -- PATCH /admin/pilot/sites/:id ----------------------------- */
   server.patch('/admin/pilot/sites/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -108,7 +108,7 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
     }
   });
 
-  /* ── DELETE /admin/pilot/sites/:id ──────────────────────────── */
+  /* -- DELETE /admin/pilot/sites/:id ---------------------------- */
   server.delete('/admin/pilot/sites/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -122,7 +122,7 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
     return { ok: true };
   });
 
-  /* ── POST /admin/pilot/sites/:id/preflight ──────────────────── */
+  /* -- POST /admin/pilot/sites/:id/preflight -------------------- */
   server.post('/admin/pilot/sites/:id/preflight', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -148,7 +148,7 @@ export default async function pilotRoutes(server: FastifyInstance): Promise<void
     return { ok: true, preflight: result };
   });
 
-  /* ── GET /admin/pilot/summary ───────────────────────────────── */
+  /* -- GET /admin/pilot/summary --------------------------------- */
   server.get('/admin/pilot/summary', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);

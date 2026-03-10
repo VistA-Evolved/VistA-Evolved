@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * scripts/prompts-mk-wave-phase.mjs — Wave Phase Folder Generator
+ * scripts/prompts-mk-wave-phase.mjs -- Wave Phase Folder Generator
  *
  * Creates a correctly-structured prompts folder for a wave phase.
  *
@@ -20,7 +20,7 @@ import { join, resolve } from 'node:path';
 const ROOT = resolve(import.meta.dirname, '..');
 const PROMPTS_DIR = join(ROOT, 'prompts');
 
-// ── Parse args ──────────────────────────────────
+// -- Parse args ----------------------------------
 function parseArgs() {
   const args = process.argv.slice(2);
   const opts = {};
@@ -58,11 +58,11 @@ if (existsSync(folderPath)) {
   process.exit(1);
 }
 
-// ── Templates ──────────────────────────────────
+// -- Templates ----------------------------------
 
 const humanTitle = opts.title.replace(/-/g, ' ').replace(/\b\w/g, (c) => c.toUpperCase());
 
-const implementMd = `# Phase ${opts.phase} — ${humanTitle} — IMPLEMENT
+const implementMd = `# Phase ${opts.phase} -- ${humanTitle} -- IMPLEMENT
 
 ## Context
 Wave ${opts.wave}, Phase ${opts.p}.
@@ -84,7 +84,7 @@ Wave ${opts.wave}, Phase ${opts.p}.
 - evidence/wave-${opts.wave}/${folderName}/
 `;
 
-const verifyMd = `# Phase ${opts.phase} — ${humanTitle} — VERIFY
+const verifyMd = `# Phase ${opts.phase} -- ${humanTitle} -- VERIFY
 
 ## Verification Steps
 1. Execute primary action
@@ -105,13 +105,13 @@ const verifyMd = `# Phase ${opts.phase} — ${humanTitle} — VERIFY
 - evidence/wave-${opts.wave}/${folderName}/
 `;
 
-const notesMd = `# Phase ${opts.phase} — ${humanTitle} — NOTES
+const notesMd = `# Phase ${opts.phase} -- ${humanTitle} -- NOTES
 
 ## Log
 - Created by prompts-mk-wave-phase.mjs
 `;
 
-// ── Write ──────────────────────────────────
+// -- Write ----------------------------------
 
 if (opts.dryRun) {
   console.log(`[DRY RUN] Would create: prompts/${folderName}/`);

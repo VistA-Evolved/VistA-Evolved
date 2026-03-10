@@ -5,13 +5,12 @@ import { useDataCache, type LabResult } from '@/stores/data-cache';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE } from '@/lib/api-config';
 import styles from '../cprs.module.css';
-import CachePendingBanner from './CachePendingBanner';
 
 interface Props {
   dfn: string;
 }
 
-type LabView = 'results' | 'orders' | 'specimens' | 'alerts' | 'posture';
+type LabView = 'results' | 'history' | 'orders' | 'specimens' | 'alerts' | 'posture';
 
 type LabOrderStatus =
   | 'pending'
@@ -110,7 +109,7 @@ interface LabDashboardStats {
 
 interface LabWritebackPostureEntry {
   rpc: string;
-  status: 'available' | 'integration_pending';
+  status: 'available' | 'requires_config';
   note: string;
 }
 
@@ -149,6 +148,7 @@ const RESULT_STATUSES = ['preliminary', 'final', 'corrected', 'amended', 'cancel
 
 const LAB_VIEWS: Array<{ key: LabView; label: string }> = [
   { key: 'results', label: 'Results' },
+  { key: 'history', label: 'History' },
   { key: 'orders', label: 'Orders' },
   { key: 'specimens', label: 'Specimens' },
   { key: 'alerts', label: 'Critical Alerts' },
@@ -176,7 +176,7 @@ function readStoredLabView(dfn: string): LabView {
 }
 
 function fmtDate(value?: string | null): string {
-  if (!value) return '—';
+  if (!value) return '--';
   const parsed = new Date(value);
   if (Number.isNaN(parsed.getTime())) return value;
   return parsed.toLocaleString();
@@ -261,6 +261,11 @@ export default function LabsPanel({ dfn }: Props) {
   const [workflowMessage, setWorkflowMessage] = useState<string | null>(null);
   const [orderTransitionSelections, setOrderTransitionSelections] = useState<Record<string, string>>({});
   const [specimenTransitionSelections, setSpecimenTransitionSelections] = useState<Record<string, string>>({});
+
+  const [labHistory, setLabHistory] = useState<any[]>([]);
+  const [labHistoryLoading, setLabHistoryLoading] = useState(false);
+  const [labStatus, setLabStatus] = useState<any[]>([]);
+  const [labStatusLoading, setLabStatusLoading] = useState(false);
 
   const [quickLabTest, setQuickLabTest] = useState('');
   const [quickLabMessage, setQuickLabMessage] = useState<string | null>(null);
@@ -351,6 +356,30 @@ export default function LabsPanel({ dfn }: Props) {
     });
   }, [results]);
 
+  async function loadLabHistory() {
+    setLabHistoryLoading(true);
+    try {
+      const res = await getJson<{ ok: boolean; results?: any[]; history?: any[] }>(`/vista/labs/history?dfn=${dfn}`);
+      setLabHistory(res.results || res.history || []);
+    } catch {
+      setLabHistory([]);
+    } finally {
+      setLabHistoryLoading(false);
+    }
+  }
+
+  async function loadLabStatus() {
+    setLabStatusLoading(true);
+    try {
+      const res = await getJson<{ ok: boolean; results?: any[]; statuses?: any[] }>(`/vista/labs/status?dfn=${dfn}`);
+      setLabStatus(res.results || res.statuses || []);
+    } catch {
+      setLabStatus([]);
+    } finally {
+      setLabStatusLoading(false);
+    }
+  }
+
   async function loadWorkflow() {
     setWorkflowLoading(true);
     setWorkflowError(null);
@@ -379,6 +408,8 @@ export default function LabsPanel({ dfn }: Props) {
 
   useEffect(() => {
     void loadWorkflow();
+    void loadLabHistory();
+    void loadLabStatus();
   }, [dfn]);
 
   function toggleAckSelection(result: LabResult) {
@@ -426,7 +457,7 @@ export default function LabsPanel({ dfn }: Props) {
         setQuickLabMessage(
           result.mode === 'real'
             ? `VistA lab request submitted: ${result.labTest || quickLabTest.trim()}`
-            : `Lab request captured as draft: ${result.message || 'integration pending'}`
+            : `Lab request captured as draft: ${result.message || 'awaiting VistA sync'}`
         );
       } else if (
         result.mode === 'draft' ||
@@ -626,7 +657,7 @@ export default function LabsPanel({ dfn }: Props) {
     <div>
       <div className={styles.panelTitle}>Laboratory</div>
       <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: '2px 0 10px' }}>
-        Contract: live VistA results via ORWLRR INTERIM plus Phase 393 deep workflow state under /lab/*.
+        Live VistA lab results, workflow orders, specimens, critical alerts, and writeback posture.
       </p>
 
       <div className={styles.panelToolbar} style={{ flexWrap: 'wrap' }}>
@@ -652,22 +683,12 @@ export default function LabsPanel({ dfn }: Props) {
 
       {activeView === 'results' && (
         <div>
-          {results.length === 0 && !resultsLoading && labsMeta.fetched && (labsMeta.pending || !labsMeta.ok) && (
-            <div style={{ marginBottom: 10 }}>
-              <CachePendingBanner
-                title="Lab results pending"
-                noun="lab-results"
-                meta={labsMeta}
-                defaultTargets={['ORWLRR INTERIM']}
-              />
-            </div>
-          )}
 
           <div className={styles.panelToolbar} style={{ alignItems: 'center', flexWrap: 'wrap' }}>
             <span style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>
               {resultsLoading ? 'Loading live lab results...' : `${results.length} live result(s)`}
             </span>
-            <button className={styles.btnPrimary} onClick={handleAcknowledge} disabled={ackLoading || !canAcknowledge}>
+            <button className={styles.btnPrimary} onClick={handleAcknowledge} disabled={ackLoading || !canAcknowledge} title={ackLoading ? 'Lab acknowledgement is already in progress.' : !canAcknowledge ? 'Select one or more lab results to acknowledge.' : undefined}>
               {ackLoading ? 'Acknowledging...' : `Acknowledge ${selectedAckIds.length || ''}`.trim()}
             </button>
           </div>
@@ -746,10 +767,10 @@ export default function LabsPanel({ dfn }: Props) {
                       <strong>Flag:</strong> {selectedResult.flag || 'normal'}
                     </div>
                     <div>
-                      <strong>Reference Range:</strong> {selectedResult.refRange || '—'}
+                      <strong>Reference Range:</strong> {selectedResult.refRange || '--'}
                     </div>
                     <div>
-                      <strong>Specimen:</strong> {selectedResult.specimen || '—'}
+                      <strong>Specimen:</strong> {selectedResult.specimen || '--'}
                     </div>
                   </div>
                   <div style={{ padding: 12, border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-section-bg)' }}>
@@ -767,6 +788,77 @@ export default function LabsPanel({ dfn }: Props) {
         </div>
       )}
 
+      {activeView === 'history' && (
+        <div>
+          <div className={styles.panelToolbar} style={{ alignItems: 'center' }}>
+            <span style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>
+              {labHistoryLoading ? 'Loading lab history...' : `${labHistory.length} historical result(s)`}
+            </span>
+            <button className={styles.btn} onClick={() => void loadLabHistory()}>Refresh History</button>
+          </div>
+          {labHistory.length === 0 && !labHistoryLoading ? (
+            <p className={styles.emptyText}>No lab history available for this patient.</p>
+          ) : (
+            <table className={styles.dataTable}>
+              <thead>
+                <tr>
+                  <th>Test</th>
+                  <th>Value</th>
+                  <th>Units</th>
+                  <th>Flag</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody>
+                {labHistory.map((item: any, i: number) => (
+                  <tr key={item.id || i}>
+                    <td>{item.name || item.testName || item.analyteName || '--'}</td>
+                    <td>{item.value || '--'}</td>
+                    <td>{item.units || ''}</td>
+                    <td>{item.flag || ''}</td>
+                    <td>{fmtDate(item.date || item.resultedAt || item.collectedAt)}</td>
+                    <td>{item.status ? <StatusBadge status={item.status} /> : '--'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+
+          <h3 style={{ fontSize: 15, marginTop: 16 }}>Order Status</h3>
+          <div className={styles.panelToolbar} style={{ alignItems: 'center' }}>
+            <span style={{ fontSize: 12, color: 'var(--cprs-text-muted)' }}>
+              {labStatusLoading ? 'Loading...' : `${labStatus.length} order(s)`}
+            </span>
+            <button className={styles.btn} onClick={() => void loadLabStatus()}>Refresh Status</button>
+          </div>
+          {labStatus.length === 0 && !labStatusLoading ? (
+            <p className={styles.emptyText}>No lab order status available.</p>
+          ) : (
+            <table className={styles.dataTable}>
+              <thead>
+                <tr>
+                  <th>Test</th>
+                  <th>Status</th>
+                  <th>Ordered</th>
+                  <th>Provider</th>
+                </tr>
+              </thead>
+              <tbody>
+                {labStatus.map((item: any, i: number) => (
+                  <tr key={item.id || i}>
+                    <td>{item.testName || item.name || '--'}</td>
+                    <td>{item.status ? <StatusBadge status={item.status} /> : '--'}</td>
+                    <td>{fmtDate(item.orderedAt || item.createdAt)}</td>
+                    <td>{item.provider || item.orderingProviderName || '--'}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          )}
+        </div>
+      )}
+
       {activeView === 'orders' && (
         <div className={styles.splitPane}>
           <div className={styles.splitLeft} style={{ maxWidth: 400 }}>
@@ -775,7 +867,7 @@ export default function LabsPanel({ dfn }: Props) {
               <label>VistA Lab Test Request</label>
               <input className={styles.formInput} value={quickLabTest} onChange={(e) => setQuickLabTest(e.target.value)} placeholder="CBC, CMP, Troponin..." />
             </div>
-            <button className={styles.btnPrimary} onClick={handleQuickLabOrder} disabled={quickLabLoading || !canSubmitVistaRequest}>
+            <button className={styles.btnPrimary} onClick={handleQuickLabOrder} disabled={quickLabLoading || !canSubmitVistaRequest} title={quickLabLoading ? 'Lab request submission is already in progress.' : !canSubmitVistaRequest ? 'Enter a VistA lab test request before submitting.' : undefined}>
               {quickLabLoading ? 'Submitting...' : 'Submit VistA Request'}
             </button>
             {quickLabMessage && (
@@ -819,7 +911,7 @@ export default function LabsPanel({ dfn }: Props) {
               <label>Collection Instructions</label>
               <textarea className={styles.formTextarea} value={newOrder.collectionInstructions} onChange={(e) => setNewOrder((current) => ({ ...current, collectionInstructions: e.target.value }))} />
             </div>
-            <button className={styles.btnPrimary} onClick={handleCreateOrder} disabled={!canCreateWorkflowOrder}>
+            <button className={styles.btnPrimary} onClick={handleCreateOrder} disabled={!canCreateWorkflowOrder} title={!canCreateWorkflowOrder ? 'Enter a test name to create a workflow order.' : undefined}>
               Create Workflow Order
             </button>
           </div>
@@ -865,7 +957,7 @@ export default function LabsPanel({ dfn }: Props) {
                             if (nextStatus) void handleOrderTransition(order.id, nextStatus as LabOrderStatus);
                           }}
                         >
-                          <option value="">Transition…</option>
+                          <option value="">Transition...</option>
                           {ORDER_STATUSES.filter((status) => status !== order.status).map((status) => (
                             <option key={status} value={status}>{status.replace(/_/g, ' ')}</option>
                           ))}
@@ -909,7 +1001,7 @@ export default function LabsPanel({ dfn }: Props) {
               <label>Container Type</label>
               <input className={styles.formInput} value={newSpecimen.containerType} onChange={(e) => setNewSpecimen((current) => ({ ...current, containerType: e.target.value }))} />
             </div>
-            <button className={styles.btnPrimary} onClick={handleCreateSpecimen} disabled={!canCreateSpecimen}>
+            <button className={styles.btnPrimary} onClick={handleCreateSpecimen} disabled={!canCreateSpecimen} title={!canCreateSpecimen ? 'Select an order and enter an accession number to create a specimen.' : undefined}>
               Create Specimen
             </button>
           </div>
@@ -938,7 +1030,7 @@ export default function LabsPanel({ dfn }: Props) {
                       <td>{specimen.accessionNumber}</td>
                       <td>{specimen.specimenType}</td>
                       <td><StatusBadge status={specimen.status} /></td>
-                      <td>{specimen.collectionSite || '—'}</td>
+                      <td>{specimen.collectionSite || '--'}</td>
                       <td>{specimen.deviceObservationIds.length || '0'}</td>
                       <td>
                         <select
@@ -950,7 +1042,7 @@ export default function LabsPanel({ dfn }: Props) {
                             if (nextStatus) void handleSpecimenTransition(specimen.id, nextStatus as SpecimenStatus);
                           }}
                         >
-                          <option value="">Transition…</option>
+                          <option value="">Transition...</option>
                           {SPECIMEN_STATUSES.filter((status) => status !== specimen.status).map((status) => (
                             <option key={status} value={status}>{status.replace(/_/g, ' ')}</option>
                           ))}
@@ -1006,7 +1098,7 @@ export default function LabsPanel({ dfn }: Props) {
               <label>Comment</label>
               <textarea className={styles.formTextarea} value={newResult.comment} onChange={(e) => setNewResult((current) => ({ ...current, comment: e.target.value }))} />
             </div>
-            <button className={styles.btnPrimary} onClick={handleCreateResult} disabled={!canCreateResult}>
+            <button className={styles.btnPrimary} onClick={handleCreateResult} disabled={!canCreateResult} title={!canCreateResult ? 'Select an order and enter the analyte name and value to record a result.' : undefined}>
               Record Result
             </button>
 
@@ -1106,7 +1198,7 @@ export default function LabsPanel({ dfn }: Props) {
                   <strong>Completed Today:</strong> {dashboard.completedToday}
                 </div>
                 <div style={{ padding: 10, border: '1px solid var(--cprs-border)', borderRadius: 4 }}>
-                  <strong>Average Turnaround:</strong> {dashboard.averageTurnaroundMinutes == null ? '—' : `${dashboard.averageTurnaroundMinutes} min`}
+                  <strong>Average Turnaround:</strong> {dashboard.averageTurnaroundMinutes == null ? '--' : `${dashboard.averageTurnaroundMinutes} min`}
                 </div>
               </div>
             ) : (
@@ -1141,12 +1233,6 @@ export default function LabsPanel({ dfn }: Props) {
               <p className={styles.emptyText}>Writeback posture unavailable.</p>
             )}
 
-            <div style={{ marginTop: 12, padding: 12, border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-section-bg)' }}>
-              <strong>Truthfulness Contract</strong>
-              <p style={{ margin: '6px 0 0', fontSize: 12, color: 'var(--cprs-text-muted)' }}>
-                This panel shows two layers at once: live VistA interim lab results on the Results tab, and the deeper workflow lifecycle implemented in the platform lab store. VistA-backed writes are only claimed where the backend reports success; unsupported sandbox actions remain visible through posture instead of being hidden.
-              </p>
-            </div>
           </div>
         </div>
       )}

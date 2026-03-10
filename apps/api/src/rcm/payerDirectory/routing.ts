@@ -1,5 +1,5 @@
 /**
- * Payer Directory — Claim Routing Engine
+ * Payer Directory -- Claim Routing Engine
  *
  * Phase 44: jurisdiction + payer + connector capabilities -> chosen connector
  *
@@ -14,7 +14,7 @@ import { getDirectoryPayer } from './normalization.js';
 import { getPayer } from '../payer-registry/registry.js';
 import { getConnector, listConnectors } from '../connectors/types.js';
 
-/* ── Route Selection ────────────────────────────────────────── */
+/* -- Route Selection ------------------------------------------ */
 
 /**
  * Resolve the best route for a claim submission.
@@ -92,7 +92,7 @@ export function resolveRoute(
   return buildRouteNotFound(payerId, jurisdiction, dirPayer);
 }
 
-/* ── Helpers ────────────────────────────────────────────────── */
+/* -- Helpers -------------------------------------------------- */
 
 function inferChannelFromMode(mode: string): PayerChannel | null {
   switch (mode) {

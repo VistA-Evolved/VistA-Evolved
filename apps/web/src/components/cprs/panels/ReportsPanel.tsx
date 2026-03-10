@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Reports Panel — Phase 18C enhanced.
+ * Reports Panel -- Phase 18C enhanced.
  *
  * Shows report types + text viewer (original Phase 14B).
  * Phase 18 adds:
@@ -630,12 +630,12 @@ export default function ReportsPanel({ dfn }: Props) {
                 background: 'var(--cprs-bg)',
               }}
             >
-              <div className={styles.panelTitle}>{selectedReport.qualifier ? `${selectedReport.report.name} — ${selectedReport.qualifier.label}` : selectedReport.report.name}</div>
+              <div className={styles.panelTitle}>{selectedReport.qualifier ? `${selectedReport.report.name} -- ${selectedReport.qualifier.label}` : selectedReport.report.name}</div>
               <div style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginBottom: 8 }}>
                 {selectedReport.report.sectionLabel || 'Clinical Reports'}
-                {selectedReport.report.qualifierType === 2 && ' • Date-range report'}
-                {selectedReport.report.qualifierType === 1 && ' • Health Summary report'}
-                {selectedReport.report.localOnly && ' • Local only'}
+                {selectedReport.report.qualifierType === 2 && ' * Date-range report'}
+                {selectedReport.report.qualifierType === 1 && ' * Health Summary report'}
+                {selectedReport.report.localOnly && ' * Local only'}
               </div>
 
               {selectedReport.report.qualifierType === 2 && (

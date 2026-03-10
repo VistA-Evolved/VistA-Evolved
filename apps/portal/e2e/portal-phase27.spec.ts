@@ -1,5 +1,5 @@
 /**
- * Portal Phase 27 E2E — API-level integration tests
+ * Portal Phase 27 E2E -- API-level integration tests
  *
  * Pre-requisites:
  *   1. API server running on http://localhost:3001
@@ -9,10 +9,10 @@
  *   - Login + session lifecycle
  *   - Health record sections (allergies, problems, vitals, meds, demographics)
  *   - PDF export (section + full)
- *   - Share lifecycle: create → preview → verify → revoke → denied
- *   - Messaging: create draft → add attachment → send → verify in sent
- *   - Appointments: list → request → cancel
- *   - Settings: read → update
+ *   - Share lifecycle: create -> preview -> verify -> revoke -> denied
+ *   - Messaging: create draft -> add attachment -> send -> verify in sent
+ *   - Appointments: list -> request -> cancel
+ *   - Settings: read -> update
  *   - Proxy/sensitivity: evaluate policy
  *   - Audit trail populated
  *   - Rate limit triggers after threshold
@@ -77,7 +77,7 @@ async function authedDelete(request: APIRequestContext, path: string, cookie: st
 /* ================================================================== */
 
 test.describe('Auth lifecycle', () => {
-  test('login → session → logout → session denied', async ({ request }) => {
+  test('login -> session -> logout -> session denied', async ({ request }) => {
     // Login
     const { cookie } = await portalLogin(request);
 
@@ -191,7 +191,7 @@ test.describe('Share lifecycle', () => {
     ({ cookie } = await portalLogin(request));
   });
 
-  test('create → preview → verify → revoke → denied', async ({ request }) => {
+  test('create -> preview -> verify -> revoke -> denied', async ({ request }) => {
     // 1. Create share
     const createRes = await authedPost(request, '/portal/shares', cookie, {
       sections: ['allergies', 'problems'],
@@ -209,7 +209,7 @@ test.describe('Share lifecycle', () => {
     // Retrieve patientDob from the share (we'll use what we passed)
     const patientDob = createBody.share.patientDob || '2900101';
 
-    // 2. Preview (public — no auth)
+    // 2. Preview (public -- no auth)
     const previewRes = await request.get(`${API}/portal/share/preview/${token}`);
     expect(previewRes.status()).toBe(200);
     const previewBody = await previewRes.json();
@@ -229,7 +229,7 @@ test.describe('Share lifecycle', () => {
     const revokeRes = await authedPost(request, `/portal/shares/${shareId}/revoke`, cookie);
     expect(revokeRes.status()).toBe(200);
 
-    // 5. After revoke — verify fails
+    // 5. After revoke -- verify fails
     const verifyRes2 = await request.post(`${API}/portal/share/verify/${token}`, {
       data: { accessCode, patientDob },
     });
@@ -263,7 +263,7 @@ test.describe('Secure messaging', () => {
     ({ cookie } = await portalLogin(request));
   });
 
-  test('create draft → send → appears in sent', async ({ request }) => {
+  test('create draft -> send -> appears in sent', async ({ request }) => {
     // Create draft
     const draftRes = await authedPost(request, '/portal/messages', cookie, {
       subject: 'E2E test message',
@@ -290,7 +290,7 @@ test.describe('Secure messaging', () => {
     expect(sentBody.messages.some((m: any) => m.id === msgId)).toBe(true);
   });
 
-  test('create draft → delete → gone', async ({ request }) => {
+  test('create draft -> delete -> gone', async ({ request }) => {
     const draftRes = await authedPost(request, '/portal/messages', cookie, {
       subject: 'Delete test',
       category: 'general',
@@ -336,7 +336,7 @@ test.describe('Appointments', () => {
     expect(Array.isArray(body.past)).toBe(true);
   });
 
-  test('request appointment → appears in list', async ({ request }) => {
+  test('request appointment -> appears in list', async ({ request }) => {
     const reqRes = await authedPost(request, '/portal/appointments/request', cookie, {
       clinicName: 'E2E Test Clinic',
       preferredDate: '2026-06-01',
@@ -420,7 +420,7 @@ test.describe('Proxy and sensitivity', () => {
     ({ cookie } = await portalLogin(request));
   });
 
-  test('grant proxy → list → revoke', async ({ request }) => {
+  test('grant proxy -> list -> revoke', async ({ request }) => {
     // Grant
     const grantRes = await authedPost(request, '/portal/proxy/grant', cookie, {
       proxyDfn: '100099',
@@ -517,7 +517,7 @@ test.describe('Rate limiting', () => {
     }
     // Verify flag was used (suppresses TS6133 while keeping test logic)
     expect(typeof gotRateLimited).toBe('boolean');
-    // Either we got rate limited, or we got 401s (both acceptable — rate limit is IP-based)
+    // Either we got rate limited, or we got 401s (both acceptable -- rate limit is IP-based)
     // The important thing is no 500s occurred
     expect(true).toBe(true); // passes as long as no exceptions
   });

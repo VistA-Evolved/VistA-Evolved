@@ -1,5 +1,5 @@
 /**
- * UnleashFeatureFlagProvider — Self-hosted Unleash adapter (Phase 285)
+ * UnleashFeatureFlagProvider -- Self-hosted Unleash adapter (Phase 285)
  *
  * Optional provider that connects to a self-hosted Unleash server.
  * Uses vanilla Node.js fetch (no SDK dependency) with local cache
@@ -15,7 +15,7 @@
 import type { FeatureFlagProvider, FlagContext, FlagEvaluationResult } from './types.js';
 import { DbFeatureFlagProvider } from './db-provider.js';
 
-// ─── Types ─────────────────────────────────────────────────────
+// --- Types -----------------------------------------------------
 
 interface UnleashToggle {
   name: string;
@@ -41,7 +41,7 @@ interface UnleashClientFeaturesResponse {
   features: UnleashToggle[];
 }
 
-// ─── Provider Implementation ───────────────────────────────────
+// --- Provider Implementation -----------------------------------
 
 export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
   readonly providerType = 'unleash' as const;
@@ -68,12 +68,12 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
     this.startRefresh();
   }
 
-  // ─── Public API ────────────────────────────────────────────
+  // --- Public API --------------------------------------------
 
   async isEnabled(flagKey: string, context: FlagContext): Promise<FlagEvaluationResult> {
     const toggle = this.cache.get(flagKey);
     if (!toggle) {
-      // Not in Unleash cache — try DB fallback
+      // Not in Unleash cache -- try DB fallback
       return this.fallback.isEnabled(flagKey, context);
     }
     return {
@@ -125,7 +125,7 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
     }
   }
 
-  // ─── Internal ──────────────────────────────────────────────
+  // --- Internal ----------------------------------------------
 
   private headers(): Record<string, string> {
     return {
@@ -167,7 +167,7 @@ export class UnleashFeatureFlagProvider implements FeatureFlagProvider {
       }
       this.cache = newCache;
     } catch {
-      // Network error — keep stale cache, DB provider is the fallback
+      // Network error -- keep stale cache, DB provider is the fallback
     }
   }
 }

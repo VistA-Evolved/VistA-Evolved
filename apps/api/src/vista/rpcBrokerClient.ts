@@ -461,7 +461,7 @@ export function disconnect(): void {
       const bye = buildBye();
       sock.write(Buffer.from(bye, 'latin1'));
     } catch {
-      // best-effort — socket may already be half-closed
+      // best-effort -- socket may already be half-closed
     }
     sock.destroy();
   }
@@ -764,7 +764,7 @@ export async function authenticateUser(
       throw new Error('Set context failed');
     }
 
-    // 6. XUS GET USER INFO — returns user details
+    // 6. XUS GET USER INFO -- returns user details
     await tmpRawSend(buildRpcMessage('XUS GET USER INFO'));
     const userResp = stripNulls(await tmpReadToEOT());
     const userLines = userResp.split(/\r?\n/);

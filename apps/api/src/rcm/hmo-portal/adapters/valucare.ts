@@ -1,5 +1,5 @@
 /**
- * ValuCare Portal Adapter — Phase 97
+ * ValuCare Portal Adapter -- Phase 97
  *
  * Manual-assisted adapter for ValuCare (Value Care Health Systems).
  * Portal: https://provider.valucare.com.ph/

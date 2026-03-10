@@ -1,5 +1,5 @@
 /**
- * Clearinghouse Adapter v2 — Provider-Agnostic Interface
+ * Clearinghouse Adapter v2 -- Provider-Agnostic Interface
  * Phase 519 (Wave 37 B7)
  *
  * Adds:
@@ -28,7 +28,7 @@ import type { X12TransactionSet } from '../edi/types.js';
 import type { RcmConnector, ConnectorResult } from '../connectors/types.js';
 import { getConnector } from '../connectors/types.js';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 export type ClearinghouseProvider = 'generic' | 'stedi' | 'availity' | 'change' | 'waystar';
 
@@ -76,7 +76,7 @@ export interface ReplayMatch {
   result?: ConnectorResult;
 }
 
-/* ── Config ─────────────────────────────────────────────────── */
+/* -- Config --------------------------------------------------- */
 
 export interface ClearinghouseGatewayConfig {
   /** Which provider to use. Default: 'generic' (wraps existing ClearinghouseConnector). */
@@ -113,13 +113,13 @@ function loadConfig(): ClearinghouseGatewayConfig {
   };
 }
 
-/* ── Content hashing ────────────────────────────────────────── */
+/* -- Content hashing ------------------------------------------ */
 
 function hashContent(content: string): string {
   return createHash('sha256').update(content).digest('hex').slice(0, 16);
 }
 
-/* ── Trace Store ────────────────────────────────────────────── */
+/* -- Trace Store ---------------------------------------------- */
 
 class TraceStore {
   private config: ClearinghouseGatewayConfig;
@@ -254,7 +254,7 @@ class TraceStore {
   }
 }
 
-/* ── Stedi Adapter (feature-flagged) ────────────────────────── */
+/* -- Stedi Adapter (feature-flagged) -------------------------- */
 
 class StediAdapter {
   private apiKey: string;
@@ -267,7 +267,7 @@ class StediAdapter {
 
   async submit(transactionSet: X12TransactionSet, payload: string): Promise<ConnectorResult> {
     // Stedi EDI Core POST /translate
-    // This is the scaffold — real Stedi integration would use their SDK
+    // This is the scaffold -- real Stedi integration would use their SDK
     const txId = `stedi-${Date.now()}-${randomBytes(4).toString('hex')}`;
 
     if (!this.apiKey) {
@@ -307,12 +307,13 @@ class StediAdapter {
   }
 }
 
-/* ── Clearinghouse Gateway v2 ───────────────────────────────── */
+/* -- Clearinghouse Gateway v2 --------------------------------- */
 
 export class ClearinghouseGatewayV2 {
   private config: ClearinghouseGatewayConfig;
   private traces: TraceStore;
   private stedi?: StediAdapter;
+  private static readonly MAX_SUBMISSIONS = 50000;
   private submissions: Map<string, ClearinghouseSubmission> = new Map();
 
   constructor(configOverride?: Partial<ClearinghouseGatewayConfig>) {
@@ -328,7 +329,7 @@ export class ClearinghouseGatewayV2 {
     }
   }
 
-  /* ── Core Operations ─────────────────────────────────────── */
+  /* -- Core Operations --------------------------------------- */
 
   /**
    * Submit an 837P/837I claim to the clearinghouse.
@@ -357,6 +358,7 @@ export class ClearinghouseGatewayV2 {
           durationMs: Date.now() - startMs,
         };
         this.submissions.set(submissionId, submission);
+        this.enforceSubmissionLimit();
         return submission;
       }
     }
@@ -385,6 +387,7 @@ export class ClearinghouseGatewayV2 {
       durationMs,
     };
     this.submissions.set(submissionId, submission);
+    this.enforceSubmissionLimit();
 
     // Record trace
     if (this.config.recordTraces) {
@@ -437,6 +440,7 @@ export class ClearinghouseGatewayV2 {
           durationMs: Date.now() - startMs,
         };
         this.submissions.set(submissionId, submission);
+        this.enforceSubmissionLimit();
         return submission;
       }
     }
@@ -456,6 +460,7 @@ export class ClearinghouseGatewayV2 {
       durationMs,
     };
     this.submissions.set(submissionId, submission);
+    this.enforceSubmissionLimit();
 
     if (this.config.recordTraces) {
       this.traces.record({
@@ -517,7 +522,7 @@ export class ClearinghouseGatewayV2 {
     return results;
   }
 
-  /* ── Query / Status ──────────────────────────────────────── */
+  /* -- Query / Status ---------------------------------------- */
 
   getSubmission(id: string): ClearinghouseSubmission | undefined {
     return this.submissions.get(id);
@@ -527,7 +532,7 @@ export class ClearinghouseGatewayV2 {
     return Array.from(this.submissions.values()).slice(-limit);
   }
 
-  /* ── Trace Operations ────────────────────────────────────── */
+  /* -- Trace Operations -------------------------------------- */
 
   listTraces(transactionSet?: X12TransactionSet, limit = 50): TraceEntry[] {
     return this.traces.listTraces(transactionSet, limit);
@@ -541,7 +546,7 @@ export class ClearinghouseGatewayV2 {
     return this.traces.getStats();
   }
 
-  /* ── Health ──────────────────────────────────────────────── */
+  /* -- Health ------------------------------------------------ */
 
   async healthCheck(): Promise<{
     healthy: boolean;
@@ -583,7 +588,14 @@ export class ClearinghouseGatewayV2 {
     return safe;
   }
 
-  /* ── Internal ────────────────────────────────────────────── */
+  /* -- Internal ---------------------------------------------- */
+
+  private enforceSubmissionLimit(): void {
+    while (this.submissions.size > ClearinghouseGatewayV2.MAX_SUBMISSIONS) {
+      const oldest = this.submissions.keys().next().value;
+      if (oldest) this.submissions.delete(oldest); else break;
+    }
+  }
 
   private resolveConnector(): RcmConnector {
     // Try getting from the registry first
@@ -628,7 +640,7 @@ export class ClearinghouseGatewayV2 {
   }
 }
 
-/* ── Singleton ──────────────────────────────────────────────── */
+/* -- Singleton ------------------------------------------------ */
 
 let instance: ClearinghouseGatewayV2 | null = null;
 

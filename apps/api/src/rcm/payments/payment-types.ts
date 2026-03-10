@@ -1,13 +1,13 @@
 /**
- * Payment Tracking + Reconciliation — Domain Types (Phase 92)
+ * Payment Tracking + Reconciliation -- Domain Types (Phase 92)
  *
  * Extends the existing Phase 38 Remittance model with:
- * - RemittanceBatch — grouped file/upload tracking
- * - RemittanceLine — per-line parsed data with match status
- * - PaymentPostingEvent — audit-grade posting ledger
- * - UnderpaymentCase — threshold-based underpayment detection
- * - AgingBucket — outstanding AR aging
- * - PayerKPI — payer intelligence metrics
+ * - RemittanceBatch -- grouped file/upload tracking
+ * - RemittanceLine -- per-line parsed data with match status
+ * - PaymentPostingEvent -- audit-grade posting ledger
+ * - UnderpaymentCase -- threshold-based underpayment detection
+ * - AgingBucket -- outstanding AR aging
+ * - PayerKPI -- payer intelligence metrics
  *
  * Evidence-first: "Paid" requires evidence (file, advice, bank ref).
  * In-memory stores. Resets on API restart (Phase 23 pattern).
@@ -15,7 +15,7 @@
 
 import { randomUUID } from 'node:crypto';
 
-/* ── Remittance Batch ──────────────────────────────────────── */
+/* -- Remittance Batch ---------------------------------------- */
 
 export type BatchSourceMode = 'manual_upload' | 'portal_export' | 'api' | 'rpa_planned';
 
@@ -38,7 +38,7 @@ export interface RemittanceBatch {
   sourceMode: BatchSourceMode;
   receivedAt: string;
 
-  /** File reference (opaque URI — in-memory we just track filename) */
+  /** File reference (opaque URI -- in-memory we just track filename) */
   fileUri?: string;
   fileName?: string;
   fileMimeType?: string;
@@ -70,7 +70,7 @@ export interface RemittanceBatch {
   isDemo: boolean;
 }
 
-/* ── Remittance Line ───────────────────────────────────────── */
+/* -- Remittance Line ----------------------------------------- */
 
 export type LineMatchStatus = 'unmatched' | 'matched' | 'needs_review' | 'manually_linked';
 
@@ -110,7 +110,7 @@ export interface RemittanceLine {
   paidAt?: string;
 }
 
-/* ── Payment Posting Event ─────────────────────────────────── */
+/* -- Payment Posting Event ----------------------------------- */
 
 export interface PaymentPostingEvent {
   id: string;
@@ -137,7 +137,7 @@ export interface PaymentPostingEvent {
   evidenceRef: string; // batch fileUri or checksum
 }
 
-/* ── Underpayment Case ─────────────────────────────────────── */
+/* -- Underpayment Case --------------------------------------- */
 
 export type UnderpaymentStatus = 'open' | 'appealed' | 'resolved' | 'written_off';
 
@@ -163,7 +163,7 @@ export interface UnderpaymentCase {
   resolutionNote?: string;
 }
 
-/* ── Aging ─────────────────────────────────────────────────── */
+/* -- Aging --------------------------------------------------- */
 
 export interface AgingBucket {
   label: string;
@@ -181,7 +181,7 @@ export interface AgingReport {
   totalClaims: number;
 }
 
-/* ── Payer KPI ─────────────────────────────────────────────── */
+/* -- Payer KPI ----------------------------------------------- */
 
 export interface PayerKPI {
   payerId: string;
@@ -218,7 +218,7 @@ export interface PayerIntelligenceReport {
   periodEnd: string;
 }
 
-/* ── Export Bridge ─────────────────────────────────────────── */
+/* -- Export Bridge ------------------------------------------- */
 
 export type ExportFormat = 'csv' | 'json';
 
@@ -238,7 +238,7 @@ export interface PaymentExportBridge {
   exportBatch(batchId: string, tenantId: string): ExportResult | undefined;
 }
 
-/* ── Factory Helpers ───────────────────────────────────────── */
+/* -- Factory Helpers ----------------------------------------- */
 
 export function newBatchId(): string {
   return randomUUID();

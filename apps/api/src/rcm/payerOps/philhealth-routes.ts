@@ -1,23 +1,23 @@
 /**
- * PhilHealth eClaims 3.0 Posture Routes — Phase 90
+ * PhilHealth eClaims 3.0 Posture Routes -- Phase 90
  *
  * Endpoints:
- *   GET  /rcm/philhealth/stats                    — PhilHealth subsystem stats
+ *   GET  /rcm/philhealth/stats                    -- PhilHealth subsystem stats
  *
- *   POST /rcm/philhealth/claims                   — Create claim draft
- *   GET  /rcm/philhealth/claims                   — List claim drafts
- *   GET  /rcm/philhealth/claims/:id               — Get claim draft detail
- *   PATCH /rcm/philhealth/claims/:id              — Patch draft fields
- *   PUT  /rcm/philhealth/claims/:id/status        — Transition claim status
- *   POST /rcm/philhealth/claims/:id/validate      — Validate claim draft
- *   POST /rcm/philhealth/claims/:id/export        — Generate export package
- *   POST /rcm/philhealth/claims/:id/test-upload   — Simulate test upload
+ *   POST /rcm/philhealth/claims                   -- Create claim draft
+ *   GET  /rcm/philhealth/claims                   -- List claim drafts
+ *   GET  /rcm/philhealth/claims/:id               -- Get claim draft detail
+ *   PATCH /rcm/philhealth/claims/:id              -- Patch draft fields
+ *   PUT  /rcm/philhealth/claims/:id/status        -- Transition claim status
+ *   POST /rcm/philhealth/claims/:id/validate      -- Validate claim draft
+ *   POST /rcm/philhealth/claims/:id/export        -- Generate export package
+ *   POST /rcm/philhealth/claims/:id/test-upload   -- Simulate test upload
  *
- *   GET  /rcm/philhealth/setup                    — Get facility setup
- *   PATCH /rcm/philhealth/setup                   — Update facility setup
- *   POST /rcm/philhealth/setup/providers          — Add provider accreditation
- *   DELETE /rcm/philhealth/setup/providers/:prc   — Remove provider accreditation
- *   PUT  /rcm/philhealth/setup/readiness/:itemId  — Toggle readiness checklist item
+ *   GET  /rcm/philhealth/setup                    -- Get facility setup
+ *   PATCH /rcm/philhealth/setup                   -- Update facility setup
+ *   POST /rcm/philhealth/setup/providers          -- Add provider accreditation
+ *   DELETE /rcm/philhealth/setup/providers/:prc   -- Remove provider accreditation
+ *   PUT  /rcm/philhealth/setup/readiness/:itemId  -- Toggle readiness checklist item
  *
  * All routes fall under /rcm/ prefix -- existing security catch-all covers auth.
  * RBAC: reads = rcm:read, mutations = rcm:write.
@@ -49,7 +49,7 @@ import { validatePhilHealthClaimDraft } from './philhealth-validator.js';
 import { appendRcmAudit } from '../audit/rcm-audit.js';
 import type { PhilHealthClaimStatus } from './philhealth-types.js';
 
-/* ── Session helper ─────────────────────────────────────────── */
+/* -- Session helper ------------------------------------------- */
 
 function sessionActor(request: FastifyRequest): string {
   const s = (request as any).session;
@@ -68,21 +68,21 @@ function resolveTenantId(request: FastifyRequest): string {
   return 'default';
 }
 
-/* ── Default facility ID (single-tenant sandbox) ────────────── */
+/* -- Default facility ID (single-tenant sandbox) -------------- */
 
 const DEFAULT_FACILITY_ID = process.env.PHILHEALTH_FACILITY_CODE || 'DEFAULT';
 
-/* ── Route Registration ─────────────────────────────────────── */
+/* -- Route Registration --------------------------------------- */
 
 export default async function philhealthRoutes(server: FastifyInstance): Promise<void> {
-  /* ── Stats ────────────────────────────────────────────────── */
+  /* -- Stats -------------------------------------------------- */
 
   server.get('/rcm/philhealth/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const stats = getPhilHealthStats(resolveTenantId(request));
     return reply.send({ ok: true, ...stats });
   });
 
-  /* ── Create Claim Draft ───────────────────────────────────── */
+  /* -- Create Claim Draft ------------------------------------- */
 
   server.post('/rcm/philhealth/claims', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
@@ -133,7 +133,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     return reply.status(201).send({ ok: true, draft });
   });
 
-  /* ── List Claim Drafts ────────────────────────────────────── */
+  /* -- List Claim Drafts -------------------------------------- */
 
   server.get('/rcm/philhealth/claims', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
@@ -146,7 +146,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     return reply.send({ ok: true, count: drafts.length, drafts });
   });
 
-  /* ── Get Claim Draft ──────────────────────────────────────── */
+  /* -- Get Claim Draft ---------------------------------------- */
 
   server.get('/rcm/philhealth/claims/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
@@ -155,7 +155,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     return reply.send({ ok: true, draft });
   });
 
-  /* ── Patch Claim Draft ────────────────────────────────────── */
+  /* -- Patch Claim Draft -------------------------------------- */
 
   server.patch(
     '/rcm/philhealth/claims/:id',
@@ -177,7 +177,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     }
   );
 
-  /* ── Transition Status ────────────────────────────────────── */
+  /* -- Transition Status -------------------------------------- */
 
   server.put(
     '/rcm/philhealth/claims/:id/status',
@@ -209,7 +209,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     }
   );
 
-  /* ── Validate ─────────────────────────────────────────────── */
+  /* -- Validate ----------------------------------------------- */
 
   server.post(
     '/rcm/philhealth/claims/:id/validate',
@@ -236,7 +236,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     }
   );
 
-  /* ── Export Package ───────────────────────────────────────── */
+  /* -- Export Package ----------------------------------------- */
 
   server.post(
     '/rcm/philhealth/claims/:id/export',
@@ -269,7 +269,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     }
   );
 
-  /* ── Test Upload (Simulated) ──────────────────────────────── */
+  /* -- Test Upload (Simulated) -------------------------------- */
 
   server.post(
     '/rcm/philhealth/claims/:id/test-upload',
@@ -309,7 +309,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     }
   );
 
-  /* ── Get Facility Setup ───────────────────────────────────── */
+  /* -- Get Facility Setup ------------------------------------- */
 
   server.get('/rcm/philhealth/setup', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
@@ -318,7 +318,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     return reply.send({ ok: true, setup });
   });
 
-  /* ── Update Facility Setup ────────────────────────────────── */
+  /* -- Update Facility Setup ---------------------------------- */
 
   server.patch('/rcm/philhealth/setup', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
@@ -336,7 +336,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     return reply.send({ ok: true, setup });
   });
 
-  /* ── Add Provider Accreditation ───────────────────────────── */
+  /* -- Add Provider Accreditation ----------------------------- */
 
   server.post(
     '/rcm/philhealth/setup/providers',
@@ -369,7 +369,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     }
   );
 
-  /* ── Remove Provider Accreditation ────────────────────────── */
+  /* -- Remove Provider Accreditation -------------------------- */
 
   server.delete(
     '/rcm/philhealth/setup/providers/:prc',
@@ -391,7 +391,7 @@ export default async function philhealthRoutes(server: FastifyInstance): Promise
     }
   );
 
-  /* ── Toggle Readiness Checklist Item ──────────────────────── */
+  /* -- Toggle Readiness Checklist Item ------------------------ */
 
   server.put(
     '/rcm/philhealth/setup/readiness/:itemId',

@@ -1,5 +1,5 @@
 /**
- * Jitsi Meet Provider — Phase 30
+ * Jitsi Meet Provider -- Phase 30
  *
  * Default self-hostable telehealth provider using Jitsi Meet.
  * Jitsi is open-source (Apache 2.0) and can be self-hosted or
@@ -137,7 +137,7 @@ export class JitsiProvider implements TelehealthProvider {
     params.set('config.disableDeepLinking', 'true');
     params.set('config.startWithAudioMuted', participant.role === 'patient' ? 'true' : 'false');
 
-    // Disable recording by default (compliance — consent required)
+    // Disable recording by default (compliance -- consent required)
     params.set('config.disableRecordAudioNotification', 'false');
     params.set('config.localRecording.disable', 'true');
     params.set('interfaceConfig.DISABLE_TRANSCRIPTION_SUBTITLES', 'true');

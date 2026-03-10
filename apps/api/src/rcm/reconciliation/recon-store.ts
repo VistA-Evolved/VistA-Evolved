@@ -1,5 +1,5 @@
 /**
- * Reconciliation Store — PG Drizzle Persistence
+ * Reconciliation Store -- PG Drizzle Persistence
  *
  * CRUD for remittance_import, payment_record, reconciliation_match,
  * and underpayment_case tables using the platform PG DB.
@@ -32,7 +32,7 @@ import type {
   ReconciliationStats,
 } from './types.js';
 
-/* ── Helpers ────────────────────────────────────────────────── */
+/* -- Helpers -------------------------------------------------- */
 
 function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
   if (!val) return fallback;
@@ -123,7 +123,7 @@ function rowToUnderpayment(row: any): UnderpaymentCase {
   };
 }
 
-/* ── Remittance Import CRUD ─────────────────────────────────── */
+/* -- Remittance Import CRUD ----------------------------------- */
 
 export async function createRemittanceImport(opts: {
   tenantId: string;
@@ -185,7 +185,7 @@ export async function listRemittanceImports(tenantId: string): Promise<Remittanc
   return rows.map(rowToImport);
 }
 
-/* ── Payment Record CRUD ────────────────────────────────────── */
+/* -- Payment Record CRUD -------------------------------------- */
 
 export async function createPaymentRecord(opts: {
   tenantId: string;
@@ -326,7 +326,7 @@ export async function listPaymentsByImport(
   return rows.map(rowToPayment);
 }
 
-/* ── Reconciliation Match CRUD ──────────────────────────────── */
+/* -- Reconciliation Match CRUD -------------------------------- */
 
 export async function createMatch(opts: {
   tenantId: string;
@@ -422,7 +422,7 @@ export async function listMatchesByStatus(
   return rows.map(rowToMatch);
 }
 
-/* ── Underpayment Case CRUD ─────────────────────────────────── */
+/* -- Underpayment Case CRUD ----------------------------------- */
 
 export async function createUnderpaymentCase(opts: {
   tenantId: string;
@@ -550,7 +550,7 @@ export async function listUnderpayments(
   };
 }
 
-/* ── Stats ──────────────────────────────────────────────────── */
+/* -- Stats ---------------------------------------------------- */
 
 export async function getReconciliationStats(tenantId: string): Promise<ReconciliationStats> {
   const db = getPgDb();

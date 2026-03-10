@@ -20,7 +20,7 @@ const OUTPUT = join(ARTIFACTS, 'sbom.json');
 
 console.log('=== SBOM Generator ===\n');
 
-// ── npm packages (from workspace package.json files) ────────────────
+// -- npm packages (from workspace package.json files) ----------------
 const pkgFiles = [];
 const scanDirs = ['.', 'apps/api', 'apps/web', 'apps/portal'];
 for (const d of scanDirs) {
@@ -48,7 +48,7 @@ for (const pf of pkgFiles) {
   }
 }
 
-// ── Vendor components from LOCK.json ────────────────────────────────
+// -- Vendor components from LOCK.json --------------------------------
 const vendorComponents = [];
 const lockFile = join(ROOT, 'vendor', 'worldvista', 'LOCK.json');
 if (existsSync(lockFile)) {
@@ -66,7 +66,7 @@ if (existsSync(lockFile)) {
   }
 }
 
-// ── OSS component inventory ─────────────────────────────────────────
+// -- OSS component inventory -----------------------------------------
 const inventoryFile = join(ROOT, 'docs', 'vista', 'component-inventory.json');
 const ossComponents = [];
 if (existsSync(inventoryFile)) {
@@ -85,7 +85,7 @@ if (existsSync(inventoryFile)) {
   }
 }
 
-// ── Assemble SBOM ──────────────────────────────────────────────────
+// -- Assemble SBOM --------------------------------------------------
 const sbom = {
   bomFormat: 'VistA-Evolved-SBOM',
   specVersion: '1.0.0',

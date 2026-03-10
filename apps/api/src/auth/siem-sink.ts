@@ -1,5 +1,5 @@
 /**
- * SIEM Sink — Phase 344 (W16-P8).
+ * SIEM Sink -- Phase 344 (W16-P8).
  *
  * Strategy interface for Security Information & Event Management export.
  * Multi-transport: webhook, syslog, S3 JSONL, OTLP logs.
@@ -59,7 +59,7 @@ export interface SiemTransport {
 /* ------------------------------------------------------------------ */
 
 /**
- * Webhook transport — sends events via HTTP POST.
+ * Webhook transport -- sends events via HTTP POST.
  */
 export class WebhookSiemTransport implements SiemTransport {
   readonly type: SiemTransportType = 'webhook';
@@ -89,10 +89,11 @@ export class WebhookSiemTransport implements SiemTransport {
         timestamp: new Date().toISOString(),
       });
       log.debug('SIEM webhook send', { count: events.length });
-      // In production this would use fetch/http.request — stub for now
+      // In production this would use fetch/http.request -- stub for now
       void payload;
       return { sent: events.length, errors: 0 };
-    } catch {
+    } catch (err) {
+      log.debug('SIEM webhook send failed', { error: String(err) });
       return { sent: 0, errors: events.length };
     }
   }
@@ -107,7 +108,7 @@ export class WebhookSiemTransport implements SiemTransport {
 }
 
 /**
- * Syslog transport — RFC 5424 format (stub).
+ * Syslog transport -- RFC 5424 format (stub).
  */
 export class SyslogSiemTransport implements SiemTransport {
   readonly type: SiemTransportType = 'syslog';
@@ -143,7 +144,7 @@ export class SyslogSiemTransport implements SiemTransport {
 }
 
 /**
- * S3 JSONL transport — batches events to S3 as JSONL files.
+ * S3 JSONL transport -- batches events to S3 as JSONL files.
  */
 export class S3SiemTransport implements SiemTransport {
   readonly type: SiemTransportType = 's3';
@@ -175,7 +176,7 @@ export class S3SiemTransport implements SiemTransport {
 }
 
 /**
- * OTLP transport — OpenTelemetry log exporter (stub).
+ * OTLP transport -- OpenTelemetry log exporter (stub).
  */
 export class OtlpSiemTransport implements SiemTransport {
   readonly type: SiemTransportType = 'otlp';
@@ -273,7 +274,7 @@ export async function initSiemSink(): Promise<void> {
   }
 
   // Start flush timer
-  flushTimer = setInterval(() => void flushEvents(), FLUSH_INTERVAL_MS);
+  flushTimer = setInterval(() => void flushEvents().catch((e) => log.warn('SIEM flush failed', { error: String(e) })), FLUSH_INTERVAL_MS);
   if (flushTimer.unref) flushTimer.unref();
 
   log.info('SIEM sink initialized', { transports: transports.map((t) => t.type) });

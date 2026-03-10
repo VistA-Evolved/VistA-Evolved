@@ -1,5 +1,5 @@
 /**
- * Server module barrel — Phase 173
+ * Server module barrel -- Phase 173
  *
  * Re-exports the public API for the decomposed server module.
  */

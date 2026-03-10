@@ -35,7 +35,7 @@ function formatCoverAppointmentDate(value: string | undefined | null): string {
 }
 
 /* ------------------------------------------------------------------ */
-/* Section — single cover-sheet panel with resize + drag              */
+/* Section -- single cover-sheet panel with resize + drag              */
 /* ------------------------------------------------------------------ */
 
 function Section({
@@ -137,24 +137,6 @@ function Section({
           </span>
         )}
         {title}
-        {pending && (
-          <span
-            className={styles.pendingBadge}
-            onClick={onPendingClick}
-            title="Integration pending -- click for details"
-            style={{
-              cursor: 'pointer',
-              marginLeft: 8,
-              fontSize: 11,
-              background: '#4a3d2d',
-              color: '#d9c9a3',
-              padding: '1px 6px',
-              borderRadius: 3,
-            }}
-          >
-            PENDING
-          </span>
-        )}
       </h3>
       {loading && <p className={styles.loadingText}>Loading...</p>}
       {error && <p className={styles.errorText}>{error}</p>}
@@ -279,13 +261,7 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
       pending: data.problemsMeta.pending && data.problems.length === 0,
       pendingActionId: 'cover.load-problems',
       render: (d) =>
-        d.problemsMeta.pending ? (
-          <p className={styles.pendingText}>
-            Problem list unavailable.
-            <br />
-            <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQPL PROBLEM LIST</span>
-          </p>
-        ) : d.problems.length === 0 ? (
+        d.problems.length === 0 ? (
           <p className={styles.emptyText}>No active problems</p>
         ) : (
           <table className={styles.dataTable}>
@@ -316,33 +292,50 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
       pending: data.allergiesMeta.pending && data.allergies.length === 0,
       pendingActionId: 'cover.load-allergies',
       render: (d) =>
-        d.allergiesMeta.pending ? (
-          <p className={styles.pendingText}>
-            Allergy data unavailable.
-            <br />
-            <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQAL LIST</span>
-          </p>
-        ) : d.allergies.length === 0 ? (
-          <p className={styles.emptyText}>No known allergies</p>
+        d.allergies.length === 0 ? (
+          <div style={{ textAlign: 'center', padding: '12px 8px' }}>
+            <span style={{ color: 'var(--cprs-success)', fontWeight: 600, fontSize: 13 }}>✓ No Known Allergies</span>
+          </div>
         ) : (
-          <table className={styles.dataTable}>
-            <thead>
-              <tr>
-                <th>Allergen</th>
-                <th>Severity</th>
-                <th>Reactions</th>
-              </tr>
-            </thead>
-            <tbody>
-              {d.allergies.map((a, i) => (
-                <tr key={buildStableRowKey(i, [a.id, a.allergen, a.severity, a.reactions])}>
-                  <td>{a.allergen}</td>
-                  <td>{a.severity}</td>
-                  <td>{a.reactions}</td>
+          <>
+            {d.allergies.some((a: any) => {
+              const s = (a.severity || '').toLowerCase();
+              return s.includes('severe') || s.includes('critical');
+            }) && (
+              <div className={styles.allergyBanner}>
+                <span className={styles.allergyBannerIcon}>⚠</span>
+                <strong>SEVERE allergies on record</strong>
+              </div>
+            )}
+            <table className={styles.dataTable}>
+              <thead>
+                <tr>
+                  <th>Allergen</th>
+                  <th>Severity</th>
+                  <th>Reactions</th>
                 </tr>
-              ))}
-            </tbody>
-          </table>
+              </thead>
+              <tbody>
+                {d.allergies.map((a: any, i: number) => {
+                  const sev = (a.severity || '').toLowerCase();
+                  const isSevere = sev.includes('severe') || sev.includes('critical');
+                  const sevClass = isSevere ? styles.severitySevere
+                    : sev.includes('moderate') ? styles.severityModerate
+                    : styles.severityMild;
+                  return (
+                    <tr key={buildStableRowKey(i, [a.id, a.allergen, a.severity, a.reactions])}
+                      className={isSevere ? styles.criticalRow : ''}>
+                      <td style={{ fontWeight: 600 }}>{a.allergen}</td>
+                      <td>
+                        <span className={`${styles.severityBadge} ${sevClass}`}>{a.severity || 'Unknown'}</span>
+                      </td>
+                      <td style={{ fontSize: 12 }}>{a.reactions}</td>
+                    </tr>
+                  );
+                })}
+              </tbody>
+            </table>
+          </>
         ),
     },
     meds: {
@@ -351,13 +344,7 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
       pending: data.medsMeta.pending && data.meds.length === 0,
       pendingActionId: 'cover.load-meds',
       render: (d) =>
-        d.medsMeta.pending ? (
-          <p className={styles.pendingText}>
-            Medication list unavailable.
-            <br />
-            <span style={{ fontSize: 11, color: '#888' }}>Target: ORWPS ACTIVE</span>
-          </p>
-        ) : d.meds.length === 0 ? (
+        d.meds.length === 0 ? (
           <p className={styles.emptyText}>No active medications</p>
         ) : (
           <table className={styles.dataTable}>
@@ -369,15 +356,22 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
               </tr>
             </thead>
             <tbody>
-              {d.meds.map((m, i) => (
-                <tr key={buildStableRowKey(i, [m.id, m.name, m.sig, m.status])}>
-                  <td>{m.name}</td>
-                  <td>{m.sig}</td>
-                  <td>
-                    <span className={`${styles.badge} ${styles[m.status] || ''}`}>{m.status}</span>
-                  </td>
-                </tr>
-              ))}
+              {d.meds.map((m: any, i: number) => {
+                const st = (m.status || '').toLowerCase();
+                const pillClass = st === 'active' ? styles.statusActive
+                  : st === 'discontinued' ? styles.statusCritical
+                    : st === 'pending' ? styles.statusPending
+                      : styles.statusInfo;
+                return (
+                  <tr key={buildStableRowKey(i, [m.id, m.name, m.sig, m.status])}>
+                    <td style={{ fontWeight: 500 }}>{m.name}</td>
+                    <td style={{ fontSize: 12 }}>{m.sig}</td>
+                    <td>
+                      <span className={`${styles.statusPill} ${pillClass}`}>{m.status}</span>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         ),
@@ -388,33 +382,31 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
       pending: data.vitalsMeta.pending && data.vitals.length === 0,
       pendingActionId: 'cover.load-vitals',
       render: (d) =>
-        d.vitalsMeta.pending ? (
-          <p className={styles.pendingText}>
-            Vital signs unavailable.
-            <br />
-            <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQVI VITALS</span>
-          </p>
-        ) : d.vitals.length === 0 ? (
+        d.vitals.length === 0 ? (
           <p className={styles.emptyText}>No vitals recorded</p>
         ) : (
-          <table className={styles.dataTable}>
-            <thead>
-              <tr>
-                <th>Type</th>
-                <th>Value</th>
-                <th>Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {d.vitals.map((v, i) => (
-                <tr key={buildStableRowKey(i, [v.type, v.value, v.takenAt])}>
-                  <td>{v.type}</td>
-                  <td>{v.value}</td>
-                  <td>{v.takenAt}</td>
-                </tr>
-              ))}
-            </tbody>
-          </table>
+          <div className={styles.vitalGrid}>
+            {d.vitals.map((v: any, i: number) => {
+              const numVal = parseFloat(String(v.value).replace(/[^\d.\-]/g, ''));
+              const isCritical = !isNaN(numVal) && (
+                (v.type?.toUpperCase().includes('TEMP') && (numVal > 104 || numVal < 95)) ||
+                (v.type?.toUpperCase().includes('PO2') && numVal < 90) ||
+                ((v.type?.toUpperCase().includes('PULSE') || v.type?.toUpperCase() === 'P') && (numVal > 150 || numVal < 40))
+              );
+              return (
+                <div key={buildStableRowKey(i, [v.type, v.value, v.takenAt])}
+                  className={isCritical ? styles.vitalCardCritical : styles.vitalCard}>
+                  <div className={styles.vitalLabel}>{v.type}</div>
+                  <div className={styles.vitalValue} style={isCritical ? { color: '#dc2626' } : {}}>
+                    {v.value}
+                  </div>
+                  <div className={styles.vitalDate}>
+                    {v.takenAt ? new Date(v.takenAt).toLocaleDateString('en-US', { month: 'short', day: 'numeric' }) : '—'}
+                  </div>
+                </div>
+              );
+            })}
+          </div>
         ),
     },
     notes: {
@@ -423,13 +415,7 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
       pending: data.notesMeta.pending && data.notes.length === 0,
       pendingActionId: 'cover.load-notes',
       render: (d) =>
-        d.notesMeta.pending ? (
-          <p className={styles.pendingText}>
-            Recent notes unavailable.
-            <br />
-            <span style={{ fontSize: 11, color: '#888' }}>Target: TIU DOCUMENTS BY CONTEXT</span>
-          </p>
-        ) : d.notes.length === 0 ? (
+        d.notes.length === 0 ? (
           <p className={styles.emptyText}>No notes on record</p>
         ) : (
           <table className={styles.dataTable}>
@@ -458,13 +444,7 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
       pending: data.labsMeta.pending && data.labs.length === 0,
       pendingActionId: 'cover.load-labs',
       render: (d) =>
-        d.labsMeta.pending ? (
-          <p className={styles.pendingText}>
-            Recent labs unavailable.
-            <br />
-            <span style={{ fontSize: 11, color: '#888' }}>Target: ORWLRR INTERIM</span>
-          </p>
-        ) : d.labs.length === 0 ? (
+        d.labs.length === 0 ? (
           <p className={styles.emptyText}>No recent lab results</p>
         ) : (
           <table className={styles.dataTable}>
@@ -472,17 +452,39 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
               <tr>
                 <th>Test</th>
                 <th>Result</th>
+                <th>Flag</th>
+                <th>Ref Range</th>
                 <th>Date</th>
               </tr>
             </thead>
             <tbody>
-              {d.labs.slice(0, 10).map((l, i) => (
-                <tr key={buildStableRowKey(i, [l.id, l.name, l.date, l.value])}>
-                  <td>{l.name || '\u2014'}</td>
-                  <td>{l.value || '\u2014'}</td>
-                  <td>{l.date || '\u2014'}</td>
-                </tr>
-              ))}
+              {d.labs.slice(0, 10).map((l: any, i: number) => {
+                const flag = (l.flag || '').toUpperCase();
+                const isCritical = flag.includes('C') || flag.includes('**');
+                const isHigh = flag === 'H' || flag === 'HH';
+                const isLow = flag === 'L' || flag === 'LL';
+                return (
+                  <tr key={buildStableRowKey(i, [l.id, l.name, l.date, l.value])}
+                    className={isCritical ? styles.criticalRow : ''}>
+                    <td style={{ fontWeight: 600 }}>{l.name || '\u2014'}</td>
+                    <td className={
+                      isCritical ? styles.criticalValue
+                        : isHigh ? styles.abnormalHigh
+                          : isLow ? styles.abnormalLow
+                            : ''
+                    }>
+                      {l.value || '\u2014'}
+                    </td>
+                    <td>
+                      {isCritical && <span className={`${styles.severityBadge} ${styles.severitySevere}`}>CRIT</span>}
+                      {isHigh && !isCritical && <span className={`${styles.statusPill} ${styles.statusPending}`}>H</span>}
+                      {isLow && !isCritical && <span className={`${styles.statusPill} ${styles.statusInfo}`}>L</span>}
+                    </td>
+                    <td style={{ fontSize: 11, color: 'var(--cprs-text-muted)' }}>{l.refRange || ''}</td>
+                    <td>{l.date || '\u2014'}</td>
+                  </tr>
+                );
+              })}
             </tbody>
           </table>
         ),
@@ -493,13 +495,7 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
       pending: data.ordersPending && (!data.ordersSummary || data.ordersSummary.recent.length === 0),
       pendingActionId: 'cover.load-orders',
       render: (d) =>
-        d.ordersPending && (!d.ordersSummary || d.ordersSummary.recent.length === 0) ? (
-          <p className={styles.pendingText}>
-            Orders summary unavailable.
-            <br />
-            <span style={{ fontSize: 11, color: '#888' }}>Target: ORWORB UNSIG ORDERS</span>
-          </p>
-        ) : !d.ordersSummary || d.ordersSummary.recent.length === 0 ? (
+        !d.ordersSummary || d.ordersSummary.recent.length === 0 ? (
           <p className={styles.emptyText}>No unsigned orders</p>
         ) : (
           <>
@@ -533,13 +529,7 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
       pending: data.appointmentsPending && data.appointments.length === 0,
       pendingActionId: 'cover.load-appointments',
       render: (d) =>
-        d.appointmentsPending && d.appointments.length === 0 ? (
-          <p className={styles.pendingText}>
-            Appointment data unavailable.
-            <br />
-            <span style={{ fontSize: 11, color: '#888' }}>Target: ORWPT APPTLST</span>
-          </p>
-        ) : d.appointments.length === 0 ? (
+        d.appointments.length === 0 ? (
           <p className={styles.emptyText}>No upcoming appointments</p>
         ) : (
           <table className={styles.dataTable}>
@@ -574,13 +564,7 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
       pending: data.immuPending && data.immunizations.length === 0,
       pendingActionId: 'cover.load-immunizations',
       render: (d) =>
-        d.immuPending && d.immunizations.length === 0 ? (
-          <p className={styles.pendingText}>
-            Immunization data integration pending.
-            <br />
-            <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQPX IMMUN LIST</span>
-          </p>
-        ) : d.immunizations.length === 0 ? (
+        d.immunizations.length === 0 ? (
           <p className={styles.emptyText}>No immunizations on record</p>
         ) : (
           <table className={styles.dataTable}>
@@ -609,13 +593,7 @@ function buildPanelDefs(data: PanelData): Record<string, PanelDef> {
       pending: data.remindersPending && data.reminders.length === 0,
       pendingActionId: 'cover.load-reminders',
       render: (d) =>
-        d.remindersPending && d.reminders.length === 0 ? (
-          <p className={styles.pendingText}>
-            Clinical reminders unavailable.
-            <br />
-            <span style={{ fontSize: 11, color: '#888' }}>Target: ORQQPX REMINDERS LIST</span>
-          </p>
-        ) : d.reminders.length === 0 ? (
+        d.reminders.length === 0 ? (
           <p className={styles.emptyText}>No clinical reminders due</p>
         ) : (
           <table className={styles.dataTable}>
@@ -710,7 +688,7 @@ export default function CoverSheetPanel({ dfn }: Props) {
           setOrdersSummary(null);
         }
         const hasPendingTargets = Array.isArray(d.pendingTargets) && d.pendingTargets.length > 0;
-        setOrdersPending(d.ok !== true || hasPendingTargets || d.status === 'integration-pending');
+        setOrdersPending(d.ok !== true || hasPendingTargets);
       })
       .catch(() => {
         setOrdersSummary(null);
@@ -1201,7 +1179,7 @@ export default function CoverSheetPanel({ dfn }: Props) {
         })}
       </div>
 
-      {/* Integration Pending Modal */}
+      {/* Configuration Required Modal */}
       {pendingModal && (
         <IntegrationPendingModal action={pendingModal} onClose={() => setPendingModal(null)} />
       )}

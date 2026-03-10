@@ -1,5 +1,5 @@
 /**
- * HL7v2 Message Packs — Shared Types
+ * HL7v2 Message Packs -- Shared Types
  *
  * Phase 241 (Wave 6 P4): Common types for message pack modules.
  */
@@ -53,7 +53,7 @@ export interface PatientDemographics {
   lastName: string;
   /** First name */
   firstName: string;
-  /** Date of birth — YYYYMMDD */
+  /** Date of birth -- YYYYMMDD */
   dob?: string;
   /** Administrative sex (M/F/U/O) */
   sex?: string;
@@ -73,7 +73,7 @@ export interface VisitInfo {
   attendingDoctorId?: string;
   /** Attending doctor name */
   attendingDoctorName?: string;
-  /** Admit date/time — YYYYMMDDHHMMSS */
+  /** Admit date/time -- YYYYMMDDHHMMSS */
   admitDateTime?: string;
 }
 

@@ -1,9 +1,9 @@
 /**
- * PortalAdapter — Phase 87: Philippines RCM Foundation
+ * PortalAdapter -- Phase 87: Philippines RCM Foundation
  *
  * For payers that provide a web portal but no API.
  * Stores portal URL + step-by-step instructions.
- * NO automation — returns "manual_required" with portal-specific guidance.
+ * NO automation -- returns "manual_required" with portal-specific guidance.
  *
  * Slightly richer than ManualAdapter:
  *   - Includes direct portal URLs
@@ -173,7 +173,7 @@ export class PortalAdapter implements PayerOpsAdapter {
   }
 }
 
-/* ── Singleton portal adapter instance ─────────────────────── */
+/* -- Singleton portal adapter instance ----------------------- */
 
 let portalAdapterInstance: PortalAdapter | undefined;
 

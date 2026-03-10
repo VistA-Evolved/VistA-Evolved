@@ -1,5 +1,5 @@
 /**
- * Consent Management — Phase 140
+ * Consent Management -- Phase 140
  *
  * Allows portal users to:
  * - View all consent types (HIPAA, data sharing, research, telehealth, portal terms)

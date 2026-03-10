@@ -1,5 +1,5 @@
 /**
- * Phase 129 — QA Ladder: Visual Regression Snapshots
+ * Phase 129 -- QA Ladder: Visual Regression Snapshots
  *
  * Captures screenshots of key screens and compares against baseline.
  * Uses Playwright's built-in toHaveScreenshot() for pixel-level comparison.
@@ -7,7 +7,7 @@
  * Key screens tested:
  *   1. Login page (unauthenticated)
  *   2. Patient search (authenticated, before search)
- *   3. Patient chart cover sheet (with DFN=3 data loaded)
+ *   3. Patient chart cover sheet (with DFN=46 data loaded)
  *
  * Baselines are stored in e2e/visual-regression.spec.ts-snapshots/.
  * First run creates baselines. Subsequent runs compare against them.
@@ -20,9 +20,9 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { selectPatient } from './helpers/auth';
+import { TEST_DFN, selectPatient } from './helpers/auth';
 
-const DFN = '3';
+const DFN = TEST_DFN;
 
 /* ------------------------------------------------------------------ */
 /* Login page visual                                                    */
@@ -85,7 +85,7 @@ test.describe('Visual regression: Cover sheet', () => {
     await page.waitForTimeout(3000); // Allow all clinical data panels to load
 
     await expect(page).toHaveScreenshot('cover-sheet.png', {
-      maxDiffPixelRatio: 0.08, // 8% tolerance — clinical data may vary slightly
+      maxDiffPixelRatio: 0.08, // 8% tolerance -- clinical data may vary slightly
       animations: 'disabled',
       mask: [
         // Mask timestamps

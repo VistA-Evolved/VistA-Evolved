@@ -1,5 +1,5 @@
 /**
- * X12 Wire Format 835 Parser Adapter — Phase 518 (Wave 37 B6)
+ * X12 Wire Format 835 Parser Adapter -- Phase 518 (Wave 37 B6)
  *
  * Implements the Edi835Parser interface using the raw X12 wire parser.
  * Registers itself in the parser registry so consuming code can

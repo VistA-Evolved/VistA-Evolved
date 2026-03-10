@@ -52,9 +52,9 @@ const entityTypes = [
 const archLayers = [
   { name: "Browser", sub: "React SPA + TailwindCSS + shadcn/ui", color: "#3b82f6", y: 0 },
   { name: "API Gateway", sub: "Express/Fastify + JWT Auth + Tenant Router", color: "#8b5cf6", y: 1 },
-  { name: "VistA Gateway", sub: "RPC Broker Client → Translates REST ↔ VistA RPCs", color: "#ec4899", y: 2 },
-  { name: "VistA Instances", sub: "Docker containers • 1 per tenant • VEHU base image • YottaDB", color: "#f97316", y: 3 },
-  { name: "Platform DB", sub: "PostgreSQL • Tenants, Billing, Analytics, Audit", color: "#10b981", y: 4 },
+  { name: "VistA Gateway", sub: "RPC Broker Client -> Translates REST <-> VistA RPCs", color: "#ec4899", y: 2 },
+  { name: "VistA Instances", sub: "Docker containers * 1 per tenant * VEHU base image * YottaDB", color: "#f97316", y: 3 },
+  { name: "Platform DB", sub: "PostgreSQL * Tenants, Billing, Analytics, Audit", color: "#10b981", y: 4 },
 ];
 
 export default function VistAArchitecture() {
@@ -87,8 +87,8 @@ export default function VistAArchitecture() {
         <div style={{ display: "flex", alignItems: "center", gap: 16, marginBottom: 20 }}>
           <div style={{ width: 44, height: 44, borderRadius: 12, background: "linear-gradient(135deg, #6366f1, #a855f7)", display: "flex", alignItems: "center", justifyContent: "center", fontSize: 22, fontWeight: 800, color: "#fff" }}>V</div>
           <div>
-            <h1 style={{ fontSize: 22, fontWeight: 700, margin: 0, letterSpacing: "-0.02em", color: "#f1f5f9" }}>VistA Evolved — SaaS Platform Blueprint</h1>
-            <p style={{ fontSize: 13, margin: 0, color: "#94a3b8" }}>Architecture • Modules • Entity Types • Build Plan</p>
+            <h1 style={{ fontSize: 22, fontWeight: 700, margin: 0, letterSpacing: "-0.02em", color: "#f1f5f9" }}>VistA Evolved -- SaaS Platform Blueprint</h1>
+            <p style={{ fontSize: 13, margin: 0, color: "#94a3b8" }}>Architecture * Modules * Entity Types * Build Plan</p>
           </div>
         </div>
         <div style={{ display: "flex", gap: 0 }}>
@@ -111,7 +111,7 @@ export default function VistAArchitecture() {
           <div>
             <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, color: "#c7d2fe" }}>System Architecture</h2>
             <p style={{ fontSize: 13, color: "#94a3b8", marginBottom: 24, lineHeight: 1.6 }}>
-              Every tenant gets a dedicated VistA Docker instance. The web UI never touches M globals directly — all communication flows through the VistA Gateway via RPC Broker protocol.
+              Every tenant gets a dedicated VistA Docker instance. The web UI never touches M globals directly -- all communication flows through the VistA Gateway via RPC Broker protocol.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 2 }}>
               {archLayers.map((layer, i) => (
@@ -148,15 +148,15 @@ export default function VistAArchitecture() {
               <div style={{ display: "flex", flexWrap: "wrap", gap: 8, alignItems: "center" }}>
                 {[
                   "User clicks 'Create Clinic'",
-                  "→ React sends POST /api/clinics",
-                  "→ JWT validated, tenant ID extracted",
-                  "→ Gateway looks up tenant's VistA host:port",
-                  "→ RPC Broker connects to VistA",
-                  "→ Calls custom RPC 'VE CREATE CLINIC'",
-                  "→ M routine edits File #44 via FileMan",
-                  "→ Returns IEN + status",
-                  "→ Gateway formats JSON response",
-                  "→ React renders new clinic in list",
+                  "-> React sends POST /api/clinics",
+                  "-> JWT validated, tenant ID extracted",
+                  "-> Gateway looks up tenant's VistA host:port",
+                  "-> RPC Broker connects to VistA",
+                  "-> Calls custom RPC 'VE CREATE CLINIC'",
+                  "-> M routine edits File #44 via FileMan",
+                  "-> Returns IEN + status",
+                  "-> Gateway formats JSON response",
+                  "-> React renders new clinic in list",
                 ].map((step, i) => (
                   <div key={i} style={{
                     fontSize: 11, padding: "5px 10px", borderRadius: 6,
@@ -249,16 +249,16 @@ export default function VistAArchitecture() {
               ))}
             </div>
             <div style={{ marginTop: 20, fontSize: 12, color: "#64748b", textAlign: "center" }}>
-              ~150+ configuration screens • ~80+ list views • ~50+ reports • ~200+ RPCs to build
+              ~150+ configuration screens * ~80+ list views * ~50+ reports * ~200+ RPCs to build
             </div>
           </div>
         )}
 
         {activeTab === "phases" && (
           <div>
-            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, color: "#c7d2fe" }}>Build Phases — 48 Week Roadmap</h2>
+            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, color: "#c7d2fe" }}>Build Phases -- 48 Week Roadmap</h2>
             <p style={{ fontSize: 13, color: "#94a3b8", marginBottom: 24, lineHeight: 1.6 }}>
-              Vertical slices: each phase delivers a complete end-to-end module (M routine → RPC → API → React screen), tested against live VistA.
+              Vertical slices: each phase delivers a complete end-to-end module (M routine -> RPC -> API -> React screen), tested against live VistA.
             </p>
             <div style={{ display: "flex", flexDirection: "column", gap: 8 }}>
               {phases.map((phase) => (
@@ -306,16 +306,16 @@ export default function VistAArchitecture() {
 
         {activeTab === "flow" && (
           <div>
-            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, color: "#c7d2fe" }}>Customer Signup → Running Facility</h2>
+            <h2 style={{ fontSize: 18, fontWeight: 700, marginBottom: 8, color: "#c7d2fe" }}>Customer Signup -> Running Facility</h2>
             <p style={{ fontSize: 13, color: "#94a3b8", marginBottom: 24, lineHeight: 1.6 }}>
               Target: under 5 minutes from signup to a fully provisioned VistA instance with web admin panel access.
             </p>
             {[
               { step: 1, title: "Organization Registration", time: "1 min", desc: "Name, contact, country, entity type selection (Solo Clinic / Multi-Clinic / Hospital / Health System)", color: "#3b82f6" },
-              { step: 2, title: "Configuration Wizard", time: "2-3 min", desc: "6-step wizard: Facility Identity → Departments → Module Selection → Clinic/Ward Setup → Initial Users & Roles → Billing Config", color: "#8b5cf6" },
-              { step: 3, title: "VistA Provisioning", time: "30-60 sec (automated)", desc: "Docker container spins up → Init script configures INSTITUTION, DIVISION, HOSPITAL LOCATIONS, NEW PERSON records, site parameters, formulary → RPC Broker starts listening", color: "#ec4899" },
-              { step: 4, title: "First Login", time: "Immediate", desc: "Admin lands in the dashboard with guided tour → Setup checklist shows auto-configured items → Quick links to add users, refine clinics, configure billing", color: "#f97316" },
-              { step: 5, title: "Go Live", time: "Same day", desc: "Register first real patient → Schedule first appointment → Begin clinical operations → All through the modern web UI talking to real VistA", color: "#22c55e" },
+              { step: 2, title: "Configuration Wizard", time: "2-3 min", desc: "6-step wizard: Facility Identity -> Departments -> Module Selection -> Clinic/Ward Setup -> Initial Users & Roles -> Billing Config", color: "#8b5cf6" },
+              { step: 3, title: "VistA Provisioning", time: "30-60 sec (automated)", desc: "Docker container spins up -> Init script configures INSTITUTION, DIVISION, HOSPITAL LOCATIONS, NEW PERSON records, site parameters, formulary -> RPC Broker starts listening", color: "#ec4899" },
+              { step: 4, title: "First Login", time: "Immediate", desc: "Admin lands in the dashboard with guided tour -> Setup checklist shows auto-configured items -> Quick links to add users, refine clinics, configure billing", color: "#f97316" },
+              { step: 5, title: "Go Live", time: "Same day", desc: "Register first real patient -> Schedule first appointment -> Begin clinical operations -> All through the modern web UI talking to real VistA", color: "#22c55e" },
             ].map((s, i) => (
               <div key={i} style={{ display: "flex", gap: 16, marginBottom: 16 }}>
                 <div style={{ display: "flex", flexDirection: "column", alignItems: "center", minWidth: 40 }}>

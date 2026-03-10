@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -22,7 +23,7 @@ export default async function vistaClinicsRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE CLIN LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE CLIN LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -45,7 +46,7 @@ export default async function vistaClinicsRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE CLIN DETAIL', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE CLIN DETAIL', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -66,7 +67,7 @@ export default async function vistaClinicsRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE APPT TYPES', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE APPT TYPES', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -89,7 +90,7 @@ export default async function vistaClinicsRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE CLIN CREATE' };
     } catch (err: any) {
       log.error('Failed to call VE CLIN CREATE', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -111,7 +112,7 @@ export default async function vistaClinicsRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE CLIN EDIT' };
     } catch (err: any) {
       log.error('Failed to call VE CLIN EDIT', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -123,9 +124,10 @@ export default async function vistaClinicsRoutes(server: FastifyInstance) {
       const body = (request.body as any) || {};
       const { action } = body;
       if (!action) {
-        return reply.code(400).send({ ok: false, error: 'action is required (activate or inactivate)' });
+        return reply.code(400).send({ ok: false, error: 'action is required (INACTIVATE or REACTIVATE)' });
       }
-      const lines = await safeCallRpc('VE CLIN TOGGLE', [ien, action]);
+      const normalizedAction = String(action).toUpperCase();
+      const lines = await safeCallRpc('VE CLIN TOGGLE', [ien, normalizedAction]);
       const first = lines.filter((l: string) => l.trim())[0] || '';
       if (first.startsWith('-1^')) {
         return reply.code(400).send({ ok: false, error: first.split('^').slice(1).join('^') });
@@ -133,7 +135,7 @@ export default async function vistaClinicsRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE CLIN TOGGLE' };
     } catch (err: any) {
       log.error('Failed to call VE CLIN TOGGLE', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

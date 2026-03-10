@@ -1,4 +1,4 @@
-# Edge Device Gateway Sidecar — Docker Compose
+# Edge Device Gateway Sidecar -- Docker Compose
 #
 # Phase 379 (W21-P2): Lightweight Node.js sidecar that runs on-premises
 # alongside medical devices. Connects outbound to the cloud API via
@@ -7,7 +7,7 @@
 # Usage:
 #   docker compose --profile gateway up -d
 #
-# The gateway container is a scaffold — the actual gateway runtime
+# The gateway container is a scaffold -- the actual gateway runtime
 # will be built in subsequent phases. This compose defines the
 # deployment pattern, networking, and volume structure.
 

@@ -1,7 +1,7 @@
 import { test, expect } from '@playwright/test';
 
 /**
- * Phase 166: Clinic Day Simulator — Playwright E2E Assertions
+ * Phase 166: Clinic Day Simulator -- Playwright E2E Assertions
  *
  * These tests validate the UI paths for each clinic day journey.
  * They check page loads, no dead-click elements, and navigation.

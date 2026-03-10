@@ -104,7 +104,7 @@ test.describe("Phase 541: VA GUI Hybrids Capability Map (Wave 39, P11)", () => {
   });
 });
 
-test.describe("Phase 556: Frontend Config Hygiene — IMPLEMENT", () => {
+test.describe("Phase 556: Frontend Config Hygiene -- IMPLEMENT", () => {
   test("UI component files exist on disk", async () => {
     const componentNames = ["BrowserTerminal.tsx","CPRSModals.tsx","MessagingTasksPanel.tsx","NotesPanel.tsx"];
     function findFile(dir: string, name: string, depth = 0): boolean {
@@ -240,7 +240,7 @@ test.describe("Phase 591: IMPLEMENT: Portal MailMan Sent-History Truthfulness", 
   });
 });
 
-test.describe("Phase 592: 01: IMPLEMENT — Queue / Workflow Durability and Truthfulness", () => {
+test.describe("Phase 592: 01: IMPLEMENT -- Queue / Workflow Durability and Truthfulness", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/admin/workflows/definitions`);
     expect(r0.status(), "/admin/workflows/definitions not 500").not.toBe(500);

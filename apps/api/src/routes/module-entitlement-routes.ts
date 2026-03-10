@@ -2,14 +2,14 @@
  * Module Entitlement Routes -- Phase 109
  *
  * Admin routes for module entitlement management:
- *   GET    /admin/modules/entitlements       — List tenant module entitlements
- *   POST   /admin/modules/entitlements       — Toggle module for tenant
- *   POST   /admin/modules/entitlements/seed  — Seed baseline modules
- *   GET    /admin/modules/catalog            — Full module catalog from DB
- *   GET    /admin/modules/feature-flags      — List feature flags for tenant
- *   POST   /admin/modules/feature-flags      — Upsert a feature flag
- *   DELETE /admin/modules/feature-flags      — Delete a feature flag
- *   GET    /admin/modules/audit              — Module audit trail
+ *   GET    /admin/modules/entitlements       -- List tenant module entitlements
+ *   POST   /admin/modules/entitlements       -- Toggle module for tenant
+ *   POST   /admin/modules/entitlements/seed  -- Seed baseline modules
+ *   GET    /admin/modules/catalog            -- Full module catalog from DB
+ *   GET    /admin/modules/feature-flags      -- List feature flags for tenant
+ *   POST   /admin/modules/feature-flags      -- Upsert a feature flag
+ *   DELETE /admin/modules/feature-flags      -- Delete a feature flag
+ *   GET    /admin/modules/audit              -- Module audit trail
  *
  * All routes require admin auth (enforced by AUTH_RULES in security.ts).
  */
@@ -54,7 +54,7 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
   /* Module Catalog                                                    */
   /* ---------------------------------------------------------------- */
 
-  /** GET /admin/modules/catalog — Full module catalog from DB. */
+  /** GET /admin/modules/catalog -- Full module catalog from DB. */
   server.get('/admin/modules/catalog', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -67,7 +67,7 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
   /* Tenant Module Entitlements                                        */
   /* ---------------------------------------------------------------- */
 
-  /** GET /admin/modules/entitlements — List module entitlements for a tenant. */
+  /** GET /admin/modules/entitlements -- List module entitlements for a tenant. */
   server.get(
     '/admin/modules/entitlements',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -92,7 +92,7 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
     }
   );
 
-  /** POST /admin/modules/entitlements — Toggle a module for a tenant. */
+  /** POST /admin/modules/entitlements -- Toggle a module for a tenant. */
   server.post(
     '/admin/modules/entitlements',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -168,7 +168,7 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
     }
   );
 
-  /** POST /admin/modules/entitlements/seed — Seed baseline modules for a tenant. */
+  /** POST /admin/modules/entitlements/seed -- Seed baseline modules for a tenant. */
   server.post(
     '/admin/modules/entitlements/seed',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -221,7 +221,7 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
   /* Feature Flags                                                     */
   /* ---------------------------------------------------------------- */
 
-  /** GET /admin/modules/feature-flags — List feature flags for a tenant. */
+  /** GET /admin/modules/feature-flags -- List feature flags for a tenant. */
   server.get(
     '/admin/modules/feature-flags',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -240,7 +240,7 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
     }
   );
 
-  /** POST /admin/modules/feature-flags — Upsert a feature flag. */
+  /** POST /admin/modules/feature-flags -- Upsert a feature flag. */
   server.post(
     '/admin/modules/feature-flags',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -312,7 +312,7 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
     }
   );
 
-  /** DELETE /admin/modules/feature-flags — Remove a feature flag. */
+  /** DELETE /admin/modules/feature-flags -- Remove a feature flag. */
   server.delete(
     '/admin/modules/feature-flags',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -361,7 +361,7 @@ export default async function moduleEntitlementRoutes(server: FastifyInstance): 
   /* Audit Log                                                         */
   /* ---------------------------------------------------------------- */
 
-  /** GET /admin/modules/audit — Module audit trail for a tenant. */
+  /** GET /admin/modules/audit -- Module audit trail for a tenant. */
   server.get('/admin/modules/audit', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;

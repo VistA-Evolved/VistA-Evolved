@@ -2,12 +2,12 @@
  * Support Toolkit v2 -- Phase 263 (Wave 8 P7)
  *
  * Extends the Phase 244 support module with:
- *   1. Tenant diagnostic bundle — downloadable JSON snapshot of all tenant health data
- *   2. HL7 message viewer — queries message events + DLQ with correlations
- *   3. Posture summary — surfaces posture gates in the support context
- *   4. Ticket-to-HL7 correlation — links tickets to HL7 events / DLQ entries
+ *   1. Tenant diagnostic bundle -- downloadable JSON snapshot of all tenant health data
+ *   2. HL7 message viewer -- queries message events + DLQ with correlations
+ *   3. Posture summary -- surfaces posture gates in the support context
+ *   4. Ticket-to-HL7 correlation -- links tickets to HL7 events / DLQ entries
  *
- * Pattern: Separate file, separate routes — base support module is NOT modified.
+ * Pattern: Separate file, separate routes -- base support module is NOT modified.
  */
 
 import * as crypto from 'node:crypto';
@@ -95,11 +95,30 @@ export interface TicketCorrelation {
 /*  Stores (in-memory, matching project pattern)                       */
 /* ------------------------------------------------------------------ */
 
+const MAX_BUNDLES = 200;
+const MAX_CORRELATIONS = 1000;
+
 /** Diagnostic bundle snapshots */
 const bundleStore = new Map<string, DiagnosticBundle>();
 
 /** Ticket-to-resource correlations */
 const correlationStore = new Map<string, TicketCorrelation[]>();
+
+function enforceBundleLimit(): void {
+  while (bundleStore.size > MAX_BUNDLES) {
+    const oldest = bundleStore.keys().next().value;
+    if (oldest) bundleStore.delete(oldest);
+    else break;
+  }
+}
+
+function enforceCorrelationLimit(): void {
+  while (correlationStore.size > MAX_CORRELATIONS) {
+    const oldest = correlationStore.keys().next().value;
+    if (oldest) correlationStore.delete(oldest);
+    else break;
+  }
+}
 
 /* ------------------------------------------------------------------ */
 /*  Diagnostic Bundle                                                  */
@@ -210,6 +229,7 @@ export function generateDiagnosticBundle(tenantId: string, generatedBy: string):
   };
 
   bundleStore.set(bundle.id, bundle);
+  enforceBundleLimit();
   log.info('Diagnostic bundle generated', {
     bundleId: bundle.id,
     tenantId,
@@ -248,6 +268,7 @@ export function addCorrelation(
   const existing = correlationStore.get(ticketId) || [];
   existing.push(entry);
   correlationStore.set(ticketId, existing);
+  enforceCorrelationLimit();
 
   log.info('Ticket correlation added', {
     ticketId,

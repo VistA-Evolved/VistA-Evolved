@@ -32,8 +32,8 @@ describe('HL7v2 Message Pipeline -- Phase 259', () => {
     it('builds PHI-safe summaries (strips PID/NK1/GT1/IN segments)', () => {
       const content = fs.readFileSync(path.join(HL7_DIR, 'message-event-store.ts'), 'utf-8');
       expect(content).toContain('PHI_SEGMENT_PREFIXES');
-      expect(content).toContain('"PID"');
-      expect(content).toContain('"NK1"');
+      expect(content).toContain("'PID'");
+      expect(content).toContain("'NK1'");
     });
 
     it('never stores raw HL7 message -- only hash + size', () => {
@@ -137,11 +137,11 @@ describe('HL7v2 Message Pipeline -- Phase 259', () => {
     it('message event store strips PID segments', () => {
       const content = fs.readFileSync(path.join(HL7_DIR, 'message-event-store.ts'), 'utf-8');
       expect(content).toContain('PHI_SEGMENT_PREFIXES');
-      expect(content).toContain('"PID"');
-      expect(content).toContain('"NK1"');
-      expect(content).toContain('"GT1"');
-      expect(content).toContain('"IN1"');
-      expect(content).toContain('"IN2"');
+      expect(content).toContain("'PID'");
+      expect(content).toContain("'NK1'");
+      expect(content).toContain("'GT1'");
+      expect(content).toContain("'IN1'");
+      expect(content).toContain("'IN2'");
     });
 
     it('raw messages are hashed, not stored in event store', () => {

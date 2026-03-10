@@ -1,6 +1,6 @@
 /**
- * Clinical Invariant Tests — Medication Status Transitions
- * Phase 268 — W8-P3
+ * Clinical Invariant Tests -- Medication Status Transitions
+ * Phase 268 -- W8-P3
  *
  * Validates that medication orders follow valid state transitions.
  * VistA medication statuses: ACTIVE, DISCONTINUED, EXPIRED, HOLD, SUSPENDED, PENDING
@@ -47,7 +47,7 @@ describe('Medication Status Transition Invariants', () => {
     ];
 
     for (const [from, to] of validCases) {
-      it(`should allow ${from} → ${to}`, () => {
+      it(`should allow ${from} -> ${to}`, () => {
         expect(isValidTransition(from, to)).toBe(true);
       });
     }
@@ -68,7 +68,7 @@ describe('Medication Status Transition Invariants', () => {
     ];
 
     for (const [from, to] of invalidCases) {
-      it(`should reject ${from} → ${to}`, () => {
+      it(`should reject ${from} -> ${to}`, () => {
         expect(isValidTransition(from, to)).toBe(false);
       });
     }
@@ -96,7 +96,7 @@ describe('Medication Status Transition Invariants', () => {
     });
 
     it('should detect invalid transition in history', () => {
-      const badHistory: MedStatus[] = ['pending', 'active', 'expired', 'active']; // expired → active invalid!
+      const badHistory: MedStatus[] = ['pending', 'active', 'expired', 'active']; // expired -> active invalid!
 
       let hasInvalid = false;
       for (let i = 1; i < badHistory.length; i++) {

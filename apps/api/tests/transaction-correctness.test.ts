@@ -1,5 +1,5 @@
 /**
- * Phase 45 — Transaction Correctness Engine Unit Tests
+ * Phase 45 -- Transaction Correctness Engine Unit Tests
  *
  * Tests:
  *   - Envelope builder (control numbers, ISA/GS)
@@ -69,7 +69,7 @@ import { storeClaim, resetClaimStore } from '../src/rcm/domain/claim-store.js';
 // Audit (reset between tests)
 import { resetRcmAudit } from '../src/rcm/audit/rcm-audit.js';
 
-/* ─── Setup ──────────────────────────────────────────────────── */
+/* --- Setup ---------------------------------------------------- */
 
 beforeEach(() => {
   resetTransactionStore();
@@ -81,7 +81,7 @@ beforeEach(() => {
   registerTranslator(externalTranslatorAdapter);
 });
 
-/* ─── Control Numbers ────────────────────────────────────────── */
+/* --- Control Numbers ------------------------------------------ */
 
 describe('Control Numbers', () => {
   it('generates monotonically increasing control numbers per pair', () => {
@@ -110,7 +110,7 @@ describe('Control Numbers', () => {
   });
 });
 
-/* ─── Envelope Builder ───────────────────────────────────────── */
+/* --- Envelope Builder ----------------------------------------- */
 
 describe('Envelope Builder', () => {
   it('builds a valid envelope with ISA and GS', () => {
@@ -156,7 +156,7 @@ describe('Envelope Builder', () => {
   });
 });
 
-/* ─── Transaction Store ──────────────────────────────────────── */
+/* --- Transaction Store ---------------------------------------- */
 
 describe('Transaction Store', () => {
   it('stores and retrieves a transaction', () => {
@@ -228,19 +228,19 @@ describe('Transaction Store', () => {
   });
 });
 
-/* ─── State Machine ──────────────────────────────────────────── */
+/* --- State Machine -------------------------------------------- */
 
 describe('Transaction State Machine', () => {
   it('allows valid transitions', () => {
     const env = buildEnvelope({ transactionSet: '837P', senderId: 'S', receiverId: 'R' });
     const record = storeTransaction(env, 'ISA*test~');
 
-    // created → serialized
+    // created -> serialized
     const r1 = transitionTransaction(record.id, 'serialized');
     expect(r1).toBeTruthy();
     expect(r1!.state).toBe('serialized');
 
-    // serialized → validated
+    // serialized -> validated
     const r2 = transitionTransaction(record.id, 'validated');
     expect(r2).toBeTruthy();
     expect(r2!.state).toBe('validated');
@@ -250,7 +250,7 @@ describe('Transaction State Machine', () => {
     const env = buildEnvelope({ transactionSet: '837P', senderId: 'S', receiverId: 'R' });
     const record = storeTransaction(env);
 
-    // created → reconciled is not allowed
+    // created -> reconciled is not allowed
     const result = transitionTransaction(record.id, 'reconciled');
     expect(result).toBeNull();
   });
@@ -315,7 +315,7 @@ describe('Transaction State Machine', () => {
   });
 });
 
-/* ─── Translator ─────────────────────────────────────────────── */
+/* --- Translator ----------------------------------------------- */
 
 describe('Translator Registry', () => {
   it('registers and retrieves translators', () => {
@@ -342,7 +342,7 @@ describe('Translator Registry', () => {
   });
 });
 
-describe('Local Scaffold Translator — Validation', () => {
+describe('Local Scaffold Translator -- Validation', () => {
   it('validates 837P required fields', () => {
     const errors = localScaffoldTranslator.validate('837P', {
       submitterInfo: { npi: '1234567890' },
@@ -374,7 +374,7 @@ describe('Local Scaffold Translator — Validation', () => {
   });
 });
 
-describe('Local Scaffold Translator — Build X12', () => {
+describe('Local Scaffold Translator -- Build X12', () => {
   it('builds deterministic X12 for same input', () => {
     const canonical = {
       submitterInfo: {
@@ -435,7 +435,7 @@ describe('Local Scaffold Translator — Build X12', () => {
   });
 });
 
-describe('Local Scaffold Translator — Parse X12', () => {
+describe('Local Scaffold Translator -- Parse X12', () => {
   it('parses 999 response', () => {
     const raw =
       'ISA*00*          *00*          *ZZ*RECEIVER       *ZZ*SENDER         *250101*1200*^*00501*000000001*0*T*:~GS*FA*RECEIVER*SENDER*20250101*1200*1*X*005010X231A1~ST*999*0001~AK1*HC*000000001~AK9*A*1*1*1~SE*4*0001~GE*1*1~IEA*1*000000001~';
@@ -451,7 +451,7 @@ describe('Local Scaffold Translator — Parse X12', () => {
   });
 });
 
-/* ─── Connectivity Gates ─────────────────────────────────────── */
+/* --- Connectivity Gates --------------------------------------- */
 
 describe('Connectivity Gates', () => {
   it('pre-transmit gates pass for valid X12', () => {
@@ -495,7 +495,7 @@ describe('Connectivity Gates', () => {
   });
 });
 
-/* ─── Retry + DLQ ────────────────────────────────────────────── */
+/* --- Retry + DLQ ---------------------------------------------- */
 
 describe('Retry + DLQ Logic', () => {
   it('calculates exponential backoff delay', () => {
@@ -594,7 +594,7 @@ describe('Retry + DLQ Logic', () => {
   });
 });
 
-/* ─── Connectivity Health ────────────────────────────────────── */
+/* --- Connectivity Health -------------------------------------- */
 
 describe('Connectivity Health', () => {
   it('reports healthy when no issues', () => {
@@ -624,7 +624,7 @@ describe('Connectivity Health', () => {
   });
 });
 
-/* ─── Reconciliation ─────────────────────────────────────────── */
+/* --- Reconciliation ------------------------------------------- */
 
 describe('Reconciliation', () => {
   it('builds summary for a non-existent claim gracefully', () => {
@@ -679,7 +679,7 @@ describe('Reconciliation', () => {
   });
 });
 
-/* ─── Connectivity Profile ───────────────────────────────────── */
+/* --- Connectivity Profile ------------------------------------- */
 
 describe('Connectivity Profile', () => {
   it('has CAQH CORE rule references', () => {

@@ -1,5 +1,5 @@
 /**
- * PG EDI Ack Repository — Async durable 999/277CA acks + 276/277 status
+ * PG EDI Ack Repository -- Async durable 999/277CA acks + 276/277 status
  *
  * Phase 126: RCM Durability Wave (Map stores -> Postgres)
  *
@@ -14,7 +14,7 @@ import { pgEdiAck, pgEdiClaimStatus } from '../pg-schema.js';
 export type EdiAckRow = typeof pgEdiAck.$inferSelect;
 export type EdiClaimStatusRow = typeof pgEdiClaimStatus.$inferSelect;
 
-/* ── Acknowledgements ──────────────────────────────────────── */
+/* -- Acknowledgements ---------------------------------------- */
 
 export async function insertAck(data: {
   id: string;
@@ -120,7 +120,7 @@ export async function countAcks(tenantId: string): Promise<number> {
   return result[0]?.count ?? 0;
 }
 
-/* ── Claim Status Updates ──────────────────────────────────── */
+/* -- Claim Status Updates ------------------------------------ */
 
 export async function insertStatusUpdate(data: {
   id: string;

@@ -10,6 +10,20 @@ Error: listen EADDRINUSE: address already in use :::3001
 
 This means another process is already using port 3001. This runbook shows you how to identify and safely resolve it.
 
+## Recommended First Command (Safe)
+
+Use the repo-safe starter first. It reuses an already-healthy API process and avoids unnecessary restarts.
+
+```powershell
+pnpm api:start:safe
+```
+
+Force a restart only when needed:
+
+```powershell
+pnpm api:restart:safe
+```
+
 ---
 
 ## Solution 1: Find and Stop the Conflicting Process

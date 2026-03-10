@@ -1,5 +1,5 @@
 /**
- * Phase 402 (W23-P4): Provider Directory — Store
+ * Phase 402 (W23-P4): Provider Directory -- Store
  */
 
 import { randomBytes } from 'crypto';
@@ -29,7 +29,7 @@ function genId(prefix: string): string {
   return `${prefix}-${randomBytes(8).toString('hex')}`;
 }
 
-// ─── Practitioner CRUD ─────────────────────────────────────
+// --- Practitioner CRUD -------------------------------------
 
 export function createPractitioner(
   input: Omit<DirectoryPractitioner, 'id' | 'createdAt' | 'updatedAt'>
@@ -91,7 +91,7 @@ export function searchPractitioners(tenantId: string, query: string): DirectoryP
   );
 }
 
-// ─── Organization CRUD ─────────────────────────────────────
+// --- Organization CRUD -------------------------------------
 
 export function createOrganization(
   input: Omit<DirectoryOrganization, 'id' | 'createdAt' | 'updatedAt'>
@@ -134,7 +134,7 @@ export function updateOrganization(
   return updated;
 }
 
-// ─── Location CRUD ─────────────────────────────────────────
+// --- Location CRUD -----------------------------------------
 
 export function createLocation(
   input: Omit<DirectoryLocation, 'id' | 'createdAt' | 'updatedAt'>
@@ -178,7 +178,7 @@ export function updateLocation(
   return updated;
 }
 
-// ─── Dashboard ─────────────────────────────────────────────
+// --- Dashboard ---------------------------------------------
 
 export function getDirectoryDashboardStats(tenantId: string): ProviderDirectoryDashboardStats {
   const pracs = Array.from(practitionerStore.values()).filter((p) => p.tenantId === tenantId);

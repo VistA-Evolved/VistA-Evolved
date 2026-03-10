@@ -1,7 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
-import styles from '@/components/cprs/cprs.module.css';
+import { useState, useEffect } from 'react';
 import { API_BASE } from '@/lib/api-config';
 
 type Tab = 'clinics' | 'apptTypes';

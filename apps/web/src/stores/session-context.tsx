@@ -6,7 +6,7 @@ import { API_BASE } from '@/lib/api-config';
 import type { UserRole } from '@vista-evolved/shared-types';
 
 /* ------------------------------------------------------------------ */
-/* Types — UserRole now imported from shared-types                     */
+/* Types -- UserRole now imported from shared-types                     */
 /* ------------------------------------------------------------------ */
 
 export type { UserRole };

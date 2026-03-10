@@ -13,11 +13,23 @@ import type {
 } from './types.js';
 import { getAllDepartmentPacks } from './department-packs.js';
 
-// ── In-memory stores ────────────────────────────────────────────────
+// -- In-memory stores ------------------------------------------------
+const MAX_DEFINITIONS = 2000;
+const MAX_INSTANCES = 10000;
 const definitionStore = new Map<string, WorkflowDefinition>();
 const instanceStore = new Map<string, WorkflowInstance>();
 
-// ── Definitions CRUD ────────────────────────────────────────────────
+function evictOldest<T>(store: Map<string, T>, max: number): void {
+  if (store.size <= max) return;
+  const excess = store.size - max;
+  const keys = store.keys();
+  for (let i = 0; i < excess; i++) {
+    const k = keys.next().value;
+    if (k !== undefined) store.delete(k);
+  }
+}
+
+// -- Definitions CRUD ------------------------------------------------
 
 export function createDefinition(
   input: Omit<
@@ -38,6 +50,7 @@ export function createDefinition(
     updatedAt: new Date().toISOString(),
   };
   definitionStore.set(def.id, def);
+  evictOldest(definitionStore, MAX_DEFINITIONS);
   return def;
 }
 
@@ -70,7 +83,7 @@ export function listDefinitions(
     .sort((a, b) => a.department.localeCompare(b.department));
 }
 
-// ── Instance lifecycle ──────────────────────────────────────────────
+// -- Instance lifecycle ----------------------------------------------
 
 export function startWorkflow(
   definitionId: string,
@@ -106,6 +119,7 @@ export function startWorkflow(
     startedBy,
   };
   instanceStore.set(inst.id, inst);
+  evictOldest(instanceStore, MAX_INSTANCES);
   return inst;
 }
 
@@ -178,7 +192,7 @@ export function listInstances(
     .sort((a, b) => new Date(b.startedAt).getTime() - new Date(a.startedAt).getTime());
 }
 
-// ── Seed department packs ───────────────────────────────────────────
+// -- Seed department packs -------------------------------------------
 
 export function seedDepartmentPacks(tenantId: string = 'default'): {
   seeded: number;
@@ -249,7 +263,7 @@ export function getWorkflowStats(tenantId: string = 'default'): {
   };
 }
 
-// ── Store reset ─────────────────────────────────────────────────────
+// -- Store reset -----------------------------------------------------
 export function resetWorkflowStore(): void {
   definitionStore.clear();
   instanceStore.clear();

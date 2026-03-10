@@ -1,23 +1,23 @@
 /**
- * Write-back routes — Phase 14C.
+ * Write-back routes -- Phase 14C.
  *
  * Centralized write-back endpoints that check RPC availability at runtime
  * and fall back to server-side structured drafts when RPCs are unavailable.
  *
  * Patterns:
- *   - "real" — RPC exists and write-back persists to VistA
- *   - "draft" — RPC unavailable; store structured draft server-side with audit
- *   - "sync-pending" — draft stored, will auto-retry when capability appears
+ *   - "real" -- RPC exists and write-back persists to VistA
+ *   - "draft" -- RPC unavailable; store structured draft server-side with audit
+ *   - "sync-pending" -- draft stored, will auto-retry when capability appears
  *
  * Endpoints:
- *   POST /vista/orders/sign     — sign order (ORWDX SAVE or server-side draft)
- *   POST /vista/orders/release  — release signed order
- *   POST /vista/labs/ack        — acknowledge lab result (ORWLRR ACK or server-side)
- *   POST /vista/consults/create — create consult request (ORQQCN2 or draft)
- *   POST /vista/surgery/create  — create surgery record (or draft)
- *   POST /vista/problems/save   — add/edit problem (ORQQPL ADD SAVE or draft)
- *   GET  /vista/drafts          — list all pending server-side drafts
- *   GET  /vista/drafts/stats    — draft stats summary
+ *   POST /vista/orders/sign     -- sign order (ORWDX SAVE or server-side draft)
+ *   POST /vista/orders/release  -- release signed order
+ *   POST /vista/labs/ack        -- acknowledge lab result (ORWLRR ACK or server-side)
+ *   POST /vista/consults/create -- create consult request (ORQQCN2 or draft)
+ *   POST /vista/surgery/create  -- create surgery record (or draft)
+ *   POST /vista/problems/save   -- add/edit problem (ORQQPL ADD SAVE or draft)
+ *   GET  /vista/drafts          -- list all pending server-side drafts
+ *   GET  /vista/drafts/stats    -- draft stats summary
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -66,6 +66,7 @@ export interface ServerDraft {
 
 /** In-memory server-side draft store (production: use Redis/DB) */
 const drafts: Map<string, ServerDraft> = new Map();
+const MAX_DRAFTS = 10000;
 
 /* Phase 146: DB repo wiring */
 let draftDbRepo: {
@@ -101,6 +102,10 @@ export function createDraft(
     syncAttempts: 0,
   };
   drafts.set(id, draft);
+  if (drafts.size > MAX_DRAFTS) {
+    const oldest = drafts.keys().next().value;
+    if (oldest) drafts.delete(oldest);
+  }
 
   // Phase 146: Write-through to PG
   draftDbRepo
@@ -113,7 +118,7 @@ export function createDraft(
       createdAt: draft.createdAt,
       updatedAt: draft.createdAt,
     })
-    .catch(() => {});
+    .catch((e: unknown) => log.warn('Draft PG write-through failed', { error: String(e) }));
 
   log.info('Draft created', { type, draftId: id, requiredRpc });
   // Phase 15C: centralized audit for draft creation
@@ -228,7 +233,7 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
         validateCredentials();
         await connect();
         // ORWDX SAVE params: DFN, provider DUZ, locationIEN, dialog, orderList
-        // This is a simplified call — full implementation requires order dialog IEN
+        // This is a simplified call -- full implementation requires order dialog IEN
         const duz = getDuz();
         const resp = await callRpc('ORWDX SAVE', [String(dfn), duz, '1', '1', String(orderId)]);
         disconnect();
@@ -253,7 +258,7 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
         };
       } catch (err: any) {
         disconnect();
-        // RPC call failed — fall through to draft
+        // RPC call failed -- fall through to draft
         auditWrite({
           timestamp: now,
           tenantId,
@@ -281,7 +286,7 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
       dfn: String(dfn),
       user: signedBy || 'unknown',
       status: 'draft-stored',
-      detail: `Draft ${draft.id} — ORWDX SAVE not available`,
+      detail: `Draft ${draft.id} -- ORWDX SAVE not available`,
     });
 
     return {
@@ -513,7 +518,7 @@ export default async function writeBackRoutes(server: FastifyInstance): Promise<
 
     const now = new Date().toISOString();
 
-    // No write-back RPC exists for surgery in standard VistA — always draft
+    // No write-back RPC exists for surgery in standard VistA -- always draft
     const draft = createDraft('surgery-create', String(dfn), 'SR CASE CREATION', {
       procedure,
       surgeon,

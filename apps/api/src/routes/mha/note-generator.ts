@@ -1,11 +1,11 @@
 /**
- * MHA Note Generator — Phase 536
+ * MHA Note Generator -- Phase 536
  *
  * Generates structured TIU note text from a completed MHA administration.
  * The note follows a standard clinical format suitable for filing via
  * TIU CREATE RECORD + TIU SET DOCUMENT TEXT.
  *
- * No PHI is embedded in this module — patient identity comes from VistA context.
+ * No PHI is embedded in this module -- patient identity comes from VistA context.
  */
 
 import type { MhaScoreResult, MhaAnswer } from './scoring.js';

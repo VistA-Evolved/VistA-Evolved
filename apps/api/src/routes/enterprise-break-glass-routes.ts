@@ -1,17 +1,17 @@
 /**
- * Enterprise Break-Glass Routes — Phase 141: Enterprise IAM Posture.
+ * Enterprise Break-Glass Routes -- Phase 141: Enterprise IAM Posture.
  *
  * REST endpoints for enterprise-wide break-glass management:
- *   POST /admin/break-glass/request  — Request break-glass (any authenticated user)
- *   POST /admin/break-glass/approve  — Approve pending request (admin only)
- *   POST /admin/break-glass/deny     — Deny pending request (admin only)
- *   POST /admin/break-glass/revoke   — Revoke active session (admin only)
- *   GET  /admin/break-glass/active   — List active/pending sessions (admin only)
- *   GET  /admin/break-glass/stats    — Break-glass statistics (admin only)
- *   GET  /admin/break-glass/:id      — Get specific session (admin only)
+ *   POST /admin/break-glass/request  -- Request break-glass (any authenticated user)
+ *   POST /admin/break-glass/approve  -- Approve pending request (admin only)
+ *   POST /admin/break-glass/deny     -- Deny pending request (admin only)
+ *   POST /admin/break-glass/revoke   -- Revoke active session (admin only)
+ *   GET  /admin/break-glass/active   -- List active/pending sessions (admin only)
+ *   GET  /admin/break-glass/stats    -- Break-glass statistics (admin only)
+ *   GET  /admin/break-glass/:id      -- Get specific session (admin only)
  *
  * Auth: All endpoints require admin role (enforced by AUTH_RULES pattern
- * `/admin/` → "admin"). The /request endpoint is admin-only because
+ * `/admin/` -> "admin"). The /request endpoint is admin-only because
  * break-glass requests go through admin review. In future, this could
  * be relaxed to session-level for self-service with admin approval.
  */
@@ -36,7 +36,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
   /* ---------------------------------------------------------------- */
 
   /**
-   * POST /admin/break-glass/request — Request break-glass access.
+   * POST /admin/break-glass/request -- Request break-glass access.
    * Any admin user can submit a request.
    */
   server.post('/admin/break-glass/request', async (request, reply) => {
@@ -84,7 +84,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
   /* ---------------------------------------------------------------- */
 
   /**
-   * POST /admin/break-glass/approve — Approve a pending break-glass request.
+   * POST /admin/break-glass/approve -- Approve a pending break-glass request.
    * Admin only. Self-approval is blocked.
    */
   server.post('/admin/break-glass/approve', async (request, reply) => {
@@ -118,7 +118,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
   /* ---------------------------------------------------------------- */
 
   /**
-   * POST /admin/break-glass/deny — Deny a pending break-glass request.
+   * POST /admin/break-glass/deny -- Deny a pending break-glass request.
    * Admin only.
    */
   server.post('/admin/break-glass/deny', async (request, reply) => {
@@ -151,7 +151,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
   /* ---------------------------------------------------------------- */
 
   /**
-   * POST /admin/break-glass/revoke — Revoke an active break-glass session.
+   * POST /admin/break-glass/revoke -- Revoke an active break-glass session.
    * Admin only.
    */
   server.post('/admin/break-glass/revoke', async (request, reply) => {
@@ -184,7 +184,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /admin/break-glass/active — List break-glass sessions.
+   * GET /admin/break-glass/active -- List break-glass sessions.
    * Admin only. Optional query: ?status=active|pending|expired|revoked|denied
    */
   server.get('/admin/break-glass/active', async (request, reply) => {
@@ -210,7 +210,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /admin/break-glass/stats — Break-glass summary statistics.
+   * GET /admin/break-glass/stats -- Break-glass summary statistics.
    * Admin only.
    */
   server.get('/admin/break-glass/stats', async (request, reply) => {
@@ -226,7 +226,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /admin/break-glass/session/:id — Get a specific break-glass session.
+   * GET /admin/break-glass/session/:id -- Get a specific break-glass session.
    * Admin only.
    */
   server.get('/admin/break-glass/session/:id', async (request, reply) => {
@@ -248,7 +248,7 @@ export default async function enterpriseBreakGlassRoutes(server: FastifyInstance
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /admin/iam/posture — Enterprise IAM posture summary.
+   * GET /admin/iam/posture -- Enterprise IAM posture summary.
    * Admin only. Returns auth mode, role mapping, break-glass status.
    */
   server.get('/admin/iam/posture', async (request, reply) => {

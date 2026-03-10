@@ -19,7 +19,7 @@ import { execSync } from 'node:child_process';
 
 const ROOT = process.cwd();
 
-// ── Required source docs ──
+// -- Required source docs --
 
 const REQUIRED_DOCS = [
   'docs/KNOWN_ISSUES.md',
@@ -41,7 +41,7 @@ function readDoc(relPath) {
   return raw.charCodeAt(0) === 0xfeff ? raw.slice(1) : raw;
 }
 
-// ── Parse source docs ──
+// -- Parse source docs --
 
 const knownIssues = readDoc('docs/KNOWN_ISSUES.md');
 const vistaConn = readDoc('docs/VISTA_CONNECTIVITY_RESULTS.md');
@@ -49,7 +49,7 @@ const tier0 = readDoc('docs/TIER0_PROOF.md');
 const gauntlet = readDoc('docs/QA_GAUNTLET_FAST_RESULTS.md');
 const hasCiSmoke = existsSync(resolve(ROOT, '.github/workflows/ci-vehu-smoke.yml'));
 
-// ── Known Issues parsing ──
+// -- Known Issues parsing --
 
 function parseKnownIssues(md) {
   const issues = [];
@@ -74,7 +74,7 @@ const openBlockers = issues.filter(
 );
 const closedIssues = issues.filter((i) => i.status.toLowerCase().startsWith('closed'));
 
-// ── VistA Connectivity parsing ──
+// -- VistA Connectivity parsing --
 
 function parseVistaConn(md) {
   const result = { coreTests: '?/?', totalProbed: 0, available: 0, missingCount: 0 };
@@ -113,7 +113,7 @@ function parseVistaConn(md) {
 
 const vista = parseVistaConn(vistaConn);
 
-// ── Tier-0 parsing ──
+// -- Tier-0 parsing --
 
 function parseTier0(md) {
   const result = { stepCount: 0, rpcs: [] };
@@ -136,7 +136,7 @@ function parseTier0(md) {
 
 const tier0Data = parseTier0(tier0);
 
-// ── Gauntlet parsing ──
+// -- Gauntlet parsing --
 
 function parseGauntlet(md) {
   const result = { verdict: 'UNKNOWN', gates: [], passCount: 0, failCount: 0, warnCount: 0 };
@@ -167,7 +167,7 @@ function parseGauntlet(md) {
 
 const gauntletData = parseGauntlet(gauntlet);
 
-// ── Git SHA ──
+// -- Git SHA --
 
 let commitSha = 'unknown';
 try {
@@ -176,7 +176,7 @@ try {
   /* ignore */
 }
 
-// ── Build readiness rows ──
+// -- Build readiness rows --
 
 function status(proven, partial) {
   if (proven) return 'PROVEN';
@@ -338,7 +338,7 @@ rows.push({
   nextProof: 'Migrate imaging worklist to PG; run scheduling truth gate with seed data',
 });
 
-// ── Generate markdown ──
+// -- Generate markdown --
 
 const now = new Date().toISOString();
 
@@ -367,7 +367,7 @@ md.push('`docs/QA_GAUNTLET_FAST_RESULTS.md`. Re-run after any verification');
 md.push('pass to refresh the matrix.');
 md.push('');
 
-// ── SDLC Alignment ──
+// -- SDLC Alignment --
 
 md.push('## SDLC Alignment');
 md.push('');
@@ -387,7 +387,7 @@ md.push(
 );
 md.push('');
 
-// ── Known Issues Summary ──
+// -- Known Issues Summary --
 
 md.push('## Known Issues Summary');
 md.push('');
@@ -408,7 +408,7 @@ md.push('');
 md.push('Source: [docs/KNOWN_ISSUES.md](docs/KNOWN_ISSUES.md)');
 md.push('');
 
-// ── Readiness Matrix ──
+// -- Readiness Matrix --
 
 md.push('## Readiness Matrix');
 md.push('');
@@ -426,7 +426,7 @@ for (let i = 0; i < rows.length; i++) {
 
 md.push('');
 
-// ── Status distribution ──
+// -- Status distribution --
 
 const proven = rows.filter((r) => r.status === 'PROVEN').length;
 const partial = rows.filter((r) => r.status === 'PARTIAL').length;
@@ -442,7 +442,7 @@ md.push(`| PENDING | ${pending} | ${Math.round((pending / rows.length) * 100)}% 
 md.push(`| **Total** | **${rows.length}** | **100%** |`);
 md.push('');
 
-// ── VistA RPC Capability Snapshot ──
+// -- VistA RPC Capability Snapshot --
 
 md.push('## VistA RPC Capability Snapshot');
 md.push('');
@@ -463,7 +463,7 @@ md.push('');
 md.push('Source: [docs/VISTA_CONNECTIVITY_RESULTS.md](docs/VISTA_CONNECTIVITY_RESULTS.md)');
 md.push('');
 
-// ── Footer ──
+// -- Footer --
 
 md.push('---');
 md.push('');
@@ -471,13 +471,13 @@ md.push('*This file is auto-generated. Do not edit manually.*');
 md.push(`*Re-generate: \`node scripts/qa/generate-enterprise-readiness-matrix.mjs\`*`);
 md.push('');
 
-// ── Write ──
+// -- Write --
 
 const outPath = resolve(ROOT, 'docs/ENTERPRISE_READINESS_MATRIX.md');
 mkdirSync(dirname(outPath), { recursive: true });
 writeFileSync(outPath, md.join('\n'));
 
-// ── Console summary ──
+// -- Console summary --
 
 console.log('\n=== Enterprise Readiness Matrix Generator ===\n');
 console.log(`  Commit:     ${commitSha}`);

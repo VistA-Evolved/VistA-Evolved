@@ -21,7 +21,7 @@ import { join, resolve } from 'path';
 const ROOT = resolve(import.meta.dirname, '..', '..');
 const verbose = process.argv.includes('--verbose');
 
-// ── Helpers ──────────────────────────────────────────────────────────
+// -- Helpers ----------------------------------------------------------
 function loadJson(relPath) {
   const abs = join(ROOT, relPath);
   if (!existsSync(abs)) return null;
@@ -31,7 +31,7 @@ function loadJson(relPath) {
   return JSON.parse(clean);
 }
 
-// ── Known hybrid metadata ────────────────────────────────────────────
+// -- Known hybrid metadata --------------------------------------------
 // Static metadata for each system's origin platform, deployment model, etc.
 const HYBRID_META = {
   cprs: {
@@ -205,7 +205,7 @@ const HYBRID_META = {
   },
 };
 
-// ── Domain-to-system mapping for RPC overlap ─────────────────────────
+// -- Domain-to-system mapping for RPC overlap -------------------------
 // Maps RPC domains from rpcRegistry to system IDs in the estate
 const DOMAIN_SYSTEM_MAP = {
   allergies: ['cprs'],
@@ -235,7 +235,7 @@ const DOMAIN_SYSTEM_MAP = {
   inbox: ['cprs'],
 };
 
-// ── Category-to-capability-module mapping ────────────────────────────
+// -- Category-to-capability-module mapping ----------------------------
 const CATEGORY_MODULE_MAP = {
   clinical: ['clinical'],
   pharmacy: ['clinical'],
@@ -248,7 +248,7 @@ const CATEGORY_MODULE_MAP = {
   infrastructure: ['interop', 'iam'],
 };
 
-// ── Main ─────────────────────────────────────────────────────────────
+// -- Main -------------------------------------------------------------
 function buildHybridsMap() {
   console.log('[build-hybrids-map] Cross-referencing VA/IHS GUI hybrids...');
 

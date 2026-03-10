@@ -1,5 +1,5 @@
 /**
- * PH Market Dashboard — Phase 97B
+ * PH Market Dashboard -- Phase 97B
  *
  * Aggregated view of the PH HMO market: integration status, capability
  * coverage, contracting progress, and operational readiness.
@@ -12,7 +12,7 @@ import { getContractingDashboard, type ContractingDashboard } from './contractin
 import { LOA_TEMPLATES } from './loa-templates.js';
 import { CLAIM_PACKET_CONFIGS } from './claim-packet-config.js';
 
-/* ── Market Summary Types ───────────────────────────────────── */
+/* -- Market Summary Types ------------------------------------- */
 
 export interface MarketSummary {
   generatedAt: string;
@@ -65,7 +65,7 @@ export interface MarketSummary {
   };
 }
 
-/* ── Generate market summary ────────────────────────────────── */
+/* -- Generate market summary ---------------------------------- */
 
 export async function generateMarketSummary(tenantId?: string): Promise<MarketSummary> {
   const manifest = await generateHmoManifest();
@@ -73,7 +73,7 @@ export async function generateMarketSummary(tenantId?: string): Promise<MarketSu
   try {
     contracting = await getContractingDashboard(tenantId);
   } catch {
-    // DB not available — provide defaults
+    // DB not available -- provide defaults
     contracting = {
       generatedAt: new Date().toISOString(),
       totalPayers: 0,

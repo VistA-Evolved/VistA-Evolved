@@ -1,5 +1,5 @@
 /**
- * Telehealth Page — Phase 30
+ * Telehealth Page -- Phase 30
  *
  * Video visit capability with:
  * - Device check (camera, mic, network)
@@ -215,7 +215,7 @@ export default function TelehealthPage() {
     return () => clearInterval(poll);
   }, [view, room, selectedAppt]);
 
-  /* ── Handlers ── */
+  /* -- Handlers -- */
 
   const handleStartVisit = async (appt: Appointment) => {
     setSelectedAppt(appt);
@@ -289,7 +289,7 @@ export default function TelehealthPage() {
     setNotice(null);
   };
 
-  /* ── Render ── */
+  /* -- Render -- */
 
   return (
     <div className="container">
@@ -339,7 +339,7 @@ export default function TelehealthPage() {
         </div>
       )}
 
-      {/* ── Appointments List ── */}
+      {/* -- Appointments List -- */}
       {view === 'appointments' && (
         <>
           {loading ? (
@@ -446,7 +446,7 @@ export default function TelehealthPage() {
         </>
       )}
 
-      {/* ── Device Check ── */}
+      {/* -- Device Check -- */}
       {view === 'device-check' && selectedAppt && (
         <div className="card">
           <div
@@ -550,7 +550,7 @@ export default function TelehealthPage() {
         </div>
       )}
 
-      {/* ── Waiting Room ── */}
+      {/* -- Waiting Room -- */}
       {view === 'waiting-room' && selectedAppt && (
         <div className="card">
           <div
@@ -636,7 +636,7 @@ export default function TelehealthPage() {
         </div>
       )}
 
-      {/* ── In Visit ── */}
+      {/* -- In Visit -- */}
       {view === 'in-visit' && joinUrl && (
         <div className="card" style={{ padding: 0, overflow: 'hidden' }}>
           <div
@@ -685,7 +685,7 @@ export default function TelehealthPage() {
         </div>
       )}
 
-      {/* ── Privacy Notice ── */}
+      {/* -- Privacy Notice -- */}
       <div
         style={{
           marginTop: '1.5rem',

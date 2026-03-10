@@ -3,6 +3,7 @@
 import { useEffect, useState, useCallback } from 'react';
 import styles from '../cprs.module.css';
 import { API_BASE } from '@/lib/api-config';
+import { csrfHeaders } from '@/lib/csrf';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -180,7 +181,7 @@ export default function MHAPanel({ dfn }: Props) {
       const res = await fetch(`${API_BASE}/vista/mha/administer`, {
         method: 'POST',
         credentials: 'include',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
         body: JSON.stringify({
           instrumentId: selectedInstrument.id,
           dfn,
@@ -286,10 +287,10 @@ export default function MHAPanel({ dfn }: Props) {
               fontSize: 12,
             }}
           >
-            <strong style={{ color: '#ffcc00' }}>Integration Note</strong>
+            <strong style={{ color: '#ffcc00' }}>Source Note</strong>
             <span style={{ color: '#d9c9a3', marginLeft: 8 }}>
               Instruments loaded from local FHIR Questionnaire definitions. VistA YTT/YTQZ
-              integration pending.
+              RPCs not yet configured.
             </span>
           </div>
           <table style={{ width: '100%', borderCollapse: 'collapse', fontSize: 13 }}>

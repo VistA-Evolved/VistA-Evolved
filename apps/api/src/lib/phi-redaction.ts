@@ -1,10 +1,10 @@
 /**
- * PHI Redaction Registry — Phase 48.
+ * PHI Redaction Registry -- Phase 48.
  *
  * SINGLE SOURCE OF TRUTH for all PHI/PII/credential field names and
  * inline patterns used by the logger, audit stores, and CI lint gate.
  *
- * Any new field must be added here — NOT in logger.ts, server-config.ts,
+ * Any new field must be added here -- NOT in logger.ts, server-config.ts,
  * or individual audit modules.
  */
 
@@ -13,7 +13,7 @@
 /* ------------------------------------------------------------------ */
 
 /**
- * Credential fields — always redacted in logs and audit.
+ * Credential fields -- always redacted in logs and audit.
  * These are authentication-related and never carry clinical meaning.
  */
 export const CREDENTIAL_FIELDS: ReadonlySet<string> = new Set([
@@ -35,11 +35,11 @@ export const CREDENTIAL_FIELDS: ReadonlySet<string> = new Set([
 ]);
 
 /**
- * PHI fields — never appear in log output or metric labels.
+ * PHI fields -- never appear in log output or metric labels.
  * These carry Protected Health Information per HIPAA.
  */
 export const PHI_FIELDS: ReadonlySet<string> = new Set([
-  // Patient identifiers — Phase 151: added dfn/patientdfn/patient_dfn/mrn
+  // Patient identifiers -- Phase 151: added dfn/patientdfn/patient_dfn/mrn
   'dfn',
   'patientdfn',
   'patient_dfn',
@@ -82,7 +82,7 @@ export const PHI_FIELDS: ReadonlySet<string> = new Set([
 ]);
 
 /**
- * Combined blocklist — all fields that must never appear in log output.
+ * Combined blocklist -- all fields that must never appear in log output.
  * Used by the logger redaction engine and the CI lint gate.
  */
 export const ALL_BLOCKED_FIELDS: ReadonlySet<string> = new Set([
@@ -123,10 +123,10 @@ export function isBlockedField(fieldName: string): boolean {
 }
 
 /**
- * Deep-redact an object — replaces blocked field values with "[REDACTED]"
+ * Deep-redact an object -- replaces blocked field values with "[REDACTED]"
  * and scrubs inline patterns in string values.
  *
- * Returns a new object — never mutates the input.
+ * Returns a new object -- never mutates the input.
  */
 export function redactPhi(obj: unknown, depth = 0): unknown {
   if (depth > 10) return '[MAX_DEPTH]';
@@ -160,7 +160,7 @@ export function redactPhi(obj: unknown, depth = 0): unknown {
 }
 
 /**
- * Sanitize a string detail for audit — strips SSN, DOB, patient names.
+ * Sanitize a string detail for audit -- strips SSN, DOB, patient names.
  * Delegates to the inline patterns and additionally truncates long strings.
  */
 export function sanitizeForAudit(detail: unknown, maxLen = 500): unknown {
@@ -185,12 +185,12 @@ export function classifyField(fieldName: string): PhiClassification {
 }
 
 /* ------------------------------------------------------------------ */
-/* Telemetry PHI guard — Phase 77                                      */
+/* Telemetry PHI guard -- Phase 77                                      */
 /* ------------------------------------------------------------------ */
 
 /**
  * Assert that no attribute key in a span/metric label set matches PHI fields.
- * Throws if any key is blocked — used as a runtime guard in span helpers.
+ * Throws if any key is blocked -- used as a runtime guard in span helpers.
  *
  * This is a HARD guard: it prevents PHI from ever entering the telemetry
  * pipeline, even if the caller accidentally passes a PHI field.

@@ -5,7 +5,7 @@
  * Per ADR-W29-HARVEST-DASHBOARD.md.
  */
 
-// ── Domain types ───────────────────────────────────────────────────
+// -- Domain types ---------------------------------------------------
 
 export interface ClinicalRule {
   id: string;
@@ -48,7 +48,7 @@ export interface PatientList {
   updatedAt: string;
 }
 
-// ── Adapter result ─────────────────────────────────────────────────
+// -- Adapter result -------------------------------------------------
 
 export interface DashboardResult<T> {
   ok: boolean;
@@ -57,7 +57,7 @@ export interface DashboardResult<T> {
   error?: string;
 }
 
-// ── Adapter interface ──────────────────────────────────────────────
+// -- Adapter interface ----------------------------------------------
 
 export interface DashboardAdapter {
   /** Get all configured clinical rules */

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * PhilHealth Facility Setup — Phase 90
+ * PhilHealth Facility Setup -- Phase 90
  *
  * Admin page for configuring PhilHealth eClaims 3.0 facility setup:
  *  - Facility accreditation details

@@ -41,7 +41,7 @@ const sections = [];
 const startTime = Date.now();
 let issueCount = 0;
 
-// ── Helpers ─────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------
 
 function sha256(content) {
   return createHash('sha256').update(content).digest('hex');
@@ -78,7 +78,7 @@ function logSection(name, status, detail) {
   if (status === 'fail') issueCount++;
 }
 
-// ── PHI scan helper ─────────────────────────────────────────
+// -- PHI scan helper -----------------------------------------
 
 const PHI_PATTERNS = [
   /\b\d{3}-\d{2}-\d{4}\b/, // SSN
@@ -104,9 +104,9 @@ console.log(`Build ID: ${buildId}`);
 console.log(`Output:   ${outDir}`);
 console.log(`Options:  zip=${doZip} skipGates=${skipGates}\n`);
 
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 // Section 1: Quality Gates (reuse Phase 34 patterns)
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 
 console.log('--- Section 1: Quality Gates ---');
 
@@ -146,9 +146,9 @@ if (!skipGates) {
 
 writeFileSync(join(outDir, 'gate-results.json'), JSON.stringify(gateResults, null, 2));
 
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 // Section 2: Posture Snapshots
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 
 console.log('\n--- Section 2: Posture Snapshots ---');
 
@@ -207,9 +207,9 @@ logSection(
 
 writeFileSync(join(outDir, 'posture-snapshot.json'), JSON.stringify(postureSnapshot, null, 2));
 
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 // Section 3: Audit Chain Status
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 
 console.log('\n--- Section 3: Audit Chain Status ---');
 
@@ -268,9 +268,9 @@ logSection('Hash Chain Implementation', allHashChains ? 'pass' : 'fail');
 
 writeFileSync(join(outDir, 'audit-chain-status.json'), JSON.stringify(auditChainStatus, null, 2));
 
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 // Section 4: System Gap Matrix
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 
 console.log('\n--- Section 4: System Gap Matrix ---');
 
@@ -298,9 +298,9 @@ if (existsSync(gapMatrixPath)) {
   }
 }
 
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 // Section 5: Compliance Framework Mapping
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 
 console.log('\n--- Section 5: Compliance Documentation ---');
 
@@ -353,9 +353,9 @@ writeFileSync(
   )
 );
 
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 // Section 6: Configuration Snapshots (sanitized)
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 
 console.log('\n--- Section 6: Configuration Snapshots ---');
 
@@ -417,9 +417,9 @@ logSection(
 
 writeFileSync(join(outDir, 'config-snapshot.json'), JSON.stringify(configSnapshot, null, 2));
 
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 // Section 7: Runbook Coverage
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 
 console.log('\n--- Section 7: Runbook Coverage ---');
 
@@ -456,9 +456,9 @@ writeFileSync(
   )
 );
 
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 // Section 8: Gauntlet Fast Suite
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 
 console.log('\n--- Section 8: Gauntlet Fast Suite ---');
 
@@ -503,9 +503,9 @@ if (!skipGates) {
   logSection('Gauntlet Fast Suite', 'skip', 'skipped via --skip-gates');
 }
 
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 // Section 9: Store Inventory Snapshot
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 
 console.log('\n--- Section 9: Store Inventory ---');
 
@@ -529,9 +529,9 @@ if (existsSync(storePolicyPath)) {
   logSection('Store Inventory', 'fail', 'store-policy.ts not found');
 }
 
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 // Section 10: Architecture Documentation
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 
 console.log('\n--- Section 10: Architecture Documentation ---');
 
@@ -575,9 +575,9 @@ writeFileSync(
   )
 );
 
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 // Final: PHI Scan + Manifest + Summary
-// ═══════════════════════════════════════════════════════════
+// ===========================================================
 
 console.log('\n--- Final: PHI Scan & Manifest ---');
 

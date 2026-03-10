@@ -6,17 +6,17 @@
  * provisioning, and go-live readiness checks.
  *
  * Architecture:
- *  1. OnboardingTemplate — reusable step-by-step templates per integration type
- *  2. OnboardingSession — active partner onboarding progress
- *  3. StepValidator — prerequisite/environment checks per step
- *  4. ReadinessCheck — final go-live validation before production
+ *  1. OnboardingTemplate -- reusable step-by-step templates per integration type
+ *  2. OnboardingSession -- active partner onboarding progress
+ *  3. StepValidator -- prerequisite/environment checks per step
+ *  4. ReadinessCheck -- final go-live validation before production
  */
 
 import crypto from "node:crypto";
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    1. TYPES
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export type OnboardingStepStatus = "pending" | "in_progress" | "completed" | "skipped" | "blocked";
 export type OnboardingSessionStatus = "active" | "completed" | "abandoned" | "paused";
@@ -97,17 +97,17 @@ export interface ReadinessReport {
   generatedAt: string;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    2. STORES
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 const templateStore = new Map<string, OnboardingTemplate>();
 const sessionStore = new Map<string, OnboardingSession>();
 const readinessStore = new Map<string, ReadinessReport>();
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    3. TEMPLATES
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function createTemplate(input: {
   name: string;
@@ -147,9 +147,9 @@ export function listTemplates(integrationType?: string): OnboardingTemplate[] {
   return results;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    4. SESSIONS
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function startOnboarding(input: {
   templateId: string;
@@ -299,9 +299,9 @@ export function abandonSessionForTenant(tenantId: string, sessionId: string): bo
   return true;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    5. READINESS CHECKS
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function runReadinessCheckForTenant(tenantId: string, sessionId: string): ReadinessReport {
   const session = getSessionForTenant(tenantId, sessionId);
@@ -410,9 +410,9 @@ export function getReadinessReportForTenant(
   return readinessStore.get(sessionId);
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    6. STATS
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function getOnboardingStats(tenantId: string): {
   templates: number;
@@ -450,9 +450,9 @@ export function getOnboardingStats(tenantId: string): {
   };
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    7. SEED TEMPLATES
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function seedOnboardingTemplates(): void {
   if (templateStore.size > 0) return;

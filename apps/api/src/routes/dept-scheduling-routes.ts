@@ -1,5 +1,5 @@
 /**
- * Department Scheduling Routes — Phase 352
+ * Department Scheduling Routes -- Phase 352
  *
  * Endpoints for department-scoped scheduling: schedule templates,
  * resource management, resource allocation, scheduling rules,
@@ -58,7 +58,7 @@ export async function deptSchedulingRoutes(server: FastifyInstance): Promise<voi
     return null;
   }
 
-  // ─── Schedule Templates ────────────────────────────────
+  // --- Schedule Templates --------------------------------
 
   server.get('/dept-scheduling/templates', async (req: FastifyRequest, reply: FastifyReply) => {
     const { departmentId } = (req.query as any) || {};
@@ -131,7 +131,7 @@ export async function deptSchedulingRoutes(server: FastifyInstance): Promise<voi
     }
   );
 
-  // ─── Resources ─────────────────────────────────────────
+  // --- Resources -----------------------------------------
 
   server.get('/dept-scheduling/resources', async (req: FastifyRequest, reply: FastifyReply) => {
     const { departmentId, type } = (req.query as any) || {};
@@ -185,7 +185,7 @@ export async function deptSchedulingRoutes(server: FastifyInstance): Promise<voi
     }
   );
 
-  // ─── Resource Allocations ──────────────────────────────
+  // --- Resource Allocations ------------------------------
 
   server.get('/dept-scheduling/allocations', async (req: FastifyRequest, reply: FastifyReply) => {
     const { resourceId, departmentId, date, status } = (req.query as any) || {};
@@ -240,7 +240,7 @@ export async function deptSchedulingRoutes(server: FastifyInstance): Promise<voi
     }
   );
 
-  // ─── Scheduling Rules ──────────────────────────────────
+  // --- Scheduling Rules ----------------------------------
 
   server.get('/dept-scheduling/rules', async (req: FastifyRequest, reply: FastifyReply) => {
     const { departmentId } = (req.query as any) || {};
@@ -300,7 +300,7 @@ export async function deptSchedulingRoutes(server: FastifyInstance): Promise<voi
     return reply.send({ ok: true });
   });
 
-  // ─── Cross-Department Referrals ────────────────────────
+  // --- Cross-Department Referrals ------------------------
 
   server.get('/dept-scheduling/referrals', async (req: FastifyRequest, reply: FastifyReply) => {
     const { fromDepartmentId, toDepartmentId, status, urgency } = (req.query as any) || {};
@@ -373,7 +373,7 @@ export async function deptSchedulingRoutes(server: FastifyInstance): Promise<voi
     }
   );
 
-  // ─── Health ────────────────────────────────────────────
+  // --- Health --------------------------------------------
 
   server.get('/dept-scheduling/health', async (_req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(_req, reply);

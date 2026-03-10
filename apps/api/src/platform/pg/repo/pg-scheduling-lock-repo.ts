@@ -1,5 +1,5 @@
 /**
- * PG Scheduling Booking Lock Repository — TTL-based concurrency locks
+ * PG Scheduling Booking Lock Repository -- TTL-based concurrency locks
  *
  * Phase 128: Imaging + Scheduling Durability (Map stores -> Postgres)
  *
@@ -17,7 +17,7 @@ import { pgSchedulingBookingLock } from '../pg-schema.js';
 
 export type BookingLockRow = typeof pgSchedulingBookingLock.$inferSelect;
 
-/* ── Acquire ───────────────────────────────────────────────── */
+/* -- Acquire ------------------------------------------------- */
 
 /**
  * Attempt to acquire a booking lock.
@@ -71,7 +71,7 @@ export async function acquireLock(data: {
   }
 }
 
-/* ── Release ───────────────────────────────────────────────── */
+/* -- Release ------------------------------------------------- */
 
 export async function releaseLock(lockKey: string, tenantId = 'default'): Promise<boolean> {
   const db = getPgDb();
@@ -86,7 +86,7 @@ export async function releaseLock(lockKey: string, tenantId = 'default'): Promis
   return (result as any)?.rowCount > 0;
 }
 
-/* ── Lookup ────────────────────────────────────────────────── */
+/* -- Lookup -------------------------------------------------- */
 
 export async function findLockByKey(
   lockKey: string,
@@ -116,7 +116,7 @@ export async function findActiveLocks(): Promise<BookingLockRow[]> {
     .where(sql`${pgSchedulingBookingLock.expiresAt} > ${now}`);
 }
 
-/* ── Cleanup ───────────────────────────────────────────────── */
+/* -- Cleanup ------------------------------------------------- */
 
 export async function cleanupExpiredLocks(): Promise<number> {
   const db = getPgDb();
@@ -127,7 +127,7 @@ export async function cleanupExpiredLocks(): Promise<number> {
   return (result as any)?.rowCount ?? 0;
 }
 
-/* ── Stats ─────────────────────────────────────────────────── */
+/* -- Stats --------------------------------------------------- */
 
 export async function countLocks(): Promise<{ active: number; expired: number }> {
   const db = getPgDb();

@@ -204,7 +204,7 @@ export default function AddProblemDialog() {
                     (e.target as HTMLElement).style.background = '';
                   }}
                 >
-                  <strong>{r.icd}</strong> — {r.description}
+                  <strong>{r.icd}</strong> -- {r.description}
                 </div>
               ))}
             </div>
@@ -220,7 +220,7 @@ export default function AddProblemDialog() {
                 fontSize: 12,
               }}
             >
-              Selected: <strong>{selectedLex.icd}</strong> — {selectedLex.description}
+              Selected: <strong>{selectedLex.icd}</strong> -- {selectedLex.description}
             </div>
           )}
 

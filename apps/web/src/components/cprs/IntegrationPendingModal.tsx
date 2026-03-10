@@ -1,9 +1,9 @@
 /**
  * IntegrationPendingModal.tsx -- Phase 56
  *
- * Standardized modal shown when user clicks an action that is "integration-pending".
- * Shows target RPCs, Vivian presence, and next steps. NO dead clicks -- every
- * pending action surfaces this instead of silently failing.
+ * Standardized modal shown when user clicks an action that requires additional
+ * configuration. Shows target RPCs, Vivian presence, and next steps. NO dead
+ * clicks -- every unavailable action surfaces this instead of silently failing.
  */
 'use client';
 
@@ -14,7 +14,7 @@ export interface PendingActionInfo {
   pendingNote?: string;
   pendingTargets?: string[];
   vivianPresence?: Record<string, string>;
-  /** API status -- "integration-pending" or "unsupported-in-sandbox" */
+  /** API status -- "requires_config" or "unsupported-in-sandbox" */
   status?: string;
 }
 
@@ -55,7 +55,7 @@ export default function IntegrationPendingModal({ action, onClose }: Integration
         <h3 style={{ margin: '0 0 12px', color: '#ffb347' }}>
           {action.status === 'unsupported-in-sandbox'
             ? 'Unsupported in Sandbox'
-            : 'Integration Pending'}
+            : 'Additional Configuration Required'}
         </h3>
         <p style={{ margin: '0 0 8px', fontSize: 14 }}>
           <strong>{action.label}</strong> ({action.actionId})

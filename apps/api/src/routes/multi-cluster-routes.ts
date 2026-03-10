@@ -116,9 +116,9 @@ function resolveAdminTargetTenant(
 }
 
 export async function multiClusterRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Cluster CRUD ─────────────────────────────────────────────────────
+  // --- Cluster CRUD -----------------------------------------------------
 
-  /** POST /platform/clusters — register a new cluster */
+  /** POST /platform/clusters -- register a new cluster */
   server.post('/platform/clusters', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const {
@@ -164,7 +164,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     }
   });
 
-  /** GET /platform/clusters — list clusters */
+  /** GET /platform/clusters -- list clusters */
   server.get('/platform/clusters', async (request: FastifyRequest, reply: FastifyReply) => {
     const query = request.query as any;
     const region = query.region as string | undefined;
@@ -178,7 +178,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     return { ok: true, clusters, count: clusters.length };
   });
 
-  /** GET /platform/clusters/summary — registry summary */
+  /** GET /platform/clusters/summary -- registry summary */
   server.get(
     '/platform/clusters/summary',
     async (_request: FastifyRequest, _reply: FastifyReply) => {
@@ -186,7 +186,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     }
   );
 
-  /** GET /platform/clusters/health — all health snapshots */
+  /** GET /platform/clusters/health -- all health snapshots */
   server.get(
     '/platform/clusters/health',
     async (_request: FastifyRequest, _reply: FastifyReply) => {
@@ -195,7 +195,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     }
   );
 
-  /** GET /platform/clusters/audit — audit log */
+  /** GET /platform/clusters/audit -- audit log */
   server.get('/platform/clusters/audit', async (request: FastifyRequest, _reply: FastifyReply) => {
     const query = request.query as any;
     const limit = Math.min(parseInt(query.limit, 10) || 100, 500);
@@ -204,7 +204,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     return { ok: true, entries, count: entries.length };
   });
 
-  /** GET /platform/clusters/:id — get cluster detail */
+  /** GET /platform/clusters/:id -- get cluster detail */
   server.get('/platform/clusters/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as any;
     const cluster = getCluster(id);
@@ -214,7 +214,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     return { ok: true, cluster, health: health || null, activePlacements: placements.length };
   });
 
-  /** POST /platform/clusters/:id/status — update cluster status */
+  /** POST /platform/clusters/:id/status -- update cluster status */
   server.post(
     '/platform/clusters/:id/status',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -237,7 +237,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     }
   );
 
-  /** POST /platform/clusters/:id/metadata — update cluster metadata */
+  /** POST /platform/clusters/:id/metadata -- update cluster metadata */
   server.post(
     '/platform/clusters/:id/metadata',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -258,7 +258,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     }
   );
 
-  /** POST /platform/clusters/:id/health — record health snapshot */
+  /** POST /platform/clusters/:id/health -- record health snapshot */
   server.post(
     '/platform/clusters/:id/health',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -282,7 +282,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     }
   );
 
-  /** GET /platform/clusters/:id/health — latest health snapshot */
+  /** GET /platform/clusters/:id/health -- latest health snapshot */
   server.get(
     '/platform/clusters/:id/health',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -294,9 +294,9 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     }
   );
 
-  // ─── Tenant Placement ─────────────────────────────────────────────────
+  // --- Tenant Placement -------------------------------------------------
 
-  /** POST /platform/tenants/:tenantId/place — place tenant onto a cluster */
+  /** POST /platform/tenants/:tenantId/place -- place tenant onto a cluster */
   server.post(
     '/platform/tenants/:tenantId/place',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -339,7 +339,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     }
   );
 
-  /** GET /platform/tenants/:tenantId/placement — get active placement */
+  /** GET /platform/tenants/:tenantId/placement -- get active placement */
   server.get(
     '/platform/tenants/:tenantId/placement',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -357,7 +357,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     }
   );
 
-  /** DELETE /platform/tenants/:tenantId/placement — deactivate placement */
+  /** DELETE /platform/tenants/:tenantId/placement -- deactivate placement */
   server.delete(
     '/platform/tenants/:tenantId/placement',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -375,7 +375,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     }
   );
 
-  /** POST /platform/tenants/simulate-placement — dry-run placement */
+  /** POST /platform/tenants/simulate-placement -- dry-run placement */
   server.post(
     '/platform/tenants/simulate-placement',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -395,7 +395,7 @@ export async function multiClusterRoutes(server: FastifyInstance): Promise<void>
     }
   );
 
-  /** GET /platform/placements — list all placements */
+  /** GET /platform/placements -- list all placements */
   server.get('/platform/placements', async (request: FastifyRequest, _reply: FastifyReply) => {
     const query = request.query as any;
     const clusterId = query.clusterId as string | undefined;

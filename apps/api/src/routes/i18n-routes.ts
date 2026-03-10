@@ -1,5 +1,5 @@
 /**
- * I18N Routes — Phase 132: Internationalization Foundation
+ * I18N Routes -- Phase 132: Internationalization Foundation
  *
  * Endpoints:
  *   GET  /i18n/locale             -- Get current clinician locale preference
@@ -48,14 +48,14 @@ function requireSessionTenantId(session: { tenantId?: string }, reply: any): str
 
 export default async function i18nRoutes(server: FastifyInstance): Promise<void> {
   /* ------------------------------------------------------------------ */
-  /* GET /i18n/locales — list supported locales (public, no auth)        */
+  /* GET /i18n/locales -- list supported locales (public, no auth)        */
   /* ------------------------------------------------------------------ */
   server.get('/i18n/locales', async () => {
     return { ok: true, locales: SUPPORTED_LOCALES };
   });
 
   /* ------------------------------------------------------------------ */
-  /* GET /i18n/locale — get current clinician locale                     */
+  /* GET /i18n/locale -- get current clinician locale                     */
   /* ------------------------------------------------------------------ */
   server.get('/i18n/locale', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -82,7 +82,7 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
   });
 
   /* ------------------------------------------------------------------ */
-  /* PUT /i18n/locale — set clinician locale preference                  */
+  /* PUT /i18n/locale -- set clinician locale preference                  */
   /* ------------------------------------------------------------------ */
   server.put('/i18n/locale', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -101,7 +101,7 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
 
     if (!isPgConfigured()) {
       reply.code(503);
-      return { ok: false, error: 'Postgres not configured — locale cannot be persisted' };
+      return { ok: false, error: 'Postgres not configured -- locale cannot be persisted' };
     }
 
     try {
@@ -123,7 +123,7 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
   });
 
   /* ------------------------------------------------------------------ */
-  /* GET /intake/question-schema — locale-aware intake questions          */
+  /* GET /intake/question-schema -- locale-aware intake questions          */
   /* ------------------------------------------------------------------ */
   server.get('/intake/question-schema', async (request, reply) => {
     const query = request.query as any;
@@ -150,7 +150,7 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
         locale,
         questions: getStaticQuestions(locale),
         source: 'static',
-        note: 'PG not configured — returning static defaults',
+        note: 'PG not configured -- returning static defaults',
       };
     }
 
@@ -163,7 +163,7 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
           locale,
           questions: getStaticQuestions(locale),
           source: 'static',
-          note: 'No tenant-specific schema found — returning static defaults',
+          note: 'No tenant-specific schema found -- returning static defaults',
         };
       }
       return {
@@ -180,13 +180,13 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
         locale,
         questions: getStaticQuestions(locale),
         source: 'static',
-        note: 'DB read failed — returning static defaults',
+        note: 'DB read failed -- returning static defaults',
       };
     }
   });
 
   /* ------------------------------------------------------------------ */
-  /* GET /admin/intake/question-schema — list all questions (admin)       */
+  /* GET /admin/intake/question-schema -- list all questions (admin)       */
   /* ------------------------------------------------------------------ */
   server.get('/admin/intake/question-schema', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -212,7 +212,7 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
   });
 
   /* ------------------------------------------------------------------ */
-  /* POST /admin/intake/question-schema — create question (admin)        */
+  /* POST /admin/intake/question-schema -- create question (admin)        */
   /* ------------------------------------------------------------------ */
   server.post('/admin/intake/question-schema', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -273,7 +273,7 @@ export default async function i18nRoutes(server: FastifyInstance): Promise<void>
   });
 
   /* ------------------------------------------------------------------ */
-  /* Phase 497 (W34-P7): GET /i18n/coverage — per-pack locale coverage  */
+  /* Phase 497 (W34-P7): GET /i18n/coverage -- per-pack locale coverage  */
   /* ------------------------------------------------------------------ */
   server.get('/i18n/coverage', async () => {
     // Dynamic import to avoid hard dep on country-pack-loader at module level

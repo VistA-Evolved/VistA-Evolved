@@ -1,5 +1,5 @@
 /**
- * HL7v2 Message Packs — ADT (Admit/Discharge/Transfer)
+ * HL7v2 Message Packs -- ADT (Admit/Discharge/Transfer)
  *
  * Phase 241 (Wave 6 P4): Builders and validators for ADT messages.
  * Covers: A01 (Admit), A02 (Transfer), A03 (Discharge), A04 (Register),
@@ -245,7 +245,7 @@ export function validateAdtMessage(message: Hl7Message): ValidationResult {
 
 export const adtPack: MessagePack = {
   id: 'adt',
-  name: 'ADT — Patient Movement',
+  name: 'ADT -- Patient Movement',
   messageTypes: ADT_EVENTS,
   description: 'Admit, Discharge, Transfer, and Registration messages (A01-A08)',
   validate: validateAdtMessage,

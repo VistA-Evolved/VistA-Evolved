@@ -1,5 +1,5 @@
 /**
- * Health Records — Multi-section view of clinical data from VistA.
+ * Health Records -- Multi-section view of clinical data from VistA.
  * Fetches real EHR data via portal health proxy routes.
  * PDF download buttons for each section and full record.
  *
@@ -155,8 +155,8 @@ export default function HealthRecordsPage() {
                   {results.map((a: any, i: number) => (
                     <tr key={i} style={{ borderBottom: '1px solid #f1f5f9' }}>
                       <td style={{ padding: '0.25rem 0.5rem' }}>{a.allergen}</td>
-                      <td style={{ padding: '0.25rem 0.5rem' }}>{a.severity || '—'}</td>
-                      <td style={{ padding: '0.25rem 0.5rem' }}>{a.reactions || '—'}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{a.severity || '--'}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{a.reactions || '--'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -203,7 +203,7 @@ export default function HealthRecordsPage() {
                           {p.status}
                         </span>
                       </td>
-                      <td style={{ padding: '0.25rem 0.5rem' }}>{p.onset || '—'}</td>
+                      <td style={{ padding: '0.25rem 0.5rem' }}>{p.onset || '--'}</td>
                     </tr>
                   ))}
                 </tbody>

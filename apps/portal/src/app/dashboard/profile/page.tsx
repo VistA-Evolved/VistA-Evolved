@@ -1,5 +1,5 @@
 /**
- * Profile Page — Demographics from VistA + settings + sharing.
+ * Profile Page -- Demographics from VistA + settings + sharing.
  * VistA RPCs: ORWPT SELECT (demographics)
  */
 
@@ -84,7 +84,7 @@ export default function ProfilePage() {
       const share = (res.data as any)?.share;
       setNewShareToken(share?.token || '');
       setNewShareCode(share?.accessCode || '');
-      setNotice('Share link created! Save the access code — it will not be shown again.');
+      setNotice('Share link created! Save the access code -- it will not be shown again.');
       loadAll();
     }
   }
@@ -362,7 +362,7 @@ export default function ProfilePage() {
                       </code>
                     </div>
                     <div style={{ fontSize: '0.75rem', color: '#0c4a6e' }}>
-                      Save this code now — it will not be shown again. Share the link and code with
+                      Save this code now -- it will not be shown again. Share the link and code with
                       your recipient.
                     </div>
                   </div>
@@ -413,8 +413,8 @@ export default function ProfilePage() {
                           <div
                             style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.125rem' }}
                           >
-                            Sections: {(s.sections || []).join(', ')} · Expires:{' '}
-                            {new Date(s.expiresAt).toLocaleDateString()}· Accessed:{' '}
+                            Sections: {(s.sections || []).join(', ')} * Expires:{' '}
+                            {new Date(s.expiresAt).toLocaleDateString()}* Accessed:{' '}
                             {s.accessCount || 0} time(s)
                           </div>
                           {!revoked && !expired && (

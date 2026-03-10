@@ -1,7 +1,7 @@
 import { API_BASE } from '@/lib/api-config';
 import { SUPPORTED_LOCALES, type SupportedLocale } from '@vista-evolved/locale-utils';
 /**
- * i18n configuration for the EHR Web App — Phase 132.
+ * i18n configuration for the EHR Web App -- Phase 132.
  *
  * Uses next-intl with client-side provider (no middleware routing).
  * Locale is stored in localStorage + synced to API for persistence.
@@ -57,7 +57,7 @@ export async function syncLocaleToApi(locale: SupportedLocale): Promise<void> {
       body: JSON.stringify({ locale }),
     });
   } catch {
-    // Best-effort — localStorage is primary
+    // Best-effort -- localStorage is primary
   }
 }
 

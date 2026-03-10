@@ -1,5 +1,5 @@
 /**
- * Integration Evidence Registry — per-payer evidence CRUD
+ * Integration Evidence Registry -- per-payer evidence CRUD
  *
  * Phase 112: Evidence Pipeline + No-Fake-Integrations Gate
  *
@@ -14,7 +14,7 @@ import { integrationEvidence } from "../../platform/pg/pg-schema.js";
 
 export type IntegrationEvidenceRow = typeof integrationEvidence.$inferSelect;
 
-/* ── Queries ─────────────────────────────────────────── */
+/* -- Queries ------------------------------------------- */
 
 export async function findByIdForTenant(
   tenantId: string,
@@ -89,7 +89,7 @@ export async function findByPayerAndMethod(
   return rows[0] ?? undefined;
 }
 
-/* ── Mutations ───────────────────────────────────────── */
+/* -- Mutations ----------------------------------------- */
 
 export interface CreateEvidenceInput {
   tenantId: string;
@@ -191,7 +191,7 @@ export async function archiveEvidence(tenantId: string, id: string): Promise<boo
   return true;
 }
 
-/* ── Analytics ───────────────────────────────────────── */
+/* -- Analytics ----------------------------------------- */
 
 export interface EvidenceCoverage {
   payerId: string;

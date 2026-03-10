@@ -1,5 +1,5 @@
 /**
- * Local Scaffold Translator — Built-in X12 Translation
+ * Local Scaffold Translator -- Built-in X12 Translation
  *
  * Phase 45: Generates structurally correct X12 5010 using the existing
  * serializers. Good for dev/sandbox testing. Does NOT embed proprietary
@@ -17,7 +17,7 @@ import type { TranslatorResult, ParsedResponse, TransactionEnvelope } from './ty
 import type { X12TransactionSet, EdiClaim837 } from '../edi/types.js';
 import { serialize837, serialize270 } from '../edi/x12-serializer.js';
 
-/* ── Required field checks per transaction ───────────────────── */
+/* -- Required field checks per transaction --------------------- */
 
 const REQUIRED_FIELDS: Record<string, string[]> = {
   '837P': [
@@ -48,7 +48,7 @@ function getNestedField(obj: Record<string, unknown>, path: string): unknown {
   return current;
 }
 
-/* ── Local Scaffold Translator ───────────────────────────────── */
+/* -- Local Scaffold Translator --------------------------------- */
 
 export const localScaffoldTranslator: Translator = {
   id: 'local-scaffold',
@@ -167,13 +167,13 @@ export const localScaffoldTranslator: Translator = {
   },
 };
 
-/* ── Segment counter ─────────────────────────────────────────── */
+/* -- Segment counter ------------------------------------------- */
 
 function countSegments(x12: string): number {
   return x12.split('~').filter((s) => s.trim().length > 0).length;
 }
 
-/* ── 276 Scaffold Builder ────────────────────────────────────── */
+/* -- 276 Scaffold Builder -------------------------------------- */
 
 function build276Scaffold(obj: Record<string, unknown>, env: TransactionEnvelope): string {
   const sep = '*';
@@ -250,7 +250,7 @@ function build276Scaffold(obj: Record<string, unknown>, env: TransactionEnvelope
   return segments.join(term) + term;
 }
 
-/* ── Generic Scaffold ────────────────────────────────────────── */
+/* -- Generic Scaffold ------------------------------------------ */
 
 function buildGenericScaffold(txSet: X12TransactionSet, env: TransactionEnvelope): string {
   const sep = '*';
@@ -271,7 +271,7 @@ function buildGenericScaffold(txSet: X12TransactionSet, env: TransactionEnvelope
   return segments.join(term) + term;
 }
 
-/* ── Response Parsers (scaffold-level) ───────────────────────── */
+/* -- Response Parsers (scaffold-level) ------------------------- */
 
 function parse999Response(raw: string): ParsedResponse {
   const segments = raw.split('~').filter((s) => s.trim());

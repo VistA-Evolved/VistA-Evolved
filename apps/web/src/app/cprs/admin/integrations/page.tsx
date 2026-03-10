@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Admin Integration Console — Phase 18B/D + Phase 21 + Phase 58.
+ * Admin Integration Console -- Phase 18B/D + Phase 21 + Phase 58.
  *
  * Enterprise integration dashboard with:
  *   - Integration registry table (all types: VistA RPC, FHIR, DICOM, HL7v2, devices)
@@ -11,8 +11,8 @@
  *   - Error log viewer
  *   - Device onboarding form
  *   - Legacy connector view (Phase 17F compatibility)
- *   - VistA HL7/HLO Telemetry (Phase 21) — real-time data from VistA globals
- *   - HL7 Message Browser (Phase 58) — individual message list + detail viewer + masking
+ *   - VistA HL7/HLO Telemetry (Phase 21) -- real-time data from VistA globals
+ *   - HL7 Message Browser (Phase 58) -- individual message list + detail viewer + masking
  *
  * Accessible at /cprs/admin/integrations.
  */
@@ -254,7 +254,7 @@ export default function IntegrationsPage() {
 
   const tenantId = 'default';
 
-  /* ── Fetchers ──────────────────────────────────────────────────── */
+  /* -- Fetchers ---------------------------------------------------- */
 
   const fetchRegistry = useCallback(async () => {
     try {
@@ -415,7 +415,7 @@ export default function IntegrationsPage() {
     }
   }, [hasRole, fetchAll, fetchInteropSummary]);
 
-  /* ── Actions ───────────────────────────────────────────────────── */
+  /* -- Actions ----------------------------------------------------- */
 
   async function handleProbeAll() {
     setProbing(true);
@@ -513,7 +513,7 @@ export default function IntegrationsPage() {
     }
   }
 
-  /* ── Helpers ───────────────────────────────────────────────────── */
+  /* -- Helpers ----------------------------------------------------- */
 
   const statusColor = (status: string) => {
     switch (status) {
@@ -530,7 +530,7 @@ export default function IntegrationsPage() {
     }
   };
 
-  /* ── Render ────────────────────────────────────────────────────── */
+  /* -- Render ------------------------------------------------------ */
 
   if (!hasRole('admin')) {
     return (
@@ -564,7 +564,7 @@ export default function IntegrationsPage() {
       </div>
 
       <div style={{ flex: 1, padding: 24, maxWidth: 1100, margin: '0 auto', width: '100%' }}>
-        {/* ── Health Summary Bar ────────────────────────────────────── */}
+        {/* -- Health Summary Bar -------------------------------------- */}
         {healthSummary && (
           <div
             style={{
@@ -602,7 +602,7 @@ export default function IntegrationsPage() {
           </div>
         )}
 
-        {/* ── Tab Nav ──────────────────────────────────────────────── */}
+        {/* -- Tab Nav ------------------------------------------------ */}
         <div style={{ display: 'flex', alignItems: 'center', gap: 8, marginBottom: 16 }}>
           {(['registry', 'hl7hlo', 'msgbrowser', 'onboard', 'legacy', 'hybrids'] as const).map(
             (t) => (
@@ -647,7 +647,7 @@ export default function IntegrationsPage() {
           <p style={{ color: 'var(--cprs-danger)', fontSize: 12, marginBottom: 8 }}>{error}</p>
         )}
 
-        {/* ── Registry Tab ─────────────────────────────────────────── */}
+        {/* -- Registry Tab ------------------------------------------- */}
         {tab === 'registry' && (
           <>
             {loading ? (
@@ -817,7 +817,7 @@ export default function IntegrationsPage() {
           </>
         )}
 
-        {/* ── Device Onboarding Tab ────────────────────────────────── */}
+        {/* -- Device Onboarding Tab ---------------------------------- */}
         {tab === 'onboard' && (
           <div style={{ maxWidth: 600 }}>
             <h3 style={{ fontSize: 14, margin: '0 0 12px' }}>Onboard New Device / Modality</h3>
@@ -900,7 +900,7 @@ export default function IntegrationsPage() {
           </div>
         )}
 
-        {/* ── Legacy Connectors Tab ────────────────────────────────── */}
+        {/* -- Legacy Connectors Tab ---------------------------------- */}
         {tab === 'legacy' && (
           <>
             <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', marginBottom: 8 }}>
@@ -956,7 +956,7 @@ export default function IntegrationsPage() {
           </>
         )}
 
-        {/* ── VA GUI Hybrids Tab (Phase 541) ─────────────────────────── */}
+        {/* -- VA GUI Hybrids Tab (Phase 541) --------------------------- */}
         {tab === 'hybrids' && (
           <>
             <div
@@ -1200,7 +1200,7 @@ export default function IntegrationsPage() {
           </>
         )}
 
-        {/* ── VistA HL7/HLO Telemetry Tab (Phase 21) ────────────────── */}
+        {/* -- VistA HL7/HLO Telemetry Tab (Phase 21) ------------------ */}
         {tab === 'hl7hlo' && (
           <>
             <div
@@ -1486,7 +1486,7 @@ export default function IntegrationsPage() {
           </>
         )}
 
-        {/* ── HL7 Message Browser Tab (Phase 58) ─────────────────── */}
+        {/* -- HL7 Message Browser Tab (Phase 58) ------------------- */}
         {tab === 'msgbrowser' && (
           <>
             <div
@@ -1973,7 +1973,7 @@ export default function IntegrationsPage() {
           </>
         )}
 
-        {/* ── Integration Architecture Note ────────────────────────── */}
+        {/* -- Integration Architecture Note -------------------------- */}
         <div
           style={{
             marginTop: 24,

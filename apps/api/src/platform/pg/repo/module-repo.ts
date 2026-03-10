@@ -1,5 +1,5 @@
 /**
- * Module Entitlement Repository (PostgreSQL) — Phase 109
+ * Module Entitlement Repository (PostgreSQL) -- Phase 109
  *
  * CRUD for module_catalog, tenant_module, tenant_feature_flag,
  * and module_audit_log tables. All operations are tenant-scoped

@@ -1,25 +1,25 @@
 /**
- * Module & Capability API Routes — Phase 37C, enhanced Phase 51.
+ * Module & Capability API Routes -- Phase 37C, enhanced Phase 51.
  *
  * Exposes module registry status, capability resolution, adapter
  * health, and marketplace tenant config to admin dashboards and
  * the UI capability-driven rendering.
  *
  * Public routes (session auth):
- *   GET /api/capabilities           — resolved capabilities for this tenant
- *   GET /api/capabilities/summary   — live/pending/disabled counts
+ *   GET /api/capabilities           -- resolved capabilities for this tenant
+ *   GET /api/capabilities/summary   -- live/pending/disabled counts
  *
  * Admin routes (admin role):
- *   GET  /api/modules/status        — module enablement status
- *   GET  /api/modules/skus          — available SKU profiles
- *   GET  /api/modules/manifests     — full module manifests (Phase 51)
- *   POST /api/modules/override      — per-tenant module override
- *   GET  /api/adapters/health       — adapter health status
- *   GET  /api/adapters/list         — all loaded adapters
- *   GET  /api/marketplace/config    — marketplace tenant config (Phase 51)
- *   PUT  /api/marketplace/config    — update marketplace tenant config (Phase 51)
- *   GET  /api/marketplace/jurisdictions — available jurisdiction packs (Phase 51)
- *   GET  /api/marketplace/summary   — marketplace summary stats (Phase 51)
+ *   GET  /api/modules/status        -- module enablement status
+ *   GET  /api/modules/skus          -- available SKU profiles
+ *   GET  /api/modules/manifests     -- full module manifests (Phase 51)
+ *   POST /api/modules/override      -- per-tenant module override
+ *   GET  /api/adapters/health       -- adapter health status
+ *   GET  /api/adapters/list         -- all loaded adapters
+ *   GET  /api/marketplace/config    -- marketplace tenant config (Phase 51)
+ *   PUT  /api/marketplace/config    -- update marketplace tenant config (Phase 51)
+ *   GET  /api/marketplace/jurisdictions -- available jurisdiction packs (Phase 51)
+ *   GET  /api/marketplace/summary   -- marketplace summary stats (Phase 51)
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -76,7 +76,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   /* Public: Capability resolution (session auth via security.ts)      */
   /* ---------------------------------------------------------------- */
 
-  /** GET /api/capabilities — resolved capabilities for current tenant. */
+  /** GET /api/capabilities -- resolved capabilities for current tenant. */
   server.get('/api/capabilities', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -95,7 +95,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     };
   });
 
-  /** GET /api/capabilities/summary — live/pending/disabled counts. */
+  /** GET /api/capabilities/summary -- live/pending/disabled counts. */
   server.get('/api/capabilities/summary', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -114,7 +114,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     };
   });
 
-  /** GET /api/capabilities/by-module — grouped capabilities. */
+  /** GET /api/capabilities/by-module -- grouped capabilities. */
   server.get(
     '/api/capabilities/by-module',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -140,7 +140,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   /* Admin: Module status & management                                 */
   /* ---------------------------------------------------------------- */
 
-  /** GET /api/modules/status — module enablement status. */
+  /** GET /api/modules/status -- module enablement status. */
   server.get('/api/modules/status', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -178,7 +178,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     };
   });
 
-  /** GET /api/modules/skus — available SKU profiles. */
+  /** GET /api/modules/skus -- available SKU profiles. */
   server.get('/api/modules/skus', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -195,7 +195,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     };
   });
 
-  /** POST /api/modules/override — per-tenant module override. */
+  /** POST /api/modules/override -- per-tenant module override. */
   server.post('/api/modules/override', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -218,7 +218,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
       ? await getEnabledModuleIds(tenantId).catch(() => getEnabledModules(tenantId))
       : getEnabledModules(tenantId);
 
-    // null → clear overrides, array → set overrides
+    // null -> clear overrides, array -> set overrides
     if (modules === null || modules === undefined) {
       const skuModules = getActiveSkuProfile()?.modules || Object.keys(getModuleDefinitions());
 
@@ -337,7 +337,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   /* Admin: Adapter health & info                                      */
   /* ---------------------------------------------------------------- */
 
-  /** GET /api/adapters/health — adapter health status. */
+  /** GET /api/adapters/health -- adapter health status. */
   server.get('/api/adapters/health', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -351,7 +351,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     return { ok: true, adapters: health };
   });
 
-  /** GET /api/adapters/list — all loaded adapters. */
+  /** GET /api/adapters/list -- all loaded adapters. */
   server.get('/api/adapters/list', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -375,7 +375,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   /* Phase 51: Module manifests (marketplace-ready)                    */
   /* ---------------------------------------------------------------- */
 
-  /** GET /api/modules/manifests — full module manifests with dependency status. */
+  /** GET /api/modules/manifests -- full module manifests with dependency status. */
   server.get('/api/modules/manifests', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -420,7 +420,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
   /* Phase 51: Marketplace tenant config                               */
   /* ---------------------------------------------------------------- */
 
-  /** GET /api/marketplace/config — marketplace tenant config. */
+  /** GET /api/marketplace/config -- marketplace tenant config. */
   server.get('/api/marketplace/config', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -435,17 +435,33 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
       reply.code(403).send({ ok: false, code: 'TENANT_REQUIRED', error: 'Tenant context missing' });
       return;
     }
-    const config = getMarketplaceTenantConfig(tenantId);
+    let config = getMarketplaceTenantConfig(tenantId);
+    let autoProvisioned = false;
 
+    // The admin modules UI always expects a marketplace config for the active
+    // tenant. Seed one lazily on first read so non-default tenants do not fall
+    // into a 404 path during dashboard startup.
     if (!config) {
-      reply.code(404).send({ ok: false, error: `Tenant '${tenantId}' not found` });
-      return;
+      const seeded = upsertMarketplaceTenant({
+        tenantId,
+        facilityName:
+          typeof (session as any).facilityName === 'string' && (session as any).facilityName.trim()
+            ? (session as any).facilityName.trim()
+            : undefined,
+      });
+      if (!seeded.ok || !seeded.config) {
+        reply.code(500).send({ ok: false, error: 'Failed to initialize marketplace config' });
+        return;
+      }
+      config = seeded.config;
+      autoProvisioned = true;
+      log.info('Marketplace tenant config auto-provisioned', { tenantId });
     }
 
-    return { ok: true, config };
+    return { ok: true, config, autoProvisioned };
   });
 
-  /** PUT /api/marketplace/config — update marketplace tenant config. */
+  /** PUT /api/marketplace/config -- update marketplace tenant config. */
   server.put('/api/marketplace/config', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -482,7 +498,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     return { ok: true, config: result.config };
   });
 
-  /** PATCH /api/marketplace/connectors — update connector settings only. */
+  /** PATCH /api/marketplace/connectors -- update connector settings only. */
   server.patch(
     '/api/marketplace/connectors',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -517,7 +533,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     }
   );
 
-  /** PATCH /api/marketplace/jurisdiction — change jurisdiction pack. */
+  /** PATCH /api/marketplace/jurisdiction -- change jurisdiction pack. */
   server.patch(
     '/api/marketplace/jurisdiction',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -552,7 +568,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     }
   );
 
-  /** GET /api/marketplace/jurisdictions — available jurisdiction packs. */
+  /** GET /api/marketplace/jurisdictions -- available jurisdiction packs. */
   server.get(
     '/api/marketplace/jurisdictions',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -568,7 +584,7 @@ export default async function moduleCapabilityRoutes(server: FastifyInstance): P
     }
   );
 
-  /** GET /api/marketplace/summary — marketplace summary stats. */
+  /** GET /api/marketplace/summary -- marketplace summary stats. */
   server.get('/api/marketplace/summary', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;

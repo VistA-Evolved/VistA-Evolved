@@ -1,12 +1,12 @@
 'use client';
 
 /**
- * RCM Denial Cases & Appeals — Phase 98
+ * RCM Denial Cases & Appeals -- Phase 98
  *
  * Standalone tabbed interface for the Phase 98 denial workflow:
- *   - Work Queue — paginated denial case list with filters
- *   - Create Denial — manual intake form
- *   - Dashboard — status counts
+ *   - Work Queue -- paginated denial case list with filters
+ *   - Create Denial -- manual intake form
+ *   - Dashboard -- status counts
  *
  * Accessible at /cprs/admin/denial-cases. Requires session.
  *
@@ -48,7 +48,7 @@ async function apiPatch(path: string, body: unknown) {
   });
 }
 
-/* ── Status styling ──────────────────────────────────────────── */
+/* -- Status styling -------------------------------------------- */
 const STATUS_COLORS: Record<string, string> = {
   NEW: '#0d6efd',
   TRIAGED: '#6f42c1',
@@ -84,7 +84,7 @@ export default function DenialCasesPage() {
     carcDesc: '',
   });
 
-  /* ── Data loading ──────────────────────────────────────── */
+  /* -- Data loading ---------------------------------------- */
   const loadDenials = useCallback(async () => {
     setLoading(true);
     try {
@@ -131,7 +131,7 @@ export default function DenialCasesPage() {
     loadStats();
   }, [loadStats]);
 
-  /* ── Create denial handler ─────────────────────────────── */
+  /* -- Create denial handler ------------------------------- */
   const handleCreate = async () => {
     if (!createForm.claimRef || !createForm.payerId || !createForm.billedAmount) {
       setMessage('claimRef, payerId, and billedAmount are required');
@@ -171,7 +171,7 @@ export default function DenialCasesPage() {
     }
   };
 
-  /* ── Update status handler ─────────────────────────────── */
+  /* -- Update status handler ------------------------------- */
   const handleTransition = async (id: string, newStatus: string, reason: string) => {
     const data = await apiPatch(`/rcm/denials/${id}`, { denialStatus: newStatus, reason });
     if (data.ok) {
@@ -184,7 +184,7 @@ export default function DenialCasesPage() {
     }
   };
 
-  /* ── Tab buttons ───────────────────────────────────────── */
+  /* -- Tab buttons ----------------------------------------- */
   const tabs: { id: Tab; label: string }[] = [
     { id: 'queue', label: 'Work Queue' },
     { id: 'create', label: 'Create Denial' },
@@ -204,7 +204,7 @@ export default function DenialCasesPage() {
       >
         <h2 style={{ margin: 0, fontSize: 18 }}>Denial Cases &amp; Appeals</h2>
         <span style={{ fontSize: 11, color: '#6c757d' }}>
-          Phase 98 — VistA-first operational overlay
+          Phase 98 -- VistA-first operational overlay
         </span>
       </div>
 
@@ -265,7 +265,7 @@ export default function DenialCasesPage() {
       </div>
 
       <div style={{ padding: 24 }}>
-        {/* ── Work Queue Tab ──────────────────────────────── */}
+        {/* -- Work Queue Tab -------------------------------- */}
         {tab === 'queue' && (
           <div>
             <div style={{ display: 'flex', gap: 8, marginBottom: 16, alignItems: 'center' }}>
@@ -388,7 +388,7 @@ export default function DenialCasesPage() {
           </div>
         )}
 
-        {/* ── Create Denial Tab ──────────────────────────── */}
+        {/* -- Create Denial Tab ---------------------------- */}
         {tab === 'create' && (
           <div style={{ maxWidth: 500 }}>
             <h3 style={{ fontSize: 14, marginBottom: 16 }}>Create Denial Case</h3>
@@ -521,7 +521,7 @@ export default function DenialCasesPage() {
           </div>
         )}
 
-        {/* ── Detail Tab ─────────────────────────────────── */}
+        {/* -- Detail Tab ----------------------------------- */}
         {tab === 'detail' && detail && (
           <div>
             <div style={{ display: 'flex', gap: 16, marginBottom: 16, alignItems: 'center' }}>
@@ -692,7 +692,7 @@ export default function DenialCasesPage() {
           </div>
         )}
 
-        {/* ── Stats Tab ──────────────────────────────────── */}
+        {/* -- Stats Tab ------------------------------------ */}
         {tab === 'stats' && (
           <div>
             <h3 style={{ fontSize: 14, marginBottom: 16 }}>Denial Status Dashboard</h3>

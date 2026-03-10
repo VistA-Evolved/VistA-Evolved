@@ -1,5 +1,5 @@
 /**
- * Tenant Security Routes — Phase 342 (W16-P6).
+ * Tenant Security Routes -- Phase 342 (W16-P6).
  *
  * Admin-only endpoints for per-tenant security posture configuration.
  */
@@ -36,7 +36,7 @@ function requireTenantId(request: FastifyRequest, reply: FastifyReply): string |
 
 export async function tenantSecurityRoutes(app: FastifyInstance): Promise<void> {
   /**
-   * GET /tenant-security/policies — List all tenant security policies.
+   * GET /tenant-security/policies -- List all tenant security policies.
    */
   app.get('/tenant-security/policies', async (_request: FastifyRequest, reply: FastifyReply) => {
     const request = _request;
@@ -49,7 +49,7 @@ export async function tenantSecurityRoutes(app: FastifyInstance): Promise<void> 
   });
 
   /**
-   * GET /tenant-security/policies/:tenantId — Get policy for a specific tenant.
+   * GET /tenant-security/policies/:tenantId -- Get policy for a specific tenant.
    */
   app.get(
     '/tenant-security/policies/:tenantId',
@@ -69,7 +69,7 @@ export async function tenantSecurityRoutes(app: FastifyInstance): Promise<void> 
   );
 
   /**
-   * PUT /tenant-security/policies/:tenantId — Update tenant security policy.
+   * PUT /tenant-security/policies/:tenantId -- Update tenant security policy.
    */
   app.put(
     '/tenant-security/policies/:tenantId',
@@ -92,7 +92,7 @@ export async function tenantSecurityRoutes(app: FastifyInstance): Promise<void> 
   );
 
   /**
-   * DELETE /tenant-security/policies/:tenantId — Reset to defaults.
+   * DELETE /tenant-security/policies/:tenantId -- Reset to defaults.
    */
   app.delete(
     '/tenant-security/policies/:tenantId',
@@ -113,7 +113,7 @@ export async function tenantSecurityRoutes(app: FastifyInstance): Promise<void> 
   );
 
   /**
-   * GET /tenant-security/changelog — Policy change audit log.
+   * GET /tenant-security/changelog -- Policy change audit log.
    * Query: ?tenantId=<id> for filtering.
    */
   app.get('/tenant-security/changelog', async (request: FastifyRequest, reply: FastifyReply) => {

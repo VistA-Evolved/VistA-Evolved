@@ -15,15 +15,33 @@ import type {
   TransferTicketInput,
 } from './types.js';
 
-// ── In-memory stores ────────────────────────────────────────────────
+// -- In-memory stores ------------------------------------------------
 const ticketStore = new Map<string, QueueTicket>();
 const eventStore: QueueEvent[] = [];
 const departmentConfigs = new Map<string, DepartmentQueueConfig>();
+const MAX_TICKETS = 20000;
+const MAX_EVENTS = 50000;
+const MAX_DAILY_COUNTER_KEYS = 5000;
 
 // Daily counters per department (key: "tenantId:dept:YYYY-MM-DD")
 const dailyCounters = new Map<string, number>();
 
-// ── Priority weights (lower = called first) ─────────────────────────
+// Prune stale daily counters (older than 2 days) every hour; cap total keys
+setInterval(() => {
+  const today = new Date().toISOString().slice(0, 10);
+  const yesterday = new Date(Date.now() - 86_400_000).toISOString().slice(0, 10);
+  for (const key of dailyCounters.keys()) {
+    const datePart = key.split(':').pop() || '';
+    if (datePart !== today && datePart !== yesterday) dailyCounters.delete(key);
+  }
+  // Enforce key cap to prevent unbounded growth
+  if (dailyCounters.size > MAX_DAILY_COUNTER_KEYS) {
+    const excess = [...dailyCounters.keys()].slice(0, dailyCounters.size - MAX_DAILY_COUNTER_KEYS);
+    for (const k of excess) dailyCounters.delete(k);
+  }
+}, 3_600_000).unref();
+
+// -- Priority weights (lower = called first) -------------------------
 const PRIORITY_WEIGHT: Record<QueuePriority, number> = {
   urgent: 0,
   high: 1,
@@ -31,7 +49,7 @@ const PRIORITY_WEIGHT: Record<QueuePriority, number> = {
   low: 3,
 };
 
-// ── Default department configs ──────────────────────────────────────
+// -- Default department configs --------------------------------------
 const DEFAULT_CONFIGS: Array<
   Omit<DepartmentQueueConfig, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>
 > = [
@@ -157,7 +175,7 @@ const DEFAULT_CONFIGS: Array<
   },
 ];
 
-// ── Helpers ─────────────────────────────────────────────────────────
+// -- Helpers ---------------------------------------------------------
 function todayKey(tenantId: string, dept: string): string {
   const d = new Date().toISOString().slice(0, 10);
   return `${tenantId}:${dept}:${d}`;
@@ -186,13 +204,14 @@ function logEvent(
     detail,
     createdAt: new Date().toISOString(),
   });
+  if (eventStore.length > MAX_EVENTS) eventStore.splice(0, eventStore.length - MAX_EVENTS);
 }
 
 function getConfig(tenantId: string, dept: string): DepartmentQueueConfig | undefined {
   return departmentConfigs.get(`${tenantId}:${dept}`);
 }
 
-// ── Initialize defaults ─────────────────────────────────────────────
+// -- Initialize defaults ---------------------------------------------
 export function seedDefaultConfigs(tenantId: string = 'default'): number {
   let seeded = 0;
   const now = new Date().toISOString();
@@ -212,7 +231,7 @@ export function seedDefaultConfigs(tenantId: string = 'default'): number {
   return seeded;
 }
 
-// ── CRUD Operations ─────────────────────────────────────────────────
+// -- CRUD Operations -------------------------------------------------
 
 export function createTicket(
   input: CreateTicketInput,
@@ -237,6 +256,10 @@ export function createTicket(
   };
 
   ticketStore.set(ticket.id, ticket);
+  if (ticketStore.size > MAX_TICKETS) {
+    const oldest = ticketStore.keys().next().value;
+    if (oldest != null) ticketStore.delete(oldest);
+  }
   logEvent(
     tenantId,
     ticket.id,
@@ -352,7 +375,7 @@ export function transferTicket(
   return newTicket;
 }
 
-// ── Queries ─────────────────────────────────────────────────────────
+// -- Queries ---------------------------------------------------------
 
 export function listTickets(
   department: string,
@@ -390,7 +413,7 @@ export function getDisplayBoard(
   const called = tickets.filter((t) => t.status === 'called');
   const waiting = tickets.filter((t) => t.status === 'waiting');
 
-  // Estimate wait: avg service time × (serving + called + waiting ahead) / windows
+  // Estimate wait: avg service time x (serving + called + waiting ahead) / windows
   const windowCount = config?.windows.length || 1;
   const avgMin = config?.estimatedServiceMinutes || 15;
   const estimatedWait = Math.round(
@@ -477,7 +500,7 @@ export function upsertDepartmentConfig(
     const updated = {
       ...existing,
       ...config,
-      // Pin immutable fields — cannot be overwritten by config
+      // Pin immutable fields -- cannot be overwritten by config
       id: existing.id,
       tenantId,
       createdAt: existing.createdAt,
@@ -509,7 +532,7 @@ export function getQueueEvents(ticketId: string): QueueEvent[] {
   return eventStore.filter((e) => e.ticketId === ticketId);
 }
 
-// ── Store reset (for testing) ───────────────────────────────────────
+// -- Store reset (for testing) ---------------------------------------
 export function resetQueueStore(): void {
   ticketStore.clear();
   eventStore.length = 0;

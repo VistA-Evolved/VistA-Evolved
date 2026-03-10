@@ -1,5 +1,5 @@
 /**
- * Phase 81 — Imaging Plan Artifact Builder
+ * Phase 81 -- Imaging Plan Artifact Builder
  *
  * Generates /artifacts/phase81/imaging-plan.json describing:
  * - Imaging data sources (VistA RPCs, Orthanc, DICOMweb)

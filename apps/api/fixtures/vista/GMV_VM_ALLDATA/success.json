@@ -1,0 +1,13 @@
+{
+  "rpcName": "GMV V/M ALLDATA",
+  "caseName": "success",
+  "recordedAt": "2026-03-05T00:00:00Z",
+  "sanitized": true,
+  "params": ["46"],
+  "response": [
+    "3260101.0800^120/80^1^BLOOD PRESSURE",
+    "3260101.0800^72^2^PULSE",
+    "3260101.0800^98.6^3^TEMPERATURE"
+  ],
+  "responseHash": "d4e5f6a1b2c3"
+}

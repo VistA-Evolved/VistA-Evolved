@@ -1,10 +1,10 @@
 /**
- * Phase 81 — Imaging Viewer v1 E2E Tests
+ * Phase 81 -- Imaging Viewer v1 E2E Tests
  *
  * Tests the 3 Phase 81 endpoints:
- *   GET /imaging/studies/:dfn       — study list
- *   GET /imaging/report/:studyId    — report text
- *   GET /imaging/viewer-link/:studyId — viewer URL / instructions
+ *   GET /imaging/studies/:dfn       -- study list
+ *   GET /imaging/report/:studyId    -- report text
+ *   GET /imaging/viewer-link/:studyId -- viewer URL / instructions
  *
  * These tests run against a live API (localhost:3001).
  * VistA MAG4 RPCs are NOT available on sandbox, so we verify:
@@ -190,7 +190,7 @@ async function testViewerLinkConfigured() {
 /* ------------------------------------------------------------------ */
 
 async function main() {
-  console.log('=== Phase 81 — Imaging Viewer v1 E2E Tests ===');
+  console.log('=== Phase 81 -- Imaging Viewer v1 E2E Tests ===');
   console.log(`API: ${API_BASE}\n`);
 
   try {

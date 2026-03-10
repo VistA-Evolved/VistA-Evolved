@@ -1,5 +1,5 @@
 /**
- * k6 Performance Budget Test — Phase 52
+ * k6 Performance Budget Test -- Phase 52
  *
  * Validates API endpoints against performance-budgets.json thresholds.
  * Tests 3 tiers: smoke (2 VU, 30s), load (10 VU, 2m), stress (25 VU, 5m).

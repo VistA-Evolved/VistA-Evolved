@@ -1,5 +1,5 @@
 /**
- * Imaging Integration Service — Phase 18C + Phase 22 enhancements.
+ * Imaging Integration Service -- Phase 18C + Phase 22 enhancements.
  *
  * Enhances Phase 14D imaging routes with enterprise capabilities:
  *   - Patient image list from VistA Imaging (MAG4)
@@ -11,13 +11,13 @@
  *   - Phase 22: Orthanc-first studies endpoint, patient-keyed study lookup
  *
  * VistA Imaging file binding:
- *   Metadata is stored in VistA FileMan — the platform reads it via RPCs:
- *     - #2005   IMAGE                — master image record (patient, procedure, paths, UID)
- *     - #2005.1 IMAGE AUDIT           — access/modification audit trail
- *     - #2005.2 NETWORK LOCATION      — storage tier definitions
- *     - #2006.034 IMAGING SITE PARAMS  — site-level imaging config
- *     - #74    RAD/NUC MED REPORTS    — radiology report text
- *     - #70    RAD/NUC MED PATIENT    — patient radiology exams/orders
+ *   Metadata is stored in VistA FileMan -- the platform reads it via RPCs:
+ *     - #2005   IMAGE                -- master image record (patient, procedure, paths, UID)
+ *     - #2005.1 IMAGE AUDIT           -- access/modification audit trail
+ *     - #2005.2 NETWORK LOCATION      -- storage tier definitions
+ *     - #2006.034 IMAGING SITE PARAMS  -- site-level imaging config
+ *     - #74    RAD/NUC MED REPORTS    -- radiology report text
+ *     - #70    RAD/NUC MED PATIENT    -- patient radiology exams/orders
  *   Imaging RPCs: MAG4 REMOTE PROCEDURE, MAG4 PAT GET IMAGES,
  *     MAG4 IMAGE INFO, MAGG PAT PHOTOS, RA DETAILED REPORT,
  *     MAGV RAD EXAM LIST.
@@ -30,12 +30,12 @@
  * See: docs/imaging-grounding.md
  *
  * Routes:
- *   GET /vista/imaging/status           — overall imaging status (Phase 14D, enhanced)
- *   GET /vista/imaging/report           — radiology report text (Phase 14D)
- *   GET /vista/imaging/studies          — patient study list (VistA + Orthanc + registry)
- *   GET /vista/imaging/viewer-url       — generate viewer URL for a study
- *   GET /vista/imaging/metadata         — image metadata for a study
- *   GET /vista/imaging/registry-status  — status from integration registry
+ *   GET /vista/imaging/status           -- overall imaging status (Phase 14D, enhanced)
+ *   GET /vista/imaging/report           -- radiology report text (Phase 14D)
+ *   GET /vista/imaging/studies          -- patient study list (VistA + Orthanc + registry)
+ *   GET /vista/imaging/viewer-url       -- generate viewer URL for a study
+ *   GET /vista/imaging/metadata         -- image metadata for a study
+ *   GET /vista/imaging/registry-status  -- status from integration registry
  */
 
 import type { FastifyInstance } from "fastify";
@@ -315,7 +315,8 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
         clearTimeout(timeout);
 
         if (resp.ok) {
-          const data = (await resp.json()) as any[];
+          const raw = await resp.json();
+          const data = Array.isArray(raw) ? raw : [];
           for (const study of data) {
             const uid = study["0020000D"]?.Value?.[0] || "";
             // Deduplicate against studies already from VistA
@@ -357,7 +358,8 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
         clearTimeout(timeout);
 
         if (resp.ok) {
-          const data = (await resp.json()) as any[];
+          const raw = await resp.json();
+          const data = Array.isArray(raw) ? raw : [];
           for (const study of data) {
             studies.push({
               studyId: study["0020000D"]?.Value?.[0] || "", // StudyInstanceUID
@@ -662,9 +664,10 @@ export default async function imagingRoutes(server: FastifyInstance): Promise<vo
       clearTimeout(timeout);
 
       if (!resp.ok) {
-        return { ok: false, error: `DICOMweb metadata request returned ${resp.status}` };
+        return { ok: false, error: 'DICOMweb metadata request failed' };
       }
-      const metadata = await resp.json();
+      const rawMeta = await resp.json();
+      const metadata = Array.isArray(rawMeta) ? rawMeta : typeof rawMeta === 'object' && rawMeta !== null ? rawMeta : {};
       return { ok: true, available: true, studyUid, metadata };
     } catch (err: any) {
       return { ok: false, error: safeErr(err) };

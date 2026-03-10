@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Phase 16: Load test harness — smoke performance check.
+ * Phase 16: Load test harness -- smoke performance check.
  *
  * Hits key API endpoints concurrently and prints latency summary.
  * No external dependencies (uses Node fetch).
@@ -150,7 +150,7 @@ async function login() {
 }
 
 async function main() {
-  console.log('Phase 16 — Load Test Harness');
+  console.log('Phase 16 -- Load Test Harness');
   console.log(`  Target: ${BASE}`);
   console.log(`  Concurrency: ${CONCURRENCY}, Rounds: ${ROUNDS}\n`);
 
@@ -163,7 +163,7 @@ async function main() {
   console.log('  Authenticating...');
   const cookie = await login();
   if (!cookie) {
-    console.log('  ⚠ Login failed — will only test public endpoints.\n');
+    console.log('  ⚠ Login failed -- will only test public endpoints.\n');
   } else {
     console.log('  ✓ Authenticated successfully.\n');
   }

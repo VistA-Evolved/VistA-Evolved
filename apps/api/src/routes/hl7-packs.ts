@@ -1,13 +1,13 @@
 /**
- * HL7v2 Message Packs — API Routes
+ * HL7v2 Message Packs -- API Routes
  *
  * Phase 241 (Wave 6 P4): Pack listing, validation, and template endpoints.
  *
  * Routes:
- *   GET  /hl7/packs             — List all message packs
- *   GET  /hl7/packs/:id         — Get pack details
- *   POST /hl7/packs/:id/validate — Validate a message against a pack
- *   GET  /hl7/packs/:id/template — Get route template for a pack
+ *   GET  /hl7/packs             -- List all message packs
+ *   GET  /hl7/packs/:id         -- Get pack details
+ *   POST /hl7/packs/:id/validate -- Validate a message against a pack
+ *   GET  /hl7/packs/:id/template -- Get route template for a pack
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -15,7 +15,7 @@ import { listPacks, getPack } from '../hl7/packs/index.js';
 import { parseMessage } from '../hl7/parser.js';
 
 export default async function hl7PackRoutes(server: FastifyInstance): Promise<void> {
-  /** GET /hl7/packs — List all message packs */
+  /** GET /hl7/packs -- List all message packs */
   server.get('/hl7/packs', async (_request, reply) => {
     const packs = listPacks();
     return reply.send({
@@ -30,7 +30,7 @@ export default async function hl7PackRoutes(server: FastifyInstance): Promise<vo
     });
   });
 
-  /** GET /hl7/packs/:id — Get pack details */
+  /** GET /hl7/packs/:id -- Get pack details */
   server.get('/hl7/packs/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const pack = getPack(id);
@@ -48,7 +48,7 @@ export default async function hl7PackRoutes(server: FastifyInstance): Promise<vo
     });
   });
 
-  /** POST /hl7/packs/:id/validate — Validate a message against a pack */
+  /** POST /hl7/packs/:id/validate -- Validate a message against a pack */
   server.post('/hl7/packs/:id/validate', async (request, reply) => {
     const { id } = request.params as { id: string };
     const pack = getPack(id);
@@ -71,7 +71,7 @@ export default async function hl7PackRoutes(server: FastifyInstance): Promise<vo
     return reply.send({ ok: true, packId: id, result });
   });
 
-  /** GET /hl7/packs/:id/template — Get route template for a pack */
+  /** GET /hl7/packs/:id/template -- Get route template for a pack */
   server.get('/hl7/packs/:id/template', async (request, reply) => {
     const { id } = request.params as { id: string };
     const pack = getPack(id);

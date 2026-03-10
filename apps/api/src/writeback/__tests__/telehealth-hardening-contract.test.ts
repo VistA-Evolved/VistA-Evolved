@@ -1,16 +1,16 @@
 /**
- * Telehealth Hardening — Contract Tests
+ * Telehealth Hardening -- Contract Tests
  *
  * Phase 307 (W12-P9): Tests for encounter linkage, consent posture,
  * and session hardening modules.
  *
- * All tests are pure unit tests — no VistA connection required.
+ * All tests are pure unit tests -- no VistA connection required.
  * No PHI anywhere in test fixtures.
  */
 
 import { describe, it, expect, beforeEach } from 'vitest';
 
-// ─── Encounter Linkage ──────────────────────────────────────────────
+// --- Encounter Linkage ----------------------------------------------
 
 import {
   createEncounterLink,
@@ -104,7 +104,7 @@ describe('encounter-link', () => {
   });
 });
 
-// ─── Consent Posture ────────────────────────────────────────────────
+// --- Consent Posture ------------------------------------------------
 
 import {
   recordConsent,
@@ -216,7 +216,7 @@ describe('consent-posture', () => {
   });
 });
 
-// ─── Session Hardening ──────────────────────────────────────────────
+// --- Session Hardening ----------------------------------------------
 
 import {
   recordHeartbeat,

@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from 'react';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 interface MarketSummary {
   generatedAt: string;
@@ -53,7 +53,7 @@ interface ManifestEntry {
   contractingStatus: string;
 }
 
-/* ── Stat Card ──────────────────────────────────────────────── */
+/* -- Stat Card ------------------------------------------------ */
 
 function StatCard({
   label,
@@ -73,7 +73,7 @@ function StatCard({
   );
 }
 
-/* ── Progress Bar ───────────────────────────────────────────── */
+/* -- Progress Bar --------------------------------------------- */
 
 function ProgressBar({ pct, color = '#3b82f6' }: { pct: number; color?: string }) {
   return (
@@ -91,7 +91,7 @@ function ProgressBar({ pct, color = '#3b82f6' }: { pct: number; color?: string }
   );
 }
 
-/* ── Badge ──────────────────────────────────────────────────── */
+/* -- Badge ---------------------------------------------------- */
 
 function Badge({ text, color }: { text: string; color: string }) {
   return (
@@ -135,7 +135,7 @@ function payerTypeBadge(type: string) {
   }
 }
 
-/* ── Main Page ──────────────────────────────────────────────── */
+/* -- Main Page ------------------------------------------------ */
 
 export default function PhMarketPage() {
   const [summary, setSummary] = useState<MarketSummary | null>(null);

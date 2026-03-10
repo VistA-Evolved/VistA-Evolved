@@ -61,7 +61,7 @@ function getActor(request: FastifyRequest): string {
 }
 
 export default async function releaseTrainRoutes(server: FastifyInstance): Promise<void> {
-  /* ── Change Windows ─────────────────────────────────────────── */
+  /* -- Change Windows ------------------------------------------- */
 
   server.post('/release-train/change-windows', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -125,7 +125,7 @@ export default async function releaseTrainRoutes(server: FastifyInstance): Promi
     return { ok: true };
   });
 
-  /* ── Releases ───────────────────────────────────────────────── */
+  /* -- Releases ------------------------------------------------- */
 
   server.post('/release-train/releases', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -328,7 +328,7 @@ export default async function releaseTrainRoutes(server: FastifyInstance): Promi
     return { ok: true, approvals: getApprovals(id, tenantId) };
   });
 
-  /* ── Comms Templates ────────────────────────────────────────── */
+  /* -- Comms Templates ------------------------------------------ */
 
   server.post('/release-train/comms-templates', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -394,7 +394,7 @@ export default async function releaseTrainRoutes(server: FastifyInstance): Promi
     return { ok: true };
   });
 
-  /* ── Notifications ──────────────────────────────────────────── */
+  /* -- Notifications -------------------------------------------- */
 
   server.post('/release-train/notifications', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -423,7 +423,7 @@ export default async function releaseTrainRoutes(server: FastifyInstance): Promi
     return { ok: true, notifications: listNotifications(tenantId) };
   });
 
-  /* ── Simulation ─────────────────────────────────────────────── */
+  /* -- Simulation ----------------------------------------------- */
 
   server.post('/release-train/simulate', async (request, reply) => {
     const session = await requireSession(request, reply);

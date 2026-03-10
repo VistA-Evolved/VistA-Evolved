@@ -59,7 +59,7 @@ mupip rundown -reg "*" 2>/dev/null || true
 # Future: implement ZVEDIST.m to idempotently create the admin user from
 # VISTA_ADMIN_ACCESS / VISTA_ADMIN_VERIFY env vars.
 #
-# For now, the env vars serve as a "contract" — the container will not
+# For now, the env vars serve as a "contract" -- the container will not
 # start without them, ensuring operators consciously configure credentials
 # even though provisioning is deferred.
 

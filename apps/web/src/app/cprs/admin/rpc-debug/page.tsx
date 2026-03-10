@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * RPC Debug — Admin page that surfaces the RpcDebugPanel.
+ * RPC Debug -- Admin page that surfaces the RpcDebugPanel.
  * Phase 41 built the panel but it was orphaned (never imported).
  * Phase 87 audit wires it into the admin console.
  */

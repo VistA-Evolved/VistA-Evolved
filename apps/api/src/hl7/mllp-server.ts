@@ -1,5 +1,5 @@
 /**
- * HL7v2 Engine — MLLP Server
+ * HL7v2 Engine -- MLLP Server
  *
  * Phase 239 (Wave 6 P2): Zero-dependency MLLP (Minimum Lower Layer Protocol)
  * TCP server. Handles connection lifecycle, MLLP frame delineation, and
@@ -12,7 +12,7 @@
  * End Block   = 0x1C (file separator) followed by 0x0D (carriage return)
  *
  * Security:
- *   - PHI NEVER appears in logs — only message type, control ID, segment counts
+ *   - PHI NEVER appears in logs -- only message type, control ID, segment counts
  *   - Connection metadata logged via structured logger
  *   - TLS configurable for MLLPS (production)
  */
@@ -148,7 +148,7 @@ export class MllpServer {
   }
 
   /* ---------------------------------------------------------------- */
-  /*  Private — Connection Handling                                    */
+  /*  Private -- Connection Handling                                    */
   /* ---------------------------------------------------------------- */
 
   private handleConnection(socket: net.Socket): void {
@@ -267,7 +267,7 @@ export class MllpServer {
       // Look for start block (0x0B)
       const startIdx = remaining.indexOf(MLLP_START_BLOCK);
       if (startIdx === -1) {
-        // No start block — discard non-MLLP data
+        // No start block -- discard non-MLLP data
         return Buffer.alloc(0);
       }
 
@@ -286,7 +286,7 @@ export class MllpServer {
       }
 
       if (endIdx === -1) {
-        // Incomplete frame — wait for more data
+        // Incomplete frame -- wait for more data
         return remaining;
       }
 
@@ -352,7 +352,7 @@ export class MllpServer {
         ack = ackReject(parsed, 'Internal processing error');
       }
     } else {
-      // No handler registered — auto-reject
+      // No handler registered -- auto-reject
       ack = ackReject(parsed, 'No message handler configured');
     }
 

@@ -1,5 +1,5 @@
 /**
- * Export Formats — Phase 245: Data Exports v2
+ * Export Formats -- Phase 245: Data Exports v2
  *
  * Streaming-capable format writers for CSV, JSON, JSONL, and NDJSON.
  * Each formatter takes rows (Record<string,unknown>[]) and returns a string.

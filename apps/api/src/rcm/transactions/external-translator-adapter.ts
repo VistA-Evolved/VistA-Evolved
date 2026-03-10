@@ -1,5 +1,5 @@
 /**
- * External Translator Adapter — Feature-flagged Stedi-like X12 API
+ * External Translator Adapter -- Feature-flagged Stedi-like X12 API
  *
  * Phase 45: Delegates X12 build/parse to an external translation API
  * (e.g., Stedi, Edifecs, Kaulkin). Feature-flagged via:
@@ -17,7 +17,7 @@ import type { Translator } from './translator.js';
 import type { TranslatorResult, ParsedResponse, TransactionEnvelope } from './types.js';
 import type { X12TransactionSet } from '../edi/types.js';
 
-/* ── Environment config ──────────────────────────────────────── */
+/* -- Environment config ---------------------------------------- */
 
 function getConfig(): { enabled: boolean; endpoint: string; apiKey: string } {
   return {
@@ -27,7 +27,7 @@ function getConfig(): { enabled: boolean; endpoint: string; apiKey: string } {
   };
 }
 
-/* ── External Translator Adapter ─────────────────────────────── */
+/* -- External Translator Adapter ------------------------------- */
 
 export const externalTranslatorAdapter: Translator = {
   id: 'external',
@@ -42,7 +42,7 @@ export const externalTranslatorAdapter: Translator = {
     transactionSet: X12TransactionSet,
     canonicalObject: Record<string, unknown>
   ): Array<{ field: string; message: string; severity: 'error' | 'warning' }> {
-    // Basic structural checks — real validation done by external API
+    // Basic structural checks -- real validation done by external API
     const errors: Array<{ field: string; message: string; severity: 'error' | 'warning' }> = [];
 
     if (!canonicalObject || typeof canonicalObject !== 'object') {
@@ -79,7 +79,7 @@ export const externalTranslatorAdapter: Translator = {
     // 3. Parse the response { x12: string, metadata: { segmentCount, ... } }
     // 4. Return the structured result
     //
-    // Example (commented out — no real HTTP calls in scaffold):
+    // Example (commented out -- no real HTTP calls in scaffold):
     // const response = await fetch(`${cfg.endpoint}/translate`, {
     //   method: 'POST',
     //   headers: {
@@ -91,7 +91,7 @@ export const externalTranslatorAdapter: Translator = {
     // const result = await response.json();
     // return { x12Payload: result.x12, envelope, segmentCount: result.segmentCount, byteSize: result.byteSize };
 
-    // Scaffold returns empty — external not yet connected
+    // Scaffold returns empty -- external not yet connected
     return {
       x12Payload: `{external-translator-placeholder:${transactionSet}}`,
       envelope,
@@ -130,7 +130,7 @@ export const externalTranslatorAdapter: Translator = {
       errors: [
         {
           code: 'SCAFFOLD',
-          description: 'External translator scaffold — not connected',
+          description: 'External translator scaffold -- not connected',
           severity: 'warning',
         },
       ],

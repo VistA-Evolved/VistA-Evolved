@@ -1,33 +1,33 @@
 /**
- * Credential Vault + Accreditation Routes — Phase 110
+ * Credential Vault + Accreditation Routes -- Phase 110
  *
  * DB-backed REST endpoints for credential artifacts, documents,
  * accreditation status tracking, and accreditation tasks.
  *
  * Endpoints:
- *   GET    /rcm/credential-vault                     — list credentials
- *   POST   /rcm/credential-vault                     — create credential
- *   GET    /rcm/credential-vault/expiring             — expiring credentials
- *   GET    /rcm/credential-vault/stats                — credential stats
- *   GET    /rcm/credential-vault/:id                  — get credential
- *   PATCH  /rcm/credential-vault/:id                  — update credential
- *   POST   /rcm/credential-vault/:id/verify           — mark credential verified
- *   POST   /rcm/credential-vault/:id/documents        — add document
- *   GET    /rcm/credential-vault/:id/documents        — list documents
- *   DELETE /rcm/credential-vault/documents/:docId     — delete document
+ *   GET    /rcm/credential-vault                     -- list credentials
+ *   POST   /rcm/credential-vault                     -- create credential
+ *   GET    /rcm/credential-vault/expiring             -- expiring credentials
+ *   GET    /rcm/credential-vault/stats                -- credential stats
+ *   GET    /rcm/credential-vault/:id                  -- get credential
+ *   PATCH  /rcm/credential-vault/:id                  -- update credential
+ *   POST   /rcm/credential-vault/:id/verify           -- mark credential verified
+ *   POST   /rcm/credential-vault/:id/documents        -- add document
+ *   GET    /rcm/credential-vault/:id/documents        -- list documents
+ *   DELETE /rcm/credential-vault/documents/:docId     -- delete document
  *
- *   GET    /rcm/accreditation                         — list accreditations
- *   POST   /rcm/accreditation                         — create accreditation
- *   GET    /rcm/accreditation/stats                   — accreditation stats
- *   GET    /rcm/accreditation/:id                     — get accreditation
- *   PATCH  /rcm/accreditation/:id                     — update accreditation
- *   POST   /rcm/accreditation/:id/verify              — mark accreditation verified
- *   POST   /rcm/accreditation/:id/notes               — add note
- *   GET    /rcm/accreditation/:id/tasks               — list tasks
- *   POST   /rcm/accreditation/:id/tasks               — create task
- *   PATCH  /rcm/accreditation/tasks/:taskId           — update task
- *   POST   /rcm/accreditation/tasks/:taskId/complete  — complete task
- *   DELETE /rcm/accreditation/tasks/:taskId           — delete task
+ *   GET    /rcm/accreditation                         -- list accreditations
+ *   POST   /rcm/accreditation                         -- create accreditation
+ *   GET    /rcm/accreditation/stats                   -- accreditation stats
+ *   GET    /rcm/accreditation/:id                     -- get accreditation
+ *   PATCH  /rcm/accreditation/:id                     -- update accreditation
+ *   POST   /rcm/accreditation/:id/verify              -- mark accreditation verified
+ *   POST   /rcm/accreditation/:id/notes               -- add note
+ *   GET    /rcm/accreditation/:id/tasks               -- list tasks
+ *   POST   /rcm/accreditation/:id/tasks               -- create task
+ *   PATCH  /rcm/accreditation/tasks/:taskId           -- update task
+ *   POST   /rcm/accreditation/tasks/:taskId/complete  -- complete task
+ *   DELETE /rcm/accreditation/tasks/:taskId           -- delete task
  *
  * Auth: /rcm/ catch-all in AUTH_RULES covers session auth.
  */
@@ -82,7 +82,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
   /* Credential Vault                                                  */
   /* ================================================================ */
 
-  /* ── GET /rcm/credential-vault — list ──────────────────── */
+  /* -- GET /rcm/credential-vault -- list -------------------- */
   server.get('/rcm/credential-vault', async (request, _reply) => {
     const q = (request.query as any) || {};
     const tenantId = resolveTenantId(request);
@@ -95,7 +95,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, items, count: items.length };
   });
 
-  /* ── POST /rcm/credential-vault — create ───────────────── */
+  /* -- POST /rcm/credential-vault -- create ----------------- */
   server.post('/rcm/credential-vault', async (request, reply) => {
     const body = (request.body as any) || {};
     if (
@@ -140,7 +140,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return reply.code(201).send({ ok: true, item });
   });
 
-  /* ── GET /rcm/credential-vault/expiring — expiring creds ─ */
+  /* -- GET /rcm/credential-vault/expiring -- expiring creds - */
   server.get('/rcm/credential-vault/expiring', async (request, _reply) => {
     const q = (request.query as any) || {};
     const tenantId = resolveTenantId(request);
@@ -149,7 +149,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, items, count: items.length };
   });
 
-  /* ── GET /rcm/credential-vault/stats — summary stats ───── */
+  /* -- GET /rcm/credential-vault/stats -- summary stats ----- */
   server.get('/rcm/credential-vault/stats', async (request, _reply) => {
     const tenantId = resolveTenantId(request);
     const total = await countCredentials(tenantId);
@@ -157,7 +157,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, stats: { total, expiringSoon: expiring } };
   });
 
-  /* ── GET /rcm/credential-vault/:id — detail ────────────── */
+  /* -- GET /rcm/credential-vault/:id -- detail -------------- */
   server.get('/rcm/credential-vault/:id', async (request, reply) => {
     const { id } = request.params as any;
     const tenantId = resolveTenantId(request);
@@ -167,7 +167,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, item, documents };
   });
 
-  /* ── PATCH /rcm/credential-vault/:id — update ──────────── */
+  /* -- PATCH /rcm/credential-vault/:id -- update ------------ */
   server.patch('/rcm/credential-vault/:id', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
@@ -181,7 +181,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, item };
   });
 
-  /* ── POST /rcm/credential-vault/:id/verify — verify ────── */
+  /* -- POST /rcm/credential-vault/:id/verify -- verify ------ */
   server.post('/rcm/credential-vault/:id/verify', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
@@ -196,7 +196,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, item };
   });
 
-  /* ── POST /rcm/credential-vault/:id/documents — add doc ── */
+  /* -- POST /rcm/credential-vault/:id/documents -- add doc -- */
   server.post('/rcm/credential-vault/:id/documents', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
@@ -229,14 +229,14 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return reply.code(201).send({ ok: true, document: doc });
   });
 
-  /* ── GET /rcm/credential-vault/:id/documents — list docs ── */
+  /* -- GET /rcm/credential-vault/:id/documents -- list docs -- */
   server.get('/rcm/credential-vault/:id/documents', async (request, _reply) => {
     const { id } = request.params as any;
     const documents = await listDocuments(resolveTenantId(request), id);
     return { ok: true, documents, count: documents.length };
   });
 
-  /* ── DELETE /rcm/credential-vault/documents/:docId ─────── */
+  /* -- DELETE /rcm/credential-vault/documents/:docId ------- */
   server.delete('/rcm/credential-vault/documents/:docId', async (request, reply) => {
     const { docId } = request.params as any;
     const deleted = await deleteDocument(resolveTenantId(request), docId);
@@ -251,7 +251,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
   /* Accreditation Status                                              */
   /* ================================================================ */
 
-  /* ── GET /rcm/accreditation — list ─────────────────────── */
+  /* -- GET /rcm/accreditation -- list ----------------------- */
   server.get('/rcm/accreditation', async (request, _reply) => {
     const q = (request.query as any) || {};
     const tenantId = resolveTenantId(request);
@@ -263,7 +263,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, items, count: items.length };
   });
 
-  /* ── POST /rcm/accreditation — create ──────────────────── */
+  /* -- POST /rcm/accreditation -- create -------------------- */
   server.post('/rcm/accreditation', async (request, reply) => {
     const body = (request.body as any) || {};
     if (!body.payerId || !body.payerName || !body.providerEntityId) {
@@ -292,7 +292,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return reply.code(201).send({ ok: true, item });
   });
 
-  /* ── GET /rcm/accreditation/stats — summary ────────────── */
+  /* -- GET /rcm/accreditation/stats -- summary -------------- */
   server.get('/rcm/accreditation/stats', async (request, _reply) => {
     const tenantId = resolveTenantId(request);
     const total = await countAccreditations(tenantId);
@@ -304,7 +304,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, stats: { total, byStatus } };
   });
 
-  /* ── GET /rcm/accreditation/:id — detail ───────────────── */
+  /* -- GET /rcm/accreditation/:id -- detail ----------------- */
   server.get('/rcm/accreditation/:id', async (request, reply) => {
     const { id } = request.params as any;
     const tenantId = resolveTenantId(request);
@@ -314,7 +314,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, item, tasks };
   });
 
-  /* ── PATCH /rcm/accreditation/:id — update ─────────────── */
+  /* -- PATCH /rcm/accreditation/:id -- update --------------- */
   server.patch('/rcm/accreditation/:id', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
@@ -329,7 +329,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, item };
   });
 
-  /* ── POST /rcm/accreditation/:id/verify — verify ───────── */
+  /* -- POST /rcm/accreditation/:id/verify -- verify --------- */
   server.post('/rcm/accreditation/:id/verify', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
@@ -345,7 +345,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, item };
   });
 
-  /* ── POST /rcm/accreditation/:id/notes — add note ─────── */
+  /* -- POST /rcm/accreditation/:id/notes -- add note ------- */
   server.post('/rcm/accreditation/:id/notes', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
@@ -357,14 +357,14 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, item };
   });
 
-  /* ── GET /rcm/accreditation/:id/tasks — list tasks ─────── */
+  /* -- GET /rcm/accreditation/:id/tasks -- list tasks ------- */
   server.get('/rcm/accreditation/:id/tasks', async (request, _reply) => {
     const { id } = request.params as any;
     const tasks = await listTasks(resolveTenantId(request), id);
     return { ok: true, tasks, count: tasks.length };
   });
 
-  /* ── POST /rcm/accreditation/:id/tasks — create task ───── */
+  /* -- POST /rcm/accreditation/:id/tasks -- create task ----- */
   server.post('/rcm/accreditation/:id/tasks', async (request, reply) => {
     const { id } = request.params as any;
     const body = (request.body as any) || {};
@@ -390,7 +390,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return reply.code(201).send({ ok: true, task });
   });
 
-  /* ── PATCH /rcm/accreditation/tasks/:taskId — update ───── */
+  /* -- PATCH /rcm/accreditation/tasks/:taskId -- update ----- */
   server.patch('/rcm/accreditation/tasks/:taskId', async (request, reply) => {
     const { taskId } = request.params as any;
     const body = (request.body as any) || {};
@@ -402,7 +402,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, task };
   });
 
-  /* ── POST /rcm/accreditation/tasks/:taskId/complete ────── */
+  /* -- POST /rcm/accreditation/tasks/:taskId/complete ------ */
   server.post('/rcm/accreditation/tasks/:taskId/complete', async (request, reply) => {
     const { taskId } = request.params as any;
     const body = (request.body as any) || {};
@@ -419,7 +419,7 @@ const credentialVaultRoutes: FastifyPluginAsync = async (server: FastifyInstance
     return { ok: true, task };
   });
 
-  /* ── DELETE /rcm/accreditation/tasks/:taskId ────────────── */
+  /* -- DELETE /rcm/accreditation/tasks/:taskId -------------- */
   server.delete('/rcm/accreditation/tasks/:taskId', async (request, reply) => {
     const { taskId } = request.params as any;
     const deleted = await deleteTask(resolveTenantId(request), taskId);

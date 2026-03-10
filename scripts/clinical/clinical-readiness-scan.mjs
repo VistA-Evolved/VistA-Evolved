@@ -17,7 +17,7 @@ const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
 const ROOT = join(__dirname, '..', '..');
 
-// ── Parse store-policy.ts ──────────────────────────────────────────
+// -- Parse store-policy.ts ------------------------------------------
 
 function parseStorePolicy() {
   const raw = readFileSync(join(ROOT, 'apps/api/src/platform/store-policy.ts'), 'utf-8');
@@ -70,7 +70,7 @@ function parseStorePolicy() {
   return stores;
 }
 
-// ── Parse RPC registry ─────────────────────────────────────────────
+// -- Parse RPC registry ---------------------------------------------
 
 function parseRpcRegistry() {
   try {
@@ -87,7 +87,7 @@ function parseRpcRegistry() {
   }
 }
 
-// ── VistA alignment per domain ─────────────────────────────────────
+// -- VistA alignment per domain -------------------------------------
 
 function getVistaAlignment(domain) {
   const alignmentMap = {
@@ -142,7 +142,7 @@ function getVistaAlignment(domain) {
   return alignmentMap[domain] || {};
 }
 
-// ── Classify stores into domains ───────────────────────────────────
+// -- Classify stores into domains -----------------------------------
 
 function classifyStore(store) {
   if (store.file.startsWith('service-lines/ed/')) return 'ed';
@@ -153,7 +153,7 @@ function classifyStore(store) {
   return 'other';
 }
 
-// ── Main ───────────────────────────────────────────────────────────
+// -- Main -----------------------------------------------------------
 
 const args = process.argv.slice(2);
 const jsonMode = args.includes('--json');
@@ -248,7 +248,7 @@ for (const store of targetStores) {
   }
 }
 
-// ── Output ─────────────────────────────────────────────────────────
+// -- Output ---------------------------------------------------------
 
 if (jsonMode) {
   process.stdout.write(JSON.stringify(scanResult, null, 2));

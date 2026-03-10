@@ -1,5 +1,5 @@
 /**
- * Phase 52 — E2E Scenario 2: RCM User Workflow
+ * Phase 52 -- E2E Scenario 2: RCM User Workflow
  *
  * Full end-to-end revenue cycle workflow:
  *   Navigate to RCM admin -> Payer Directory -> Draft claim from VistA

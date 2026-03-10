@@ -1,5 +1,5 @@
 /**
- * Imaging Writeback Contract Tests — Phase 306 (W12-P8)
+ * Imaging Writeback Contract Tests -- Phase 306 (W12-P8)
  */
 
 import { describe, it, expect } from 'vitest';

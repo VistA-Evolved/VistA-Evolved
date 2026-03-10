@@ -1,5 +1,5 @@
 /**
- * Terminology Routes — Phase 313
+ * Terminology Routes -- Phase 313
  *
  * Endpoints for terminology resolution and validation.
  */
@@ -22,12 +22,12 @@ const TERM_DEFAULTS: Record<string, typeof US_TERMINOLOGY_DEFAULTS> = {
 };
 
 export async function terminologyRoutes(app: FastifyInstance): Promise<void> {
-  // GET /terminology/resolvers — list all registered resolvers
+  // GET /terminology/resolvers -- list all registered resolvers
   app.get('/terminology/resolvers', async () => {
     return { ok: true, resolvers: listResolvers() };
   });
 
-  // GET /terminology/defaults/:country — get terminology defaults for a country
+  // GET /terminology/defaults/:country -- get terminology defaults for a country
   app.get('/terminology/defaults/:country', async (request, reply) => {
     const { country } = request.params as { country: string };
     const defaults = TERM_DEFAULTS[country.toUpperCase()];
@@ -41,7 +41,7 @@ export async function terminologyRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, country: country.toUpperCase(), defaults };
   });
 
-  // POST /terminology/resolve — resolve a VistA code to standard code
+  // POST /terminology/resolve -- resolve a VistA code to standard code
   app.post('/terminology/resolve', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const { domain, codeSystem, vistaCode, vistaFile } = body as {
@@ -63,7 +63,7 @@ export async function terminologyRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, resolved: result };
   });
 
-  // POST /terminology/validate — validate a code against a code system
+  // POST /terminology/validate -- validate a code against a code system
   app.post('/terminology/validate', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const { domain, codeSystem, code } = body as {

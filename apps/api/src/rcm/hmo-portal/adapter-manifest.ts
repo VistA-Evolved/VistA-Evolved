@@ -1,11 +1,11 @@
 /**
- * HMO Adapter Manifest Generator — Phase 97B
+ * HMO Adapter Manifest Generator -- Phase 97B
  *
  * Generates a comprehensive manifest of all 27 IC-licensed PH HMOs
  * with their adapter status, capability coverage, integration readiness,
  * and contracting status.
  *
- * This is a read-only diagnostic view — it does NOT create adapters.
+ * This is a read-only diagnostic view -- it does NOT create adapters.
  */
 
 import { listPortalAdapters } from './types.js';
@@ -13,7 +13,7 @@ import { initPhHmoRegistry, listPhHmos } from '../payers/ph-hmo-registry.js';
 import { listCapabilities } from '../../platform/pg/repo/capability-repo.js';
 import { STANDARD_CAPABILITY_KEYS } from '../../platform/pg/repo/capability-repo.js';
 
-/* ── Payer type classification for all 27 HMOs ──────────────── */
+/* -- Payer type classification for all 27 HMOs ---------------- */
 
 export type PayerTypeClassification =
   | 'hmo_l1' // Large HMO with provider portal + API potential
@@ -37,9 +37,9 @@ export const PH_HMO_PAYER_TYPES: Record<string, PayerTypeClassification> = {
   'PH-INTELLICARE': 'hmo_l1', // IntellicareOnline provider portal
   'PH-PHILCARE': 'hmo_l1', // PhilCare provider portal
   'PH-VALUCARE': 'hmo_l1', // ValuCare provider portal
-  'PH-INSULAR': 'hmo_l1', // Insular Health — large HMO with portal
-  'PH-COCOLIFE': 'hmo_l1', // Cocolife Healthcare — large HMO
-  'PH-PACIFIC-CROSS': 'hmo_l1', // Pacific Cross — large, known digital presence
+  'PH-INSULAR': 'hmo_l1', // Insular Health -- large HMO with portal
+  'PH-COCOLIFE': 'hmo_l1', // Cocolife Healthcare -- large HMO
+  'PH-PACIFIC-CROSS': 'hmo_l1', // Pacific Cross -- large, known digital presence
   'PH-ASIANLIFE': 'hmo_l3',
   'PH-AVEGA': 'hmo_l3',
   'PH-CAREHEALTH': 'hmo_l3',
@@ -61,15 +61,15 @@ export const PH_HMO_PAYER_TYPES: Record<string, PayerTypeClassification> = {
   'PH-STARCARE': 'hmo_l3',
 };
 
-/* ── Adapter status enum ────────────────────────────────────── */
+/* -- Adapter status enum -------------------------------------- */
 
 export type AdapterStatus =
   | 'portal_adapter_available' // has per-HMO ManualAssistedAdapter (top-5)
   | 'generic_manual_adapter' // uses generic manual workflow
-  | 'manual_only' // no adapter — completely manual
+  | 'manual_only' // no adapter -- completely manual
   | 'integration_pending'; // future API adapter planned
 
-/* ── Manifest entry ─────────────────────────────────────────── */
+/* -- Manifest entry ------------------------------------------- */
 
 export interface HmoManifestEntry {
   payerId: string;
@@ -98,7 +98,7 @@ export interface HmoManifest {
   entries: HmoManifestEntry[];
 }
 
-/* ── IC CA Number lookup ────────────────────────────────────── */
+/* -- IC CA Number lookup -------------------------------------- */
 
 const IC_CA_NUMBERS: Record<string, string> = {
   'PH-ASIANLIFE': 'CA-2024-HMO-001',
@@ -130,12 +130,12 @@ const IC_CA_NUMBERS: Record<string, string> = {
   'PH-VALUCARE': 'CA-2024-HMO-027',
 };
 
-/* ── Generate manifest ──────────────────────────────────────── */
+/* -- Generate manifest ---------------------------------------- */
 
 let registryInited = false;
 
 /** Short-lived cache to avoid regenerating the full manifest on every call.
- *  TTL: 10 seconds — long enough to coalesce a burst of concurrent requests
+ *  TTL: 10 seconds -- long enough to coalesce a burst of concurrent requests
  *  but short enough that capability changes reflect quickly. */
 let _manifestCache: { data: HmoManifest; ts: number } | null = null;
 const MANIFEST_CACHE_TTL_MS = 10_000;
@@ -195,7 +195,7 @@ export async function generateHmoManifest(): Promise<HmoManifest> {
         caps[c.capabilityKey] = c.value;
       }
     } catch {
-      // DB not initialized — use registry only
+      // DB not initialized -- use registry only
     }
 
     const known = CAP_KEYS.filter((k) => caps[k] && caps[k] !== 'unknown_publicly').length;

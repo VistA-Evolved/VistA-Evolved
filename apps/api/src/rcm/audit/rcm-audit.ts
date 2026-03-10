@@ -1,5 +1,5 @@
 /**
- * RCM Audit Trail — Hash-Chained, PHI-Safe
+ * RCM Audit Trail -- Hash-Chained, PHI-Safe
  *
  * Every claim lifecycle transition, EDI submission, validation result,
  * and remittance posting is recorded in an append-only, hash-chained
@@ -8,8 +8,8 @@
  * Follows the same pattern as imaging-audit.ts (Phase 24) and
  * immutable-audit.ts (Phase 35).
  *
- * Phase 38 — RCM + Payer Connectivity
- * Phase 113B — Added JSONL file sink with hash-chain continuity across restart
+ * Phase 38 -- RCM + Payer Connectivity
+ * Phase 113B -- Added JSONL file sink with hash-chain continuity across restart
  */
 
 import { createHash } from 'node:crypto';
@@ -17,7 +17,7 @@ import { appendFileSync, mkdirSync, existsSync, readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
-/* ─── File sink configuration (Phase 113B) ───────────────────── */
+/* --- File sink configuration (Phase 113B) --------------------- */
 
 const __dirname_resolved =
   typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
@@ -33,7 +33,7 @@ function ensureAuditDir(): void {
 
 /**
  * Recover the last hash from the existing JSONL file on startup.
- * Only reads the LAST line — does NOT load the whole file.
+ * Only reads the LAST line -- does NOT load the whole file.
  */
 function recoverLastHash(): string {
   try {
@@ -45,7 +45,7 @@ function recoverLastHash(): string {
     const entry = JSON.parse(lastLine);
     if (entry && typeof entry.hash === 'string') return entry.hash;
   } catch {
-    // Corrupt or empty file — start fresh
+    // Corrupt or empty file -- start fresh
   }
   return '0'.repeat(64);
 }
@@ -59,7 +59,7 @@ function appendToFile(entry: RcmAuditEntry): void {
   }
 }
 
-/* ─── Types ──────────────────────────────────────────────────────── */
+/* --- Types -------------------------------------------------------- */
 
 export type RcmAuditAction =
   | 'claim.created'
@@ -211,7 +211,7 @@ export interface RcmAuditEntry {
   timestamp: string;
 }
 
-/* ─── PHI sanitization ───────────────────────────────────────────── */
+/* --- PHI sanitization --------------------------------------------- */
 
 const PHI_PATTERNS = [
   /\b\d{3}-\d{2}-\d{4}\b/g, // SSN
@@ -248,7 +248,7 @@ function sanitizeDetail(detail: Record<string, unknown>): Record<string, unknown
   return sanitized;
 }
 
-/* ─── Audit store ────────────────────────────────────────────────── */
+/* --- Audit store -------------------------------------------------- */
 
 const MAX_ENTRIES = 20_000;
 const entries: RcmAuditEntry[] = [];
@@ -269,7 +269,7 @@ function computeHash(entry: Omit<RcmAuditEntry, 'hash'>): string {
   return createHash('sha256').update(data).digest('hex');
 }
 
-/* ─── Public API ─────────────────────────────────────────────────── */
+/* --- Public API --------------------------------------------------- */
 
 export function appendRcmAudit(
   action: RcmAuditAction,

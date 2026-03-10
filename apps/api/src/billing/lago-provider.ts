@@ -1,18 +1,18 @@
 /**
- * Lago Billing Provider — OSS self-hosted adapter
+ * Lago Billing Provider -- OSS self-hosted adapter
  *
  * Phase 284 (Wave 10 P5)
  *
  * Communicates with Lago REST API (v1) for plan management, subscriptions,
- * usage metering, and invoicing. Zero npm dependencies — uses Node.js
+ * usage metering, and invoicing. Zero npm dependencies -- uses Node.js
  * fetch (global in Node 18+).
  *
  * Lago runs as a separate Docker container (AGPLv3). Our adapter communicates
- * via HTTP API only — no AGPLv3 copyleft triggered for Apache-2.0 codebase.
+ * via HTTP API only -- no AGPLv3 copyleft triggered for Apache-2.0 codebase.
  *
  * Env vars:
- *   LAGO_API_URL      — e.g. http://lago:3000 (default)
- *   LAGO_API_KEY      — Lago API key
+ *   LAGO_API_URL      -- e.g. http://lago:3000 (default)
+ *   LAGO_API_KEY      -- Lago API key
  *
  * IMPORTANT: No PHI in any Lago request. Tenant ID is the billing dimension.
  */
@@ -26,9 +26,9 @@ import type {
   UsageSummary,
   UsageEvent,
   Invoice,
-  InvoiceLineItem,
   MeterEvent,
 } from './types.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Config                                                              */
@@ -81,22 +81,21 @@ async function lagoFetch(
 }
 
 /* ------------------------------------------------------------------ */
-/* Mappers: Lago API → our domain types                                */
+/* Mappers: Lago API -> our domain types                                */
 /* ------------------------------------------------------------------ */
 
 function mapLagoPlan(lagoPlan: any): Plan {
   return {
     id: lagoPlan.lago_id || lagoPlan.code,
     name: lagoPlan.name || lagoPlan.code,
-    tier: (lagoPlan.metadata?.tier as any) || 'custom',
-    basePriceCents: lagoPlan.amount_cents ?? 0,
-    includedPhysicians: parseInt(lagoPlan.metadata?.included_physicians || '0', 10),
-    perPhysicianCents: parseInt(lagoPlan.metadata?.per_physician_cents || '0', 10),
-    apiCallLimit: parseInt(lagoPlan.metadata?.api_call_limit || '0', 10),
-    modulesIncluded: lagoPlan.metadata?.modules_included
+    entityType: (lagoPlan.metadata?.tier as string) || 'custom',
+    priceMonthly: (lagoPlan.amount_cents ?? 0) / 100,
+    currency: lagoPlan.currency || 'USD',
+    features: lagoPlan.metadata?.modules_included
       ? (lagoPlan.metadata.modules_included as string).split(',')
       : [],
-    description: lagoPlan.description || '',
+    maxProviders: parseInt(lagoPlan.metadata?.included_physicians || '0', 10),
+    trialDays: parseInt(lagoPlan.metadata?.trial_days || '0', 10),
   };
 }
 
@@ -104,7 +103,7 @@ function mapLagoSubscription(lagoSub: any): Subscription {
   const statusMap: Record<string, SubscriptionStatus> = {
     active: 'active',
     pending: 'trialing',
-    terminated: 'canceled',
+    terminated: 'cancelled',
   };
   return {
     id: lagoSub.lago_id || lagoSub.external_id,
@@ -161,7 +160,8 @@ export class LagoBillingProvider implements BillingProvider {
     try {
       const resp = await lagoFetch(this.config, `/plans/${encodeURIComponent(planId)}`);
       return resp?.plan ? mapLagoPlan(resp.plan) : null;
-    } catch {
+    } catch (err) {
+      log.debug('Lago getPlan failed', { planId, error: String(err) });
       return null;
     }
   }
@@ -180,7 +180,7 @@ export class LagoBillingProvider implements BillingProvider {
         },
       });
     } catch {
-      // Customer may already exist — that's fine
+      // Customer may already exist -- that's fine
     }
 
     const resp = await lagoFetch(this.config, '/subscriptions', {
@@ -205,7 +205,8 @@ export class LagoBillingProvider implements BillingProvider {
       );
       const subs = resp?.subscriptions || [];
       return subs.length > 0 ? mapLagoSubscription(subs[0]) : null;
-    } catch {
+    } catch (err) {
+      log.debug('Lago getSubscription failed', { tenantId, error: String(err) });
       return null;
     }
   }
@@ -277,7 +278,7 @@ export class LagoBillingProvider implements BillingProvider {
     periodStart: string,
     periodEnd: string
   ): Promise<UsageSummary> {
-    // Lago doesn't have a direct usage summary endpoint — aggregate from events
+    // Lago doesn't have a direct usage summary endpoint -- aggregate from events
     // For now, return empty counters (Lago handles aggregation internally for invoicing)
     const counters: Record<MeterEvent, number> = {
       api_call: 0,

@@ -1,8 +1,8 @@
 /**
- * Denial Pipeline Hardening Routes — Phase 520 (Wave 37 B8)
+ * Denial Pipeline Hardening Routes -- Phase 520 (Wave 37 B8)
  *
  * REST endpoints for:
- *   - Batch 835 → denial pipeline processing
+ *   - Batch 835 -> denial pipeline processing
  *   - Posting staging approval workflow
  *   - Pipeline statistics
  */
@@ -31,7 +31,7 @@ import type { PostingApprovalStatus } from './denial-pipeline-hardener.js';
 export async function denialPipelineRoutes(server: FastifyInstance): Promise<void> {
   const prefix = '/rcm/denials/pipeline';
 
-  /* ── Process 835 batch ──────────────────────────────────
+  /* -- Process 835 batch ----------------------------------
    * POST /rcm/denials/pipeline/process
    * Body: { remittance: NormalizedRemittance, options?: {...} }
    */
@@ -57,7 +57,7 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
     return reply.send({ ok: true, ...result });
   });
 
-  /* ── List batches ───────────────────────────────────────
+  /* -- List batches ---------------------------------------
    * GET /rcm/denials/pipeline/batches?limit=50
    */
   server.get(`${prefix}/batches`, async (req: FastifyRequest, reply: FastifyReply) => {
@@ -83,7 +83,7 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
     });
   });
 
-  /* ── Get batch detail ───────────────────────────────────
+  /* -- Get batch detail -----------------------------------
    * GET /rcm/denials/pipeline/batches/:id
    */
   server.get(`${prefix}/batches/:id`, async (req: FastifyRequest, reply: FastifyReply) => {
@@ -125,7 +125,7 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
     });
   });
 
-  /* ── Approve batch (all pending entries) ────────────────
+  /* -- Approve batch (all pending entries) ----------------
    * POST /rcm/denials/pipeline/batches/:id/approve
    * Body: { approvedBy: string }
    */
@@ -149,7 +149,7 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
     });
   });
 
-  /* ── List staging entries ───────────────────────────────
+  /* -- List staging entries -------------------------------
    * GET /rcm/denials/pipeline/staging?batchId=&status=&limit=100
    */
   server.get(`${prefix}/staging`, async (req: FastifyRequest, reply: FastifyReply) => {
@@ -182,7 +182,7 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
     });
   });
 
-  /* ── Get staging entry detail ───────────────────────────
+  /* -- Get staging entry detail ---------------------------
    * GET /rcm/denials/pipeline/staging/:id
    */
   server.get(`${prefix}/staging/:id`, async (req: FastifyRequest, reply: FastifyReply) => {
@@ -196,7 +196,7 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
     return reply.send({ ok: true, entry });
   });
 
-  /* ── Approve staging entry ──────────────────────────────
+  /* -- Approve staging entry ------------------------------
    * POST /rcm/denials/pipeline/staging/:id/approve
    * Body: { approvedBy: string }
    */
@@ -218,7 +218,7 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
     });
   });
 
-  /* ── Reject staging entry ───────────────────────────────
+  /* -- Reject staging entry -------------------------------
    * POST /rcm/denials/pipeline/staging/:id/reject
    * Body: { rejectedBy: string, reason: string }
    */
@@ -243,14 +243,14 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
     });
   });
 
-  /* ── Pipeline stats ─────────────────────────────────────
+  /* -- Pipeline stats -------------------------------------
    * GET /rcm/denials/pipeline/stats
    */
   server.get(`${prefix}/stats`, async (_req: FastifyRequest, reply: FastifyReply) => {
     return reply.send({ ok: true, ...getPipelineStats() });
   });
 
-  /* ── Normalize codes (utility) ──────────────────────────
+  /* -- Normalize codes (utility) --------------------------
    * POST /rcm/denials/pipeline/normalize-codes
    * Body: { codes: PaymentCode[] }
    */
@@ -266,7 +266,7 @@ export async function denialPipelineRoutes(server: FastifyInstance): Promise<voi
     return reply.send({ ok: true, normalized });
   });
 
-  /* ── Classify single line (utility) ─────────────────────
+  /* -- Classify single line (utility) ---------------------
    * POST /rcm/denials/pipeline/classify-line
    * Body: { line: NormalizedPaymentLine }
    */

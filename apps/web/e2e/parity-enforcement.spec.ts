@@ -9,7 +9,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { setupConsoleGate } from './helpers/auth';
+import { TEST_DFN, chartRoute, setupConsoleGate } from './helpers/auth';
 import { readFileSync, existsSync } from 'fs';
 import { join } from 'path';
 
@@ -53,12 +53,12 @@ test.describe('Parity Matrix Live Enforcement', () => {
 
     for (const tab of matrix.tabParity) {
       const slug = tab.constant.replace('CT_', '').toLowerCase();
-      await page.goto(`/cprs/chart/3/${slug}`);
+      await page.goto(chartRoute(slug));
       await page.waitForLoadState('domcontentloaded');
       await page.waitForTimeout(1000);
 
       // URL should contain the slug
-      if (!page.url().includes(`/cprs/chart/3/${slug}`)) {
+      if (!page.url().includes(chartRoute(slug, TEST_DFN))) {
         tabErrors.push(`${tab.label}: URL mismatch (${page.url()})`);
         continue;
       }

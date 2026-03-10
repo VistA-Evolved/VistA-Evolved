@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -21,7 +22,7 @@ export default async function vistaWorkforceRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE PROV LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE PROV LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -43,7 +44,7 @@ export default async function vistaWorkforceRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE PROV DETAIL', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE PROV DETAIL', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -63,7 +64,7 @@ export default async function vistaWorkforceRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE PERSON CLASS LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE PERSON CLASS LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

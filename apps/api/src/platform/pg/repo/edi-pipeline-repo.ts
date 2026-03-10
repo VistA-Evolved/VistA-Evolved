@@ -1,5 +1,5 @@
 /**
- * PG EDI Pipeline Repository — Async durable pipeline entry tracking
+ * PG EDI Pipeline Repository -- Async durable pipeline entry tracking
  *
  * Phase 126: RCM Durability Wave (Map stores -> Postgres)
  *
@@ -13,7 +13,7 @@ import { pgEdiPipelineEntry } from '../pg-schema.js';
 
 export type EdiPipelineEntryRow = typeof pgEdiPipelineEntry.$inferSelect;
 
-/* ── Create ────────────────────────────────────────────────── */
+/* -- Create -------------------------------------------------- */
 
 export async function insertPipelineEntry(data: {
   id: string;
@@ -52,7 +52,7 @@ export async function insertPipelineEntry(data: {
   return row!;
 }
 
-/* ── Lookup ────────────────────────────────────────────────── */
+/* -- Lookup -------------------------------------------------- */
 
 export async function findEntryById(id: string): Promise<EdiPipelineEntryRow | undefined> {
   const db = getPgDb();
@@ -105,7 +105,7 @@ export async function listEntries(
   return { rows, total };
 }
 
-/* ── Update ────────────────────────────────────────────────── */
+/* -- Update -------------------------------------------------- */
 
 export async function updateEntry(
   id: string,
@@ -127,7 +127,7 @@ export async function updateEntry(
   return findEntryById(id);
 }
 
-/* ── Count ─────────────────────────────────────────────────── */
+/* -- Count --------------------------------------------------- */
 
 export async function countEntries(tenantId: string): Promise<number> {
   const db = getPgDb();

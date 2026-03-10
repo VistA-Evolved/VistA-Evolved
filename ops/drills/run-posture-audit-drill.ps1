@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 <#
   ops/drills/run-posture-audit-drill.ps1
-  Resilience drill: Posture Endpoint Audit — Phase 254
+  Resilience drill: Posture Endpoint Audit -- Phase 254
 
   Validates all /posture/* endpoints are reachable and return structured data.
   This drill requires admin session cookies.
@@ -30,7 +30,7 @@ if ($CookieFile -and (Test-Path -LiteralPath $CookieFile)) {
   $headers["Cookie"] = $cookieVal
   Write-Host "  Using cookie file: $CookieFile" -ForegroundColor Gray
 } else {
-  Write-Host "  WARNING: No cookie file — posture endpoints require admin auth" -ForegroundColor Yellow
+  Write-Host "  WARNING: No cookie file -- posture endpoints require admin auth" -ForegroundColor Yellow
   Write-Host "  Pass -CookieFile with admin session cookies" -ForegroundColor Yellow
 }
 

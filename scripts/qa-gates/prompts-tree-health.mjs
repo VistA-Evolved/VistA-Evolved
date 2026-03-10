@@ -43,7 +43,7 @@ function fail(gate, detail) {
 
 console.log('\n=== QA Gate: Prompts Tree Health (Phase 113B) ===\n');
 
-// ── Inventory ────────────────────────────────────────
+// -- Inventory ----------------------------------------
 
 const allEntries = readdirSync(PROMPTS_DIR);
 
@@ -68,7 +68,7 @@ const flatFiles = allEntries.filter(
     statSync(join(PROMPTS_DIR, e)).isFile()
 );
 
-// ── Gate 1: No flat files that duplicate existing folders ─────
+// -- Gate 1: No flat files that duplicate existing folders -----
 
 const folderPhaseNumbers = new Map();
 for (const folder of phaseFolders) {
@@ -112,7 +112,7 @@ if (orphanFlats.length > 0) {
   pass('orphan-flat', 'No orphan flat files at root');
 }
 
-// ── Gate 2: Folder naming convention ──────────────────
+// -- Gate 2: Folder naming convention ------------------
 
 const FOLDER_CONVENTION_RE =
   /^\d{1,3}-(?:PHASE-\d+\w?-[A-Z0-9-]+|W\d+-P\d+-[A-Z0-9-]+|WAVE-\d+-[A-Z0-9-]+|BOOTSTRAP|PLAYBOOKS?)$/;
@@ -132,7 +132,7 @@ if (badNames.length > 0) {
   pass('naming-convention', `All ${phaseFolders.length} folders follow convention`);
 }
 
-// ── Gate 3: IMPLEMENT + VERIFY pair check ─────────────
+// -- Gate 3: IMPLEMENT + VERIFY pair check -------------
 
 let missingPairs = 0;
 let checkedFolders = 0;
@@ -163,7 +163,7 @@ if (missingPairs === 0) {
   pass('impl-verify-pair', `All ${checkedFolders} folders have IMPLEMENT + VERIFY`);
 }
 
-// ── Gate 4: Internal phase number must match folder ───
+// -- Gate 4: Internal phase number must match folder ---
 
 let mismatches = 0;
 
@@ -206,7 +206,7 @@ if (mismatches === 0) {
   pass('phase-mismatch', 'All file headings match their folder phase numbers');
 }
 
-// ── Gate 5: Duplicate phase numbers across folders ────
+// -- Gate 5: Duplicate phase numbers across folders ----
 
 const phaseToFolders = new Map();
 for (const folder of phaseFolders) {
@@ -229,7 +229,7 @@ if (dupeCount === 0) {
   pass('duplicate-phase', 'No duplicate phase numbers across folders');
 }
 
-// ── Gate 6: No nested numbered subdirectories in phase folders ───
+// -- Gate 6: No nested numbered subdirectories in phase folders ---
 
 let nestedCount = 0;
 
@@ -256,7 +256,7 @@ if (nestedCount === 0) {
   pass('nested-phase', 'No nested numbered subdirectories in phase folders');
 }
 
-// ── Gate 7: No shadow numbered directories (unscanned) ───
+// -- Gate 7: No shadow numbered directories (unscanned) ---
 
 const ALLOWED_NON_PHASE_DIRS = new Set(['00-ARCHIVE', '00-PLAYBOOKS']);
 const allNumberedDirs = allEntries.filter(
@@ -279,7 +279,7 @@ if (shadowDirs.length > 0) {
   );
 }
 
-// ── Gate 8: NOTES.md presence (WARN only -- many legacy gaps) ──
+// -- Gate 8: NOTES.md presence (WARN only -- many legacy gaps) --
 
 let missingNotes = 0;
 for (const folder of phaseFolders) {
@@ -296,7 +296,7 @@ if (missingNotes > 0) {
   pass('notes-present', 'All phase folders have NOTES.md');
 }
 
-// ── Summary ──────────────────────────────────────────
+// -- Summary ------------------------------------------
 
 console.log('\n=== Summary ===');
 console.log(`  PASS: ${passed}`);

@@ -28,7 +28,7 @@ export async function run(opts = {}) {
   const details = [];
   let status = 'pass';
 
-  // ── 1. store-policy.ts exists ──────────────────────────────
+  // -- 1. store-policy.ts exists ------------------------------
   if (!existsSync(STORE_POLICY_PATH)) {
     details.push('FAIL: store-policy.ts does not exist');
     return { id, name, status: 'fail', details, durationMs: Date.now() - start };
@@ -36,7 +36,7 @@ export async function run(opts = {}) {
 
   const policySrc = readFileSync(STORE_POLICY_PATH, 'utf8');
 
-  // ── 2. Required exports present ────────────────────────────
+  // -- 2. Required exports present ----------------------------
   const requiredExports = [
     'STORE_INVENTORY',
     'getStoresByClassification',
@@ -58,7 +58,7 @@ export async function run(opts = {}) {
     );
   }
 
-  // ── 3. Inventory has sufficient entries ─────────────────────
+  // -- 3. Inventory has sufficient entries ---------------------
   const criticalCount = (policySrc.match(/classification:\s*"critical"/g) || []).length;
   const cacheCount = (policySrc.match(/classification:\s*"cache"/g) || []).length;
   const rateLimiterCount = (policySrc.match(/classification:\s*"rate_limiter"/g) || []).length;
@@ -78,7 +78,7 @@ export async function run(opts = {}) {
     );
   }
 
-  // ── 4. Critical stores with migrationTarget ────────────────
+  // -- 4. Critical stores with migrationTarget ----------------
   // Check that critical + in_memory_only all have migrationTarget
   // Uses block-by-block parsing (regex spanning across entries is unreliable)
   const critInMemNoMigration = [];
@@ -109,7 +109,7 @@ export async function run(opts = {}) {
     details.push('All critical+in_memory_only stores have migrationTarget');
   }
 
-  // ── 5. Type exports present ─────────────────────────────────
+  // -- 5. Type exports present ---------------------------------
   const typeExports = ['StoreClassification', 'DurabilityStatus', 'StoreEntry'];
   const missingTypes = typeExports.filter(
     (t) => !policySrc.includes(`export type ${t}`) && !policySrc.includes(`export interface ${t}`)
@@ -121,7 +121,7 @@ export async function run(opts = {}) {
     details.push(`Type exports: ${typeExports.length}/${typeExports.length} present`);
   }
 
-  // ── 6. Posture endpoint wired ───────────────────────────────
+  // -- 6. Posture endpoint wired -------------------------------
   const postureIndexPath = resolve(API_SRC, 'posture/index.ts');
   if (existsSync(postureIndexPath)) {
     const postureSrc = readFileSync(postureIndexPath, 'utf8');

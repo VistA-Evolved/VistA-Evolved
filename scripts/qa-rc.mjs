@@ -25,7 +25,7 @@ const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '..');
 const ARTIFACTS_DIR = resolve(ROOT, 'artifacts');
 
-// ── Gate definitions ────────────────────────────────────────
+// -- Gate definitions ----------------------------------------
 
 const GATES = [
   {
@@ -75,7 +75,7 @@ const GATES = [
   },
 ];
 
-// ── Runner ──────────────────────────────────────────────────
+// -- Runner --------------------------------------------------
 
 const SEP = '-'.repeat(60);
 const results = [];
@@ -128,7 +128,7 @@ console.log(`  TOTAL: ${passCount} pass, ${failCount} fail out of ${GATES.length
 console.log(SEP);
 console.log('');
 
-// ── Evidence output ─────────────────────────────────────────
+// -- Evidence output -----------------------------------------
 
 mkdirSync(ARTIFACTS_DIR, { recursive: true });
 const evidence = {

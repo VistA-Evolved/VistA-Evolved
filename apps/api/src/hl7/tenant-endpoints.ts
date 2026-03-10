@@ -1,5 +1,5 @@
 /**
- * HL7v2 Tenant Endpoint Configuration — Phase 258
+ * HL7v2 Tenant Endpoint Configuration -- Phase 258
  *
  * Manages per-tenant HL7v2 endpoint configuration for inbound and outbound
  * MLLP connections. Shared engine with tenant routing keys.

@@ -1,5 +1,5 @@
 /**
- * Enterprise Break-Glass — Phase 141: Enterprise IAM Posture.
+ * Enterprise Break-Glass -- Phase 141: Enterprise IAM Posture.
  *
  * A platform-level break-glass system that allows authorized users to request
  * elevated access in emergency situations. Unlike the Phase 24 imaging-specific
@@ -7,17 +7,17 @@
  *
  * Lifecycle:
  *   1. User requests break-glass (POST /admin/break-glass/request)
- *      → creates a PENDING session
+ *      -> creates a PENDING session
  *   2. Admin approves (POST /admin/break-glass/approve)
- *      → activates the session with a time limit
+ *      -> activates the session with a time limit
  *   3. Admin revokes (POST /admin/break-glass/revoke)
- *      → terminates immediately, OR session auto-expires
+ *      -> terminates immediately, OR session auto-expires
  *
  * All transitions are immutably audited. Sessions are tenant-scoped and
  * timeboxed (max 4 hours, default 30 minutes).
  *
  * Classification: Ephemeral Operational State (in-memory, resets on restart).
- * This is intentional — approved break-glass sessions should not survive
+ * This is intentional -- approved break-glass sessions should not survive
  * a restart for security reasons. Historical audit records persist in the
  * immutable audit chain.
  */
@@ -60,7 +60,7 @@ export interface EnterpriseBreakGlassSession {
   approverName: string | null;
   /** Revoker/denier info (null until revoked or denied).
    *  For "denied" status, these fields store the denier's identity.
-   *  Field names are reused to keep the model flat — use `status` to
+   *  Field names are reused to keep the model flat -- use `status` to
    *  distinguish revoke vs deny. */
   revokerDuz: string | null;
   revokerName: string | null;
@@ -88,6 +88,7 @@ const CLEANUP_INTERVAL_MS = 5 * 60 * 1000;
 /* ================================================================== */
 
 const breakGlassStore = new Map<string, EnterpriseBreakGlassSession>();
+const MAX_BREAK_GLASS_SESSIONS = 5000;
 
 /** Auto-expire timers keyed by session ID */
 const expiryTimers = new Map<string, ReturnType<typeof setTimeout>>();
@@ -157,6 +158,10 @@ export function requestBreakGlass(params: {
   };
 
   breakGlassStore.set(session.id, session);
+  if (breakGlassStore.size > MAX_BREAK_GLASS_SESSIONS) {
+    const oldest = breakGlassStore.keys().next().value;
+    if (oldest != null) breakGlassStore.delete(oldest);
+  }
 
   // Phase 146: Write-through to PG
   bgDbRepo
@@ -169,7 +174,7 @@ export function requestBreakGlass(params: {
       expiresAt: session.expiresAt,
       createdAt: session.requestedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   // Immutable audit
   immutableAudit(
@@ -398,7 +403,7 @@ export function getBreakGlassSession(id: string, tenantId?: string): EnterpriseB
 
 /**
  * Check if a user has an active break-glass grant for a specific module/permission.
- * Intended for middleware integration — not yet wired into route guards.
+ * Intended for middleware integration -- not yet wired into route guards.
  */
 export function hasActiveBreakGlass(
   duz: string,
@@ -562,7 +567,7 @@ export function stopBreakGlassCleanup(): void {
   }
 }
 
-/** Get store size (for posture checks — intended for data-plane-posture.ts). */
+/** Get store size (for posture checks -- intended for data-plane-posture.ts). */
 export function getBreakGlassStoreSize(): number {
   return breakGlassStore.size;
 }

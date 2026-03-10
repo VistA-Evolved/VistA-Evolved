@@ -1,5 +1,5 @@
 /**
- * PG ED Repository — Async durable Emergency Department state
+ * PG ED Repository -- Async durable Emergency Department state
  *
  * Phase 523 (W38-C2): ED Durability
  *
@@ -14,9 +14,9 @@ import { pgEdVisit, pgEdBed } from '../pg-schema.js';
 export type EdVisitRow = typeof pgEdVisit.$inferSelect;
 export type EdBedRow = typeof pgEdBed.$inferSelect;
 
-/* ═══════════════════ ED VISIT ═══════════════════ */
+/* =================== ED VISIT =================== */
 
-/* ── Create ──────────────────────────────────────── */
+/* -- Create ---------------------------------------- */
 
 export async function insertEdVisit(data: {
   id: string;
@@ -64,7 +64,7 @@ export async function insertEdVisit(data: {
   return row!;
 }
 
-/* ── Lookup ──────────────────────────────────────── */
+/* -- Lookup ---------------------------------------- */
 
 export async function findEdVisitById(id: string): Promise<EdVisitRow | undefined> {
   const db = getPgDb();
@@ -105,7 +105,7 @@ export async function findAllEdVisits(tenantId = 'default'): Promise<EdVisitRow[
     .orderBy(desc(pgEdVisit.arrivalTime));
 }
 
-/* ── Update ──────────────────────────────────────── */
+/* -- Update ---------------------------------------- */
 
 export async function updateEdVisit(
   id: string,
@@ -134,7 +134,7 @@ export async function updateEdVisit(
   return findEdVisitById(id);
 }
 
-/* ── Delete ──────────────────────────────────────── */
+/* -- Delete ---------------------------------------- */
 
 export async function deleteEdVisit(id: string): Promise<boolean> {
   const db = getPgDb();
@@ -142,9 +142,9 @@ export async function deleteEdVisit(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ ED BED ═══════════════════ */
+/* =================== ED BED =================== */
 
-/* ── Create ──────────────────────────────────────── */
+/* -- Create ---------------------------------------- */
 
 export async function insertEdBed(data: {
   id: string;
@@ -172,7 +172,7 @@ export async function insertEdBed(data: {
   return row!;
 }
 
-/* ── Lookup ──────────────────────────────────────── */
+/* -- Lookup ---------------------------------------- */
 
 export async function findEdBedById(id: string): Promise<EdBedRow | undefined> {
   const db = getPgDb();
@@ -196,7 +196,7 @@ export async function findAllEdBeds(tenantId = 'default'): Promise<EdBedRow[]> {
   return db.select().from(pgEdBed).where(eq(pgEdBed.tenantId, tenantId));
 }
 
-/* ── Update ──────────────────────────────────────── */
+/* -- Update ---------------------------------------- */
 
 export async function updateEdBed(
   id: string,

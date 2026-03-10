@@ -1,8 +1,8 @@
 /**
- * Phase 393 (W22-P5): Lab Deep Workflows — Types
+ * Phase 393 (W22-P5): Lab Deep Workflows -- Types
  *
- * Full lab lifecycle: order → specimen collect → process → result →
- * review → verify → critical alert → acknowledge.
+ * Full lab lifecycle: order -> specimen collect -> process -> result ->
+ * review -> verify -> critical alert -> acknowledge.
  *
  * Bridges existing lab reads (ORWLRR INTERIM/CHART), writeback executor
  * (ORWDX SAVE for orders), Wave 21 POCT device ingest, and event bus.
@@ -15,7 +15,7 @@
  *   - Event bus (Phase 354): LAB_RESULT_POSTED event
  */
 
-// ─── Lab Order ──────────────────────────────────────────────
+// --- Lab Order ----------------------------------------------
 
 export type LabOrderStatus =
   | 'pending'
@@ -68,7 +68,7 @@ export interface LabOrder {
   updatedAt: string;
 }
 
-// ─── Specimen Tracking ──────────────────────────────────────
+// --- Specimen Tracking --------------------------------------
 
 export type SpecimenStatus =
   | 'ordered'
@@ -107,7 +107,7 @@ export interface SpecimenSample {
   updatedAt: string;
 }
 
-// ─── Lab Result ─────────────────────────────────────────────
+// --- Lab Result ---------------------------------------------
 
 export type ResultStatus = 'preliminary' | 'final' | 'corrected' | 'amended' | 'cancelled';
 
@@ -154,7 +154,7 @@ export interface LabResult {
   createdAt: string;
 }
 
-// ─── Critical Result Alerting ───────────────────────────────
+// --- Critical Result Alerting -------------------------------
 
 export type CriticalAlertStatus = 'active' | 'acknowledged' | 'escalated' | 'resolved';
 
@@ -186,7 +186,7 @@ export interface CriticalAlert {
   updatedAt: string;
 }
 
-// ─── Lab Dashboard Stats ────────────────────────────────────
+// --- Lab Dashboard Stats ------------------------------------
 
 export interface LabDashboardStats {
   pendingOrders: number;
@@ -197,7 +197,7 @@ export interface LabDashboardStats {
   averageTurnaroundMinutes: number | null;
 }
 
-// ─── Lab Writeback Posture ──────────────────────────────────
+// --- Lab Writeback Posture ----------------------------------
 
 export interface LabWritebackPosture {
   orderPlace: { rpc: string; status: 'available' | 'integration_pending'; note: string };

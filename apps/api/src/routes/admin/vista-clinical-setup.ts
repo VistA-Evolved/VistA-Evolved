@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -21,7 +22,7 @@ export default async function vistaClinicalSetupRoutes(server: FastifyInstance) 
       return { ok: true, source: 'vista', rpcUsed: 'VE ORDER SETS', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE ORDER SETS', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -41,7 +42,7 @@ export default async function vistaClinicalSetupRoutes(server: FastifyInstance) 
       return { ok: true, source: 'vista', rpcUsed: 'VE CONSULT SERVICES', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE CONSULT SERVICES', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -62,7 +63,7 @@ export default async function vistaClinicalSetupRoutes(server: FastifyInstance) 
       return { ok: true, source: 'vista', rpcUsed: 'VE TIU DEFINITIONS', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE TIU DEFINITIONS', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -83,7 +84,7 @@ export default async function vistaClinicalSetupRoutes(server: FastifyInstance) 
       return { ok: true, source: 'vista', rpcUsed: 'VE TIU TEMPLATES', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE TIU TEMPLATES', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -103,7 +104,7 @@ export default async function vistaClinicalSetupRoutes(server: FastifyInstance) 
       return { ok: true, source: 'vista', rpcUsed: 'VE HEALTH SUMMARY TYPES', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE HEALTH SUMMARY TYPES', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -22,7 +23,7 @@ export default async function vistaBillingConfigRoutes(server: FastifyInstance) 
       return { ok: true, source: 'vista', rpcUsed: 'VE IB SITE', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE IB SITE', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -44,7 +45,7 @@ export default async function vistaBillingConfigRoutes(server: FastifyInstance) 
       return { ok: true, source: 'vista', rpcUsed: 'VE INS LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE INS LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -69,7 +70,7 @@ export default async function vistaBillingConfigRoutes(server: FastifyInstance) 
         return { ok: true, source: 'vista', rpcUsed: 'VE INS DETAIL', data: detail };
       } catch (err: any) {
         log.error('Failed to call VE INS DETAIL', { err });
-        return reply.code(500).send({ ok: false, error: err.message });
+        return reply.code(500).send({ ok: false, error: safeErr(err) });
       }
     }
   );
@@ -92,7 +93,7 @@ export default async function vistaBillingConfigRoutes(server: FastifyInstance) 
       return { ok: true, source: 'vista', rpcUsed: 'VE CLAIM COUNT', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE CLAIM COUNT', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -115,7 +116,7 @@ export default async function vistaBillingConfigRoutes(server: FastifyInstance) 
       return { ok: true, source: 'vista', rpcUsed: 'VE INS CREATE' };
     } catch (err: any) {
       log.error('Failed to call VE INS CREATE', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -137,7 +138,7 @@ export default async function vistaBillingConfigRoutes(server: FastifyInstance) 
       return { ok: true, source: 'vista', rpcUsed: 'VE INS EDIT' };
     } catch (err: any) {
       log.error('Failed to call VE INS EDIT', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

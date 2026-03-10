@@ -1,5 +1,5 @@
 /**
- * Stub Messaging Adapter — Phase 37C.
+ * Stub Messaging Adapter -- Phase 37C.
  * Returns pending stubs when no HL7/HLO backend is configured.
  */
 
@@ -12,7 +12,7 @@ export class StubMessagingAdapter implements MessagingAdapter {
   readonly _isStub = true;
 
   async healthCheck() {
-    return { ok: true, latencyMs: 0, detail: 'Stub messaging adapter — no backend' };
+    return { ok: true, latencyMs: 0, detail: 'Stub messaging adapter -- no backend' };
   }
 
   async getMessages(_limit?: number): Promise<AdapterResult<HL7Message[]>> {

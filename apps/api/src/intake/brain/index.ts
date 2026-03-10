@@ -1,5 +1,5 @@
 /**
- * Intake Brain Module — Barrel Export (Phase 143)
+ * Intake Brain Module -- Barrel Export (Phase 143)
  *
  * Initializes brain plugin registry with all available providers.
  * Rules engine is always registered. LLM and 3P are opt-in.
@@ -48,17 +48,17 @@ import { log } from '../../lib/logger.js';
  * Rules engine is always registered. Others based on env vars.
  */
 export function initBrainPlugins(): void {
-  // 1. Rules engine — ALWAYS available (mandatory fallback)
+  // 1. Rules engine -- ALWAYS available (mandatory fallback)
   registerBrainPlugin(new RulesEngineBrain());
 
-  // 2. LLM provider — opt-in via INTAKE_LLM_ENABLED
+  // 2. LLM provider -- opt-in via INTAKE_LLM_ENABLED
   if (process.env.INTAKE_LLM_ENABLED === 'true') {
     const variant = process.env.INTAKE_LLM_VARIANT ?? 'default';
     registerBrainPlugin(new LlmBrainPlugin(variant));
     log.info(`LLM brain registered: llm_provider:${variant}`);
   }
 
-  // 3. Third-party connectors — register if API keys present
+  // 3. Third-party connectors -- register if API keys present
   const thirdPartyVendors = (process.env.INTAKE_3P_VENDORS ?? '').split(',').filter(Boolean);
   for (const vendor of thirdPartyVendors) {
     registerBrainPlugin(new ThirdPartyBrainPlugin(vendor.trim()));

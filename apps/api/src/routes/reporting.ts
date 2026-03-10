@@ -1,5 +1,5 @@
 /**
- * Reporting & export routes — Phase 19A.
+ * Reporting & export routes -- Phase 19A.
  *
  * PLATFORM OPERATIONAL REPORTS ONLY.
  * These endpoints track system health, integration status, audit events,
@@ -17,13 +17,13 @@
  * See: docs/reporting-grounding.md
  *
  * Routes:
- *   GET  /reports/operations        — RPC health, circuit breaker, cache, process metrics
- *   GET  /reports/integrations      — integration health summary + per-entry queue metrics
- *   GET  /reports/audit             — audit event summary + filtered event list
- *   GET  /reports/clinical-activity — clinical action counts (no PHI text)
- *   POST /reports/export            — create audited export job (CSV/JSON)
- *   GET  /reports/export/jobs       — list export jobs
- *   GET  /reports/export/:jobId     — download completed export
+ *   GET  /reports/operations        -- RPC health, circuit breaker, cache, process metrics
+ *   GET  /reports/integrations      -- integration health summary + per-entry queue metrics
+ *   GET  /reports/audit             -- audit event summary + filtered event list
+ *   GET  /reports/clinical-activity -- clinical action counts (no PHI text)
+ *   POST /reports/export            -- create audited export job (CSV/JSON)
+ *   GET  /reports/export/jobs       -- list export jobs
+ *   GET  /reports/export/:jobId     -- download completed export
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -110,7 +110,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     return null;
   }
 
-  /* ── GET /reports/operations ─────────────────────────────────── */
+  /* -- GET /reports/operations ----------------------------------- */
   server.get('/reports/operations', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -155,7 +155,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     return { ok: true, cached: false, ...report };
   });
 
-  /* ── GET /reports/integrations ───────────────────────────────── */
+  /* -- GET /reports/integrations --------------------------------- */
   server.get('/reports/integrations', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -209,7 +209,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     return { ok: true, cached: false, ...report };
   });
 
-  /* ── GET /reports/audit ──────────────────────────────────────── */
+  /* -- GET /reports/audit ---------------------------------------- */
   server.get('/reports/audit', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -261,7 +261,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     };
   });
 
-  /* ── GET /reports/clinical-activity ──────────────────────────── */
+  /* -- GET /reports/clinical-activity ---------------------------- */
   server.get('/reports/clinical-activity', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -274,7 +274,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
       return { ok: true, cached: true, scope: 'platform-global', ...cached };
     }
 
-    // Aggregate clinical activity from audit events — counts only, no PHI text
+    // Aggregate clinical activity from audit events -- counts only, no PHI text
     const allEvents = queryAuditEvents({ limit: 5000 });
 
     const clinicalCounts: Record<string, number> = {};
@@ -311,7 +311,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
       phiAccessCounts: phiCounts,
       uniquePatientCount: uniquePatients.size,
       uniqueProviderCount: uniqueProviders.size,
-      note: 'Counts only — no PHI text is included in this report.',
+      note: 'Counts only -- no PHI text is included in this report.',
     };
 
     setCache('report:clinical:platform-global', report, REPORT_CONFIG.clinicalCacheTtlMs);
@@ -323,7 +323,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     return { ok: true, cached: false, scope: 'platform-global', ...report };
   });
 
-  /* ── POST /reports/export ────────────────────────────────────── */
+  /* -- POST /reports/export -------------------------------------- */
   server.post('/reports/export', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -447,7 +447,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     };
   });
 
-  /* ── GET /reports/export/jobs ────────────────────────────────── */
+  /* -- GET /reports/export/jobs ---------------------------------- */
   server.get('/reports/export/jobs', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -471,7 +471,7 @@ export default async function reportingRoutes(server: FastifyInstance): Promise<
     return { ok: true, count: stripped.length, jobs: stripped };
   });
 
-  /* ── GET /reports/export/:jobId ──────────────────────────────── */
+  /* -- GET /reports/export/:jobId -------------------------------- */
   server.get('/reports/export/:jobId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);

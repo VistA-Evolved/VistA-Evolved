@@ -1,5 +1,5 @@
 /**
- * PhilHealth eClaims 3.0 Adapter — Domain Types
+ * PhilHealth eClaims 3.0 Adapter -- Domain Types
  *
  * Phase 96: Adapter skeleton for eClaims 3.0 transition.
  *
@@ -15,17 +15,17 @@
  * eClaims 3.0 deadline: April 1, 2026 (older versions disabled March 31, 2026).
  */
 
-/* ── Submission Status (honest — never fake success) ────────── */
+/* -- Submission Status (honest -- never fake success) ---------- */
 
 /**
  * Honest lifecycle statuses:
- *   draft          — Packet assembled but not reviewed
- *   reviewed       — Staff reviewed, ready to export
- *   exported       — Export bundle generated (JSON/PDF/XML)
- *   submitted_manual — Staff manually uploaded to PhilHealth portal
- *   accepted       — PhilHealth confirmed acceptance (staff enters TCN)
- *   denied         — PhilHealth denied claim (staff enters reason)
- *   appealed       — Denial appealed
+ *   draft          -- Packet assembled but not reviewed
+ *   reviewed       -- Staff reviewed, ready to export
+ *   exported       -- Export bundle generated (JSON/PDF/XML)
+ *   submitted_manual -- Staff manually uploaded to PhilHealth portal
+ *   accepted       -- PhilHealth confirmed acceptance (staff enters TCN)
+ *   denied         -- PhilHealth denied claim (staff enters reason)
+ *   appealed       -- Denial appealed
  *
  * CRITICAL: 'accepted' and 'denied' require manual staff confirmation.
  * The system CANNOT advance to these statuses automatically without
@@ -61,7 +61,7 @@ export function isManualOnlyTransition(to: EClaimsSubmissionStatus): boolean {
   return ['submitted_manual', 'accepted', 'denied'].includes(to);
 }
 
-/* ── Claim Packet (normalized internal object) ──────────────── */
+/* -- Claim Packet (normalized internal object) ---------------- */
 
 export interface ClaimPacketPatient {
   dfn: string;
@@ -165,7 +165,7 @@ export interface ClaimPacket {
   contentHash: string;
 }
 
-/* ── Export Bundle ───────────────────────────────────────────── */
+/* -- Export Bundle --------------------------------------------- */
 
 export type ExportFormat = 'json' | 'pdf_text' | 'xml_placeholder';
 
@@ -199,7 +199,7 @@ export interface ExportBundle {
   };
 }
 
-/* ── Submission Record (honest tracking) ────────────────────── */
+/* -- Submission Record (honest tracking) ---------------------- */
 
 export interface DenialReason {
   code?: string;
@@ -216,7 +216,7 @@ export interface SubmissionRecord {
   sourceClaimDraftId: string;
   status: EClaimsSubmissionStatus;
   /**
-   * Transmittal Control Number — only set when staff confirms
+   * Transmittal Control Number -- only set when staff confirms
    * acceptance from PhilHealth. NEVER auto-generated.
    */
   transmittalControlNumber?: string;
@@ -242,7 +242,7 @@ export interface SubmissionRecord {
   updatedAt: string;
 }
 
-/* ── XML Generator Interface (strict contract) ──────────────── */
+/* -- XML Generator Interface (strict contract) ---------------- */
 
 /**
  * Strict interface for eClaims 3.0 XML generation.
@@ -278,7 +278,7 @@ export interface XmlValidationResult {
   specBased: boolean;
 }
 
-/* ── Spec Status Gate ───────────────────────────────────────── */
+/* -- Spec Status Gate ----------------------------------------- */
 
 export interface SpecAcquisitionGate {
   id: string;

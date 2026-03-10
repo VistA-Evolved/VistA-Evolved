@@ -1,5 +1,5 @@
 /**
- * RPC Connection Pool — Phase 573 (Wave 42)
+ * RPC Connection Pool -- Phase 573 (Wave 42)
  *
  * Replaces the single global socket in rpcBrokerClient.ts with a pool of
  * connections keyed by `tenantId:duz`. Each connection authenticates as a
@@ -37,7 +37,7 @@ function dbg(step: string, detail?: string): void {
 
 /* ------------------------------------------------------------------ */
 /* XWB protocol helpers (duplicated from rpcBrokerClient to avoid      */
-/* circular dependency — these are pure functions)                     */
+/* circular dependency -- these are pure functions)                     */
 /* ------------------------------------------------------------------ */
 
 function sPack(s: string): string {
@@ -167,7 +167,7 @@ function stripNulls(s: string): string {
 }
 
 /* ------------------------------------------------------------------ */
-/* PooledConnection — each has its own socket, buffer, and mutex       */
+/* PooledConnection -- each has its own socket, buffer, and mutex       */
 /* ------------------------------------------------------------------ */
 
 interface PooledConnection {
@@ -320,7 +320,7 @@ function connReadToEOT(conn: PooledConnection): Promise<string> {
 }
 
 /* ------------------------------------------------------------------ */
-/* Pool — keyed by tenantId:duz                                        */
+/* Pool -- keyed by tenantId:duz                                        */
 /* ------------------------------------------------------------------ */
 
 const pool = new Map<string, PooledConnection>();

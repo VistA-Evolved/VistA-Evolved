@@ -1,5 +1,5 @@
 /**
- * extract-tabs.mjs — Extract tab labels, order, and position from CPRS Delphi source.
+ * extract-tabs.mjs -- Extract tab labels, order, and position from CPRS Delphi source.
  *
  * Sources:
  *   - uConst.pas: CT_* constants define tab IDs
@@ -49,7 +49,7 @@ async function parseFrameTabs() {
   }
   // Check for conditional tabs (e.g., Surgery)
   const conditionalRe = /if\s+(\w+)\s+then\s+CreateTab\(\s*(CT_\w+)\s*,\s*'([^']+)'\s*\)/g;
-  // Already captured above — annotate conditional ones
+  // Already captured above -- annotate conditional ones
   const condRe = /if\s+\w+\s+then\s+CreateTab\(\s*(CT_\w+)/g;
   const conditionals = new Set();
   while ((m = condRe.exec(src)) !== null) {
@@ -184,7 +184,7 @@ export async function extractTabs() {
   await mkdir(OUTPUT_DIR, { recursive: true });
   await writeFile(join(OUTPUT_DIR, 'tabs.json'), JSON.stringify(result, null, 2));
   console.log(
-    `  ✓ tabs.json — ${result.summary.mainTabCount} main tabs, ${result.summary.subTabSheetCount} sub-tabs`
+    `  ✓ tabs.json -- ${result.summary.mainTabCount} main tabs, ${result.summary.subTabSheetCount} sub-tabs`
   );
   return result;
 }

@@ -20,6 +20,10 @@ import { join, dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { randomUUID } from 'crypto';
 import { isPgConfigured, getPgPool } from '../../platform/pg/pg-db.js';
+import { provisionVistaInstance, allocatePort, getContainerStatus, stopVistaContainer, restartVistaContainer, removeVistaContainer, listManagedContainers, installRoutines, seedTenantConfig } from '../../services/vista-orchestrator.js';
+import { getBillingProvider, resolvePlanId } from '../../billing/index.js';
+import { upsertCustomer, upsertSubscription } from '../../billing/billing-repo.js';
+import { safeErr } from '../../lib/safe-error.js';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -57,10 +61,12 @@ interface ProvisionedTenant {
   modules: string[];
   config: Record<string, unknown>;
   sku: string;
+  planId?: string;
   status: TenantStatus;
   vistaHost?: string;
   vistaPort?: number;
   vistaContainerName?: string;
+  facilityStation?: string;
   createdAt: string;
   updatedAt: string;
   activatedAt?: string;
@@ -68,12 +74,12 @@ interface ProvisionedTenant {
 
 const fallbackStore = new Map<string, ProvisionedTenant>();
 
-function usePg(): boolean {
+function isPgActive(): boolean {
   return isPgConfigured();
 }
 
 async function dbInsertTenant(t: ProvisionedTenant): Promise<void> {
-  if (!usePg()) {
+  if (!isPgActive()) {
     fallbackStore.set(t.id, t);
     return;
   }
@@ -89,7 +95,7 @@ async function dbInsertTenant(t: ProvisionedTenant): Promise<void> {
 }
 
 async function dbUpdateTenant(t: ProvisionedTenant): Promise<void> {
-  if (!usePg()) {
+  if (!isPgActive()) {
     fallbackStore.set(t.id, t);
     return;
   }
@@ -104,7 +110,7 @@ async function dbUpdateTenant(t: ProvisionedTenant): Promise<void> {
 }
 
 async function dbGetTenant(id: string): Promise<ProvisionedTenant | null> {
-  if (!usePg()) return fallbackStore.get(id) || null;
+  if (!isPgActive()) return fallbackStore.get(id) || null;
   const pool = getPgPool();
   const { rows } = await pool.query('SELECT * FROM tenant_catalog WHERE id=$1', [id]);
   if (rows.length === 0) return null;
@@ -112,14 +118,14 @@ async function dbGetTenant(id: string): Promise<ProvisionedTenant | null> {
 }
 
 async function dbListTenants(): Promise<ProvisionedTenant[]> {
-  if (!usePg()) return Array.from(fallbackStore.values()).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
+  if (!isPgActive()) return Array.from(fallbackStore.values()).sort((a, b) => b.createdAt.localeCompare(a.createdAt));
   const pool = getPgPool();
   const { rows } = await pool.query('SELECT * FROM tenant_catalog ORDER BY created_at DESC');
   return rows.map(rowToTenant);
 }
 
 async function dbLogProvisionEvent(tenantId: string, catalogId: string, stepName: string, status: string, error?: string, durationMs?: number): Promise<void> {
-  if (!usePg()) return;
+  if (!isPgActive()) return;
   const pool = getPgPool();
   await pool.query(
     `INSERT INTO tenant_provision_event (id, tenant_id, catalog_id, step_name, status, error, duration_ms) VALUES ($1,$2,$3,$4,$5,$6,$7)`,
@@ -244,7 +250,7 @@ export default async function provisioningRoutes(server: FastifyInstance) {
     await dbInsertTenant(tenant);
     log.info('Tenant provisioning request created', { tenantId: tenant.id, entityType, name: tenant.name });
 
-    return reply.code(201).send({ ok: true, tenant, persisted: usePg() ? 'pg' : 'memory' });
+    return reply.code(201).send({ ok: true, tenant, persisted: isPgActive() ? 'pg' : 'memory' });
   });
 
   server.get('/admin/provisioning/tenants', async (request, reply) => {
@@ -252,7 +258,7 @@ export default async function provisioningRoutes(server: FastifyInstance) {
     requireRole(session, ['admin'], reply);
 
     const tenants = await dbListTenants();
-    return { ok: true, tenants, total: tenants.length, backend: usePg() ? 'pg' : 'memory' };
+    return { ok: true, tenants, total: tenants.length, backend: isPgActive() ? 'pg' : 'memory' };
   });
 
   server.get('/admin/provisioning/tenants/:id', async (request, reply) => {
@@ -330,7 +336,7 @@ export default async function provisioningRoutes(server: FastifyInstance) {
         await dbUpdateTenant(tenant);
         await dbLogProvisionEvent(tenant.tenantId, tenant.id, step.name, 'failed', err.message, last.durationMs);
         log.error('Provisioning step failed', { tenantId: id, step: step.name, err });
-        return reply.code(500).send({ ok: false, error: `Step '${step.name}' failed: ${err.message}`, provisionLog });
+        return reply.code(500).send({ ok: false, error: safeErr(err), provisionLog });
       }
     }
 
@@ -348,6 +354,105 @@ export default async function provisioningRoutes(server: FastifyInstance) {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
     return { ok: true, countries: COUNTRY_CONFIGS };
+  });
+
+  // -- Container lifecycle management ----------------------------
+
+  server.get('/admin/provisioning/containers', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+    const containers = await listManagedContainers();
+    return { ok: true, containers, total: containers.length };
+  });
+
+  server.get('/admin/provisioning/tenants/:id/container', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+    const { id } = request.params as { id: string };
+    const tenant = await dbGetTenant(id);
+    if (!tenant) return reply.code(404).send({ ok: false, error: 'Tenant not found' });
+    if (!tenant.vistaContainerName) return reply.code(404).send({ ok: false, error: 'No container allocated' });
+    const status = await getContainerStatus(tenant.vistaContainerName);
+    return { ok: true, container: status, tenant: { id: tenant.id, name: tenant.name } };
+  });
+
+  server.post('/admin/provisioning/tenants/:id/container/stop', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+    const { id } = request.params as { id: string };
+    const tenant = await dbGetTenant(id);
+    if (!tenant?.vistaContainerName) return reply.code(404).send({ ok: false, error: 'No container' });
+    const result = await stopVistaContainer(tenant.vistaContainerName);
+    if (!result.ok) return reply.code(500).send(result);
+    return result;
+  });
+
+  server.post('/admin/provisioning/tenants/:id/container/restart', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+    const { id } = request.params as { id: string };
+    const tenant = await dbGetTenant(id);
+    if (!tenant?.vistaContainerName) return reply.code(404).send({ ok: false, error: 'No container' });
+    const result = await restartVistaContainer(tenant.vistaContainerName);
+    if (!result.ok) return reply.code(500).send(result);
+    return result;
+  });
+
+  server.post('/admin/provisioning/tenants/:id/container/remove', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+    const { id } = request.params as { id: string };
+    const tenant = await dbGetTenant(id);
+    if (!tenant?.vistaContainerName) return reply.code(404).send({ ok: false, error: 'No container' });
+    const result = await removeVistaContainer(tenant.vistaContainerName);
+    if (!result.ok) return reply.code(500).send(result);
+    tenant.vistaContainerName = undefined;
+    tenant.vistaHost = undefined;
+    tenant.vistaPort = undefined;
+    tenant.updatedAt = new Date().toISOString();
+    await dbUpdateTenant(tenant);
+    return result;
+  });
+
+  server.post('/admin/provisioning/tenants/:id/container/install-routines', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+    const { id } = request.params as { id: string };
+    const tenant = await dbGetTenant(id);
+    if (!tenant?.vistaContainerName) return reply.code(404).send({ ok: false, error: 'No container' });
+    const result = await installRoutines(tenant.vistaContainerName);
+    return { ok: true, ...result };
+  });
+
+  // Seed tenant config on an existing container
+  server.post('/admin/provisioning/tenants/:id/container/seed', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+    const { id } = request.params as { id: string };
+    const tenant = await dbGetTenant(id);
+    if (!tenant?.vistaContainerName) return reply.code(404).send({ ok: false, error: 'No container' });
+    const body = (request.body as any) || {};
+    const result = await seedTenantConfig(tenant.vistaContainerName, {
+      facilityName: body.facilityName || tenant.name,
+      stationNumber: body.stationNumber || '500',
+      divisionName: body.divisionName,
+    });
+    return { ok: result.ok, error: result.error };
+  });
+
+  // Seed any container by name (for testing against existing VEHU)
+  server.post('/admin/provisioning/seed-container', async (request, reply) => {
+    const session = await requireSession(request, reply);
+    requireRole(session, ['admin'], reply);
+    const body = (request.body as any) || {};
+    const containerName = body.containerName;
+    if (!containerName) return reply.code(400).send({ ok: false, error: 'containerName required' });
+    const result = await seedTenantConfig(containerName, {
+      facilityName: body.facilityName || 'Test Facility',
+      stationNumber: body.stationNumber || '500',
+      divisionName: body.divisionName,
+    });
+    return { ok: result.ok, error: result.error };
   });
 }
 
@@ -380,7 +485,7 @@ function buildProvisioningPlan(tenant: ProvisionedTenant): ProvisionAction[] {
     {
       name: 'create-platform-tenant',
       execute: async () => {
-        if (usePg()) {
+        if (isPgActive()) {
           const pool = getPgPool();
           const existing = await pool.query('SELECT id FROM platform_audit_event WHERE tenant_id=$1 LIMIT 1', [tenant.tenantId]);
           log.info('Platform tenant record ensured', { tenantId: tenant.tenantId, preExisting: existing.rows.length > 0 });
@@ -391,13 +496,13 @@ function buildProvisioningPlan(tenant: ProvisionedTenant): ProvisionAction[] {
     {
       name: 'configure-modules',
       execute: async () => {
-        if (usePg()) {
+        if (isPgActive()) {
           const pool = getPgPool();
           for (const modId of tenant.modules) {
             await pool.query(
               `INSERT INTO tenant_module (id, tenant_id, module_id, enabled, created_at, updated_at)
-               VALUES ($1, $2, $3, true, $4, $4)
-               ON CONFLICT (tenant_id, module_id) DO UPDATE SET enabled=true, updated_at=$4`,
+               VALUES ($1, $2, $3, 1, $4, $4)
+               ON CONFLICT (tenant_id, module_id) DO UPDATE SET enabled=1, updated_at=$4`,
               [randomUUID(), tenant.tenantId, modId, new Date().toISOString()]
             );
           }
@@ -421,25 +526,61 @@ function buildProvisioningPlan(tenant: ProvisionedTenant): ProvisionAction[] {
       name: 'allocate-vista-instance',
       execute: async () => {
         const countryConfig = COUNTRY_CONFIGS[tenant.country] || COUNTRY_CONFIGS.US;
-        const basePort = 9440;
-        const portOffset = Math.abs(hashCode(tenant.id)) % 1000;
-        const allocatedPort = basePort + portOffset;
         const containerName = `vista-${tenant.id.slice(0, 8)}`;
+        const dockerMode = process.env.PROVISIONING_MODE === 'docker' ? 'live' : 'deferred';
 
-        tenant.vistaHost = '127.0.0.1';
-        tenant.vistaPort = allocatedPort;
-        tenant.vistaContainerName = containerName;
+        if (dockerMode === 'live') {
+          // Actually provision a Docker container
+          const port = await allocatePort(tenant.tenantId);
+          const result = await provisionVistaInstance({
+            containerName,
+            hostPort: port,
+            tenantId: tenant.tenantId,
+            timezone: countryConfig.timezone,
+          }, {
+            facilityName: tenant.name,
+            stationNumber: '500',
+          });
 
-        (tenant.config as any).vistaAllocation = {
-          imageName: 'worldvista/vehu:latest',
-          containerName,
-          host: tenant.vistaHost,
-          port: allocatedPort,
-          timezone: countryConfig.timezone,
-          dockerMode: process.env.PROVISIONING_MODE === 'docker' ? 'live' : 'deferred',
-        };
+          if (!result.ok) {
+            throw new Error(`Docker provisioning failed: ${result.error}`);
+          }
 
-        log.info('VistA instance allocated', { tenantId: tenant.tenantId, port: allocatedPort, containerName });
+          tenant.vistaHost = '127.0.0.1';
+          tenant.vistaPort = result.hostPort;
+          tenant.vistaContainerName = result.containerName;
+
+          (tenant.config as any).vistaAllocation = {
+            imageName: 'worldvista/vehu:latest',
+            containerName: result.containerName,
+            host: tenant.vistaHost,
+            port: result.hostPort,
+            timezone: countryConfig.timezone,
+            dockerMode: 'live',
+            healthy: result.healthy,
+            routinesInstalled: result.routinesInstalled,
+          };
+        } else {
+          // Deferred mode: allocate port and container name only
+          const basePort = 9440;
+          const portOffset = Math.abs(hashCode(tenant.id)) % 1000;
+          const allocatedPort = basePort + portOffset;
+
+          tenant.vistaHost = '127.0.0.1';
+          tenant.vistaPort = allocatedPort;
+          tenant.vistaContainerName = containerName;
+
+          (tenant.config as any).vistaAllocation = {
+            imageName: 'worldvista/vehu:latest',
+            containerName,
+            host: tenant.vistaHost,
+            port: allocatedPort,
+            timezone: countryConfig.timezone,
+            dockerMode: 'deferred',
+          };
+        }
+
+        log.info('VistA instance allocated', { tenantId: tenant.tenantId, port: tenant.vistaPort, containerName, dockerMode });
       },
     },
     {
@@ -459,21 +600,74 @@ function buildProvisioningPlan(tenant: ProvisionedTenant): ProvisionAction[] {
     {
       name: 'setup-tenant-config',
       execute: async () => {
-        if (usePg()) {
+        if (isPgActive()) {
           const pool = getPgPool();
-          const configPayload = {
-            entityType: tenant.entityType,
-            country: tenant.country,
-            sku: tenant.sku,
-            vistaHost: tenant.vistaHost,
-            vistaPort: tenant.vistaPort,
-          };
+          const now = new Date().toISOString();
+          const vistaHost = tenant.vistaHost || '127.0.0.1';
+          const vistaPort = tenant.vistaPort || 9431;
+          const facilityName = (tenant as any).facilityName || tenant.name || 'New Facility';
+          const station = tenant.facilityStation || '500';
+          const countryPack = tenant.country || 'US';
+          const enabledModules = JSON.stringify(tenant.modules || []);
           await pool.query(
-            `INSERT INTO tenant_config (id, tenant_id, config_key, config_value, created_at, updated_at)
-             VALUES ($1, $2, 'provisioning', $3, $4, $4)
-             ON CONFLICT DO NOTHING`,
-            [randomUUID(), tenant.tenantId, JSON.stringify(configPayload), new Date().toISOString()]
+            `INSERT INTO tenant_config (id, tenant_id, facility_name, facility_station, vista_host, vista_port, enabled_modules, country_pack_id, created_at, updated_at)
+             VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $9)
+             ON CONFLICT (tenant_id) DO UPDATE SET
+               facility_name = EXCLUDED.facility_name,
+               vista_host = EXCLUDED.vista_host,
+               vista_port = EXCLUDED.vista_port,
+               enabled_modules = EXCLUDED.enabled_modules,
+               country_pack_id = EXCLUDED.country_pack_id,
+               updated_at = EXCLUDED.updated_at`,
+            [randomUUID(), tenant.tenantId, facilityName, station, vistaHost, vistaPort, enabledModules, countryPack, now]
           );
+        }
+      },
+    },
+    {
+      name: 'create-billing-subscription',
+      execute: async () => {
+        const planId = tenant.planId || resolvePlanId(tenant.entityType);
+
+        try {
+          const billing = getBillingProvider();
+          const sub = await billing.createSubscription(tenant.tenantId, planId);
+
+          // Persist to PG
+          const customer = await upsertCustomer(
+            tenant.tenantId,
+            billing.name,
+            sub.externalId,
+            tenant.contactEmail,
+          );
+          await upsertSubscription(tenant.tenantId, customer.id, sub, billing.name);
+
+          (tenant.config as any).billing = {
+            provider: billing.name,
+            planId,
+            subscriptionId: sub.id,
+            status: sub.status,
+            trialEnd: sub.trialEnd,
+          };
+
+          log.info('Billing subscription created', {
+            tenantId: tenant.tenantId,
+            planId,
+            status: sub.status,
+            provider: billing.name,
+          });
+        } catch (err: any) {
+          // Billing failure should not block provisioning -- log and continue
+          log.warn('Billing subscription creation failed (non-blocking)', {
+            tenantId: tenant.tenantId,
+            error: safeErr(err),
+          });
+          (tenant.config as any).billing = {
+            provider: 'none',
+            error: safeErr(err),
+            planId,
+            status: 'pending',
+          };
         }
       },
     },

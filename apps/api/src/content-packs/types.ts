@@ -1,5 +1,5 @@
 /**
- * Phase 390 (W22-P2): Clinical Content Pack Framework v2 — Types
+ * Phase 390 (W22-P2): Clinical Content Pack Framework v2 -- Types
  *
  * Extends the Phase 158 template engine with order sets, flowsheets, inbox
  * rules, dashboards, and CDS rules. Packs are installable, versioned (semver),
@@ -10,7 +10,7 @@
 
 import type { TemplateSetting, ClinicalTemplate } from '../templates/types.js';
 
-// ─── Order Set Types ────────────────────────────────────────────
+// --- Order Set Types --------------------------------------------
 
 export interface OrderSetItem {
   /** Internal key for the item within the order set */
@@ -58,7 +58,7 @@ export interface OrderSet {
   updatedAt: string;
 }
 
-// ─── Flowsheet Types ────────────────────────────────────────────
+// --- Flowsheet Types --------------------------------------------
 
 export interface FlowsheetColumn {
   key: string;
@@ -95,7 +95,7 @@ export interface Flowsheet {
   updatedAt: string;
 }
 
-// ─── Inbox Rule Types ───────────────────────────────────────────
+// --- Inbox Rule Types -------------------------------------------
 
 export type InboxTriggerType =
   | 'critical_result'
@@ -128,7 +128,7 @@ export interface InboxRule {
   updatedAt: string;
 }
 
-// ─── Dashboard KPI Types ────────────────────────────────────────
+// --- Dashboard KPI Types ----------------------------------------
 
 export interface DashboardKpi {
   key: string;
@@ -164,7 +164,7 @@ export interface Dashboard {
   updatedAt: string;
 }
 
-// ─── CDS Rule Types ─────────────────────────────────────────────
+// --- CDS Rule Types ---------------------------------------------
 
 export type CdsHookType =
   | 'patient-view'
@@ -220,7 +220,7 @@ export interface CdsRule {
   updatedAt: string;
 }
 
-// ─── Content Pack v2 (Installable Bundle) ───────────────────────
+// --- Content Pack v2 (Installable Bundle) -----------------------
 
 export interface PackMigration {
   fromVersion: string;
@@ -259,7 +259,7 @@ export interface ContentPackV2 {
   /** Minimum platform version (checked but not enforced currently) */
   minPlatformVersion?: string;
 
-  /** Content sections — all optional per pack */
+  /** Content sections -- all optional per pack */
   templates?: Omit<ClinicalTemplate, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>[];
   orderSets?: Omit<
     OrderSet,
@@ -286,7 +286,7 @@ export interface ContentPackV2 {
   migrations?: PackMigration[];
 }
 
-// ─── Installation Event ─────────────────────────────────────────
+// --- Installation Event -----------------------------------------
 
 export type PackInstallAction = 'install' | 'upgrade' | 'rollback' | 'uninstall';
 
@@ -306,7 +306,7 @@ export interface PackInstallEvent {
   createdAt: string;
 }
 
-// ─── Pack Install Preview ───────────────────────────────────────
+// --- Pack Install Preview ---------------------------------------
 
 export interface PackInstallPreview {
   packId: string;

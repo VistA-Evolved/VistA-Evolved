@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Inpatient Bed Board — Phase 137
+ * Inpatient Bed Board -- Phase 137
  *
  * Dedicated bed-level occupancy view showing:
  * - Ward selector

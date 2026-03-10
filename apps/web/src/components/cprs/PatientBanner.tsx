@@ -9,7 +9,7 @@ export default function PatientBanner() {
   if (!dfn) {
     return (
       <div className={styles.banner}>
-        <span className={styles.bannerEmpty}>No patient selected — use File → Select Patient</span>
+        <span className={styles.bannerEmpty}>{'No patient selected -- use File -> Select Patient'}</span>
       </div>
     );
   }

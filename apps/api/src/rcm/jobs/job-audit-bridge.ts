@@ -1,5 +1,5 @@
 /**
- * Job Audit Bridge — Phase 82: RCM Adapter Expansion v2
+ * Job Audit Bridge -- Phase 82: RCM Adapter Expansion v2
  *
  * Bridges the RCM job queue to the RCM audit trail.
  * Every job completion, failure, DLQ move, or cancellation
@@ -8,14 +8,14 @@
  * Also provides tenant-scoped job queue helpers and
  * job enqueue validation (no PHI in payloads).
  *
- * No PHI in audit entries — only job IDs, types, payer codes, timestamps.
+ * No PHI in audit entries -- only job IDs, types, payer codes, timestamps.
  */
 
 import { getJobQueue, type RcmJob, type RcmJobType, type RcmJobStatus } from './queue.js';
 import { appendRcmAudit } from '../audit/rcm-audit.js';
 import { log } from '../../lib/logger.js';
 
-/* ── PHI Guard ─────────────────────────────────────────────── */
+/* -- PHI Guard ----------------------------------------------- */
 
 const PHI_PATTERNS = [
   /\b\d{3}-\d{2}-\d{4}\b/, // SSN
@@ -56,7 +56,7 @@ export function validateJobPayload(payload: Record<string, unknown>): {
   return { valid: violations.length === 0, violations };
 }
 
-/* ── Audited Job Operations ────────────────────────────────── */
+/* -- Audited Job Operations ---------------------------------- */
 
 /**
  * Enqueue a job with audit trail and PHI validation.
@@ -75,7 +75,7 @@ export async function auditedEnqueue(params: {
   // PHI guard
   const phiCheck = validateJobPayload(params.payload);
   if (!phiCheck.valid) {
-    log.warn('Job payload rejected — potential PHI', {
+    log.warn('Job payload rejected -- potential PHI', {
       type: params.type,
       violations: phiCheck.violations,
     });
@@ -172,7 +172,7 @@ export function auditJobCancellation(jobId: string, userId?: string): void {
   });
 }
 
-/* ── Tenant-Scoped Queue Helpers ───────────────────────────── */
+/* -- Tenant-Scoped Queue Helpers ----------------------------- */
 
 /**
  * List jobs for a specific tenant.

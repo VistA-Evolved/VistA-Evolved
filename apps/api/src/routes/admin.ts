@@ -1,5 +1,5 @@
 /**
- * Admin routes — Phase 17B.
+ * Admin routes -- Phase 17B.
  *
  * Tenant config, feature flags, UI defaults, note templates, connectors.
  * All endpoints require admin role (enforced by AUTH_RULES regex in security.ts).
@@ -90,16 +90,16 @@ function resolveProvisionTenantId(body: any): string | null {
 /* ------------------------------------------------------------------ */
 
 export default async function adminRoutes(server: FastifyInstance): Promise<void> {
-  // ── Tenant CRUD ─────────────────────────────────────────────────
+  // -- Tenant CRUD -------------------------------------------------
 
-  /** GET /admin/tenants — list all tenants */
+  /** GET /admin/tenants -- list all tenants */
   server.get('/admin/tenants', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
     return { ok: true, tenants: listTenants(), scope: 'platform-global' };
   });
 
-  /** GET /admin/tenants/:tenantId — get single tenant */
+  /** GET /admin/tenants/:tenantId -- get single tenant */
   server.get('/admin/tenants/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -112,7 +112,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenant };
   });
 
-  /** PUT /admin/tenants/:tenantId — create or update tenant */
+  /** PUT /admin/tenants/:tenantId -- create or update tenant */
   server.put('/admin/tenants/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -166,7 +166,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenant: result };
   });
 
-  /** DELETE /admin/tenants/:tenantId — delete tenant */
+  /** DELETE /admin/tenants/:tenantId -- delete tenant */
   server.delete('/admin/tenants/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -180,7 +180,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
   });
 
   /**
-   * POST /admin/tenants/provision — Unified tenant provisioning pipeline.
+   * POST /admin/tenants/provision -- Unified tenant provisioning pipeline.
    *
    * Orchestrates: tenant config creation, module entitlement seeding,
    * VistA connectivity probe, and optional billing customer creation.
@@ -321,9 +321,9 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     });
   });
 
-  // ── Feature Flags ───────────────────────────────────────────────
+  // -- Feature Flags -----------------------------------------------
 
-  /** GET /admin/feature-flags/:tenantId — get feature flags */
+  /** GET /admin/feature-flags/:tenantId -- get feature flags */
   server.get('/admin/feature-flags/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -336,7 +336,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, featureFlags: tenant.featureFlags };
   });
 
-  /** PUT /admin/feature-flags/:tenantId — update feature flags (partial merge) */
+  /** PUT /admin/feature-flags/:tenantId -- update feature flags (partial merge) */
   server.put('/admin/feature-flags/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -356,9 +356,9 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, featureFlags: result };
   });
 
-  // ── UI Defaults ─────────────────────────────────────────────────
+  // -- UI Defaults -------------------------------------------------
 
-  /** GET /admin/ui-defaults/:tenantId — get UI defaults */
+  /** GET /admin/ui-defaults/:tenantId -- get UI defaults */
   server.get('/admin/ui-defaults/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -371,7 +371,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, uiDefaults: tenant.uiDefaults };
   });
 
-  /** PUT /admin/ui-defaults/:tenantId — update UI defaults (partial merge) */
+  /** PUT /admin/ui-defaults/:tenantId -- update UI defaults (partial merge) */
   server.put('/admin/ui-defaults/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -391,9 +391,9 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, uiDefaults: result };
   });
 
-  // ── Enabled Modules ─────────────────────────────────────────────
+  // -- Enabled Modules ---------------------------------------------
 
-  /** GET /admin/modules/:tenantId — get enabled modules */
+  /** GET /admin/modules/:tenantId -- get enabled modules */
   server.get('/admin/modules/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -406,7 +406,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, enabledModules: tenant.enabledModules };
   });
 
-  /** PUT /admin/modules/:tenantId — update enabled modules */
+  /** PUT /admin/modules/:tenantId -- update enabled modules */
   server.put('/admin/modules/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -426,9 +426,9 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, enabledModules: result };
   });
 
-  // ── Note Templates ──────────────────────────────────────────────
+  // -- Note Templates ----------------------------------------------
 
-  /** GET /admin/note-templates/:tenantId — list note templates */
+  /** GET /admin/note-templates/:tenantId -- list note templates */
   server.get('/admin/note-templates/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -441,7 +441,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, templates: tenant.noteTemplates };
   });
 
-  /** PUT /admin/note-templates/:tenantId/:templateId — upsert a note template */
+  /** PUT /admin/note-templates/:tenantId/:templateId -- upsert a note template */
   server.put('/admin/note-templates/:tenantId/:templateId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -479,7 +479,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, template: result };
   });
 
-  /** DELETE /admin/note-templates/:tenantId/:templateId — delete a note template */
+  /** DELETE /admin/note-templates/:tenantId/:templateId -- delete a note template */
   server.delete('/admin/note-templates/:tenantId/:templateId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -507,9 +507,9 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, deleted: templateId };
   });
 
-  // ── Connectors / Integrations ───────────────────────────────────
+  // -- Connectors / Integrations -----------------------------------
 
-  /** GET /admin/integrations/:tenantId — list connectors with status */
+  /** GET /admin/integrations/:tenantId -- list connectors with status */
   server.get('/admin/integrations/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -522,7 +522,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, connectors: tenant.connectors };
   });
 
-  /** POST /admin/integrations/:tenantId/probe — probe all connectors */
+  /** POST /admin/integrations/:tenantId/probe -- probe all connectors */
   server.post('/admin/integrations/:tenantId/probe', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -568,9 +568,9 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     };
   });
 
-  // ── Tenant Branding — Phase 282 ────────────────────────────────
+  // -- Tenant Branding -- Phase 282 --------------------------------
 
-  /** GET /admin/branding/:tenantId — get branding config */
+  /** GET /admin/branding/:tenantId -- get branding config */
   server.get('/admin/branding/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -583,7 +583,7 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, branding: tenant.branding };
   });
 
-  /** PUT /admin/branding/:tenantId — update branding config (full replace, sanitized) */
+  /** PUT /admin/branding/:tenantId -- update branding config (full replace, sanitized) */
   server.put('/admin/branding/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -613,9 +613,9 @@ export default async function adminRoutes(server: FastifyInstance): Promise<void
     return { ok: true, tenantId, branding: result };
   });
 
-  // ── Tenant config for client (read-only, session-based) ─────────
+  // -- Tenant config for client (read-only, session-based) ---------
 
-  /** GET /admin/my-tenant — get current user's tenant config (non-admin). */
+  /** GET /admin/my-tenant -- get current user's tenant config (non-admin). */
   server.get('/admin/my-tenant', async (request, reply) => {
     const session = await requireSession(request, reply);
     if (!session.tenantId) {

@@ -1,5 +1,5 @@
 /**
- * Consent Routes — Phase 312
+ * Consent Routes -- Phase 312
  *
  * Patient consent management endpoints. Session-authenticated.
  * PHI (patientDfn) is never included in audit logs.
@@ -45,7 +45,7 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
     return null;
   }
 
-  // GET /consent/profiles — list available regulatory consent profiles
+  // GET /consent/profiles -- list available regulatory consent profiles
   app.get('/consent/profiles', async () => {
     const names = listConsentProfiles();
     const profiles = names.map((name) => ({
@@ -55,12 +55,12 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, profiles };
   });
 
-  // GET /consent/categories — list consent categories
+  // GET /consent/categories -- list consent categories
   app.get('/consent/categories', async () => {
     return { ok: true, categories: [...CONSENT_CATEGORIES] };
   });
 
-  // GET /consent/patient — get consent records for a patient
+  // GET /consent/patient -- get consent records for a patient
   app.get('/consent/patient', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
     const { dfn } = query;
@@ -75,7 +75,7 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, records, total: records.length };
   });
 
-  // GET /consent/check — check consent compliance for a patient
+  // GET /consent/check -- check consent compliance for a patient
   app.get('/consent/check', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
     const { dfn, framework } = query;
@@ -95,7 +95,7 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, ...result };
   });
 
-  // POST /consent/grant — grant consent for a category
+  // POST /consent/grant -- grant consent for a category
   app.post('/consent/grant', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const tenantId = requireTenantId(request, reply);
@@ -144,7 +144,7 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, consent: record };
   });
 
-  // POST /consent/revoke — revoke a consent
+  // POST /consent/revoke -- revoke a consent
   app.post('/consent/revoke', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const tenantId = requireTenantId(request, reply);
@@ -169,7 +169,7 @@ export async function consentRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, consent: revoked };
   });
 
-  // GET /consent/active — get active consent for a specific category
+  // GET /consent/active -- get active consent for a specific category
   app.get('/consent/active', async (request, reply) => {
     const query = (request.query as Record<string, string>) || {};
     const { dfn, category } = query;

@@ -1,5 +1,5 @@
 /**
- * Durable Job Queue — Phase 142: RCM Operational Excellence
+ * Durable Job Queue -- Phase 142: RCM Operational Excellence
  *
  * SQLite-backed implementation of RcmJobQueue that survives API restarts.
  * Uses the platform DB (same as denial, reconciliation, and claim tables).
@@ -7,13 +7,13 @@
  * Strategy:
  *   - All job state persisted in `rcm_durable_job` table
  *   - Idempotency via UNIQUE(tenant_id, idempotency_key) index
- *   - Exponential backoff: 5s × 2^(attempt-1) capped at 5 min
+ *   - Exponential backoff: 5s x 2^(attempt-1) capped at 5 min
  *   - Purge removes completed/cancelled jobs older than threshold
- *   - No PHI in payloads — enforced by job-audit-bridge.ts
+ *   - No PHI in payloads -- enforced by job-audit-bridge.ts
  *
  * Extended job types (Phase 142):
- *   REMITTANCE_IMPORT — Background ERA 835 import processing
- *   DENIAL_FOLLOWUP_TICK — Periodic SLA-deadline scanner for denials
+ *   REMITTANCE_IMPORT -- Background ERA 835 import processing
+ *   DENIAL_FOLLOWUP_TICK -- Periodic SLA-deadline scanner for denials
  */
 
 import { randomUUID } from 'node:crypto';
@@ -22,13 +22,13 @@ import { rcmDurableJob } from '../../platform/pg/pg-schema.js';
 import { eq, and, lte, sql, desc } from 'drizzle-orm';
 import type { RcmJobQueue, RcmJob, RcmJobType, RcmJobStatus } from './queue.js';
 
-/* ── Constants ─────────────────────────────────────────────── */
+/* -- Constants ----------------------------------------------- */
 
 const DEFAULT_MAX_ATTEMPTS = 3;
 const RETRY_BACKOFF_BASE_MS = 5_000;
 const RETRY_BACKOFF_CAP_MS = 300_000; // 5 minutes max
 
-/* ── Row Mapper ────────────────────────────────────────────── */
+/* -- Row Mapper ---------------------------------------------- */
 
 function rowToJob(row: any): RcmJob {
   return {
@@ -59,7 +59,7 @@ function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
   }
 }
 
-/* ── Durable Queue Implementation ──────────────────────────── */
+/* -- Durable Queue Implementation ---------------------------- */
 
 export class DurableJobQueue implements RcmJobQueue {
   async enqueue(params: {
@@ -80,7 +80,7 @@ export class DurableJobQueue implements RcmJobQueue {
       ? new Date(now.getTime() + params.delayMs).toISOString()
       : now.toISOString();
 
-    // Idempotency check — return existing job ID if key matches
+    // Idempotency check -- return existing job ID if key matches
     if (params.idempotencyKey) {
       const existingRows = await db
         .select({ id: rcmDurableJob.id })
@@ -317,7 +317,7 @@ export class DurableJobQueue implements RcmJobQueue {
 
   async purge(beforeTimestamp: string): Promise<number> {
     const db = getPgDb();
-    // Atomic bulk delete — no SELECT+loop needed
+    // Atomic bulk delete -- no SELECT+loop needed
     const deleted = await db
       .delete(rcmDurableJob)
       .where(

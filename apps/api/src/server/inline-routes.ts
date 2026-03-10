@@ -1,7 +1,7 @@
 /**
- * Server — Inline Routes
+ * Server -- Inline Routes
  *
- * Phase 173: Extracted from index.ts — all route handlers that were defined
+ * Phase 173: Extracted from index.ts -- all route handlers that were defined
  * directly in the monolithic file (health, ready, version, metrics, audit,
  * admin, vista/* clinical routes).
  *
@@ -11,6 +11,7 @@
 
 import type { FastifyInstance } from 'fastify';
 
+import { log } from '../lib/logger.js';
 import { probeConnect } from '../vista/rpcBroker.js';
 import { validateCredentials } from '../vista/config.js';
 import { connect, disconnect, callRpc, callRpcWithList, getDuz } from '../vista/rpcBrokerClient.js';
@@ -88,7 +89,7 @@ function parseAllergyRows(lines: string[]) {
 let rpcCatalogCache: { data: any; ts: number } | null = null;
 const RPC_CATALOG_TTL = 60_000;
 
-/* Vital type abbreviation → IEN in file 120.51 (WorldVistA defaults) */
+/* Vital type abbreviation -> IEN in file 120.51 (WorldVistA defaults) */
 const VITAL_TYPE_IEN: Record<string, number> = {
   BP: 1,
   T: 2,
@@ -352,7 +353,7 @@ async function reconnectSurgeryBroker(): Promise<void> {
  * Register all inline route handlers that were previously in index.ts.
  */
 export function registerInlineRoutes(server: FastifyInstance): void {
-  // ── Health / Ready / Version / Metrics ────────────────────────────────
+  // -- Health / Ready / Version / Metrics --------------------------------
 
   server.get('/health', async () => {
     const cbStats = getCircuitBreakerStats();
@@ -433,7 +434,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     return reply.send(metrics);
   });
 
-  // ── Audit ─────────────────────────────────────────────────────────────
+  // -- Audit -------------------------------------------------------------
 
   server.get('/audit/events', async (request) => {
     const { actionPrefix, actorDuz, patientDfn, since, limit } = request.query as any;
@@ -467,7 +468,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     return { ok: true, ...getUnifiedAuditStats() };
   });
 
-  // ── Admin ─────────────────────────────────────────────────────────────
+  // -- Admin -------------------------------------------------------------
 
   server.get('/admin/connector-cbs', async () => {
     return { ok: true, connectors: getConnectorCbStats() };
@@ -516,7 +517,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     return { ok: true, report: getNoFakeSuccessAuditReport() };
   });
 
-  // ── VistA connectivity ────────────────────────────────────────────────
+  // -- VistA connectivity ------------------------------------------------
 
   server.get('/vista/ping', async () => {
     try {
@@ -549,7 +550,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     return { ok: true, boundary };
   });
 
-  // ── VistA RPC catalog + debug ─────────────────────────────────────────
+  // -- VistA RPC catalog + debug -----------------------------------------
 
   server.get('/vista/rpc-catalog', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -639,7 +640,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
   });
 
-  // ── VistA clinical routes ──────────────────────────────────────────────
+  // -- VistA clinical routes ----------------------------------------------
 
   server.get('/vista/patient-search', async (request) => {
     const q = (request.query as any)?.q;
@@ -777,10 +778,10 @@ export function registerInlineRoutes(server: FastifyInstance): void {
           count: 0,
           results: [],
           rpcUsed: RPC_NAME,
-          status: 'integration-pending',
-          pendingTargets: [RPC_NAME],
-          pendingNote:
-            'Live VistA allergy data returned broker/runtime error text during this request, so the response was withheld instead of showing a fake allergy row.',
+          status: 'error',
+          errorTargets: [RPC_NAME],
+          errorNote:
+            'VistA RPC returned a broker/runtime error. The response was withheld to avoid displaying corrupt data.',
         };
       }
 
@@ -967,23 +968,26 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     }
   });
 
-  server.post('/vista/vitals', async (request) => {
+  server.post('/vista/vitals', async (request, reply) => {
+    await requireSession(request, reply);
     const body = request.body as any;
     const dfn = body?.dfn;
     const type = (body?.type || '').toUpperCase().trim();
     const value = (body?.value || '').trim();
+    const RPC_NAME = 'GMV ADD VM';
     if (!dfn || !/^\d+$/.test(String(dfn)))
-      return { ok: false, error: 'Missing or non-numeric dfn' };
+      return reply.code(400).send({ ok: false, error: 'Missing or non-numeric dfn' });
     if (!type || !VITAL_TYPE_IEN[type])
-      return {
+      return reply.code(400).send({
         ok: false,
         error: `Invalid vital type. Must be one of: ${VALID_VITAL_TYPES.join(', ')}`,
-      };
-    if (!value || value.length < 1) return { ok: false, error: 'Missing value' };
+      });
+    if (!value || value.length < 1)
+      return reply.code(400).send({ ok: false, error: 'Missing value' });
     try {
       validateCredentials();
     } catch (err: any) {
-      return { ok: false, error: safeErr(err) };
+      return { ok: false, error: safeErr(err), source: 'vista', rpcUsed: [RPC_NAME] };
     }
     try {
       await connect();
@@ -992,23 +996,120 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       const fmYear = now.getFullYear() - 1700;
       const fmDate = `${fmYear}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}.${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
       const vitalTypeIen = VITAL_TYPE_IEN[type];
-      const hospitalLocation = 2;
+      const hospitalLocation = body?.locationIen || 2;
       const gmvData = `${fmDate}^${dfn}^${vitalTypeIen};${value};^${hospitalLocation}^${duz}`;
-      const lines = await callRpc('GMV ADD VM', [gmvData]);
+      const lines = await callRpc(RPC_NAME, [gmvData]);
       disconnect();
       const allText = lines.join('\n');
       if (allText.includes('ERROR'))
-        return { ok: false, error: allText.trim() || 'VistA returned an error' };
+        return {
+          ok: false,
+          error: allText.trim() || 'VistA returned an error',
+          source: 'vista',
+          rpcUsed: [RPC_NAME],
+        };
       audit('clinical.vitals-add', 'success', auditActor(request), {
         patientDfn: String(dfn),
         requestId: (request as any).requestId,
         sourceIp: request.ip,
         detail: { type, value },
       });
-      return { ok: true, message: 'Vital recorded', type, value, rpcUsed: 'GMV ADD VM' };
+      return {
+        ok: true,
+        source: 'vista',
+        message: 'Vital recorded',
+        type,
+        value,
+        rpcUsed: [RPC_NAME],
+      };
     } catch (err: any) {
       disconnect();
-      return { ok: false, error: safeErr(err) };
+      return { ok: false, error: safeErr(err), source: 'vista', rpcUsed: [RPC_NAME] };
+    }
+  });
+
+  /**
+   * POST /vista/vitals/batch -- Record multiple vitals in a single request.
+   * Body: { dfn, locationIen?, vitals: [{ type, value }] }
+   * Uses GMV ADD VM per vital; rolls up results.
+   */
+  server.post('/vista/vitals/batch', async (request, reply) => {
+    await requireSession(request, reply);
+    const body = request.body as any;
+    const dfn = body?.dfn;
+    const vitals = Array.isArray(body?.vitals) ? body.vitals : [];
+    const RPC_NAME = 'GMV ADD VM';
+
+    if (!dfn || !/^\d+$/.test(String(dfn)))
+      return reply.code(400).send({ ok: false, error: 'Missing or non-numeric dfn' });
+    if (vitals.length === 0)
+      return reply.code(400).send({ ok: false, error: 'vitals array is required and must not be empty' });
+
+    const errors: { type: string; error: string }[] = [];
+    for (const v of vitals) {
+      const t = (v?.type || '').toUpperCase().trim();
+      if (!t || !VITAL_TYPE_IEN[t]) {
+        errors.push({ type: t || '(empty)', error: `Invalid vital type. Must be one of: ${VALID_VITAL_TYPES.join(', ')}` });
+        continue;
+      }
+      if (!v?.value || String(v.value).trim().length < 1) {
+        errors.push({ type: t, error: 'Missing value' });
+      }
+    }
+    if (errors.length > 0)
+      return reply.code(400).send({ ok: false, errors, rpcUsed: [RPC_NAME], source: 'vista' });
+
+    try { validateCredentials(); } catch (err: any) {
+      return { ok: false, error: safeErr(err), source: 'vista', rpcUsed: [RPC_NAME] };
+    }
+
+    const results: { type: string; value: string; ok: boolean; error?: string }[] = [];
+    try {
+      await connect();
+      const duz = getDuz();
+      const now = new Date();
+      const fmYear = now.getFullYear() - 1700;
+      const fmDate = `${fmYear}${String(now.getMonth() + 1).padStart(2, '0')}${String(now.getDate()).padStart(2, '0')}.${String(now.getHours()).padStart(2, '0')}${String(now.getMinutes()).padStart(2, '0')}`;
+      const locationIen = body?.locationIen || 2;
+
+      for (const v of vitals) {
+        const t = (v?.type || '').toUpperCase().trim();
+        const val = String(v?.value || '').trim();
+        const vitalTypeIen = VITAL_TYPE_IEN[t];
+        const gmvData = `${fmDate}^${dfn}^${vitalTypeIen};${val};^${locationIen}^${duz}`;
+        try {
+          const lines = await callRpc(RPC_NAME, [gmvData]);
+          const allText = lines.join('\n');
+          if (allText.includes('ERROR')) {
+            results.push({ type: t, value: val, ok: false, error: allText.trim() });
+          } else {
+            results.push({ type: t, value: val, ok: true });
+          }
+        } catch (err: any) {
+          results.push({ type: t, value: val, ok: false, error: safeErr(err) });
+        }
+      }
+      disconnect();
+
+      const successCount = results.filter((r) => r.ok).length;
+      audit('clinical.vitals-batch-add', 'success', auditActor(request), {
+        patientDfn: String(dfn),
+        requestId: (request as any).requestId,
+        sourceIp: request.ip,
+        detail: { total: vitals.length, succeeded: successCount },
+      });
+      return {
+        ok: successCount > 0,
+        source: 'vista',
+        total: vitals.length,
+        succeeded: successCount,
+        failed: vitals.length - successCount,
+        results,
+        rpcUsed: [RPC_NAME],
+      };
+    } catch (err: any) {
+      disconnect();
+      return { ok: false, error: safeErr(err), source: 'vista', rpcUsed: [RPC_NAME] };
     }
   });
 
@@ -1323,7 +1424,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       } catch (autoackErr: any) {
         try {
           await callRpc('ORWDX UNLOCK', [String(dfn)]);
-        } catch {}
+        } catch (unlockErr) { log.debug('ORWDX UNLOCK best-effort failed', { error: String(unlockErr) }); }
         disconnect();
         const draft = createDraft(
           'order-sign',
@@ -1357,7 +1458,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
       }
       try {
         await callRpc('ORWDX UNLOCK', [String(dfn)]);
-      } catch {}
+      } catch (unlockErr) { log.debug('ORWDX UNLOCK best-effort failed', { error: String(unlockErr) }); }
       disconnect();
       const raw = autoackLines.join('\n').trim();
       if (!raw || raw === '0' || raw.startsWith('-1'))
@@ -1583,7 +1684,7 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     try {
       const lines = await safeCallRpc(RPC_NAME, [String(dfn), '', '', '', '']);
       if (lines.length === 0 || (lines.length === 1 && lines[0].startsWith('<')))
-        return { ok: true, count: 0, results: [], rpcUsed: [RPC_NAME], status: 'ok-empty' };
+        return { ok: true, source: 'vista', count: 0, results: [], rpcUsed: [RPC_NAME], status: 'ok-empty' };
       const results = lines
         .map((line) => {
           const p = line.split('^');
@@ -1615,14 +1716,15 @@ export function registerInlineRoutes(server: FastifyInstance): void {
           };
         })
         .filter(Boolean);
-      return { ok: true, count: results.length, results, rpcUsed: [RPC_NAME], status: 'ok' };
+      return { ok: true, source: 'vista', count: results.length, results, rpcUsed: [RPC_NAME], status: 'ok' };
     } catch (err: any) {
       return {
         ok: false,
+        source: 'vista',
         error: safeErr(err),
         rpcUsed: [RPC_NAME],
         status: 'request-failed',
-        pendingTargets: ['ORQQCN GET CONSULTS'],
+        pendingTargets: ['ORQQCN LIST'],
         pendingNote: 'Live consult read failed at runtime after session authentication.',
         results: [],
       };
@@ -1634,14 +1736,38 @@ export function registerInlineRoutes(server: FastifyInstance): void {
     if (!id || !/^\d+$/.test(String(id)))
       return { ok: false, error: 'Missing or non-numeric consult id' };
     await requireSession(request, reply);
+    const RPC_NAME = 'ORQQCN DETAIL';
     try {
-      const lines = await safeCallRpc('ORQQCN DETAIL', [String(id)]);
-      return { ok: true, text: lines.join('\n'), rpcUsed: ['ORQQCN DETAIL'] };
+      const lines = await safeCallRpc(RPC_NAME, [String(id)]);
+      const text = lines.join('\n');
+
+      const fields: Record<string, string> = {};
+      for (const line of lines) {
+        const colonIdx = line.indexOf(':');
+        if (colonIdx > 0 && colonIdx < 40) {
+          const key = line.substring(0, colonIdx).trim();
+          const val = line.substring(colonIdx + 1).trim();
+          if (key && val && !fields[key]) {
+            fields[key] = val;
+          }
+        }
+      }
+
+      return {
+        ok: true,
+        source: 'vista',
+        consultId: String(id),
+        text,
+        fields: Object.keys(fields).length > 0 ? fields : undefined,
+        lineCount: lines.length,
+        rpcUsed: [RPC_NAME],
+      };
     } catch (err: any) {
       return {
         ok: false,
+        source: 'vista',
         error: safeErr(err),
-        rpcUsed: ['ORQQCN DETAIL'],
+        rpcUsed: [RPC_NAME],
         status: 'request-failed',
       };
     }

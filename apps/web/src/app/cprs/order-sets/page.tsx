@@ -8,7 +8,7 @@ import CPRSMenuBar from '@/components/cprs/CPRSMenuBar';
 import styles from '@/components/cprs/cprs.module.css';
 
 /* ------------------------------------------------------------------ */
-/* Order Set Templates (local JSON — matches CPRS quick-order concept) */
+/* Order Set Templates (local JSON -- matches CPRS quick-order concept) */
 /* ------------------------------------------------------------------ */
 
 interface OrderTemplate {
@@ -252,7 +252,7 @@ export default function OrderSetsPage() {
             color: 'var(--cprs-text-muted)',
           }}
         >
-          <strong>Order Workflow:</strong> Draft → Unsigned → Signed → Released. Orders added here
+          <strong>Order Workflow:</strong> Draft {'->'} Unsigned {'->'} Signed {'->'} Released. Orders added here
           start as <em>Draft</em>. Navigate to the Orders tab to sign and release. Contract: ORWDX
           SAVE, ORWDXA DC.
         </div>

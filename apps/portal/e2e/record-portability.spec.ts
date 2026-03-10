@@ -1,5 +1,5 @@
 /**
- * Record Portability Phase 80 E2E — API-level integration tests
+ * Record Portability Phase 80 E2E -- API-level integration tests
  *
  * Pre-requisites:
  *   1. API server running on http://localhost:3001
@@ -8,7 +8,7 @@
  * Tests cover:
  *   - Export generation (PDF / HTML)
  *   - Download by token
- *   - Share lifecycle: create → preview → verify → revoke → denied
+ *   - Share lifecycle: create -> preview -> verify -> revoke -> denied
  *   - Wrong access code lockout
  *   - Expired / revoked share returns error
  *   - Access audit populated
@@ -58,7 +58,7 @@ async function authedPost(request: APIRequestContext, path: string, cookie: stri
 /* 1. UNAUTHENTICATED ACCESS DENIED                                    */
 /* ================================================================== */
 
-test.describe('Record portability — unauthenticated', () => {
+test.describe('Record portability -- unauthenticated', () => {
   test('POST /portal/record/export without session returns 401', async ({ request }) => {
     const res = await request.post(`${API}/portal/record/export`, {
       data: { format: 'pdf' },
@@ -81,7 +81,7 @@ test.describe('Record portability — unauthenticated', () => {
 /* 2. EXPORT GENERATION                                                */
 /* ================================================================== */
 
-test.describe('Record portability — export', () => {
+test.describe('Record portability -- export', () => {
   let cookie: string;
 
   test.beforeAll(async ({ request }) => {
@@ -155,7 +155,7 @@ test.describe('Record portability — export', () => {
 /* 3. SHARE LIFECYCLE                                                  */
 /* ================================================================== */
 
-test.describe('Record portability — share lifecycle', () => {
+test.describe('Record portability -- share lifecycle', () => {
   let cookie: string;
   let exportToken: string;
 
@@ -170,7 +170,7 @@ test.describe('Record portability — share lifecycle', () => {
     exportToken = body.token;
   });
 
-  test('create → preview → verify → revoke → denied', async ({ request }) => {
+  test('create -> preview -> verify -> revoke -> denied', async ({ request }) => {
     // 1. Create share
     const createRes = await authedPost(request, '/portal/record/share', cookie, {
       exportToken,
@@ -210,7 +210,7 @@ test.describe('Record portability — share lifecycle', () => {
     const revokeBody = await revokeRes.json();
     expect(revokeBody.ok).toBe(true);
 
-    // 5. After revoke — verify fails
+    // 5. After revoke -- verify fails
     const verifyRes2 = await request.post(`${API}/portal/record/share/verify/${shareToken}`, {
       data: { accessCode, patientDob: '1990-01-01' },
     });
@@ -263,7 +263,7 @@ test.describe('Record portability — share lifecycle', () => {
 /* 4. SHARE LIST + AUDIT                                               */
 /* ================================================================== */
 
-test.describe('Record portability — shares list + audit', () => {
+test.describe('Record portability -- shares list + audit', () => {
   let cookie: string;
 
   test.beforeAll(async ({ request }) => {
@@ -287,7 +287,7 @@ test.describe('Record portability — shares list + audit', () => {
   });
 });
 
-test.describe('Record portability — export revoke', () => {
+test.describe('Record portability -- export revoke', () => {
   let cookie: string;
 
   test.beforeAll(async ({ request }) => {
@@ -317,7 +317,7 @@ test.describe('Record portability — export revoke', () => {
 /* 5. STATS ENDPOINT                                                   */
 /* ================================================================== */
 
-test.describe('Record portability — stats', () => {
+test.describe('Record portability -- stats', () => {
   let cookie: string;
 
   test.beforeAll(async ({ request }) => {

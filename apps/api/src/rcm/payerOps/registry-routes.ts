@@ -1,22 +1,22 @@
 /**
- * Payer Registry + Capability Matrix Routes — Phase 88
+ * Payer Registry + Capability Matrix Routes -- Phase 88
  *
  * Endpoints:
- *   GET  /rcm/payerops/registry/health          — Registry subsystem health
- *   GET  /rcm/payerops/registry/sources          — List ingestion sources
- *   POST /rcm/payerops/registry/ingest           — Run full ingestion (admin-only)
- *   GET  /rcm/payerops/registry/snapshots        — List snapshots with diffs
+ *   GET  /rcm/payerops/registry/health          -- Registry subsystem health
+ *   GET  /rcm/payerops/registry/sources          -- List ingestion sources
+ *   POST /rcm/payerops/registry/ingest           -- Run full ingestion (admin-only)
+ *   GET  /rcm/payerops/registry/snapshots        -- List snapshots with diffs
  *
- *   GET  /rcm/payerops/payers                    — List registry payers (filterable)
- *   GET  /rcm/payerops/payers/:id                — Get payer detail
- *   PATCH /rcm/payerops/payers/:id               — Update payer (admin-only)
- *   POST /rcm/payerops/payers/merge              — Merge duplicate payers (admin-only)
+ *   GET  /rcm/payerops/payers                    -- List registry payers (filterable)
+ *   GET  /rcm/payerops/payers/:id                -- Get payer detail
+ *   PATCH /rcm/payerops/payers/:id               -- Update payer (admin-only)
+ *   POST /rcm/payerops/payers/merge              -- Merge duplicate payers (admin-only)
  *
- *   GET  /rcm/payerops/capability-matrix         — Full capability matrix
- *   GET  /rcm/payerops/capability-matrix/:payerId — Payer capabilities
- *   PATCH /rcm/payerops/capability-matrix/:payerId — Update capability cell
- *   POST /rcm/payerops/capability-matrix/:payerId/evidence — Add evidence
- *   DELETE /rcm/payerops/capability-matrix/:payerId/evidence/:evidenceId — Remove evidence
+ *   GET  /rcm/payerops/capability-matrix         -- Full capability matrix
+ *   GET  /rcm/payerops/capability-matrix/:payerId -- Payer capabilities
+ *   PATCH /rcm/payerops/capability-matrix/:payerId -- Update capability cell
+ *   POST /rcm/payerops/capability-matrix/:payerId/evidence -- Add evidence
+ *   DELETE /rcm/payerops/capability-matrix/:payerId/evidence/:evidenceId -- Remove evidence
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -49,7 +49,7 @@ import { runFullIngest, ingestHMOList, ingestHMOBrokerList } from './ingest.js';
 import { requireRcmAdmin, requireRcmWrite, requirePermission } from '../../auth/rbac.js';
 import type { SessionData } from '../../auth/session-store.js';
 
-/* ── Helpers ─────────────────────────────────────────────────── */
+/* -- Helpers --------------------------------------------------- */
 
 function body(request: FastifyRequest): Record<string, any> {
   return (request.body as any) || {};
@@ -68,10 +68,10 @@ function sessionActor(request: FastifyRequest): string {
   return session?.duz ? `DUZ:${session.duz}` : 'unknown';
 }
 
-/* ── Route Plugin ────────────────────────────────────────────── */
+/* -- Route Plugin ---------------------------------------------- */
 
 export default async function registryRoutes(server: FastifyInstance): Promise<void> {
-  /* ── RBAC Guard (mirrors rcm-routes.ts pattern) ────────────── */
+  /* -- RBAC Guard (mirrors rcm-routes.ts pattern) -------------- */
   server.addHook('onRequest', async (request: FastifyRequest, reply: FastifyReply) => {
     const url = request.url.split('?')[0];
     if (!url.startsWith('/rcm/payerops/')) return;
@@ -109,14 +109,14 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
       });
       return;
     }
-    // Read routes — rcm:read
+    // Read routes -- rcm:read
     requirePermission(session, 'rcm:read', reply, {
       requestId: (request as any).requestId,
       sourceIp: request.ip,
     });
   });
 
-  /* ── Health ────────────────────────────────────────────────── */
+  /* -- Health -------------------------------------------------- */
 
   server.get('/rcm/payerops/registry/health', async (_request, reply) => {
     const registryStats = getRegistryStats();
@@ -131,14 +131,14 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
     });
   });
 
-  /* ── Sources ───────────────────────────────────────────────── */
+  /* -- Sources ------------------------------------------------- */
 
   server.get('/rcm/payerops/registry/sources', async (_request, reply) => {
     const srcs = listSources();
     return reply.send({ ok: true, count: srcs.length, sources: srcs });
   });
 
-  /* ── Ingest (admin-only) ───────────────────────────────────── */
+  /* -- Ingest (admin-only) ------------------------------------- */
 
   server.post('/rcm/payerops/registry/ingest', async (request, reply) => {
     const b = body(request);
@@ -156,14 +156,14 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
     return reply.send(result);
   });
 
-  /* ── Snapshots ─────────────────────────────────────────────── */
+  /* -- Snapshots ----------------------------------------------- */
 
   server.get('/rcm/payerops/registry/snapshots', async (_request, reply) => {
     const snaps = listSnapshots();
     return reply.send({ ok: true, count: snaps.length, snapshots: snaps });
   });
 
-  /* ── Payers: List ──────────────────────────────────────────── */
+  /* -- Payers: List -------------------------------------------- */
 
   server.get('/rcm/payerops/payers', async (request, reply) => {
     const q = query(request);
@@ -177,7 +177,7 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, count: result.length, payers: result });
   });
 
-  /* ── Payers: Detail ────────────────────────────────────────── */
+  /* -- Payers: Detail ------------------------------------------ */
 
   server.get('/rcm/payerops/payers/:id', async (request, reply) => {
     const { id } = params(request);
@@ -197,7 +197,7 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
     });
   });
 
-  /* ── Payers: Patch (admin-only) ────────────────────────────── */
+  /* -- Payers: Patch (admin-only) ------------------------------ */
 
   server.patch('/rcm/payerops/payers/:id', async (request, reply) => {
     const { id } = params(request);
@@ -217,7 +217,7 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, payer: updated });
   });
 
-  /* ── Payers: Merge (admin-only) ────────────────────────────── */
+  /* -- Payers: Merge (admin-only) ------------------------------ */
 
   server.post('/rcm/payerops/payers/merge', async (request, reply) => {
     const b = body(request);
@@ -229,7 +229,7 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
     return reply.send(result);
   });
 
-  /* ── Capability Matrix: Full Grid ──────────────────────────── */
+  /* -- Capability Matrix: Full Grid ---------------------------- */
 
   server.get('/rcm/payerops/capability-matrix', async (_request, reply) => {
     const matrix = getFullMatrix();
@@ -243,7 +243,7 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
     });
   });
 
-  /* ── Capability Matrix: Per-Payer ──────────────────────────── */
+  /* -- Capability Matrix: Per-Payer ---------------------------- */
 
   server.get('/rcm/payerops/capability-matrix/:payerId', async (request, reply) => {
     const { payerId } = params(request);
@@ -251,7 +251,7 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, payerId, capabilities });
   });
 
-  /* ── Capability Matrix: Update Cell ────────────────────────── */
+  /* -- Capability Matrix: Update Cell -------------------------- */
 
   server.patch('/rcm/payerops/capability-matrix/:payerId', async (request, reply) => {
     const { payerId } = params(request);
@@ -288,7 +288,7 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
     return reply.send(result);
   });
 
-  /* ── Capability Matrix: Add Evidence ───────────────────────── */
+  /* -- Capability Matrix: Add Evidence ------------------------- */
 
   server.post('/rcm/payerops/capability-matrix/:payerId/evidence', async (request, reply) => {
     const { payerId } = params(request);
@@ -313,7 +313,7 @@ export default async function registryRoutes(server: FastifyInstance): Promise<v
     return reply.code(201).send(result);
   });
 
-  /* ── Capability Matrix: Remove Evidence ────────────────────── */
+  /* -- Capability Matrix: Remove Evidence ---------------------- */
 
   server.delete(
     '/rcm/payerops/capability-matrix/:payerId/evidence/:evidenceId',

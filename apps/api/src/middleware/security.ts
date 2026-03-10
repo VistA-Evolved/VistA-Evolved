@@ -1,5 +1,5 @@
 /**
- * Security & observability middleware — Phase 15A/D.
+ * Security & observability middleware -- Phase 15A/D.
  *
  * Fastify hooks for:
  *   - Request correlation IDs (X-Request-Id)
@@ -60,7 +60,7 @@ import { VISTA_HOST, VISTA_PORT, VISTA_CONTEXT } from '../vista/config.js';
 const ALLOWED_ORIGINS = new Set(
   (
     process.env.ALLOWED_ORIGINS ||
-    'http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,http://127.0.0.1:3001'
+    'http://localhost:3000,http://127.0.0.1:3000,http://localhost:3001,http://127.0.0.1:3001,http://localhost:3002,http://127.0.0.1:3002,http://localhost:3004,http://127.0.0.1:3004'
   )
     .split(',')
     .map((o) => o.trim())
@@ -90,7 +90,7 @@ export function corsOriginValidator(
 }
 
 /* ================================================================== */
-/* Auth gateway — path-based auth requirements                          */
+/* Auth gateway -- path-based auth requirements                          */
 /* ================================================================== */
 
 type AuthLevel = 'none' | 'session' | 'admin' | 'service' | 'fhir';
@@ -141,6 +141,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/imaging\/health$/, auth: 'session' }, // Phase 24: imaging health check
   { pattern: /^\/billing\/webhook$/, auth: 'none' }, // Phase 722: Stripe/Lago webhook (signature verified in handler)
   { pattern: /^\/billing\/plans$/, auth: 'none' }, // Phase 722: public pricing info
+  { pattern: /^\/signup\//, auth: 'none' }, // Phase C4: public signup registration (rate limited in handler)
   { pattern: /^\/billing\/health$/, auth: 'session' }, // Phase 284: billing health check
   { pattern: /^\/imaging\/devices/, auth: 'session' }, // Phase 24: device registry (imaging_admin checked in handler)
   { pattern: /^\/imaging\/audit/, auth: 'session' }, // Phase 24: imaging audit (imaging_admin checked in handler)
@@ -242,25 +243,25 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/content-packs\/install$/, auth: 'admin' }, // Phase 390: pack install
   { pattern: /^\/content-packs\/rollback$/, auth: 'admin' }, // Phase 390: pack rollback
   { pattern: /^\/content-packs\//, auth: 'session' }, // Phase 390: pack reads
-  // ── Wave 22, Phase 391: Inpatient Core ──
+  // -- Wave 22, Phase 391: Inpatient Core --
   { pattern: /^\/inpatient\/beds$/, auth: 'admin' }, // Phase 391: bed create (admin)
   { pattern: /^\/inpatient\/beds\/[^\/]+$/, auth: 'admin' }, // Phase 391: bed update (admin)
   { pattern: /^\/inpatient\//, auth: 'session' }, // Phase 391: inpatient reads
-  // ── Wave 22, Phase 392: Pharmacy Deep Workflows ──
+  // -- Wave 22, Phase 392: Pharmacy Deep Workflows --
   { pattern: /^\/pharmacy\/orders\/[^\/]+\/override$/, auth: 'admin' }, // Phase 392: clinical check override
   { pattern: /^\/pharmacy\//, auth: 'session' }, // Phase 392: pharmacy reads + writes
-  // ── Wave 22, Phase 393: Lab Deep Workflows ──
+  // -- Wave 22, Phase 393: Lab Deep Workflows --
   { pattern: /^\/lab\/critical-alerts\/[^\/]+\/resolve$/, auth: 'admin' }, // Phase 393: resolve critical alert (admin)
   { pattern: /^\/lab\//, auth: 'session' }, // Phase 393: lab reads + writes
-  // ── Wave 22, Phase 394: Imaging/Radiology Deep Workflows ──
+  // -- Wave 22, Phase 394: Imaging/Radiology Deep Workflows --
   { pattern: /^\/radiology\/critical-alerts\/[^\/]+\/resolve$/, auth: 'admin' }, // Phase 394: resolve rad critical alert
   { pattern: /^\/radiology\//, auth: 'session' }, // Phase 394: radiology reads + writes
-  // ── Wave 22, Phase 395: CDS Hooks + SMART Launch ──
+  // -- Wave 22, Phase 395: CDS Hooks + SMART Launch --
   { pattern: /^\/cds\/cqf\/config$/, auth: 'admin' }, // Phase 395: CQF Ruler config (admin)
   { pattern: /^\/cds\//, auth: 'session' }, // Phase 395: CDS hooks + SMART launch
-  // ── Wave 22, Phase 396: Clinical Reasoning + Quality Measures ──
+  // -- Wave 22, Phase 396: Clinical Reasoning + Quality Measures --
   { pattern: /^\/clinical-reasoning\//, auth: 'session' }, // Phase 396: clinical reasoning
-  // ── Wave 22, Phase 397: Localization + Multi-Country Packs + Theming ──
+  // -- Wave 22, Phase 397: Localization + Multi-Country Packs + Theming --
   { pattern: /^\/localization\/config$/, auth: 'session' }, // Phase 397: tenant config (session)
   { pattern: /^\/localization\/resolve$/, auth: 'session' }, // Phase 397: translation resolve (session)
   { pattern: /^\/localization\//, auth: 'session' }, // Phase 397: localization
@@ -274,7 +275,7 @@ const AUTH_RULES: AuthRule[] = [
   { pattern: /^\/exchange-packs\//, auth: 'session' }, // Phase 406-407: Exchange Packs
   // Wave 24: Pilot Go-Lives + Stabilization (Phases 409-417)
   { pattern: /^\/pilots\//, auth: 'admin' }, // Phase 411+: Pilot intake/ops (admin only)
-  // Wave 31: Service-line boards — ED / OR / ICU (Phases 464-471)
+  // Wave 31: Service-line boards -- ED / OR / ICU (Phases 464-471)
   { pattern: /^\/ed\//, auth: 'session' }, // Phase 464-465: ED tracker + board
   { pattern: /^\/or\//, auth: 'session' }, // Phase 466-467: OR scheduling + board
   { pattern: /^\/icu\//, auth: 'session' }, // Phase 468-469: ICU flowsheet + metrics
@@ -324,8 +325,19 @@ function checkRateLimit(
   endpoint: string
 ): { allowed: boolean; remaining: number; resetAt: number } {
   const isLogin = endpoint === '/auth/login';
-  const maxReq = isLogin ? RATE_LIMIT_CONFIG.loginMax : RATE_LIMIT_CONFIG.generalMax;
-  const key = `${ip}::${isLogin ? 'login' : 'general'}`;
+  const isAuthSensitive = !isLogin && (
+    endpoint.startsWith('/auth/step-up') ||
+    endpoint.startsWith('/auth/mfa') ||
+    endpoint.startsWith('/auth/sessions') ||
+    endpoint.startsWith('/scim/')
+  );
+  const maxReq = isLogin
+    ? RATE_LIMIT_CONFIG.loginMax
+    : isAuthSensitive
+      ? Math.min(RATE_LIMIT_CONFIG.generalMax, 30)
+      : RATE_LIMIT_CONFIG.generalMax;
+  const tier = isLogin ? 'login' : isAuthSensitive ? 'auth-sensitive' : 'general';
+  const key = `${ip}::${tier}`;
   const now = Date.now();
 
   let bucket = rateBuckets.get(key);
@@ -392,7 +404,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     reply.header('X-Content-Type-Options', 'nosniff');
     reply.header('X-Frame-Options', 'DENY');
     reply.header('X-XSS-Protection', '0'); // Modern: CSP handles XSS prevention
-    reply.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains');
+    reply.header('Strict-Transport-Security', 'max-age=31536000; includeSubDomains; preload');
     reply.header('Cache-Control', 'no-store'); // PHI: never cache API responses
     reply.header('Pragma', 'no-cache');
     // Phase 118: OWASP-recommended headers
@@ -447,13 +459,13 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
 
     if (requiredAuth === 'none') return;
 
-    // Service auth — X-Service-Key header (Phase 23: ingest callbacks)
+    // Service auth -- X-Service-Key header (Phase 23: ingest callbacks)
     if (requiredAuth === 'service') {
-      // Service endpoints bypass session auth — validated in route handler
+      // Service endpoints bypass session auth -- validated in route handler
       return;
     }
 
-    // Phase 231: FHIR auth — accepts session cookie OR SMART Bearer JWT
+    // Phase 231: FHIR auth -- accepts session cookie OR SMART Bearer JWT
     if (requiredAuth === 'fhir') {
       const bearerToken = extractBearerToken(request);
       if (bearerToken) {
@@ -478,7 +490,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
           } satisfies SessionData;
           return;
         }
-        // Bearer token was present but invalid — reject (don't fall through to session)
+        // Bearer token was present but invalid -- reject (don't fall through to session)
         log.warn('FHIR bearer token rejected', { error: result.error, url });
         (request as any)._rejected = true;
         reply.code(401).send({
@@ -489,7 +501,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
         });
         return;
       }
-      // No bearer token — fall through to session auth below
+      // No bearer token -- fall through to session auth below
     }
 
     // Extract and validate session
@@ -602,7 +614,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     reply.code(403).send({ ok: false, error: 'Origin not allowed' });
   });
 
-  /* ---- CSRF synchronizer token (Phase 132 — migrated from double-submit cookie) ---- */
+  /* ---- CSRF synchronizer token (Phase 132 -- migrated from double-submit cookie) ---- */
   /*
    * The CSRF secret is stored server-side in the session (session-store.ts):
    *   - Generated at session creation (randomBytes(32).toString("hex"))
@@ -611,7 +623,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
    *   - Client sends it back as x-csrf-token header on every mutation
    *   - Server validates: header value === session.csrfSecret
    *
-   * This is the OWASP "Synchronizer Token" pattern — strictly stronger than
+   * This is the OWASP "Synchronizer Token" pattern -- strictly stronger than
    * double-submit cookie because the CSRF token is never stored in a cookie,
    * so it's immune to cookie injection attacks (subdomain, HTTP MitM).
    */
@@ -676,7 +688,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
           return JSON.stringify(parsed);
         }
       } catch {
-        // Not JSON — pass through
+        // Not JSON -- pass through
       }
       return payload;
     }
@@ -716,7 +728,7 @@ export async function registerSecurityMiddleware(server: FastifyInstance): Promi
     const isError = reply.statusCode >= 500;
     recordSloSample(route, duration, isError, SLO_P95_BUDGET_MS);
 
-    // Phase 586 (W42-P15): Billing metering — count API calls per tenant
+    // Phase 586 (W42-P15): Billing metering -- count API calls per tenant
     try {
       const tenantId = (request as any).session?.tenantId;
       if (tenantId) {

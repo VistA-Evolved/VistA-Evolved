@@ -61,7 +61,7 @@ export function initSwitchboard(): void {
   });
 
   // --- 3. Imaging Worklist (Phase 23) ---
-  // No formal transition map in original — defining logical progression
+  // No formal transition map in original -- defining logical progression
   const WORKLIST_TRANSITIONS: Record<string, string[]> = {
     ordered: ['scheduled', 'in-progress', 'cancelled', 'discontinued'],
     scheduled: ['in-progress', 'cancelled', 'discontinued'],

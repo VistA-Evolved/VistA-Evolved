@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Phase 117 — Multi-Instance Simulation Test
+ * Phase 117 -- Multi-Instance Simulation Test
  *
  * Validates that two API instances sharing one Postgres database
  * correctly cross-validate sessions and cross-dequeue workqueue items.
@@ -212,7 +212,7 @@ async function gate3_workqueue_cross_dequeue() {
     return;
   }
 
-  // Read workqueue on B — should see the item
+  // Read workqueue on B -- should see the item
   const wqListB = await json(`${API_B}/rcm/workqueues?claimId=${claimId}`, {
     headers: { Cookie: `ve_session=${tokenB}` },
   });
@@ -254,7 +254,7 @@ async function gate3_workqueue_cross_dequeue() {
     fail('Workqueue cross-confirm on API-A', `status: ${verifyA.body?.item?.status}`);
   }
 
-  // Cleanup — logout both
+  // Cleanup -- logout both
   await json(`${API_A}/auth/logout`, {
     method: 'POST',
     headers: { Cookie: `ve_session=${tokenA}` },
@@ -286,7 +286,7 @@ async function gate4_store_backend() {
   const healthA = await json(`${API_A}/health`, {
     headers: { Cookie: `ve_session=${tokenA}` },
   });
-  // The health endpoint should respond — any 200 with 'pg' hints
+  // The health endpoint should respond -- any 200 with 'pg' hints
   if (healthA.status === 200) {
     ok('API-A healthy (PG backend active)');
   } else {

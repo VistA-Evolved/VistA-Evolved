@@ -1,5 +1,5 @@
 /**
- * Lab Inbound Staging Store — Phase 433 (W27 P3)
+ * Lab Inbound Staging Store -- Phase 433 (W27 P3)
  *
  * In-memory store for staging inbound lab results (ORU^R01) before
  * VistA filing. Follows the established in-memory store pattern
@@ -154,11 +154,11 @@ export function validateLabResult(result: Omit<InboundLabResult, 'id'>): LabVali
   if (!result.results || result.results.length === 0)
     errors.push('No observation results (OBX segments)');
 
-  if (!result.matchedDfn) warnings.push('No matched VistA DFN — will be quarantined');
+  if (!result.matchedDfn) warnings.push('No matched VistA DFN -- will be quarantined');
   if (!result.accessionNumber)
-    warnings.push('No accession number (OBR-20) — may complicate VistA filing');
+    warnings.push('No accession number (OBR-20) -- may complicate VistA filing');
   if (!result.specimen) warnings.push('No specimen information');
-  if (result.resultStatus === 'P') warnings.push('Preliminary result — may be updated');
+  if (result.resultStatus === 'P') warnings.push('Preliminary result -- may be updated');
 
   for (const obs of result.results || []) {
     if (!obs.observationId) errors.push(`OBX set ${obs.setId}: Missing observation ID (OBX-3)`);
@@ -172,7 +172,7 @@ export function validateLabResult(result: Omit<InboundLabResult, 'id'>): LabVali
 /* Reset (for tests)                                                   */
 /* ------------------------------------------------------------------ */
 
-/** @internal — reset store for testing */
+/** @internal -- reset store for testing */
 export function _resetLabStore(): void {
   labStore.clear();
   dailyCounter = 0;

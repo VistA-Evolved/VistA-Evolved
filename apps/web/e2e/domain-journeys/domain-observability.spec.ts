@@ -159,7 +159,7 @@ test.describe('Phase 117: IMPLEMENT: Postgres-First Prod Posture + Multi-Instanc
   });
 
   test('clinical data contract shape', async ({ request }) => {
-    const res = await request.get(`${API}/vista/allergies?dfn=3`);
+    const res = await request.get(`${API}/vista/allergies?dfn=46`);
     // Should return JSON with ok field (may be 401 without auth)
     if (res.status() === 200) {
       const body = await res.json();
@@ -216,7 +216,7 @@ test.describe('Phase 118: Go-Live Hardening Pack', () => {
   });
 
   test('clinical data contract shape', async ({ request }) => {
-    const res = await request.get(`${API}/vista/allergies?dfn=3`);
+    const res = await request.get(`${API}/vista/allergies?dfn=46`);
     // Should return JSON with ok field (may be 401 without auth)
     if (res.status() === 200) {
       const body = await res.json();

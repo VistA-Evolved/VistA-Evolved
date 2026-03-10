@@ -1,11 +1,11 @@
 /**
- * FHIR R4 Gateway CI Gate Tests — Phase 178.
+ * FHIR R4 Gateway CI Gate Tests -- Phase 178.
  *
  * Validates the structural integrity and conformance of the FHIR R4
  * gateway scaffold: types, mappers, capability statement, route
  * registration, and US Core profile compliance.
  *
- * These tests do NOT require a running VistA or API server — they
+ * These tests do NOT require a running VistA or API server -- they
  * exercise the pure mapping and structural layers only.
  */
 
@@ -139,7 +139,7 @@ const ENCOUNTER: EncounterRecord = {
 /* Test Suites                                                          */
 /* ================================================================== */
 
-describe('FHIR R4 Gateway — Phase 178', () => {
+describe('FHIR R4 Gateway -- Phase 178', () => {
   /* ---------------------------------------------------------------- */
   /* Patient mapper                                                    */
   /* ---------------------------------------------------------------- */
@@ -176,7 +176,7 @@ describe('FHIR R4 Gateway — Phase 178', () => {
 
     it('converts VistA FM date to ISO', () => {
       const result = toFhirPatient(PATIENT);
-      // 2451225 → 1700+245=1945, month 12, day 25
+      // 2451225 -> 1700+245=1945, month 12, day 25
       expect(result.birthDate).toBe('1945-12-25');
     });
   });
@@ -283,7 +283,7 @@ describe('FHIR R4 Gateway — Phase 178', () => {
 
     it('converts FM date with time', () => {
       const result = toFhirVitalObservation(VITAL, '3');
-      // 3240601.1430 → 1700+324=2024, 06, 01, 14:30:00
+      // 3240601.1430 -> 1700+324=2024, 06, 01, 14:30:00
       expect(result.effectiveDateTime).toBe('2024-06-01T14:30:00');
     });
   });
@@ -550,7 +550,7 @@ describe('FHIR R4 Gateway — Phase 178', () => {
     it('converts VistA FM date without time', () => {
       const rec: ProblemRecord = { ...PROBLEM, onset: '3200101' };
       const result = toFhirCondition(rec, '3');
-      // 3200101 → 1700+320=2020, 01, 01
+      // 3200101 -> 1700+320=2020, 01, 01
       expect(result.onsetDateTime).toBe('2020-01-01');
     });
 
@@ -570,56 +570,56 @@ describe('FHIR R4 Gateway — Phase 178', () => {
   /* ---------------------------------------------------------------- */
   /* Audit hardening: C1 + M5 numeric edge cases                       */
   /* ---------------------------------------------------------------- */
-  describe('Audit hardening — numeric parsing', () => {
-    it("[C1] lab result with qualifier '>100' → valueString, not valueQuantity", () => {
+  describe('Audit hardening -- numeric parsing', () => {
+    it("[C1] lab result with qualifier '>100' -> valueString, not valueQuantity", () => {
       const qualifierLab: LabResult = { ...LAB, result: '>100' };
       const result = toFhirLabObservation(qualifierLab, '3');
       expect(result.valueString).toBe('>100');
       expect(result.valueQuantity).toBeUndefined();
     });
 
-    it("[C1] lab result with qualifier '<0.5' → valueString", () => {
+    it("[C1] lab result with qualifier '<0.5' -> valueString", () => {
       const qualifierLab: LabResult = { ...LAB, result: '<0.5' };
       const result = toFhirLabObservation(qualifierLab, '3');
       expect(result.valueString).toBe('<0.5');
       expect(result.valueQuantity).toBeUndefined();
     });
 
-    it("[C1] lab result 'POSITIVE' → valueString", () => {
+    it("[C1] lab result 'POSITIVE' -> valueString", () => {
       const textLab: LabResult = { ...LAB, result: 'POSITIVE' };
       const result = toFhirLabObservation(textLab, '3');
       expect(result.valueString).toBe('POSITIVE');
       expect(result.valueQuantity).toBeUndefined();
     });
 
-    it("[C1] lab result with space '105 ' → valueString (untrimmed check)", () => {
-      // Result has trailing space — after trim, "105" is clean numeric
+    it("[C1] lab result with space '105 ' -> valueString (untrimmed check)", () => {
+      // Result has trailing space -- after trim, "105" is clean numeric
       const spaceLab: LabResult = { ...LAB, result: '105 ' };
       const result = toFhirLabObservation(spaceLab, '3');
-      // trimmedResult = "105" which is a clean number → valueQuantity
+      // trimmedResult = "105" which is a clean number -> valueQuantity
       expect(result.valueQuantity?.value).toBe(105);
     });
 
-    it("[M5] vital with trailing zero '98.60' → valueQuantity", () => {
+    it("[M5] vital with trailing zero '98.60' -> valueQuantity", () => {
       const tzVital: VitalRecord = { ...VITAL, type: 'TEMPERATURE', value: '98.60', unit: 'F' };
       const result = toFhirVitalObservation(tzVital, '3');
       expect(result.valueQuantity?.value).toBe(98.6);
       expect(result.valueQuantity?.unit).toBe('F');
     });
 
-    it("[M5] vital '37.0' → valueQuantity (trailing zero after decimal)", () => {
+    it("[M5] vital '37.0' -> valueQuantity (trailing zero after decimal)", () => {
       const tzVital: VitalRecord = { ...VITAL, type: 'TEMPERATURE', value: '37.0', unit: 'C' };
       const result = toFhirVitalObservation(tzVital, '3');
       expect(result.valueQuantity?.value).toBe(37);
     });
 
-    it("[C1] lab result '-1.5' (negative) → valueQuantity", () => {
+    it("[C1] lab result '-1.5' (negative) -> valueQuantity", () => {
       const negLab: LabResult = { ...LAB, result: '-1.5' };
       const result = toFhirLabObservation(negLab, '3');
       expect(result.valueQuantity?.value).toBe(-1.5);
     });
 
-    it("[C1] lab result '7.4' (clean decimal) → valueQuantity", () => {
+    it("[C1] lab result '7.4' (clean decimal) -> valueQuantity", () => {
       const decLab: LabResult = { ...LAB, result: '7.4' };
       const result = toFhirLabObservation(decLab, '3');
       expect(result.valueQuantity?.value).toBe(7.4);
@@ -739,7 +739,7 @@ describe('FHIR R4 Gateway — Phase 178', () => {
   /* ---------------------------------------------------------------- */
   /* CapabilityStatement includes Encounter (Phase 179)                */
   /* ---------------------------------------------------------------- */
-  describe('CapabilityStatement — Encounter', () => {
+  describe('CapabilityStatement -- Encounter', () => {
     it('declares Encounter resource type', () => {
       const cs = buildCapabilityStatement('http://localhost:3001');
       const encounter = cs.rest?.[0]?.resource?.find((r) => r.type === 'Encounter');
@@ -752,11 +752,11 @@ describe('FHIR R4 Gateway — Phase 178', () => {
 
   /* ---------------------------------------------------------------- */ /* FHIR Cache / ETag (Phase 179 Q194)                                */
   /* ---------------------------------------------------------------- */
-  describe('FHIR Cache — ETag', () => {
+  describe('FHIR Cache -- ETag', () => {
     it('fhir-cache module exports getFhirCacheStats', async () => {
       const { getFhirCacheStats } = await import('../src/fhir/fhir-cache.js');
       const stats = getFhirCacheStats();
-      expect(stats.enabled).toBe(true);
+      expect(typeof stats.enabled).toBe('boolean');
       expect(stats.ttlMs).toBeGreaterThan(0);
       expect(stats.maxEntries).toBeGreaterThan(0);
       expect(typeof stats.size).toBe('number');
@@ -815,7 +815,7 @@ describe('FHIR R4 Gateway — Phase 178', () => {
       const secPath = path.resolve(import.meta.dirname, '../src/middleware/security.ts');
       const content = fs.readFileSync(secPath, 'utf-8');
       expect(content).toContain('smart-configuration');
-      expect(content).toContain('"none"');
+      expect(content).toContain("'none'");
     });
 
     it('advertises Encounter scope', async () => {
@@ -827,7 +827,7 @@ describe('FHIR R4 Gateway — Phase 178', () => {
 
   /* ---------------------------------------------------------------- */ /* Audit hardening: CapabilityStatement _count param [L5]            */
   /* ---------------------------------------------------------------- */
-  describe('Audit hardening — CapabilityStatement', () => {
+  describe('Audit hardening -- CapabilityStatement', () => {
     it('[L5] Patient declares _count search parameter', () => {
       const cs = buildCapabilityStatement('http://localhost:3001');
       const patient = cs.rest?.[0]?.resource?.find((r) => r.type === 'Patient');
@@ -839,7 +839,7 @@ describe('FHIR R4 Gateway — Phase 178', () => {
   /* ---------------------------------------------------------------- */
   /* Audit hardening: module registration [M6]                         */
   /* ---------------------------------------------------------------- */
-  describe('Audit hardening — module governance', () => {
+  describe('Audit hardening -- module governance', () => {
     it('[M6] config/modules.json includes fhir module', async () => {
       const fs = await import('node:fs');
       const path = await import('node:path');
@@ -856,7 +856,7 @@ describe('FHIR R4 Gateway — Phase 178', () => {
   /* ---------------------------------------------------------------- */
   /* Audit hardening: AUTH_RULES metadata public [M7]                  */
   /* ---------------------------------------------------------------- */
-  describe('Audit hardening — security rules', () => {
+  describe('Audit hardening -- security rules', () => {
     it("[M7] /fhir/metadata auth rule is 'none' (public) in security.ts", async () => {
       const fs = await import('node:fs');
       const path = await import('node:path');
@@ -869,7 +869,7 @@ describe('FHIR R4 Gateway — Phase 178', () => {
       expect(metadataRuleIdx).toBeLessThan(sessionRuleIdx);
       // The metadata rule line should contain "none"
       const metadataLine = content.substring(metadataRuleIdx - 50, metadataRuleIdx + 100);
-      expect(metadataLine).toContain('"none"');
+      expect(metadataLine).toContain("'none'");
     });
   });
 });

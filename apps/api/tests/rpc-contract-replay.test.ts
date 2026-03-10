@@ -1,5 +1,5 @@
 /**
- * RPC Contract Replay Tests — Phase 250
+ * RPC Contract Replay Tests -- Phase 250
  *
  * Loads sanitized fixtures and validates:
  * 1. Fixture files exist and are valid JSON
@@ -13,8 +13,8 @@
 import { describe, it, expect } from 'vitest';
 import { readFileSync, existsSync } from 'node:fs';
 import { join } from 'node:path';
-import { RPC_CONTRACTS, verifyNoPhiInFixture } from '../../src/vista/contracts/index.js';
-import type { RpcFixture } from '../../src/vista/contracts/index.js';
+import { RPC_CONTRACTS, verifyNoPhiInFixture } from '../src/vista/contracts/index.js';
+import type { RpcFixture } from '../src/vista/contracts/index.js';
 
 const FIXTURE_ROOT = join(__dirname, '../fixtures/vista');
 

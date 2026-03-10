@@ -16,7 +16,7 @@
  *   - Writeback executor: img-executor.ts PLACE_IMAGING_ORDER intent
  */
 
-// ── Radiology Order (extends Phase 23 worklist) ────────────
+// -- Radiology Order (extends Phase 23 worklist) ------------
 
 export type RadOrderStatus =
   | 'ordered'
@@ -85,7 +85,7 @@ export interface RadOrder {
   updatedAt: string;
 }
 
-// ── Radiologist Reading Worklist ────────────────────────────
+// -- Radiologist Reading Worklist ----------------------------
 
 export type ReadingStatus = 'unread' | 'in_progress' | 'preliminary' | 'final' | 'addendum_pending';
 
@@ -115,7 +115,7 @@ export interface ReadingWorklistItem {
   updatedAt: string;
 }
 
-// ── Radiology Report Lifecycle ──────────────────────────────
+// -- Radiology Report Lifecycle ------------------------------
 
 export type ReportStatus = 'draft' | 'preliminary' | 'final' | 'addendum' | 'amended' | 'cancelled';
 
@@ -156,7 +156,7 @@ export interface RadReport {
   updatedAt: string;
 }
 
-// ── Radiation Dose Registry ─────────────────────────────────
+// -- Radiation Dose Registry ---------------------------------
 
 export interface DoseRegistryEntry {
   id: string;
@@ -177,7 +177,7 @@ export interface DoseRegistryEntry {
   fluoroTimeSec: number | null;
   /** Number of exposures */
   exposureCount: number | null;
-  /** Effective dose (mSv) — estimated */
+  /** Effective dose (mSv) -- estimated */
   effectiveDoseMSv: number | null;
   /** Exceeded Diagnostic Reference Level? */
   exceedsDrl: boolean;
@@ -190,7 +190,7 @@ export interface DoseRegistryEntry {
   createdAt: string;
 }
 
-// ── Critical Finding Alert ──────────────────────────────────
+// -- Critical Finding Alert ----------------------------------
 
 export type RadCriticalAlertStatus = 'active' | 'acknowledged' | 'communicated' | 'resolved';
 
@@ -222,7 +222,7 @@ export interface RadCriticalAlert {
   updatedAt: string;
 }
 
-// ── Peer Review / Quality Scoring ───────────────────────────
+// -- Peer Review / Quality Scoring ---------------------------
 
 export type PeerReviewScore = 1 | 2 | 3 | 4;
 // 1 = Concur, 2 = Discrepancy (clinically insignificant),
@@ -248,7 +248,7 @@ export interface PeerReview {
   createdAt: string;
 }
 
-// ── Dashboard / Posture ─────────────────────────────────────
+// -- Dashboard / Posture -------------------------------------
 
 export interface RadDashboardStats {
   pendingOrders: number;

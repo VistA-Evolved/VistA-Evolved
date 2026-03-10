@@ -1,5 +1,5 @@
 /**
- * Integration Registry — Phase 18A.
+ * Integration Registry -- Phase 18A.
  *
  * Central registry for all enterprise integrations: VistA RPC, FHIR endpoints,
  * imaging systems (PACS/VNA/DICOM), HL7v2 feeds, lab systems, and devices.
@@ -24,9 +24,9 @@
  *   hard-coded. New devices are onboarded via admin API.
  *
  * References:
- *   - WorldVistA/VistA-FHIR-Server: C0FHIR Suite — FHIR R4 via RPC
+ *   - WorldVistA/VistA-FHIR-Server: C0FHIR Suite -- FHIR R4 via RPC
  *   - WorldVistA/FHIR-on-VistA: M REST + HAPI FHIR translation layer
- *   - WorldVistA/lighthouse-charon: REST → VistA RPC bridge
+ *   - WorldVistA/lighthouse-charon: REST -> VistA RPC bridge
  *   - VistA-M/Packages/Imaging: MAG* namespace (MAG*3.0*235)
  *   - Orthanc, OHIF, dcm4chee for open DICOM/DICOMweb
  */
@@ -40,7 +40,7 @@ export type IntegrationType =
   | 'vista-rpc' // Direct XWB RPC Broker connection
   | 'fhir' // Generic FHIR R4 endpoint
   | 'fhir-c0fhir' // WorldVistA C0FHIR Suite (RPC-backed FHIR)
-  | 'fhir-vpr' // VPR GET PATIENT DATA JSON → FHIR transform
+  | 'fhir-vpr' // VPR GET PATIENT DATA JSON -> FHIR transform
   | 'dicom' // Raw DICOM (C-STORE/C-FIND/C-MOVE)
   | 'dicomweb' // DICOMweb (WADO-RS, STOW-RS, QIDO-RS)
   | 'hl7v2' // HL7v2 MLLP feeds (ADT, ORM, ORU)
@@ -274,7 +274,7 @@ export type IntegrationSpecificConfig =
 /* ------------------------------------------------------------------ */
 
 /**
- * Map of tenantId → Map of integrationId → IntegrationEntry.
+ * Map of tenantId -> Map of integrationId -> IntegrationEntry.
  * Production would use a database or config service.
  */
 const registryStore = new Map<string, Map<string, IntegrationEntry>>();
@@ -353,13 +353,13 @@ export function seedDefaultIntegrations(tenantId: string): void {
         rpcContext: 'C0FHIR CONTEXT',
         fhirVersion: 'R4',
       },
-      notes: 'WorldVistA C0FHIR Suite — MUMPS-native FHIR R4 endpoint backed by RPC',
+      notes: 'WorldVistA C0FHIR Suite -- MUMPS-native FHIR R4 endpoint backed by RPC',
       createdAt: now,
       updatedAt: now,
     });
   }
 
-  // 3. VistA Imaging (placeholder — detects MAG4 REMOTE PROCEDURE)
+  // 3. VistA Imaging (placeholder -- detects MAG4 REMOTE PROCEDURE)
   map.set('vista-imaging', {
     id: 'vista-imaging',
     label: 'VistA Imaging (MAG4)',
@@ -598,7 +598,7 @@ export const INTEGRATION_TYPE_LABELS: Record<IntegrationType, string> = {
   'vista-rpc': 'VistA RPC Broker',
   fhir: 'FHIR R4 Endpoint',
   'fhir-c0fhir': 'C0FHIR Suite (FHIR R4)',
-  'fhir-vpr': 'VPR → FHIR',
+  'fhir-vpr': 'VPR -> FHIR',
   dicom: 'DICOM (C-STORE/C-FIND)',
   dicomweb: 'DICOMweb (WADO/STOW/QIDO)',
   hl7v2: 'HL7v2 MLLP',

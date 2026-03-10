@@ -1,10 +1,10 @@
 /**
- * My Records — Phase 80
+ * My Records -- Phase 80
  *
  * Patient-facing record portability page:
- *   Tab 1: Generate & Download — create PDF/HTML summary, download by token
- *   Tab 2: Share — create time-limited share links, revoke
- *   Tab 3: Access Audit — who accessed shared records
+ *   Tab 1: Generate & Download -- create PDF/HTML summary, download by token
+ *   Tab 2: Share -- create time-limited share links, revoke
+ *   Tab 3: Access Audit -- who accessed shared records
  */
 
 'use client';

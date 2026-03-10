@@ -1,11 +1,11 @@
 /**
- * Telehealth Room Store — Phase 30
+ * Telehealth Room Store -- Phase 30
  *
  * In-memory room lifecycle management with automatic expiry.
- * Rooms are ephemeral — they reset on API restart (same pattern as
+ * Rooms are ephemeral -- they reset on API restart (same pattern as
  * imaging-worklist.ts and imaging-ingest.ts from Phase 23).
  *
- * Room lifecycle: created → waiting → active → ended
+ * Room lifecycle: created -> waiting -> active -> ended
  *
  * Migration plan to VistA-native storage:
  * 1. Map rooms to VistA Scheduling file entries (File #44.003)
@@ -509,6 +509,7 @@ export function startRoomCleanup(): void {
       log.info('Telehealth room cleanup', { expired });
     }
   }, CLEANUP_INTERVAL_MS);
+  cleanupTimer.unref();
 }
 
 export function stopRoomCleanup(): void {

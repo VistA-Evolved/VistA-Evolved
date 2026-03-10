@@ -1,6 +1,6 @@
 {{- if .Values.observability.enabled }}
 ---
-# OTel Collector — receives traces/metrics and forwards to Jaeger + Prometheus
+# OTel Collector -- receives traces/metrics and forwards to Jaeger + Prometheus
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -74,7 +74,7 @@ spec:
       targetPort: prom-export
       name: prom-export
 ---
-# Jaeger — trace visualization
+# Jaeger -- trace visualization
 apiVersion: apps/v1
 kind: Deployment
 metadata:
@@ -135,7 +135,7 @@ spec:
       targetPort: grpc
       name: grpc
 ---
-# Prometheus — metrics scraping
+# Prometheus -- metrics scraping
 apiVersion: apps/v1
 kind: Deployment
 metadata:

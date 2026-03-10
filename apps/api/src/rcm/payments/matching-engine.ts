@@ -1,7 +1,7 @@
 /**
  * Matching + Reconciliation Engine (Phase 92)
  *
- * Deterministic matching rules for remittance lines → claim cases.
+ * Deterministic matching rules for remittance lines -> claim cases.
  * Three-tier strategy:
  *   1. Exact match by internal claim ID
  *   2. Match by (payerId + externalClaimRef + serviceDate + amount tolerance)
@@ -34,15 +34,15 @@ import {
 } from '../claims/claim-store.js';
 import type { ClaimCase } from '../claims/claim-types.js';
 
-/* ── Configuration ─────────────────────────────────────────── */
+/* -- Configuration ------------------------------------------- */
 
 /** Amount tolerance for fuzzy matching (cents) */
 const AMOUNT_TOLERANCE_CENTS = 100; // $1.00
 
 /** Underpayment threshold: flag if paid < (charged * threshold) */
-const UNDERPAYMENT_THRESHOLD = 0.9; // 90% — shortfall > 10% flagged
+const UNDERPAYMENT_THRESHOLD = 0.9; // 90% -- shortfall > 10% flagged
 
-/* ── Match Result ──────────────────────────────────────────── */
+/* -- Match Result -------------------------------------------- */
 
 export interface MatchResult {
   lineId: string;
@@ -64,13 +64,13 @@ export interface BatchMatchResult {
   results: MatchResult[];
 }
 
-/* ── Core Matching ─────────────────────────────────────────── */
+/* -- Core Matching ------------------------------------------- */
 
 /**
  * Run matching for all unmatched lines in a batch.
  * Deterministic: same input always produces the same output.
  */
-export function matchBatch(batchId: string, actor: string): BatchMatchResult {
+export async function matchBatch(batchId: string, actor: string): Promise<BatchMatchResult> {
   const batch = getBatch(batchId);
   if (!batch) {
     return {
@@ -94,7 +94,7 @@ export function matchBatch(batchId: string, actor: string): BatchMatchResult {
   const errors: string[] = [];
 
   for (const line of unmatchedLines) {
-    const result = matchSingleLine(line, batch, actor);
+    const result = await matchSingleLine(line, batch, actor);
     results.push(result);
     if (result.matchStatus === 'matched') matched++;
     else needsReview++;
@@ -135,18 +135,18 @@ export function matchBatch(batchId: string, actor: string): BatchMatchResult {
 /**
  * Match a single remittance line to a claim case.
  */
-function matchSingleLine(line: RemittanceLine, batch: RemittanceBatch, actor: string): MatchResult {
+async function matchSingleLine(line: RemittanceLine, batch: RemittanceBatch, actor: string): Promise<MatchResult> {
   // Strategy 1: Exact match by internal claim ID
   if (line.claimId) {
-    const claim = getClaimCase(line.claimId, batch.tenantId);
+    const claim = await getClaimCase(line.claimId, batch.tenantId);
     if (claim) {
-      return applyMatch(line, claim, batch, actor, 'exact_id', 100);
+      return await applyMatch(line, claim, batch, actor, 'exact_id', 100);
     }
   }
 
   // Strategy 2: Match by external ref + payer + service date + amount
   if (line.externalClaimRef) {
-    const candidate = findByExternalRef(
+    const candidate = await findByExternalRef(
       batch.tenantId,
       batch.payerId,
       line.externalClaimRef,
@@ -154,22 +154,22 @@ function matchSingleLine(line: RemittanceLine, batch: RemittanceBatch, actor: st
       line.amountBilled
     );
     if (candidate) {
-      return applyMatch(line, candidate, batch, actor, 'external_ref', 85);
+      return await applyMatch(line, candidate, batch, actor, 'external_ref', 85);
     }
   }
 
   // Strategy 3: Fuzzy match by payer + service date + amount tolerance
-  const fuzzyCandidate = findByFuzzy(
+  const fuzzyCandidate = await findByFuzzy(
     batch.tenantId,
     batch.payerId,
     line.serviceDate,
     line.amountBilled
   );
   if (fuzzyCandidate) {
-    return applyMatch(line, fuzzyCandidate, batch, actor, 'fuzzy', 60);
+    return await applyMatch(line, fuzzyCandidate, batch, actor, 'fuzzy', 60);
   }
 
-  // No match — needs review
+  // No match -- needs review
   updateLine(line.id, { matchStatus: 'needs_review' });
   return {
     lineId: line.id,
@@ -180,16 +180,16 @@ function matchSingleLine(line: RemittanceLine, batch: RemittanceBatch, actor: st
   };
 }
 
-/* ── Match Application ─────────────────────────────────────── */
+/* -- Match Application --------------------------------------- */
 
-function applyMatch(
+async function applyMatch(
   line: RemittanceLine,
   claim: ClaimCase,
   batch: RemittanceBatch,
   actor: string,
   method: MatchResult['matchMethod'] & string,
   confidence: number
-): MatchResult {
+): Promise<MatchResult> {
   // Update line
   updateLine(line.id, {
     matchStatus: 'matched',
@@ -225,8 +225,8 @@ function applyMatch(
     // Direct transition to paid
     canProceed = true;
   } else if (needsAckFirstStates.includes(currentStatus)) {
-    // Two-step: submitted → payer_acknowledged → paid
-    const ackResult = transitionClaimCase(
+    // Two-step: submitted -> payer_acknowledged -> paid
+    const ackResult = await transitionClaimCase(
       batch.tenantId,
       claim.id,
       'payer_acknowledged',
@@ -235,8 +235,8 @@ function applyMatch(
     );
     canProceed = ackResult.ok;
   } else if (needsSubmitFirstStates.includes(currentStatus)) {
-    // Three-step: exported → submitted_electronic → payer_acknowledged → paid
-    const subResult = transitionClaimCase(
+    // Three-step: exported -> submitted_electronic -> payer_acknowledged -> paid
+    const subResult = await transitionClaimCase(
       batch.tenantId,
       claim.id,
       'submitted_electronic',
@@ -244,7 +244,7 @@ function applyMatch(
       evidenceDetail
     );
     if (subResult.ok) {
-      const ackResult = transitionClaimCase(
+      const ackResult = await transitionClaimCase(
         batch.tenantId,
         claim.id,
         'payer_acknowledged',
@@ -256,7 +256,7 @@ function applyMatch(
   }
 
   if (canProceed) {
-    const transResult = transitionClaimCase(
+    const transResult = await transitionClaimCase(
       batch.tenantId,
       claim.id,
       toStatus as any,
@@ -325,55 +325,63 @@ function applyMatch(
   };
 }
 
-/* ── Lookup Strategies ─────────────────────────────────────── */
+/* -- Lookup Strategies --------------------------------------- */
 
-function findByExternalRef(
+const PAGE_SIZE = 500;
+
+async function findByExternalRef(
   tenantId: string,
   payerId: string,
   externalRef: string,
   serviceDate?: string,
   amountBilled?: number
-): ClaimCase | undefined {
-  const { items } = listClaimCases({ tenantId, payerId, limit: 500 });
-
-  for (const claim of items) {
-    if (claim.payerClaimNumber === externalRef) {
-      // Optionally verify service date
-      if (serviceDate && claim.dateOfService !== serviceDate) continue;
-      return claim;
+): Promise<ClaimCase | undefined> {
+  let offset = 0;
+  for (;;) {
+    const { items, total } = await listClaimCases({ tenantId, payerId, limit: PAGE_SIZE, offset });
+    for (const claim of items) {
+      if (claim.payerClaimNumber === externalRef) {
+        if (serviceDate && claim.dateOfService !== serviceDate) continue;
+        return claim;
+      }
     }
+    offset += items.length;
+    if (items.length < PAGE_SIZE || offset >= total) break;
   }
   return undefined;
 }
 
-function findByFuzzy(
+async function findByFuzzy(
   tenantId: string,
   payerId: string,
   serviceDate?: string,
   amountBilled?: number
-): ClaimCase | undefined {
+): Promise<ClaimCase | undefined> {
   if (!serviceDate || !amountBilled) return undefined;
 
-  const { items } = listClaimCases({ tenantId, payerId, limit: 500 });
-
-  for (const claim of items) {
-    if (claim.dateOfService !== serviceDate) continue;
-    if (Math.abs(claim.totalCharge - amountBilled) <= AMOUNT_TOLERANCE_CENTS) {
-      // Don't match already-paid claims
-      if (claim.lifecycleStatus === 'paid_full' || claim.lifecycleStatus === 'closed') continue;
-      return claim;
+  let offset = 0;
+  for (;;) {
+    const { items, total } = await listClaimCases({ tenantId, payerId, limit: PAGE_SIZE, offset });
+    for (const claim of items) {
+      if (claim.dateOfService !== serviceDate) continue;
+      if (Math.abs(claim.totalCharge - amountBilled) <= AMOUNT_TOLERANCE_CENTS) {
+        if (claim.lifecycleStatus === 'paid_full' || claim.lifecycleStatus === 'closed') continue;
+        return claim;
+      }
     }
+    offset += items.length;
+    if (items.length < PAGE_SIZE || offset >= total) break;
   }
   return undefined;
 }
 
-/* ── Manual Link ───────────────────────────────────────────── */
+/* -- Manual Link --------------------------------------------- */
 
 /**
  * Manually link a remittance line to a claim case.
  * Used from the reconciliation worklist UI.
  */
-export function manualLinkLine(lineId: string, claimCaseId: string, actor: string): MatchResult {
+export async function manualLinkLine(lineId: string, claimCaseId: string, actor: string): Promise<MatchResult> {
   const line = getLine(lineId);
 
   if (!line) {
@@ -387,7 +395,7 @@ export function manualLinkLine(lineId: string, claimCaseId: string, actor: strin
     };
   }
 
-  const claim = getClaimCase(claimCaseId, line.tenantId);
+  const claim = await getClaimCase(claimCaseId, line.tenantId);
   if (!claim) {
     return {
       lineId,
@@ -421,7 +429,7 @@ export function manualLinkLine(lineId: string, claimCaseId: string, actor: strin
   });
 
   // Apply the match (same logic as auto-match)
-  const result = applyMatch(line, claim, batch, actor, 'manual', 100);
+  const result = await applyMatch(line, claim, batch, actor, 'manual', 100);
 
   // Update batch counts
   const currentBatch = getBatch(line.batchId);
@@ -435,7 +443,7 @@ export function manualLinkLine(lineId: string, claimCaseId: string, actor: strin
   return result;
 }
 
-/* ── CSV Parser ────────────────────────────────────────────── */
+/* -- CSV Parser ---------------------------------------------- */
 
 /**
  * Parse a simple CSV remittance file into RemittanceLine objects.

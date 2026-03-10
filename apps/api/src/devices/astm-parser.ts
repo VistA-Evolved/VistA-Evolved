@@ -1,5 +1,5 @@
 /**
- * ASTM E1381/E1394 Parser — Frame + Record Parser
+ * ASTM E1381/E1394 Parser -- Frame + Record Parser
  *
  * Phase 382 (W21-P5): ASTM serial/TCP protocol parser for Point-of-Care
  * and laboratory analyzer devices. Handles ENQ/STX/ETX/EOT framing,
@@ -8,19 +8,21 @@
  * Reference: ASTM E1381-02 (LIS2-A2), ASTM E1394-97 (LIS1-A)
  */
 
+import { safeErr } from '../lib/safe-error.js';
+
 // ---------------------------------------------------------------------------
 // ASTM Frame Constants
 // ---------------------------------------------------------------------------
 
-/** Start of text — frame data start */
+/** Start of text -- frame data start */
 export const ASTM_STX = 0x02;
-/** End of text — frame data end (with checksum) */
+/** End of text -- frame data end (with checksum) */
 export const ASTM_ETX = 0x03;
-/** End of block — frame data end (intermediate, no checksum verify needed) */
+/** End of block -- frame data end (intermediate, no checksum verify needed) */
 export const ASTM_ETB = 0x17;
-/** Enquiry — initiate transfer session */
+/** Enquiry -- initiate transfer session */
 export const ASTM_ENQ = 0x05;
-/** End of transmission — session complete */
+/** End of transmission -- session complete */
 export const ASTM_EOT = 0x04;
 /** Acknowledge */
 export const ASTM_ACK = 0x06;
@@ -175,7 +177,7 @@ export function parseAstmFrame(raw: string): AstmFrame | null {
   const intermediate = etbIdx >= 0 && (etxIdx < 0 || etbIdx < etxIdx);
 
   if (termIdx < 0) {
-    // No terminator found — treat the whole thing as data
+    // No terminator found -- treat the whole thing as data
     return {
       frameNumber,
       data: content.slice(1),
@@ -389,7 +391,7 @@ export function parseAstm(raw: string): AstmParseResult {
       observations: [],
       frameCount: 0,
       checksumErrors: 0,
-      error: err.message || 'ASTM parse error',
+      error: safeErr(err),
     };
   }
 }

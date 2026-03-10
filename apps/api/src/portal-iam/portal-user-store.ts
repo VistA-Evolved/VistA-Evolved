@@ -1,11 +1,11 @@
 /**
- * Portal User Store — Phase 29
+ * Portal User Store â€" Phase 29
  *
  * In-memory store for portal user accounts.
  * Uses Node.js built-in crypto.scrypt for password hashing (zero npm deps).
  *
  * Key design decisions:
- * - Portal identity is NOT VistA DUZ — separate enrollment model
+ * - Portal identity is NOT VistA DUZ â€" separate enrollment model
  * - Password hashed with scrypt (N=16384, r=8, p=1, keyLen=64)
  * - Account lockout after MAX_FAILED_ATTEMPTS (configurable)
  * - Session tokens are randomBytes(32)
@@ -336,7 +336,7 @@ export async function createUser(
   // Phase 146: Write-through to PG
   userDbRepo
     ?.upsert(toPortalUserRepoRow(user))
-    .catch(() => {});
+    .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
   log.info(`Portal user created: ${id}`);
   return user;
@@ -401,12 +401,12 @@ export async function authenticateUser(username: string, password: string): Prom
     // Phase 146: Write-through lockout state
     userDbRepo
       ?.upsert(toPortalUserRepoRow(user))
-      .catch(() => {});
+      .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
     return { success: false, error: 'Invalid credentials' };
   }
 
-  // Successful auth — reset failed attempts
+  // Successful auth â€" reset failed attempts
   user.failedAttempts = 0;
   user.lockedUntil = null;
   user.lastLoginAt = now();
@@ -415,7 +415,7 @@ export async function authenticateUser(username: string, password: string): Prom
   // Phase 146: Write-through login success
   userDbRepo
     ?.upsert(toPortalUserRepoRow(user))
-    .catch(() => {});
+    .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
   // Check MFA
   if (user.mfaEnabled) {
@@ -441,9 +441,9 @@ export function generatePasswordResetToken(userId: string): string | null {
   // Phase 146: Write-through reset token
   userDbRepo
     ?.upsert(toPortalUserRepoRow(user))
-    .catch(() => {});
+    .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
-  return token; // Return plaintext — only returned once (sent via email)
+  return token; // Return plaintext â€" only returned once (sent via email)
 }
 
 export async function resetPassword(
@@ -469,7 +469,7 @@ export async function resetPassword(
       // Phase 146: Write-through password reset
       userDbRepo
         ?.upsert(toPortalUserRepoRow(user))
-        .catch(() => {});
+        .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
       return { success: true };
     }
@@ -494,7 +494,7 @@ export async function changePassword(
   // Phase 146: Write-through password change
   userDbRepo
     ?.upsert(toPortalUserRepoRow(user))
-    .catch(() => {});
+    .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
   return { success: true };
 }
@@ -525,7 +525,7 @@ export function setupMfa(userId: string): {
   // Phase 146: Write-through MFA setup
   userDbRepo
     ?.upsert(toPortalUserRepoRow(user))
-    .catch(() => {});
+    .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
   const uri = `otpauth://totp/VistA-Evolved:${user.username}?secret=${secret}&issuer=VistA-Evolved`;
   return { secret, uri };
@@ -545,7 +545,7 @@ export function confirmMfa(userId: string, code: string): boolean {
     // Phase 146: Write-through MFA confirm
     userDbRepo
       ?.upsert(toPortalUserRepoRow(user))
-      .catch(() => {});
+      .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
     return true;
   }
@@ -564,7 +564,7 @@ export function disableMfa(userId: string): boolean {
   // Phase 146: Write-through MFA disable
   userDbRepo
     ?.upsert(toPortalUserRepoRow(user))
-    .catch(() => {});
+    .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
   return true;
 }
@@ -596,7 +596,7 @@ export function addPatientProfile(
   // Phase 146: Write-through profile add
   userDbRepo
     ?.upsert(toPortalUserRepoRow(user))
-    .catch(() => {});
+    .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
   return fullProfile;
 }
@@ -614,7 +614,7 @@ export function removePatientProfile(userId: string, profileId: string): boolean
   // Phase 146: Write-through profile remove
   userDbRepo
     ?.upsert(toPortalUserRepoRow(user))
-    .catch(() => {});
+    .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
   return true;
 }
@@ -651,7 +651,7 @@ export function createDeviceSession(
   // Phase 146: Write-through device session
   userDbRepo
     ?.upsert({ id: user.id, tenantId: user.tenantId, updatedAt: user.updatedAt })
-    .catch(() => {});
+    .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
   return ds;
 }
@@ -688,7 +688,7 @@ export function revokeDeviceSession(userId: string, sessionId: string): boolean 
   // Phase 146: Write-through device revoke
   userDbRepo
     ?.upsert({ id: user.id, tenantId: user.tenantId, updatedAt: user.updatedAt })
-    .catch(() => {});
+    .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
   return true;
 }
@@ -708,7 +708,7 @@ export function revokeAllDeviceSessions(userId: string): number {
   // Phase 146: Write-through revoke all devices
   userDbRepo
     ?.upsert({ id: user.id, tenantId: user.tenantId, updatedAt: user.updatedAt })
-    .catch(() => {});
+    .catch((e) => log.warn('portal-user-store DB write-through failed', { error: String(e) }));
 
   return count;
 }

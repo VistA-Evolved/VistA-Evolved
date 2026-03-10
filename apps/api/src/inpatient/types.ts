@@ -1,12 +1,12 @@
 /**
- * Phase 391 (W22-P3): Inpatient Core — Types
+ * Phase 391 (W22-P3): Inpatient Core -- Types
  *
  * ADT bedboard, nursing flowsheets, vitals capture, and writeback posture.
- * Reuses the Wave 17 Facility → Department → Location hierarchy from
+ * Reuses the Wave 17 Facility -> Department -> Location hierarchy from
  * facility-service.ts. Extends Location with bed-level assignments.
  */
 
-// ─── Bed Assignment ─────────────────────────────────────────────
+// --- Bed Assignment ---------------------------------------------
 
 export type BedStatus = 'available' | 'occupied' | 'cleaning' | 'blocked' | 'reserved';
 
@@ -37,7 +37,7 @@ export interface BedAssignment {
   updatedAt: string;
 }
 
-// ─── ADT Events ─────────────────────────────────────────────────
+// --- ADT Events -------------------------------------------------
 
 export type AdtEventType =
   | 'admit'
@@ -63,7 +63,7 @@ export interface AdtEvent {
   createdAt: string;
 }
 
-// ─── Nursing Flowsheet Data ─────────────────────────────────────
+// --- Nursing Flowsheet Data -------------------------------------
 
 export interface FlowsheetRow {
   id: string;
@@ -71,7 +71,7 @@ export interface FlowsheetRow {
   patientDfn: string;
   /** Flowsheet definition ID (from content-packs/pack-store) */
   flowsheetId: string;
-  /** Column key → value */
+  /** Column key -> value */
   values: Record<string, string | number | boolean>;
   /** Flags for out-of-range values */
   flags: Record<string, 'low' | 'high' | 'critical_low' | 'critical_high'>;
@@ -83,7 +83,7 @@ export interface FlowsheetRow {
   deviceObservationId: string | null;
 }
 
-// ─── Vitals (Subset of Flowsheet) ──────────────────────────────
+// --- Vitals (Subset of Flowsheet) ------------------------------
 
 export type VitalSign =
   | 'bp_systolic'
@@ -114,7 +114,7 @@ export interface VitalsEntry {
   writebackError: string | null;
 }
 
-// ─── Writeback Posture ──────────────────────────────────────────
+// --- Writeback Posture ------------------------------------------
 
 export interface WritebackPosture {
   vitals: {

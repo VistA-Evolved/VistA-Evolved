@@ -1,5 +1,5 @@
 /**
- * Phase 392 (W22-P4): Pharmacy Deep Workflows — Store
+ * Phase 392 (W22-P4): Pharmacy Deep Workflows -- Store
  *
  * In-memory stores for pharmacy order lifecycle, dispensing events,
  * and administration records. Bridges existing writeback executor
@@ -21,7 +21,7 @@ import type {
   PharmWritebackPosture,
 } from './types.js';
 
-// ─── Constants ──────────────────────────────────────────────
+// --- Constants ----------------------------------------------
 
 const MAX_ITEMS = 10_000;
 
@@ -39,13 +39,13 @@ const HIGH_ALERT_CLASSES = new Set([
   'paralytic',
 ]);
 
-// ─── Stores ─────────────────────────────────────────────────
+// --- Stores -------------------------------------------------
 
 const pharmOrderStore = new Map<string, PharmOrder>();
 const dispenseEventStore = new Map<string, DispenseEvent>();
 const adminRecordStore = new Map<string, AdminRecord>();
 
-// ─── Pharmacy Orders ────────────────────────────────────────
+// --- Pharmacy Orders ----------------------------------------
 
 export function createPharmOrder(
   tenantId: string,
@@ -179,7 +179,7 @@ export function overrideClinicalCheck(
   return updated;
 }
 
-// ─── Dispensing Events ──────────────────────────────────────
+// --- Dispensing Events --------------------------------------
 
 export function createDispenseEvent(
   tenantId: string,
@@ -231,7 +231,7 @@ export function updateDispenseStatus(
   return updated;
 }
 
-// ─── Administration Records ─────────────────────────────────
+// --- Administration Records ---------------------------------
 
 export function createAdminRecord(
   tenantId: string,
@@ -264,7 +264,7 @@ export function listAdminRecords(
   });
 }
 
-// ─── Clinical Checks (Heuristic) ────────────────────────────
+// --- Clinical Checks (Heuristic) ----------------------------
 
 function isHighAlert(drugClass: string | null): boolean {
   if (!drugClass) return false;
@@ -290,7 +290,7 @@ function runClinicalChecks(
     });
   }
 
-  // Dose range heuristic (placeholder — real implementation needs drug-specific ranges)
+  // Dose range heuristic (placeholder -- real implementation needs drug-specific ranges)
   const numericDose = parseFloat(dose);
   if (!isNaN(numericDose) && numericDose > 1000) {
     checks.push({
@@ -306,7 +306,7 @@ function runClinicalChecks(
   return checks;
 }
 
-// ─── Dashboard Stats ────────────────────────────────────────
+// --- Dashboard Stats ----------------------------------------
 
 export function getPharmacyDashboardStats(tenantId: string): PharmacyDashboardStats {
   const orders = listPharmOrders(tenantId);
@@ -331,7 +331,7 @@ export function getPharmacyDashboardStats(tenantId: string): PharmacyDashboardSt
   };
 }
 
-// ─── Writeback Posture ──────────────────────────────────────
+// --- Writeback Posture --------------------------------------
 
 export function getPharmWritebackPosture(): PharmWritebackPosture {
   return {
@@ -363,7 +363,7 @@ export function getPharmWritebackPosture(): PharmWritebackPosture {
   };
 }
 
-// ─── Reset (testing) ────────────────────────────────────────
+// --- Reset (testing) ----------------------------------------
 
 export function _resetPharmacyStores(): void {
   pharmOrderStore.clear();

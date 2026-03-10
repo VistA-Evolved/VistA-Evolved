@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * UX Theming QA Gate — Phase 280 (Wave 9)
+ * UX Theming QA Gate -- Phase 280 (Wave 9)
  *
  * Validates:
  *   1. CPRSUIProvider sets data-theme via useEffect
@@ -32,7 +32,7 @@ function gate(name, fn) {
       fail++;
     }
   } catch (e) {
-    console.log(`  FAIL  ${name} — ${e.message}`);
+    console.log(`  FAIL  ${name} -- ${e.message}`);
     fail++;
   }
 }

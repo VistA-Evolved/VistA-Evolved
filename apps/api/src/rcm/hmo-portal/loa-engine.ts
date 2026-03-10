@@ -1,5 +1,5 @@
 /**
- * HMO LOA Engine — Enterprise-Grade LOA Packet Generation
+ * HMO LOA Engine -- Enterprise-Grade LOA Packet Generation
  *
  * Phase 97: Generates LOA request packets from clinical data.
  *
@@ -23,13 +23,13 @@ import type {
   DepartmentSpecialty,
 } from './types.js';
 
-/* ── ID Generation ──────────────────────────────────────────── */
+/* -- ID Generation -------------------------------------------- */
 
 function newLoaPacketId(): string {
   return `lpkt-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
-/* ── Specialty Templates ────────────────────────────────────── */
+/* -- Specialty Templates -------------------------------------- */
 
 const SPECIALTY_TEMPLATES: Record<DepartmentSpecialty, LoaPacketTemplate> = {
   general_medicine: {
@@ -161,7 +161,7 @@ export function listSpecialtyTemplates(): LoaPacketTemplate[] {
   return Object.values(SPECIALTY_TEMPLATES);
 }
 
-/* ── Content Hash ───────────────────────────────────────────── */
+/* -- Content Hash --------------------------------------------- */
 
 function hashLoaPacketContent(packet: Omit<LoaPacket, 'contentHash'>): string {
   const serialized = JSON.stringify({
@@ -176,7 +176,7 @@ function hashLoaPacketContent(packet: Omit<LoaPacket, 'contentHash'>): string {
   return createHash('sha256').update(serialized).digest('hex');
 }
 
-/* ── LOA Packet Builder ─────────────────────────────────────── */
+/* -- LOA Packet Builder --------------------------------------- */
 
 export interface LoaPacketBuildOptions {
   loaRequest: LoaRequest;
@@ -254,7 +254,7 @@ export function buildLoaPacket(opts: LoaPacketBuildOptions): {
   return { ok: true, packet };
 }
 
-/* ── LOA Packet Export: JSON ────────────────────────────────── */
+/* -- LOA Packet Export: JSON ---------------------------------- */
 
 function generateLoaJson(packet: LoaPacket): LoaPacketExport {
   const content = JSON.stringify(packet, null, 2);
@@ -269,7 +269,7 @@ function generateLoaJson(packet: LoaPacket): LoaPacketExport {
   };
 }
 
-/* ── LOA Packet Export: PDF Text ────────────────────────────── */
+/* -- LOA Packet Export: PDF Text ------------------------------ */
 
 function pad(s: string, len: number): string {
   return s.padEnd(len);
@@ -392,7 +392,7 @@ function generateLoaPdfText(packet: LoaPacket): LoaPacketExport {
   };
 }
 
-/* ── Generate LOA Exports ───────────────────────────────────── */
+/* -- Generate LOA Exports ------------------------------------- */
 
 export function generateLoaExports(
   packet: LoaPacket,

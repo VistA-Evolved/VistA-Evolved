@@ -14,6 +14,7 @@
 
 import type { FastifyInstance } from 'fastify';
 import { requireSession } from '../auth/auth-routes.js';
+import { safeErr } from '../lib/safe-error.js';
 import { audit, type AuditAction } from '../lib/audit.js';
 import {
   ANALYTICS_ROLE_PERMISSIONS,
@@ -87,7 +88,7 @@ function requireTenantId(request: any, reply: any): string {
 /* ================================================================== */
 
 export default async function analyticsExtractRoutes(server: FastifyInstance): Promise<void> {
-  /* ── EXTRACT LAYER (Phase 363) ────────────────────────────────── */
+  /* -- EXTRACT LAYER (Phase 363) ---------------------------------- */
 
   server.post('/analytics/extract/run', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -149,7 +150,7 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
     return reply.send({ ok: true, stats: getExtractStats(requireTenantId(request, reply)) });
   });
 
-  /* ── DE-IDENTIFICATION (Phase 364) ────────────────────────────── */
+  /* -- DE-IDENTIFICATION (Phase 364) ------------------------------ */
 
   server.post('/analytics/deid/process', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -207,7 +208,7 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
     return reply.send({ ok: true, configs: listDeidConfigs() });
   });
 
-  /* ── QUALITY METRICS (Phase 366) ──────────────────────────────── */
+  /* -- QUALITY METRICS (Phase 366) -------------------------------- */
 
   server.get('/analytics/quality/measures', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -241,7 +242,7 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
       });
       return reply.send({ ok: true, metric: result });
     } catch (e: any) {
-      return reply.code(400).send({ ok: false, error: e.message });
+      return reply.code(400).send({ ok: false, error: safeErr(e) });
     }
   });
 
@@ -259,7 +260,7 @@ export default async function analyticsExtractRoutes(server: FastifyInstance): P
     return reply.send({ ok: true, runs, count: runs.length });
   });
 
-  /* ── RCM ANALYTICS (Phase 367) ────────────────────────────────── */
+  /* -- RCM ANALYTICS (Phase 367) ---------------------------------- */
 
   server.get('/analytics/rcm-metrics', async (request, reply) => {
     const session = await requireSession(request, reply);

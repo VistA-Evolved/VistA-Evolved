@@ -1,12 +1,12 @@
 /**
- * Job Admin Routes — Phase 116: Postgres Job Queue
+ * Job Admin Routes -- Phase 116: Postgres Job Queue
  *
  * Admin-only endpoints for job queue visibility and management.
  *
  * Routes:
- *   GET  /admin/jobs/runs     — List recent job run log entries
- *   GET  /admin/jobs/status   — Runner status + registry info
- *   POST /admin/jobs/trigger  — Manually trigger a job (ad-hoc)
+ *   GET  /admin/jobs/runs     -- List recent job run log entries
+ *   GET  /admin/jobs/status   -- Runner status + registry info
+ *   POST /admin/jobs/trigger  -- Manually trigger a job (ad-hoc)
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -24,7 +24,7 @@ import { safeErr } from '../lib/safe-error.js';
 
 export async function jobAdminRoutes(server: FastifyInstance): Promise<void> {
   /**
-   * GET /admin/jobs/status — Runner status + registry info
+   * GET /admin/jobs/status -- Runner status + registry info
    */
   server.get('/admin/jobs/status', async (_request: FastifyRequest, reply: FastifyReply) => {
     const jobs = ALL_JOB_NAMES.map((name) => ({
@@ -45,7 +45,7 @@ export async function jobAdminRoutes(server: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /admin/jobs/runs — List recent job run log entries
+   * GET /admin/jobs/runs -- List recent job run log entries
    */
   server.get('/admin/jobs/runs', async (request: FastifyRequest, reply: FastifyReply) => {
     const query = (request.query ?? {}) as Record<string, string>;
@@ -59,7 +59,7 @@ export async function jobAdminRoutes(server: FastifyInstance): Promise<void> {
   });
 
   /**
-   * POST /admin/jobs/trigger — Manually trigger a job
+   * POST /admin/jobs/trigger -- Manually trigger a job
    *
    * Body: { jobName: string, payload?: object }
    */

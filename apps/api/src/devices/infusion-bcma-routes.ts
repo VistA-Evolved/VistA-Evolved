@@ -1,5 +1,5 @@
 /**
- * Infusion / BCMA Safety Bridge — Routes
+ * Infusion / BCMA Safety Bridge -- Routes
  *
  * Phase 385 (W21-P8): REST endpoints for infusion pump event staging,
  * BCMA session management, and right-6 medication safety verification.
@@ -7,26 +7,27 @@
  * Endpoints:
  *
  * Pump Events:
- *   POST /devices/infusion/pump-events        — Ingest pump event (service auth)
- *   GET  /devices/infusion/pump-events        — List pump events
- *   GET  /devices/infusion/pump-events/:id    — Get pump event
- *   PATCH /devices/infusion/pump-events/:id/verify — Mark VistA-verified
+ *   POST /devices/infusion/pump-events        -- Ingest pump event (service auth)
+ *   GET  /devices/infusion/pump-events        -- List pump events
+ *   GET  /devices/infusion/pump-events/:id    -- Get pump event
+ *   PATCH /devices/infusion/pump-events/:id/verify -- Mark VistA-verified
  *
  * BCMA Sessions:
- *   POST /devices/bcma/sessions               — Start BCMA session
- *   GET  /devices/bcma/sessions               — List BCMA sessions
- *   GET  /devices/bcma/sessions/:id           — Get BCMA session
- *   POST /devices/bcma/sessions/:id/patient-scan   — Record patient scan
- *   POST /devices/bcma/sessions/:id/medication-scan — Record medication scan
- *   POST /devices/bcma/sessions/:id/right6-check   — Perform right-6 check
- *   POST /devices/bcma/sessions/:id/complete        — Complete session
+ *   POST /devices/bcma/sessions               -- Start BCMA session
+ *   GET  /devices/bcma/sessions               -- List BCMA sessions
+ *   GET  /devices/bcma/sessions/:id           -- Get BCMA session
+ *   POST /devices/bcma/sessions/:id/patient-scan   -- Record patient scan
+ *   POST /devices/bcma/sessions/:id/medication-scan -- Record medication scan
+ *   POST /devices/bcma/sessions/:id/right6-check   -- Perform right-6 check
+ *   POST /devices/bcma/sessions/:id/complete        -- Complete session
  *
  * Stats & Audit:
- *   GET  /devices/infusion/stats              — Infusion & BCMA statistics
- *   GET  /devices/infusion/audit              — Audit log
+ *   GET  /devices/infusion/stats              -- Infusion & BCMA statistics
+ *   GET  /devices/infusion/audit              -- Audit log
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { requireDeviceServiceKey } from './service-key-guard.js';
 import {
   createPumpEvent,
   getPumpEvent,
@@ -54,8 +55,9 @@ export default async function infusionBcmaRoutes(server: FastifyInstance): Promi
   // Pump Events
   // -----------------------------------------------------------------------
 
-  /** POST /devices/infusion/pump-events — ingest from pump gateway */
+  /** POST /devices/infusion/pump-events -- ingest from pump gateway */
   server.post('/devices/infusion/pump-events', async (req: FastifyRequest, reply: FastifyReply) => {
+    if (!requireDeviceServiceKey(req, reply)) return reply;
     const body = (req.body as any) || {};
     if (!body.pumpSerial || !body.eventType) {
       return reply.code(400).send({ ok: false, error: 'pumpSerial and eventType required' });
@@ -78,7 +80,7 @@ export default async function infusionBcmaRoutes(server: FastifyInstance): Promi
     return reply.code(201).send({ ok: true, pumpEvent: ev });
   });
 
-  /** GET /devices/infusion/pump-events — list */
+  /** GET /devices/infusion/pump-events -- list */
   server.get('/devices/infusion/pump-events', async (req: FastifyRequest, reply: FastifyReply) => {
     const q = req.query as any;
     const events = listPumpEvents(tenant(req), {
@@ -101,7 +103,7 @@ export default async function infusionBcmaRoutes(server: FastifyInstance): Promi
     }
   );
 
-  /** PATCH /devices/infusion/pump-events/:id/verify — VistA verification */
+  /** PATCH /devices/infusion/pump-events/:id/verify -- VistA verification */
   server.patch(
     '/devices/infusion/pump-events/:id/verify',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -117,7 +119,7 @@ export default async function infusionBcmaRoutes(server: FastifyInstance): Promi
   // BCMA Sessions
   // -----------------------------------------------------------------------
 
-  /** POST /devices/bcma/sessions — start BCMA session */
+  /** POST /devices/bcma/sessions -- start BCMA session */
   server.post('/devices/bcma/sessions', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
     if (!body.clinicianDuz) {
@@ -127,7 +129,7 @@ export default async function infusionBcmaRoutes(server: FastifyInstance): Promi
     return reply.code(201).send({ ok: true, bcmaSession: session });
   });
 
-  /** GET /devices/bcma/sessions — list */
+  /** GET /devices/bcma/sessions -- list */
   server.get('/devices/bcma/sessions', async (req: FastifyRequest, reply: FastifyReply) => {
     const q = req.query as any;
     const sessions = listBcmaSessions(tenant(req), {
@@ -146,7 +148,7 @@ export default async function infusionBcmaRoutes(server: FastifyInstance): Promi
     return { ok: true, bcmaSession: session };
   });
 
-  /** POST /devices/bcma/sessions/:id/patient-scan — scan patient wristband */
+  /** POST /devices/bcma/sessions/:id/patient-scan -- scan patient wristband */
   server.post(
     '/devices/bcma/sessions/:id/patient-scan',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -166,7 +168,7 @@ export default async function infusionBcmaRoutes(server: FastifyInstance): Promi
     }
   );
 
-  /** POST /devices/bcma/sessions/:id/medication-scan — scan medication barcode */
+  /** POST /devices/bcma/sessions/:id/medication-scan -- scan medication barcode */
   server.post(
     '/devices/bcma/sessions/:id/medication-scan',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -189,7 +191,7 @@ export default async function infusionBcmaRoutes(server: FastifyInstance): Promi
     }
   );
 
-  /** POST /devices/bcma/sessions/:id/right6-check — perform right-6 verification */
+  /** POST /devices/bcma/sessions/:id/right6-check -- perform right-6 verification */
   server.post(
     '/devices/bcma/sessions/:id/right6-check',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -211,7 +213,7 @@ export default async function infusionBcmaRoutes(server: FastifyInstance): Promi
     }
   );
 
-  /** POST /devices/bcma/sessions/:id/complete — complete session */
+  /** POST /devices/bcma/sessions/:id/complete -- complete session */
   server.post(
     '/devices/bcma/sessions/:id/complete',
     async (req: FastifyRequest, reply: FastifyReply) => {

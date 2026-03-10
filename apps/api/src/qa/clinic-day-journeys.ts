@@ -1,5 +1,5 @@
 /**
- * Phase 166: Clinic Day Simulator — A-Z Proof Journeys
+ * Phase 166: Clinic Day Simulator -- A-Z Proof Journeys
  *
  * Defines 6 end-to-end clinic day journeys that assert:
  *   1. UI navigation (no dead clicks)
@@ -10,7 +10,7 @@
  * executes against the live API and records RPC traces.
  */
 
-// ── Journey Types ───────────────────────────────────────────
+// -- Journey Types -------------------------------------------
 
 export interface JourneyStep {
   /** Human-readable step name */
@@ -82,7 +82,7 @@ export interface ClinicDayReport {
   };
 }
 
-// ── Journey Definitions ─────────────────────────────────────
+// -- Journey Definitions -------------------------------------
 
 export const J1_OUTPATIENT: JourneyDefinition = {
   id: 'J1',
@@ -234,7 +234,7 @@ export const J3_LAB: JourneyDefinition = {
     {
       name: 'Read cumulative lab report',
       method: 'GET',
-      path: '/vista/reports?dfn=3&reportId=OR_R18:LAB',
+      path: '/vista/reports?dfn=46&reportId=OR_R18:LAB',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['ORWRP REPORT TEXT'],
@@ -275,7 +275,7 @@ export const J4_RADIOLOGY: JourneyDefinition = {
     {
       name: 'Read imaging studies',
       method: 'GET',
-      path: '/vista/reports?dfn=3&reportId=OR_R18:RAD',
+      path: '/vista/reports?dfn=46&reportId=OR_R18:RAD',
       expectedStatus: 200,
       requiredFields: ['ok'],
       expectedRpcs: ['ORWRP REPORT TEXT'],
@@ -358,7 +358,7 @@ export const J6_PORTAL: JourneyDefinition = {
 };
 
 /**
- * T0 — Tier-0 Outpatient Proof
+ * T0 -- Tier-0 Outpatient Proof
  *
  * Minimal end-to-end journey using ONLY outpatient-safe RPCs.
  * Designed for hospital technical reviewers and consulting firms.
@@ -435,7 +435,7 @@ export const ALL_JOURNEYS: JourneyDefinition[] = [
   J6_PORTAL,
 ];
 
-// ── Journey Runner ──────────────────────────────────────────
+// -- Journey Runner ------------------------------------------
 
 const journeyResultsStore: JourneyResult[] = [];
 
@@ -605,7 +605,7 @@ export async function runAllJourneys(
   };
 }
 
-// ── Helpers ─────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------
 
 function checkRequiredFields(body: any, fields: string[]): string[] {
   const missing: string[] = [];

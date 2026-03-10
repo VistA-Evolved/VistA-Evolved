@@ -1,5 +1,5 @@
 /**
- * Device Alarms Pipeline — Store
+ * Device Alarms Pipeline -- Store
  *
  * Phase 384 (W21-P7): In-memory alarm store with routing rules,
  * acknowledgment, escalation, and audit trail.

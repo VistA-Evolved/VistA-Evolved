@@ -1,5 +1,5 @@
 /**
- * Telehealth Encounter Linkage — Phase 307 (W12-P9)
+ * Telehealth Encounter Linkage -- Phase 307 (W12-P9)
  *
  * Links telehealth rooms to VistA encounters (PCE Visit file).
  * When a telehealth visit occurs, this module grounds it to a VistA

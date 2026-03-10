@@ -1,5 +1,5 @@
 /**
- * ADT Writeback Contract Tests — Phase 305 (W12-P7)
+ * ADT Writeback Contract Tests -- Phase 305 (W12-P7)
  */
 
 import { describe, it, expect } from 'vitest';
@@ -100,7 +100,7 @@ describe('ADT Writeback Contract Tests', () => {
       expect(adtIntents).toHaveLength(3);
     });
 
-    it('No silent no-ops — all paths throw with structured error', () => {
+    it('No silent no-ops -- all paths throw with structured error', () => {
       // The executor throws with errorClass and vistaGrounding for every intent
       const errorShape = {
         errorClass: 'permanent',

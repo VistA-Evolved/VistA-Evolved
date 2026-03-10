@@ -1,5 +1,5 @@
 /**
- * Export Packaging Pipeline — Phase 442.
+ * Export Packaging Pipeline -- Phase 442.
  *
  * Produces regulatory-compliant data export packages with:
  * - Framework-specific constraints enforcement (cross-border, retention, PHI redaction)
@@ -292,7 +292,7 @@ export function createExportPackage(request: ExportRequest): ExportPackage {
     return pkg;
   }
 
-  // Generate export content (scaffold — real implementation would query data stores)
+  // Generate export content (scaffold -- real implementation would query data stores)
   auditIds.push(
     appendAudit(exportId, 'processing', request.requestedBy, 'Generating export package')
   );
@@ -304,7 +304,7 @@ export function createExportPackage(request: ExportRequest): ExportPackage {
         format: request.format,
         domains: request.domains,
         generatedAt: new Date().toISOString(),
-        note: 'Scaffold export — real data query integration pending',
+        note: 'Scaffold export -- real data query integration pending',
       },
       records: [],
     },

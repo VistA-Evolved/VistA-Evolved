@@ -1,5 +1,5 @@
 /**
- * Edge Device Gateway + Device Registry — Barrel Export
+ * Edge Device Gateway + Device Registry -- Barrel Export
  *
  * Phase 379 (W21-P2) + Phase 380 (W21-P3)
  */

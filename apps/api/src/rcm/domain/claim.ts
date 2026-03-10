@@ -1,10 +1,10 @@
 /**
- * RCM Domain — Claim Entity & Lifecycle
+ * RCM Domain -- Claim Entity & Lifecycle
  *
  * Phase 38: VistA-first claim lifecycle model.
  *
  * Claim states mirror the real-world EDI lifecycle:
- *   draft → validated → submitted → accepted/rejected → paid/denied → appealed → closed
+ *   draft -> validated -> submitted -> accepted/rejected -> paid/denied -> appealed -> closed
  *
  * VistA grounding: WorldVistA Integrated Billing (IB) stores charges in
  * ^IB(350,...) and ^PRCA(430,...) for AR. We read from VistA when available
@@ -14,7 +14,7 @@
 
 import { randomUUID } from 'node:crypto';
 
-/* ── Claim Lifecycle States ─────────────────────────────────── */
+/* -- Claim Lifecycle States ----------------------------------- */
 
 export type ClaimStatus =
   | 'draft'
@@ -41,7 +41,7 @@ export const CLAIM_STATUS_ORDER: ClaimStatus[] = [
   'closed',
 ];
 
-/** Valid transitions — key = from, values = allowed to states */
+/** Valid transitions -- key = from, values = allowed to states */
 export const CLAIM_TRANSITIONS: Record<ClaimStatus, ClaimStatus[]> = {
   draft: ['validated', 'closed'],
   validated: ['ready_to_submit', 'submitted', 'draft', 'closed'],
@@ -59,7 +59,7 @@ export function isValidTransition(from: ClaimStatus, to: ClaimStatus): boolean {
   return CLAIM_TRANSITIONS[from]?.includes(to) ?? false;
 }
 
-/* ── Claim Types ────────────────────────────────────────────── */
+/* -- Claim Types ---------------------------------------------- */
 
 export type ClaimType = 'professional' | 'institutional' | 'dental' | 'pharmacy';
 
@@ -152,7 +152,7 @@ export interface Claim {
 
   // Export / submission safety (Phase 40)
   exportArtifactPath?: string; // path to exported EDI bundle (when CLAIM_SUBMISSION_ENABLED=false)
-  isDemo: boolean; // true if created in demo/sandbox mode — blocked from real submission
+  isDemo: boolean; // true if created in demo/sandbox mode -- blocked from real submission
   submissionSafetyMode: 'live' | 'export_only'; // resolved at submit time from CLAIM_SUBMISSION_ENABLED
 
   // Metadata
@@ -162,7 +162,7 @@ export interface Claim {
   updatedAt: string;
 }
 
-/* ── Factory ────────────────────────────────────────────────── */
+/* -- Factory -------------------------------------------------- */
 
 export function createDraftClaim(params: {
   tenantId: string;
@@ -246,7 +246,7 @@ export function transitionClaim(
   detail?: string
 ): Claim {
   if (!isValidTransition(claim.status, toStatus)) {
-    throw new Error(`Invalid transition: ${claim.status} → ${toStatus}`);
+    throw new Error(`Invalid transition: ${claim.status} -> ${toStatus}`);
   }
   const now = new Date().toISOString();
   return {

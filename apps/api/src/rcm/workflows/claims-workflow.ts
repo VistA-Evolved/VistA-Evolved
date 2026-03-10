@@ -1,5 +1,5 @@
 /**
- * Claims Workflow — Phase 94: PH HMO Workflow Automation
+ * Claims Workflow -- Phase 94: PH HMO Workflow Automation
  *
  * Unified claims submission workflow for PH HMO payers.
  * Wraps the existing claim-store (Phase 38) with payer-aware
@@ -18,12 +18,13 @@
 import { getPhHmo, initPhHmoRegistry } from '../payers/ph-hmo-registry.js';
 import { createClaimPacket } from '../payers/ph-hmo-adapter.js';
 import { randomUUID } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 import { getClaim, listClaims, storeClaim, updateClaim } from '../domain/claim-store.js';
 import { createDraftClaim, transitionClaim } from '../domain/claim.js';
 import type { Claim, ClaimStatus } from '../domain/claim.js';
 import type { LoaSubmissionMode } from '../loa/loa-types.js';
 
-/* ── Ensure registry loaded ─────────────────────────────────── */
+/* -- Ensure registry loaded ----------------------------------- */
 
 let registryInitDone = false;
 function ensureRegistry(): void {
@@ -33,7 +34,7 @@ function ensureRegistry(): void {
   }
 }
 
-/* ── Submission mode resolution ─────────────────────────────── */
+/* -- Submission mode resolution ------------------------------- */
 
 export type ClaimSubmissionMode = LoaSubmissionMode; // manual | portal | email
 
@@ -122,7 +123,7 @@ export function resolveClaimSubmissionPlan(payerId: string): ClaimSubmissionPlan
   };
 }
 
-/* ── Create claim with HMO context ─────────────────────────── */
+/* -- Create claim with HMO context --------------------------- */
 
 export function createHmoClaim(params: {
   tenantId: string;
@@ -158,15 +159,15 @@ export function createHmoClaim(params: {
   return { claim, submissionPlan: plan };
 }
 
-/* ── Generate claim packet for existing claim ───────────────── */
+/* -- Generate claim packet for existing claim ----------------- */
 
-export function generateClaimPacketForClaim(tenantId: string, claimId: string): {
+export async function generateClaimPacketForClaim(tenantId: string, claimId: string): Promise<{
   ok: boolean;
   packet?: ReturnType<typeof createClaimPacket>;
   submissionPlan?: ClaimSubmissionPlan;
   error?: string;
-} {
-  const claim = getClaim(claimId, tenantId);
+}> {
+  const claim = await getClaim(claimId, tenantId);
   if (!claim) return { ok: false, error: 'Claim not found' };
 
   ensureRegistry();
@@ -184,16 +185,16 @@ export function generateClaimPacketForClaim(tenantId: string, claimId: string): 
   return { ok: true, packet, submissionPlan: plan };
 }
 
-/* ── Transition with validation ─────────────────────────────── */
+/* -- Transition with validation ------------------------------- */
 
-export function transitionHmoClaim(
+export async function transitionHmoClaim(
   tenantId: string,
   claimId: string,
   toStatus: ClaimStatus,
   actor: string,
   detail?: string
-): Claim {
-  const claim = getClaim(claimId, tenantId);
+): Promise<Claim> {
+  const claim = await getClaim(claimId, tenantId);
   if (!claim) throw new Error(`Claim not found: ${claimId}`);
 
   const updated = transitionClaim(claim, toStatus, actor, detail);
@@ -201,7 +202,7 @@ export function transitionHmoClaim(
   return updated;
 }
 
-/* ── Denial capture ─────────────────────────────────────────── */
+/* -- Denial capture ------------------------------------------- */
 
 export interface DenialRecord {
   tenantId: string;
@@ -212,7 +213,7 @@ export interface DenialRecord {
   recordedBy: string;
 }
 
-/* ── Denial DB repo (Phase 146: durable denial storage) ──── */
+/* -- Denial DB repo (Phase 146: durable denial storage) ---- */
 
 interface DenialDbRepo {
   insert(data: any): Promise<any>;
@@ -227,14 +228,14 @@ export function initDenialStoreRepo(repo: DenialDbRepo): void {
 
 const denialStore = new Map<string, DenialRecord[]>();
 
-export function recordDenial(params: {
+export async function recordDenial(params: {
   tenantId: string;
   claimId: string;
   reasonText: string;
   reasonCode?: string;
   actor: string;
-}): DenialRecord {
-  const claim = getClaim(params.claimId, params.tenantId);
+}): Promise<DenialRecord> {
+  const claim = await getClaim(params.claimId, params.tenantId);
   if (!claim) {
     throw new Error(`Claim not found: ${params.claimId}`);
   }
@@ -264,25 +265,25 @@ export function recordDenial(params: {
       createdAt: record.deniedAt,
       updatedAt: record.deniedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   return record;
 }
 
-export function getDenials(tenantId: string, claimId: string): DenialRecord[] {
-  const claim = getClaim(claimId, tenantId);
+export async function getDenials(tenantId: string, claimId: string): Promise<DenialRecord[]> {
+  const claim = await getClaim(claimId, tenantId);
   if (!claim) return [];
   return (denialStore.get(claimId) ?? []).filter((d) => d.tenantId === tenantId);
 }
 
-/* ── Status board summary ───────────────────────────────────── */
+/* -- Status board summary ------------------------------------- */
 
-export function getClaimsStatusBoard(tenantId: string): {
+export async function getClaimsStatusBoard(tenantId: string): Promise<{
   total: number;
   byStatus: Record<string, number>;
   recentDenials: DenialRecord[];
-} {
-  const { claims, total } = listClaims(tenantId, { limit: 10000 });
+}> {
+  const { claims, total } = await listClaims(tenantId, { limit: 10000 });
   const byStatus: Record<string, number> = {};
   for (const c of claims) {
     byStatus[c.status] = (byStatus[c.status] ?? 0) + 1;

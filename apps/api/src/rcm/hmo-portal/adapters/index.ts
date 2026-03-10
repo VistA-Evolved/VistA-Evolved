@@ -1,5 +1,5 @@
 /**
- * HMO Portal Adapters — Index (Phase 97)
+ * HMO Portal Adapters -- Index (Phase 97)
  *
  * Importing this module registers all 5 per-HMO portal adapters.
  * Call initHmoPortalAdapters() at server startup.

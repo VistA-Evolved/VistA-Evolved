@@ -1,10 +1,10 @@
 /**
- * VistA Bindings — Barrel export
+ * VistA Bindings -- Barrel export
  *
  * Centralizes all VistA-first binding point imports.
  *
- * Phase 40 (Superseding) — VistA-first binding points
- * Phase 42 — Claim draft builder from VistA RPCs
+ * Phase 40 (Superseding) -- VistA-first binding points
+ * Phase 42 -- Claim draft builder from VistA RPCs
  */
 
 export {

@@ -2,10 +2,10 @@
  * Data Portability Engine -- Phase 264 (Wave 8 P8)
  *
  * Extends the Phase 245 export engine with:
- *   1. FHIR Bulk-ish export — kickoff/status/download pattern for multi-patient NDJSON
- *   2. Patient chart export — FHIR R4 Document Bundle per patient
- *   3. Tenant data export — tenant-scoped export sources across all domains
- *   4. Export manifest — SHA-256 integrity verification for all exports
+ *   1. FHIR Bulk-ish export -- kickoff/status/download pattern for multi-patient NDJSON
+ *   2. Patient chart export -- FHIR R4 Document Bundle per patient
+ *   3. Tenant data export -- tenant-scoped export sources across all domains
+ *   4. Export manifest -- SHA-256 integrity verification for all exports
  *
  * Pattern: Separate store, delegates to existing export-engine and FHIR mappers.
  * Does NOT modify existing export-engine.ts, export-formats.ts, or fhir/ files.
@@ -167,7 +167,18 @@ const bulkExportJobs = new Map<string, BulkExportJob>();
 const patientChartBundles = new Map<string, PatientChartBundle>();
 const tenantExportJobs = new Map<string, TenantExportJob>();
 
-// ── PG Write-Through (W41-P6) ──────────────────────────
+const MAX_BULK_EXPORT_JOBS = 5000;
+const MAX_CHART_BUNDLES = 2000;
+const MAX_TENANT_EXPORT_JOBS = 2000;
+
+function enforceMapLimit<T>(map: Map<string, T>, max: number): void {
+  while (map.size > max) {
+    const oldest = map.keys().next().value;
+    if (oldest) map.delete(oldest); else break;
+  }
+}
+
+// -- PG Write-Through (W41-P6) --------------------------
 
 interface ExportRepo {
   upsert(data: any): Promise<any>;
@@ -284,6 +295,7 @@ export function kickoffBulkExport(params: {
   };
 
   bulkExportJobs.set(job.id, job);
+  enforceMapLimit(bulkExportJobs, MAX_BULK_EXPORT_JOBS);
   persistBulkExportJob(job);
 
   // Simulate async processing (in production, delegate to worker queue)
@@ -404,6 +416,7 @@ export function generatePatientChart(params: {
   };
 
   patientChartBundles.set(bundle.id, bundle);
+  enforceMapLimit(patientChartBundles, MAX_CHART_BUNDLES);
   log.info('Patient chart generated', {
     chartId: bundle.id,
     sections: sections.length,
@@ -455,6 +468,7 @@ export function kickoffTenantExport(params: {
   };
 
   tenantExportJobs.set(job.id, job);
+  enforceMapLimit(tenantExportJobs, MAX_TENANT_EXPORT_JOBS);
 
   // Simulate async processing
   setTimeout(() => processTenantExport(job.id), 100);

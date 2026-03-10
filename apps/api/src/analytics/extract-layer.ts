@@ -1,5 +1,5 @@
 /**
- * Analytics Extract Layer — Phase 363 (W19-P2)
+ * Analytics Extract Layer -- Phase 363 (W19-P2)
  *
  * Reproducible, tenant-safe incremental extracts from domain stores.
  * Extracts events and domain snapshots into a normalized analytics dataset.
@@ -17,14 +17,14 @@ import type {
 } from './extract-types.js';
 import { queryAnalyticsEvents } from '../services/analytics-store.js';
 
-// ── In-memory stores ────────────────────────────────────────────────────
+// -- In-memory stores ----------------------------------------------------
 
 const extractRuns: ExtractRunResult[] = [];
 const extractRecords = new Map<string, ExtractRecord[]>(); // runId -> records
 const MAX_RUNS = 200;
 const MAX_RECORDS_PER_RUN = 50_000;
 
-// ── Offset tracking (per tenant + entity type) ─────────────────────────
+// -- Offset tracking (per tenant + entity type) -------------------------
 
 const extractOffsets = new Map<string, string>(); // key: `${tenantId}::${entityType}` -> last timestamp
 
@@ -40,7 +40,7 @@ function setOffset(tenantId: string, entityType: ExtractEntityType, ts: string):
   extractOffsets.set(offsetKey(tenantId, entityType), ts);
 }
 
-// ── Extract Logic ───────────────────────────────────────────────────────
+// -- Extract Logic -------------------------------------------------------
 
 /**
  * Run an incremental extract for the given config.
@@ -181,7 +181,7 @@ function extractFromSyntheticFixture(
     }));
 }
 
-// ── Synthetic Fixtures ──────────────────────────────────────────────────
+// -- Synthetic Fixtures --------------------------------------------------
 
 const now = new Date();
 function hoursAgo(h: number): string {
@@ -561,7 +561,7 @@ const SYNTHETIC_FIXTURES: Partial<Record<ExtractEntityType, ExtractRecord[]>> = 
   ],
 };
 
-// ── Query Functions ─────────────────────────────────────────────────────
+// -- Query Functions -----------------------------------------------------
 
 export function getExtractRuns(tenantId: string, limit = 50): ExtractRunResult[] {
   return extractRuns.filter((r) => r.tenantId === tenantId).slice(-limit);

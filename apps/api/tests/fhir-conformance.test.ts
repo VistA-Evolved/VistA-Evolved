@@ -1,5 +1,5 @@
 /**
- * FHIR R4 Conformance Test Suite — Phase 179 (Q196).
+ * FHIR R4 Conformance Test Suite -- Phase 179 (Q196).
  *
  * Structural conformance tests that validate the FHIR R4 gateway
  * follows HL7 FHIR R4 and US Core IG rules:
@@ -151,11 +151,11 @@ const ENCOUNTER: EncounterRecord = {
 /* Test Suites                                                          */
 /* ================================================================== */
 
-describe('FHIR R4 Conformance Suite — Phase 179', () => {
+describe('FHIR R4 Conformance Suite -- Phase 179', () => {
   /* ---------------------------------------------------------------- */
   /* 1. All resources have required resourceType and id                */
   /* ---------------------------------------------------------------- */
-  describe('Resource structure — required fields', () => {
+  describe('Resource structure -- required fields', () => {
     const allResources: FhirResource[] = [
       toFhirPatient(PATIENT),
       toFhirAllergyIntolerance(ALLERGY, '3'),
@@ -433,7 +433,7 @@ describe('FHIR R4 Conformance Suite — Phase 179', () => {
   });
 
   /* ---------------------------------------------------------------- */
-  /* 7. Mapper edge cases — empty/minimal data                         */
+  /* 7. Mapper edge cases -- empty/minimal data                         */
   /* ---------------------------------------------------------------- */
   describe('Mapper edge cases', () => {
     it('Patient with only dfn+name produces valid resource', () => {

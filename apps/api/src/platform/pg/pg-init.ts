@@ -1,5 +1,5 @@
 /**
- * Platform DB — PostgreSQL Initialization Entrypoint
+ * Platform DB -- PostgreSQL Initialization Entrypoint
  *
  * Phase 101+102: Platform Data Architecture + Registry Migration
  *
@@ -12,7 +12,7 @@
  *
  * Safe to call multiple times (idempotent).
  * If PLATFORM_PG_URL is not set, returns { ok: false, reason: 'not_configured' }.
- * Does NOT crash the server on failure — SQLite continues as fallback.
+ * Does NOT crash the server on failure -- SQLite continues as fallback.
  */
 
 import { isPgConfigured, getPgDb, pgHealthCheck } from './pg-db.js';
@@ -33,7 +33,7 @@ export interface PlatformPgInitResult {
 
 /**
  * Initialize the PostgreSQL platform database.
- * Returns detailed result — never throws.
+ * Returns detailed result -- never throws.
  */
 export async function initPlatformPg(): Promise<PlatformPgInitResult> {
   if (initialized) {

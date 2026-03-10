@@ -42,7 +42,7 @@ function readSrc(rel) {
 
 console.log('Phase 114+115 -- Restart-Durability Gate\n');
 
-// ── 1. Schema tables ────────────────────────────────────────
+// -- 1. Schema tables ----------------------------------------
 console.log('Schema tables (Phase 114):');
 const schema = readSrc('apps/api/src/platform/db/schema.ts') ?? '';
 gate('auth_session table in schema', schema.includes('sqliteTable("auth_session"'));
@@ -58,7 +58,7 @@ gate('imaging_study_link table in schema', schema.includes('sqliteTable("imaging
 gate('imaging_unmatched table in schema', schema.includes('sqliteTable("imaging_unmatched"'));
 gate('idempotency_key table in schema', schema.includes('sqliteTable("idempotency_key"'));
 
-// ── 2. Migration DDL ────────────────────────────────────────
+// -- 2. Migration DDL ----------------------------------------
 console.log('\nMigration DDL (Phase 114):');
 const migrate = readSrc('apps/api/src/platform/db/migrate.ts') ?? '';
 gate(
@@ -104,7 +104,7 @@ gate(
   migrate.includes('CREATE TABLE IF NOT EXISTS idempotency_key')
 );
 
-// ── 3. Repo files ───────────────────────────────────────────
+// -- 3. Repo files -------------------------------------------
 console.log('\nRepo files (Phase 114):');
 const sessionRepo = readSrc('apps/api/src/platform/db/repo/session-repo.ts');
 gate('session-repo.ts exists', sessionRepo !== null);
@@ -172,7 +172,7 @@ const idRepo = readSrc('apps/api/src/platform/db/repo/idempotency-repo.ts');
 gate('idempotency-repo.ts exists', idRepo !== null);
 gate('idempotency-repo exports upsertKey', idRepo?.includes('export function upsertKey') ?? false);
 
-// ── 4. Store files delegate to repo ─────────────────────────
+// -- 4. Store files delegate to repo -------------------------
 console.log('\nStore delegation (Phase 114):');
 const sessionStore = readSrc('apps/api/src/auth/session-store.ts') ?? '';
 gate('session-store uses hashToken', sessionStore.includes('hashToken'));
@@ -241,7 +241,7 @@ const idemp = readSrc('apps/api/src/middleware/idempotency.ts') ?? '';
 gate('idempotency has initIdempotencyRepo', idemp.includes('export function initIdempotencyRepo'));
 gate('idempotency has _repo wiring', idemp.includes('let _repo:'));
 
-// ── 5. index.ts / lifecycle.ts wiring ────────────────────────
+// -- 5. index.ts / lifecycle.ts wiring ------------------------
 console.log('\nStartup wiring (Phase 114):');
 const index = readSrc('apps/api/src/index.ts') ?? '';
 const lifecycle = readSrc('apps/api/src/server/lifecycle.ts') ?? '';
@@ -258,7 +258,7 @@ gate('index.ts wires initWorklistRepo', startup.includes('initWorklistRepo'));
 gate('index.ts wires initIngestRepo', startup.includes('initIngestRepo'));
 gate('index.ts wires initIdempotencyRepo', startup.includes('initIdempotencyRepo'));
 
-// ── 6. Barrel exports ───────────────────────────────────────
+// -- 6. Barrel exports ---------------------------------------
 console.log('\nBarrel exports:');
 const barrel = readSrc('apps/api/src/platform/db/repo/index.ts') ?? '';
 gate('barrel exports sessionRepo', barrel.includes('sessionRepo'));
@@ -270,11 +270,11 @@ gate('barrel exports imagingWorklistRepo', barrel.includes('imagingWorklistRepo'
 gate('barrel exports imagingIngestRepo', barrel.includes('imagingIngestRepo'));
 gate('barrel exports idempotencyRepo', barrel.includes('idempotencyRepo'));
 
-// ── 7. Store policy doc ─────────────────────────────────────
+// -- 7. Store policy doc -------------------------------------
 console.log('\nStore policy:');
 gate('store-policy.md exists', existsSync(resolve(ROOT, 'docs/architecture/store-policy.md')));
 
-// ── 8. Phase 126: RCM Durability PG tables ──────────────────
+// -- 8. Phase 126: RCM Durability PG tables ------------------
 console.log('\nPhase 126 PG schema tables:');
 const pgSchema = readSrc('apps/api/src/platform/pg/pg-schema.ts') ?? '';
 gate('pgRcmClaim table in pg-schema', pgSchema.includes('pgTable("rcm_claim"'));
@@ -397,7 +397,7 @@ gate('PG barrel exports pgRcmClaimCaseRepo', pgBarrel.includes('pgRcmClaimCaseRe
 gate('PG barrel exports pgEdiAckRepo', pgBarrel.includes('pgEdiAckRepo'));
 gate('PG barrel exports pgEdiPipelineRepo', pgBarrel.includes('pgEdiPipelineRepo'));
 
-// ── 9. Phase 127: Portal + Telehealth PG Durability ─────────
+// -- 9. Phase 127: Portal + Telehealth PG Durability ---------
 console.log('\nPhase 127 PG schema tables:');
 gate('pgPortalMessage table in pg-schema', pgSchema.includes('pgTable("portal_message"'));
 gate('pgPortalAccessLog table in pg-schema', pgSchema.includes('pgTable("portal_access_log"'));
@@ -532,7 +532,7 @@ gate(
 gate('PG barrel exports pgTelehealthRoomRepo', pgBarrel.includes('pgTelehealthRoomRepo'));
 gate('PG barrel exports pgTelehealthRoomEventRepo', pgBarrel.includes('pgTelehealthRoomEventRepo'));
 
-// ── 10. Phase 128: Imaging + Scheduling PG Durability ────────
+// -- 10. Phase 128: Imaging + Scheduling PG Durability --------
 console.log('\nPhase 128 PG schema tables:');
 gate('pgImagingWorkItem table in pg-schema', pgSchema.includes('pgTable("imaging_work_item"'));
 gate(
@@ -602,7 +602,7 @@ gate('PG barrel exports pgImagingIngestRepo', pgBarrel.includes('pgImagingIngest
 gate('PG barrel exports pgSchedulingRequestRepo', pgBarrel.includes('pgSchedulingRequestRepo'));
 gate('PG barrel exports pgSchedulingLockRepo', pgBarrel.includes('pgSchedulingLockRepo'));
 
-// ── Summary ─────────────────────────────────────────────────
+// -- Summary -------------------------------------------------
 console.log(`\n${'='.repeat(50)}`);
 console.log(`Restart-Durability Gate: ${pass} PASS / ${fail} FAIL`);
 

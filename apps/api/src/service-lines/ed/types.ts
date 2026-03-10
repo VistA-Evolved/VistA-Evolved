@@ -5,7 +5,7 @@
  * Covers the full ED workflow: arrival -> triage -> bed -> treatment -> disposition.
  */
 
-// ── Triage ─────────────────────────────────────────────────────────
+// -- Triage ---------------------------------------------------------
 
 /** ESI (Emergency Severity Index) 1-5 */
 export type TriageLevel = 1 | 2 | 3 | 4 | 5;
@@ -27,7 +27,7 @@ export interface TriageAssessment {
   notes?: string;
 }
 
-// ── Bed Management ─────────────────────────────────────────────────
+// -- Bed Management -------------------------------------------------
 
 export type BedStatus = 'available' | 'occupied' | 'cleaning' | 'blocked' | 'reserved';
 
@@ -48,7 +48,7 @@ export interface BedAssignment {
   releasedAt?: string;
 }
 
-// ── ED Visit ───────────────────────────────────────────────────────
+// -- ED Visit -------------------------------------------------------
 
 export type EdVisitStatus =
   | 'waiting' // In waiting room
@@ -97,7 +97,7 @@ export interface EdVisit {
   updatedAt: string;
 }
 
-// ── Board Metrics ──────────────────────────────────────────────────
+// -- Board Metrics --------------------------------------------------
 
 export interface EdBoardMetrics {
   totalVisits: number;

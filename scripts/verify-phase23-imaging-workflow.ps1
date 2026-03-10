@@ -354,7 +354,7 @@ try {
 if ($apiUp) {
     Gate-Pass "API server responding"
 
-    # Auth enforcement on worklist endpoints (unauth → 401)
+    # Auth enforcement on worklist endpoints (unauth -> 401)
     $authOk = $true
     @("/imaging/worklist", "/imaging/worklist/stats") | ForEach-Object {
         try {
@@ -503,7 +503,7 @@ if ($apiUp) {
                 Gate-Fail "Unmatched admin queue empty"
             }
 
-            # Chart integration — orderSummary in studies
+            # Chart integration -- orderSummary in studies
             $chartOut = curl.exe -s -b $tmpCookie "http://127.0.0.1:3001/vista/imaging/studies?dfn=100022" 2>&1
             $chartJson = $chartOut | ConvertFrom-Json -ErrorAction SilentlyContinue
             if ($chartJson -and $chartJson.ok) {

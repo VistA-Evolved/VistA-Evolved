@@ -1,9 +1,9 @@
 /**
- * Portal Audit — PHI-safe audit trail for patient portal access events.
+ * Portal Audit -- PHI-safe audit trail for patient portal access events.
  * Phase 26: Separate from clinician audit to maintain domain isolation.
  *
  * Events are stored in-memory with configurable max size.
- * No patient DFN in audit events — uses hashed patient ID.
+ * No patient DFN in audit events -- uses hashed patient ID.
  */
 
 import { createHash } from "node:crypto";
@@ -71,7 +71,7 @@ export interface PortalAuditEvent {
   action: PortalAuditAction;
   outcome: "success" | "failure";
   tenantId: string;
-  /** Hashed patient identifier — never raw DFN */
+  /** Hashed patient identifier -- never raw DFN */
   actorHash: string;
   /** Source IP (anonymized in production) */
   sourceIp: string;
@@ -84,7 +84,12 @@ export interface PortalAuditEvent {
 /* ------------------------------------------------------------------ */
 
 const MAX_ENTRIES = 5000;
-const HASH_SALT = process.env.PORTAL_AUDIT_SALT || "portal-audit-v1";
+const _portalRtMode = (process.env.PLATFORM_RUNTIME_MODE || process.env.NODE_ENV || 'dev').toLowerCase();
+const _portalIsProd = _portalRtMode === 'rc' || _portalRtMode === 'prod' || _portalRtMode === 'production';
+if (_portalIsProd && !process.env.PORTAL_AUDIT_SALT) {
+  throw new Error('PORTAL_AUDIT_SALT must be set in rc/prod mode');
+}
+const HASH_SALT = process.env.PORTAL_AUDIT_SALT || "portal-audit-v1-dev";
 
 /* ------------------------------------------------------------------ */
 /* Store                                                                */

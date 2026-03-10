@@ -25,7 +25,7 @@ import { join, relative, sep } from 'path';
 const DRY_RUN = process.argv.includes('--dry-run');
 const ROOT = process.cwd();
 
-// ── Pattern matchers ─────────────────────────────────────────────────
+// -- Pattern matchers -------------------------------------------------
 // Module-level declarations (top of file, no leading whitespace beyond normal)
 const MODULE_LEVEL_RE =
   /^(const\s+)(API_BASE|API)\s*[:=]\s*(?:process\.env\.NEXT_PUBLIC_API_URL\s*(?:\?\?|\|\|)\s*)?['"]http:\/\/localhost:3001['"];?\s*$/;
@@ -38,7 +38,7 @@ const FUNC_LEVEL_RE =
 const INLINE_RE =
   /process\.env\.NEXT_PUBLIC_API_URL\s*(?:\?\?|\|\|)\s*['"]http:\/\/localhost:3001['"]/;
 
-// ── Helpers ──────────────────────────────────────────────────────────
+// -- Helpers ----------------------------------------------------------
 
 function walk(dir, exts = ['.ts', '.tsx']) {
   const results = [];
@@ -79,7 +79,7 @@ function buildImportLine(varName, importPath) {
   return `import { API_BASE as ${varName} } from '${importPath}';`;
 }
 
-// ── Main transform ───────────────────────────────────────────────────
+// -- Main transform ---------------------------------------------------
 
 const stats = { files: 0, replacements: 0, skipped: [] };
 
@@ -172,7 +172,7 @@ function transformFile(filePath) {
   stats.files++;
   stats.replacements += removedLines.length + (modified ? 1 : 0);
   console.log(
-    `  ${DRY_RUN ? '[DRY] ' : ''}${rel} → import { ${neededImportVar === 'API_BASE' ? 'API_BASE' : `API_BASE as ${neededImportVar}`} }`
+    `  ${DRY_RUN ? '[DRY] ' : ''}${rel} -> import { ${neededImportVar === 'API_BASE' ? 'API_BASE' : `API_BASE as ${neededImportVar}`} }`
   );
 }
 
@@ -207,7 +207,7 @@ function findImportInsertPosition(content) {
   return 0;
 }
 
-// ── Run ──────────────────────────────────────────────────────────────
+// -- Run --------------------------------------------------------------
 
 console.log(`\nCentralising API_BASE declarations...${DRY_RUN ? ' (DRY RUN)' : ''}\n`);
 
@@ -218,7 +218,7 @@ for (const f of [...webFiles, ...portalFiles]) {
   transformFile(f);
 }
 
-console.log(`\n── Summary ──`);
+console.log(`\n-- Summary --`);
 console.log(`  Files modified: ${stats.files}`);
 console.log(`  Total replacements: ${stats.replacements}`);
 if (stats.skipped.length) {

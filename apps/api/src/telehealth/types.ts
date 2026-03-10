@@ -1,5 +1,5 @@
 /**
- * Telehealth Provider Adapter — Phase 30
+ * Telehealth Provider Adapter -- Phase 30
  *
  * Provider-agnostic interface for video visit infrastructure.
  * Default: self-hosted Jitsi Meet (no vendor lock-in).
@@ -68,13 +68,13 @@ export interface JoinUrlResult {
 }
 
 /**
- * TelehealthProvider — adapter interface for video visit providers.
+ * TelehealthProvider -- adapter interface for video visit providers.
  *
  * Implementations must:
  * 1. Never embed PHI in URLs, room names, or tokens
  * 2. Generate time-limited join URLs
- * 3. Support room lifecycle (create → join → end)
- * 4. Be stateless — room state is managed by room-store.ts
+ * 3. Support room lifecycle (create -> join -> end)
+ * 4. Be stateless -- room state is managed by room-store.ts
  */
 export interface TelehealthProvider {
   /** Human-readable provider name (e.g., "Jitsi", "Zoom") */

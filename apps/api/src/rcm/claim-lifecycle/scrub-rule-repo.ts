@@ -1,5 +1,5 @@
 /**
- * Scrub Rule Repository — Phase 111
+ * Scrub Rule Repository -- Phase 111
  *
  * DB-backed CRUD for payer-specific validation rules and scrub results.
  * Rules are evidence-backed: each rule must cite its source/date.
@@ -11,7 +11,7 @@ import { eq, and, desc, count } from 'drizzle-orm';
 import { getPgDb } from '../../platform/pg/pg-db.js';
 import { scrubRule, scrubResult } from '../../platform/pg/pg-schema.js';
 
-/* ── Types ─────────────────────────────────────────────────── */
+/* -- Types --------------------------------------------------- */
 
 export interface ScrubRuleRow {
   id: string;
@@ -67,7 +67,7 @@ export interface CreateScrubRuleInput {
   createdBy: string;
 }
 
-/* ── Helpers ────────────────────────────────────────────────── */
+/* -- Helpers -------------------------------------------------- */
 
 function safeJsonParse<T>(val: string | null | undefined, fallback: T): T {
   if (!val) return fallback;
@@ -119,7 +119,7 @@ function parseResult(row: any): ScrubResultRow {
   };
 }
 
-/* ── Scrub Rule CRUD ──────────────────────────────────────── */
+/* -- Scrub Rule CRUD ---------------------------------------- */
 
 export async function createScrubRule(input: CreateScrubRuleInput): Promise<ScrubRuleRow> {
   const db = getPgDb();
@@ -238,7 +238,7 @@ export async function countScrubRules(tenantId: string): Promise<number> {
   return (rows[0] as any)?.cnt ?? 0;
 }
 
-/* ── Scrub Result CRUD ────────────────────────────────────── */
+/* -- Scrub Result CRUD -------------------------------------- */
 
 export async function storeScrubResults(
   claimDraftId: string,

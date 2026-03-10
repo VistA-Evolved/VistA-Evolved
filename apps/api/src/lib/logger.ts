@@ -1,5 +1,5 @@
 /**
- * Redacting structured logger — Phase 15A.
+ * Redacting structured logger -- Phase 15A.
  *
  * Wraps console output with:
  *   - structured JSON or text output based on LOG_CONFIG
@@ -62,15 +62,15 @@ function shouldLog(level: LogLevel): boolean {
 /* Redaction engine                                                     */
 /* ------------------------------------------------------------------ */
 
-/** Fields that must never appear in any log output — centralized in phi-redaction.ts (Phase 48). */
+/** Fields that must never appear in any log output -- centralized in phi-redaction.ts (Phase 48). */
 const REDACT_FIELDS = ALL_BLOCKED_FIELDS;
 
-/** Regex patterns for inline credential scrubbing — centralized in phi-redaction.ts (Phase 48). */
+/** Regex patterns for inline credential scrubbing -- centralized in phi-redaction.ts (Phase 48). */
 const INLINE_REDACT_PATTERNS = PHI_PATTERNS;
 
 /**
  * Deep-redact an object: replaces sensitive field values with "[REDACTED]".
- * Returns a new object — never mutates the input.
+ * Returns a new object -- never mutates the input.
  */
 function redactObject(obj: unknown, depth = 0): unknown {
   if (depth > 10) return '[MAX_DEPTH]';
@@ -113,7 +113,7 @@ function redactObject(obj: unknown, depth = 0): unknown {
 const requestContext = new AsyncLocalStorage<{ requestId: string }>();
 
 export function setRequestId(id: string): void {
-  // Legacy compat — called from onRequest hook.  The preferred API is
+  // Legacy compat -- called from onRequest hook.  The preferred API is
   // runWithRequestId() but setRequestId is kept for the existing hook.
   _requestId = id;
 }
@@ -134,7 +134,7 @@ export function runWithRequestId<T>(id: string, fn: () => T): T {
   return requestContext.run({ requestId: id }, fn);
 }
 
-/** @deprecated — module-global fallback; prefer runWithRequestId. */
+/** @deprecated -- module-global fallback; prefer runWithRequestId. */
 let _requestId: string | undefined;
 
 /* ------------------------------------------------------------------ */

@@ -44,7 +44,7 @@ function requireTenantId(request: FastifyRequest, reply: FastifyReply): string |
 }
 
 export async function webhookRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Health ────────────────────────────────────────
+  // --- Health ----------------------------------------
 
   server.get('/webhooks/health', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
@@ -53,7 +53,7 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, phase: 356, ...stats });
   });
 
-  // ─── Subscription CRUD ─────────────────────────────
+  // --- Subscription CRUD -----------------------------
 
   server.get('/webhooks', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
@@ -101,7 +101,7 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
     if (!tenantId) return;
     const { id } = req.params as { id: string };
     const raw = (req.body as any) || {};
-    // Sanitize: only allow safe fields — never accept secret, tenantId, id, createdAt
+    // Sanitize: only allow safe fields -- never accept secret, tenantId, id, createdAt
     const { name, url, eventFilters, enabled, retryPolicy, metadata } = raw;
     const safeUpdates = Object.fromEntries(
       Object.entries({ name, url, eventFilters, enabled, retryPolicy, metadata }).filter(
@@ -126,7 +126,7 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true });
   });
 
-  // ─── Test Webhook ──────────────────────────────────
+  // --- Test Webhook ----------------------------------
 
   server.post('/webhooks/:id/test', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
@@ -137,7 +137,7 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
     return reply.code(code).send(result);
   });
 
-  // ─── Signature Verification (utility) ──────────────
+  // --- Signature Verification (utility) --------------
 
   server.post('/webhooks/verify-signature', async (req: FastifyRequest, reply: FastifyReply) => {
     const body = (req.body as any) || {};
@@ -157,7 +157,7 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: result.valid, ...result });
   });
 
-  // ─── Deliveries ────────────────────────────────────
+  // --- Deliveries ------------------------------------
 
   server.get('/webhooks/deliveries', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
@@ -172,7 +172,7 @@ export async function webhookRoutes(server: FastifyInstance): Promise<void> {
     return reply.send({ ok: true, deliveries: results, count: results.length });
   });
 
-  // ─── DLQ ──────────────────────────────────────────
+  // --- DLQ ------------------------------------------
 
   server.get('/webhooks/dlq', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);

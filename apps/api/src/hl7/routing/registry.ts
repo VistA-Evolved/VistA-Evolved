@@ -1,5 +1,5 @@
 /**
- * HL7v2 Routing — Route Registry
+ * HL7v2 Routing -- Route Registry
  *
  * Phase 240 (Wave 6 P3): In-memory route store with CRUD operations.
  * Matches the project pattern of in-memory stores with future PG migration path.

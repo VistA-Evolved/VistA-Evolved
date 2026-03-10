@@ -1,9 +1,9 @@
 /**
- * PhilHealth Transport Routes — Phase 515 (Wave 37 B3)
+ * PhilHealth Transport Routes -- Phase 515 (Wave 37 B3)
  *
  * Thin REST layer over the PhilHealth transport client.
  * Endpoints for claim submission, status check, eligibility,
- * and attachment upload — all in mock mode by default.
+ * and attachment upload -- all in mock mode by default.
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';

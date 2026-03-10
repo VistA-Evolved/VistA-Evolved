@@ -1,5 +1,5 @@
 /**
- * Regulatory Classification Engine — Phase 439.
+ * Regulatory Classification Engine -- Phase 439.
  *
  * Classifies API operations and data elements against applicable
  * regulatory frameworks. Unifies existing PHI redaction (phi-redaction.ts),
@@ -18,10 +18,10 @@ import type {
 import { getFramework, resolveFrameworksByCountry } from './framework-registry.js';
 
 /* ------------------------------------------------------------------ */
-/* Country resolution (tenant → country)                                */
+/* Country resolution (tenant -> country)                                */
 /* ------------------------------------------------------------------ */
 
-/** Default tenant → country mapping. Override per-tenant via config. */
+/** Default tenant -> country mapping. Override per-tenant via config. */
 const TENANT_COUNTRY_MAP = new Map<string, string>([['default', 'US']]);
 
 export function setTenantCountry(tenantId: string, countryCode: string): void {
@@ -122,7 +122,7 @@ function generateConstraints(
   if (phiCount > 0) {
     constraints.push({
       framework: fw,
-      clause: fw === 'HIPAA' ? '§164.312(a)(1)' : `${fw}.access-control`,
+      clause: fw === 'HIPAA' ? 'S.164.312(a)(1)' : `${fw}.access-control`,
       title: 'Access Control for PHI',
       severity: 'mandatory' as ConstraintSeverity,
       requirement: 'PHI access must be role-based with audit logging',
@@ -135,7 +135,7 @@ function generateConstraints(
   if (operationRisk === 'write' || operationRisk === 'delete') {
     constraints.push({
       framework: fw,
-      clause: fw === 'HIPAA' ? '§164.312(b)' : `${fw}.audit`,
+      clause: fw === 'HIPAA' ? 'S.164.312(b)' : `${fw}.audit`,
       title: 'Audit Controls',
       severity: 'mandatory' as ConstraintSeverity,
       requirement: 'Write operations must be recorded in immutable audit trail',
@@ -148,7 +148,7 @@ function generateConstraints(
   if (phiCount > 0) {
     constraints.push({
       framework: fw,
-      clause: fw === 'HIPAA' ? '§164.312(a)(2)(iv)' : `${fw}.encryption`,
+      clause: fw === 'HIPAA' ? 'S.164.312(a)(2)(iv)' : `${fw}.encryption`,
       title: 'Encryption at Rest',
       severity: 'mandatory' as ConstraintSeverity,
       requirement: 'PHI must be encrypted at rest',
@@ -205,8 +205,8 @@ function generateConstraints(
 /**
  * Classify an API operation against applicable regulatory frameworks.
  *
- * Resolves the tenant's country → applicable frameworks → generates
- * constraints → detects PHI fields → calculates risk level.
+ * Resolves the tenant's country -> applicable frameworks -> generates
+ * constraints -> detects PHI fields -> calculates risk level.
  */
 export function classify(req: ClassificationRequest): RegulatoryClassification {
   const country = req.countryCode || getTenantCountry(req.tenantId || 'default');

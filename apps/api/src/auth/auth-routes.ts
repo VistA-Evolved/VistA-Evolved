@@ -78,7 +78,7 @@ setInterval(
     }
   },
   5 * 60 * 1000
-);
+).unref();
 
 /**
  * Check if an account is locked out. Returns lockout info or null if not locked.
@@ -287,11 +287,11 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
         });
       }
 
-      // Set cookie (httpOnly — no JS access)
+      // Set cookie (httpOnly -- no JS access)
       reply.setCookie(COOKIE_NAME, finalToken, COOKIE_OPTS);
 
       // Phase 132: CSRF token is now session-bound (synchronizer token pattern).
-      // Delivered via JSON response body — no more double-submit cookie.
+      // Delivered via JSON response body -- no more double-submit cookie.
       // Client stores this in JS memory and sends as x-csrf-token header.
       const loggedInSession = await getSession(finalToken);
 
@@ -321,7 +321,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
 
       log.info('User authenticated', { duz: userInfo.duz, role });
 
-      // Phase 15B: Do NOT expose token in response body — cookie-only transport
+      // Phase 15B: Do NOT expose token in response body -- cookie-only transport
       return {
         ok: true,
         csrfToken: loggedInSession?.csrfSecret || '',
@@ -456,7 +456,7 @@ export default async function authRoutes(server: FastifyInstance): Promise<void>
     };
   });
 
-  // GET /auth/csrf-token — Phase 132: Dedicated CSRF token endpoint
+  // GET /auth/csrf-token -- Phase 132: Dedicated CSRF token endpoint
   // Returns the session-bound CSRF secret for clients that need it after page refresh.
   // Requires a valid session (cookie sent automatically). Safe method (GET).
   server.get('/auth/csrf-token', async (request, reply) => {

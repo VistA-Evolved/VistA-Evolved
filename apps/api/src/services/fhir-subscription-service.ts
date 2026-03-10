@@ -1,10 +1,10 @@
 /**
- * FHIR Subscriptions v1 — Phase 357 (W18-P4)
+ * FHIR Subscriptions v1 -- Phase 357 (W18-P4)
  *
  * R4 Subscription resource support with rest-hook delivery via the webhook framework.
  * Maps domain events to FHIR resource change notifications.
  *
- * ADR: ADR-EVENT-BUS.md — events routed through canonical bus, not direct FHIR polling.
+ * ADR: ADR-EVENT-BUS.md -- events routed through canonical bus, not direct FHIR polling.
  */
 
 import { randomBytes } from "node:crypto";
@@ -14,7 +14,7 @@ import {
   type DomainEvent,
 } from "./event-bus.js";
 
-// ── Types ───────────────────────────────────────────────────────────────
+// -- Types ---------------------------------------------------------------
 
 export type FhirSubscriptionStatus =
   | "requested"
@@ -27,7 +27,7 @@ export type FhirSubscriptionChannelType = "rest-hook" | "websocket" | "email";
 export interface FhirSubscriptionChannel {
   type: FhirSubscriptionChannelType;
   endpoint: string;
-  /** MIME type for payload — default application/fhir+json */
+  /** MIME type for payload -- default application/fhir+json */
   payload: string;
   header?: string[];
 }
@@ -41,7 +41,7 @@ export interface FhirSubscription {
   /** Parsed resource type from criteria */
   resourceType: string;
   channel: FhirSubscriptionChannel;
-  /** ISO 8601 end time — subscription auto-expires after this */
+  /** ISO 8601 end time -- subscription auto-expires after this */
   end?: string;
   reason?: string;
   /** Error message if status is 'error' */
@@ -88,19 +88,19 @@ export const SUPPORTED_RESOURCE_TYPES = [
   "Claim",
 ] as const;
 
-// ── Stores ──────────────────────────────────────────────────────────────
+// -- Stores --------------------------------------------------------------
 
-/** In-memory subscription store — keyed by subscription ID */
+/** In-memory subscription store -- keyed by subscription ID */
 const subscriptions = new Map<string, FhirSubscription>();
 
-/** In-memory notification log — max 10K entries */
+/** In-memory notification log -- max 10K entries */
 const notifications: FhirNotification[] = [];
 const MAX_NOTIFICATIONS = 10_000;
 
 /** Track event bus consumer IDs for cleanup */
 const consumerIds = new Map<string, string>();
 
-// ── Helpers ─────────────────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------------------
 
 function genId(): string {
   return randomBytes(16).toString("hex");
@@ -112,8 +112,8 @@ function now(): string {
 
 /**
  * Parse R4 criteria string into resource type.
- * "Patient?_id=3" → "Patient"
- * "Observation?category=vital-signs" → "Observation"
+ * "Patient?_id=3" -> "Patient"
+ * "Observation?category=vital-signs" -> "Observation"
  */
 function parseCriteriaResourceType(criteria: string): string {
   const qmark = criteria.indexOf("?");
@@ -139,7 +139,7 @@ function isExpired(sub: FhirSubscription): boolean {
   return new Date(sub.end).getTime() < Date.now();
 }
 
-// ── CRUD ────────────────────────────────────────────────────────────────
+// -- CRUD ----------------------------------------------------------------
 
 export function createFhirSubscription(
   tenantId: string,
@@ -264,7 +264,7 @@ export function deleteFhirSubscription(
   return true;
 }
 
-// ── Event Handling ──────────────────────────────────────────────────────
+// -- Event Handling ------------------------------------------------------
 
 async function handleFhirEvent(
   subscriptionId: string,
@@ -333,7 +333,7 @@ async function handleFhirEvent(
   }
 }
 
-// ── Query Helpers ───────────────────────────────────────────────────────
+// -- Query Helpers -------------------------------------------------------
 
 export function getFhirNotifications(
   tenantId: string,
@@ -395,7 +395,7 @@ export function getEventResourceMapping(): Record<string, string> {
   return { ...EVENT_TO_FHIR_RESOURCE };
 }
 
-// ── Reset (testing) ─────────────────────────────────────────────────────
+// -- Reset (testing) -----------------------------------------------------
 
 export function _resetFhirSubscriptions(): void {
   for (const cid of consumerIds.values()) {

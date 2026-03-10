@@ -1,5 +1,5 @@
 /**
- * Telehealth Provider Registry — Phase 30
+ * Telehealth Provider Registry -- Phase 30
  *
  * Factory pattern: selects provider by TELEHEALTH_PROVIDER env var.
  * Default: "jitsi" (self-hostable, no vendor lock-in).
@@ -18,7 +18,7 @@ import { JitsiProvider } from './jitsi-provider.js';
 /* ------------------------------------------------------------------ */
 
 /**
- * Stub provider — returns mock data for testing or as a template
+ * Stub provider -- returns mock data for testing or as a template
  * for future provider implementations (Zoom, Twilio, WebEx, etc.).
  */
 class StubProvider implements TelehealthProvider {

@@ -1,9 +1,9 @@
 /**
- * Phase 37 — E2E: Login flow → patient search → chart loads.
+ * Phase 37 -- E2E: Login flow -> patient search -> chart loads.
  */
 
 import { test, expect } from '@playwright/test';
-import { loginViaUI, selectPatient, setupConsoleGate } from './helpers/auth';
+import { TEST_DFN, chartRoute, loginViaUI, selectPatient, setupConsoleGate } from './helpers/auth';
 
 test.describe('Login & Patient Selection', () => {
   test('login page renders form fields', async ({ page }) => {
@@ -42,10 +42,10 @@ test.describe('Login & Patient Selection', () => {
     const errors = setupConsoleGate(page);
     await loginViaUI(page);
     // loginViaUI already landed us on /cprs/patient-search, skip re-navigation
-    await selectPatient(page, '3', true);
+    await selectPatient(page, TEST_DFN, true);
 
     // Should be on chart page
-    await expect(page).toHaveURL(/\/cprs\/chart\/3\/cover/);
+    await expect(page).toHaveURL(new RegExp(chartRoute('cover', TEST_DFN).replaceAll('/', '\\/')));
 
     // Chart shell elements should be visible
     await expect(page.locator("nav[role='tablist']").or(page.locator('nav')).first()).toBeVisible();

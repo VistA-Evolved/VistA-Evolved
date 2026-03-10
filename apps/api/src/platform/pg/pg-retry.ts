@@ -1,5 +1,5 @@
 /**
- * Platform DB — Retry + Backoff Utility
+ * Platform DB -- Retry + Backoff Utility
  *
  * Phase 103: DB Performance Posture
  *
@@ -70,7 +70,7 @@ function isRetryableError(err: unknown): boolean {
 
 /**
  * Execute a PG operation with exponential backoff retry.
- * Only retries on transient errors — permanent errors fail immediately.
+ * Only retries on transient errors -- permanent errors fail immediately.
  */
 export async function withPgRetry<T>(
   fn: () => Promise<T>,
@@ -127,7 +127,7 @@ export async function withPgRetry<T>(
 
 /**
  * Check if an error is a PG unique violation (23505).
- * Useful for idempotent upserts — if insert conflicts, it's a no-op.
+ * Useful for idempotent upserts -- if insert conflicts, it's a no-op.
  */
 export function isPgUniqueViolation(err: unknown): boolean {
   if (!err || typeof err !== 'object') return false;

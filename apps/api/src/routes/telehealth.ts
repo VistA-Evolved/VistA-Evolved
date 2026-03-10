@@ -1,23 +1,23 @@
 /**
- * Telehealth Routes — Phase 30
+ * Telehealth Routes -- Phase 30
  *
  * REST endpoints for telehealth video visit lifecycle:
- * - POST /telehealth/rooms — Create a room for an appointment
- * - GET  /telehealth/rooms/:roomId — Get room status
- * - POST /telehealth/rooms/:roomId/join — Join a room (get join URL)
- * - POST /telehealth/rooms/:roomId/end — End a room
- * - GET  /telehealth/rooms/:roomId/waiting — Get waiting room state
- * - GET  /telehealth/device-check/requirements — Get device requirements
- * - POST /telehealth/device-check/report — Submit device check result
- * - GET  /telehealth/rooms — List active rooms (clinician)
- * - GET  /telehealth/health — Provider health check
+ * - POST /telehealth/rooms -- Create a room for an appointment
+ * - GET  /telehealth/rooms/:roomId -- Get room status
+ * - POST /telehealth/rooms/:roomId/join -- Join a room (get join URL)
+ * - POST /telehealth/rooms/:roomId/end -- End a room
+ * - GET  /telehealth/rooms/:roomId/waiting -- Get waiting room state
+ * - GET  /telehealth/device-check/requirements -- Get device requirements
+ * - POST /telehealth/device-check/report -- Submit device check result
+ * - GET  /telehealth/rooms -- List active rooms (clinician)
+ * - GET  /telehealth/health -- Provider health check
  *
  * Portal routes (patient-facing, under /portal/telehealth):
- * - GET  /portal/telehealth/appointment/:appointmentId/room — Get/create room for appointment
- * - POST /portal/telehealth/rooms/:roomId/join — Patient join
- * - GET  /portal/telehealth/rooms/:roomId/waiting — Patient waiting room
- * - GET  /portal/telehealth/device-check — Device requirements
- * - POST /portal/telehealth/device-check/report — Submit device check
+ * - GET  /portal/telehealth/appointment/:appointmentId/room -- Get/create room for appointment
+ * - POST /portal/telehealth/rooms/:roomId/join -- Patient join
+ * - GET  /portal/telehealth/rooms/:roomId/waiting -- Patient waiting room
+ * - GET  /portal/telehealth/device-check -- Device requirements
+ * - POST /portal/telehealth/device-check/report -- Submit device check
  *
  * Auth:
  * - /telehealth/* routes use clinician session (requireSession)
@@ -33,7 +33,7 @@ import { getAppointment } from '../services/portal-appointments.js';
 import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
-/* Session helpers — injected from index.ts                             */
+/* Session helpers -- injected from index.ts                             */
 /* ------------------------------------------------------------------ */
 
 interface PortalSessionData {
@@ -121,7 +121,7 @@ async function withRoomCreationLock<T>(key: string, task: () => Promise<T>): Pro
 export default async function telehealthRoutes(server: FastifyInstance): Promise<void> {
   const provider = getTelehealthProvider();
 
-  /* ── Clinician routes (/telehealth/*) ── */
+  /* -- Clinician routes (/telehealth/*) -- */
 
   // Create room for an appointment
   server.post('/telehealth/rooms', async (request, reply) => {
@@ -286,14 +286,14 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
     };
   });
 
-  /* ── Portal routes (/portal/telehealth/*) ── */
+  /* -- Portal routes (/portal/telehealth/*) -- */
 
   // Get or create room for a portal appointment
   server.get('/portal/telehealth/appointment/:appointmentId/room', async (request, reply) => {
     try {
       const session = requirePortalSession(request, reply);
       const { appointmentId } = request.params as any;
-      const appointment = getAppointment(appointmentId, session.tenantId, session.patientDfn);
+      const appointment = await getAppointment(appointmentId, session.tenantId, session.patientDfn);
       if (!appointment) {
         return reply.code(404).send({ ok: false, error: 'Appointment not found' });
       }
@@ -304,7 +304,7 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
         return { ok: true, room: existing };
       }
 
-      // No active room yet — patient sees "waiting for provider to start"
+      // No active room yet -- patient sees "waiting for provider to start"
       return { ok: true, room: null, message: 'Your provider has not started the visit yet.' };
     } catch (err: any) {
       if (err.message === 'No portal session') return;
@@ -322,7 +322,7 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
       if (!room) return reply.code(404).send({ ok: false, error: 'Room not found' });
       if (room.status === 'ended')
         return reply.code(410).send({ ok: false, error: 'Visit has ended' });
-      if (!room.appointmentId || !getAppointment(room.appointmentId, session.tenantId, session.patientDfn)) {
+      if (!room.appointmentId || !(await getAppointment(room.appointmentId, session.tenantId, session.patientDfn))) {
         return reply.code(404).send({ ok: false, error: 'Room not found' });
       }
 
@@ -355,7 +355,7 @@ export default async function telehealthRoutes(server: FastifyInstance): Promise
       const { roomId } = request.params as any;
 
       const room = await roomStore.getRoom(roomId, session.tenantId);
-      if (!room || !room.appointmentId || !getAppointment(room.appointmentId, session.tenantId, session.patientDfn)) {
+      if (!room || !room.appointmentId || !(await getAppointment(room.appointmentId, session.tenantId, session.patientDfn))) {
         return reply.code(404).send({ ok: false, error: 'Room not found' });
       }
 

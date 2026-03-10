@@ -1,11 +1,11 @@
 /**
- * Intake Brain Plugin Architecture — Core Types (Phase 143)
+ * Intake Brain Plugin Architecture -- Core Types (Phase 143)
  *
  * Defines the IntakeBrainPlugin interface that all providers must implement.
  * Three provider families:
- *   1. rules_engine         — deterministic, pack-driven (default, always available)
- *   2. llm_provider:<name>  — governed via AI Gateway (Phase 33)
- *   3. third_party:<name>   — external API adapters (e.g., Instant Medical History)
+ *   1. rules_engine         -- deterministic, pack-driven (default, always available)
+ *   2. llm_provider:<name>  -- governed via AI Gateway (Phase 33)
+ *   3. third_party:<name>   -- external API adapters (e.g., Instant Medical History)
  *
  * Non-negotiables:
  *   - NO medical diagnosis or treatment recommendations
@@ -29,12 +29,12 @@ import type {
 
 /**
  * Typed provider identifier.
- *   - "rules_engine"          — built-in deterministic
- *   - "llm_provider:stub"     — stub LLM (dev/test)
- *   - "llm_provider:openai"   — OpenAI adapter
- *   - "llm_provider:medgemma" — MedGemma on-prem
- *   - "third_party:imh"       — Instant Medical History
- *   - "third_party:custom"    — facility-registered adapter
+ *   - "rules_engine"          -- built-in deterministic
+ *   - "llm_provider:stub"     -- stub LLM (dev/test)
+ *   - "llm_provider:openai"   -- OpenAI adapter
+ *   - "llm_provider:medgemma" -- MedGemma on-prem
+ *   - "third_party:imh"       -- Instant Medical History
+ *   - "third_party:custom"    -- facility-registered adapter
  */
 export type BrainProviderId = string;
 

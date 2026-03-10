@@ -1,4 +1,4 @@
-# VistA-Evolved Secrets Strategy — SOPS + age
+# VistA-Evolved Secrets Strategy -- SOPS + age
 #
 # This file documents the secrets management approach for K8s deployments.
 # We use Mozilla SOPS (https://github.com/getsops/sops) with age encryption

@@ -1,5 +1,5 @@
 /**
- * TIU Writeback Contract Tests — Phase 301 (W12-P3)
+ * TIU Writeback Contract Tests -- Phase 301 (W12-P3)
  *
  * Tests the TIU executor through the command bus without a live VistA.
  * Validates: submission, idempotency, gate checks, dry-run, validation errors.
@@ -9,7 +9,7 @@ import { describe, it, expect } from 'vitest';
 
 /* ------------------------------------------------------------------ */
 /* We test purely through the command bus + store exports.              */
-/* RPC calls are not executed — gate defaults ensure dry-run.          */
+/* RPC calls are not executed -- gate defaults ensure dry-run.          */
 /* ------------------------------------------------------------------ */
 
 // Inline mock of the types we need

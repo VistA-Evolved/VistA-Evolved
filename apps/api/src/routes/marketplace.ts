@@ -1,5 +1,5 @@
 /**
- * Integration Marketplace Routes — Phase 324 (W14-P8)
+ * Integration Marketplace Routes -- Phase 324 (W14-P8)
  *
  * 17 REST endpoints for marketplace/registry operations:
  *  - Categories: create, list
@@ -59,7 +59,7 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
     return null;
   }
 
-  /* ── Category endpoints ──────────────────────────────────────── */
+  /* -- Category endpoints ---------------------------------------- */
 
   server.post('/marketplace/categories', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -75,7 +75,7 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
     return { ok: true, categories: listCategories() };
   });
 
-  /* ── Listing endpoints ───────────────────────────────────────── */
+  /* -- Listing endpoints ----------------------------------------- */
 
   server.post('/marketplace/listings', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -159,7 +159,7 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
     return { ok: true, status: body.status };
   });
 
-  /* ── Review endpoints ────────────────────────────────────────── */
+  /* -- Review endpoints ------------------------------------------ */
 
   server.post('/marketplace/listings/:id/reviews', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -184,7 +184,7 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
     return { ok: true, reviews: listReviews(id) };
   });
 
-  /* ── Install endpoints ───────────────────────────────────────── */
+  /* -- Install endpoints ----------------------------------------- */
 
   server.post('/marketplace/install', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -237,7 +237,7 @@ export default async function marketplaceRoutes(server: FastifyInstance): Promis
     return { ok: true, install };
   });
 
-  /* ── Stats ─────────────────────────────────────────────────────── */
+  /* -- Stats ------------------------------------------------------- */
 
   server.get('/marketplace/stats', async (request, reply) => {
     const session = await requireSession(request, reply);

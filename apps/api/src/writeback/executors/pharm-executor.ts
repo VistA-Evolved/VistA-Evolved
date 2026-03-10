@@ -1,13 +1,13 @@
 /**
- * Pharmacy Writeback Executor — Phase 303 (W12-P5)
+ * Pharmacy Writeback Executor -- Phase 303 (W12-P5)
  *
  * Domain executor for PHARM writeback commands.
  * Implements the RpcExecutor interface from the command bus.
  *
  * Supported intents:
- *   PLACE_MED_ORDER       → ORWDX LOCK + ORWDX SAVE + ORWDXM AUTOACK + ORWDX UNLOCK
- *   DISCONTINUE_MED_ORDER → ORWDX LOCK + ORWDXA DC + ORWDX UNLOCK
- *   ADMINISTER_MED        → PSB MED LOG (sandbox-absent, integration-pending)
+ *   PLACE_MED_ORDER       -> ORWDX LOCK + ORWDX SAVE + ORWDXM AUTOACK + ORWDX UNLOCK
+ *   DISCONTINUE_MED_ORDER -> ORWDX LOCK + ORWDXA DC + ORWDX UNLOCK
+ *   ADMINISTER_MED        -> PSB MED LOG (sandbox-absent, integration-pending)
  *
  * Safety:
  *   - LOCK before write, always UNLOCK after (finally block)
@@ -21,7 +21,7 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
-/* Intent → RPC mapping                                                */
+/* Intent -> RPC mapping                                                */
 /* ------------------------------------------------------------------ */
 
 const INTENT_RPC_MAP: Record<string, string[]> = {

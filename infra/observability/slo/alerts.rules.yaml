@@ -1,10 +1,10 @@
-# Prometheus Alerting Rules — VistA-Evolved
+# Prometheus Alerting Rules -- VistA-Evolved
 # Hand-written multi-window burn-rate alerts matching SLO spec.
 # Deploy alongside Prometheus via ConfigMap or file_sd.
 
 groups:
   # ================================================================
-  #  SLO-1 — API Availability (99.5% over 30d)
+  #  SLO-1 -- API Availability (99.5% over 30d)
   # ================================================================
   - name: slo.api.availability
     interval: 30s
@@ -61,7 +61,7 @@ groups:
             slow budget depletion. Investigate within shift.
 
   # ================================================================
-  #  SLO-2 — API Latency p95 < 2s (95% target)
+  #  SLO-2 -- API Latency p95 < 2s (95% target)
   # ================================================================
   - name: slo.api.latency
     interval: 30s
@@ -106,7 +106,7 @@ groups:
           summary: 'API latency slow burn: p95 degrading'
 
   # ================================================================
-  #  SLO-3 — RPC Broker Success (99%)
+  #  SLO-3 -- RPC Broker Success (99%)
   # ================================================================
   - name: slo.rpc.broker
     interval: 30s
@@ -141,7 +141,7 @@ groups:
           summary: 'RPC broker failure rate > 1% for 15 minutes'
 
   # ================================================================
-  #  SLO-4 — Backup Success (99.9%)
+  #  SLO-4 -- Backup Success (99.9%)
   # ================================================================
   - name: slo.backup
     interval: 60s
@@ -160,7 +160,7 @@ groups:
             Check backup job logs and storage connectivity.
 
   # ================================================================
-  #  Infrastructure — DR & Pod Health
+  #  Infrastructure -- DR & Pod Health
   # ================================================================
   - name: infra.health
     interval: 30s

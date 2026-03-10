@@ -35,7 +35,7 @@ const SERVICE_VERSION = process.env.BUILD_SHA || 'dev';
 /* ------------------------------------------------------------------ */
 
 /**
- * SDK reference — set either by register.ts (via --import, preferred for ESM)
+ * SDK reference -- set either by register.ts (via --import, preferred for ESM)
  * or by initTracing() fallback (for backward compat / CJS).
  */
 let sdk: NodeSDK | null = (globalThis as any).__otelSdk ?? null;

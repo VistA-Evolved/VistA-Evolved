@@ -1,11 +1,11 @@
 /**
- * Clinical Writeback Command Bus — Core Bus
+ * Clinical Writeback Command Bus -- Core Bus
  *
  * Phase 300 (W12-P2): Command submission + processing + audit pipeline.
  *
  * Flow:
- *   1. submitCommand() — validate, check gate, check idempotency, persist
- *   2. processCommand() — pick up pending, check dry-run, execute via RpcExecutor, record result
+ *   1. submitCommand() -- validate, check gate, check idempotency, persist
+ *   2. processCommand() -- pick up pending, check dry-run, execute via RpcExecutor, record result
  *   3. All state transitions are audited via immutable-audit
  */
 
@@ -68,7 +68,7 @@ export function getExecutor(domain: WritebackDomain): RpcExecutor | undefined {
 /**
  * Submit a clinical writeback command.
  *
- * 1. Validates intent ↔ domain mapping
+ * 1. Validates intent <-> domain mapping
  * 2. Checks feature gate
  * 3. Checks idempotency (returns existing result if duplicate)
  * 4. Persists as pending
@@ -149,7 +149,7 @@ export function submitCommand(req: SubmitCommandRequest): CommandExecutionResult
 /* ------------------------------------------------------------------ */
 
 /**
- * Process a pending command — execute the RPC via the domain executor.
+ * Process a pending command -- execute the RPC via the domain executor.
  */
 export async function processCommand(commandId: string): Promise<CommandExecutionResult> {
   const cmd = getCommand(commandId);
@@ -294,7 +294,7 @@ function processDryRun(cmd: ClinicalCommand): CommandExecutionResult {
     transcript = {
       rpcName: `[no executor for ${cmd.domain}]`,
       params: cmd.payloadJson,
-      simulatedResult: 'No executor registered — dry-run transcript only',
+      simulatedResult: 'No executor registered -- dry-run transcript only',
       recordedAt: new Date().toISOString(),
     };
   }
@@ -395,7 +395,7 @@ export function markAsSupervisedReview(
 }
 
 /**
- * Review a supervised command — approve or reject.
+ * Review a supervised command -- approve or reject.
  *
  * - approve: transitions to pending (worker will execute)
  * - reject: transitions to rejected (terminal)
@@ -453,7 +453,7 @@ export async function reviewCommand(
     return { commandId, status: 'rejected', error: reason || 'Supervisor rejected' };
   }
 
-  // Approve → process the command
+  // Approve -> process the command
   updateCommandStatus(commandId, 'pending');
   log.info(`Writeback review approved: id=${commandId} by=${reviewerDuz}`);
   return processCommand(commandId);

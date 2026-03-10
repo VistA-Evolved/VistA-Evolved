@@ -1,5 +1,5 @@
 /**
- * EDI 835 Remittance → Denial Intake — Phase 98
+ * EDI 835 Remittance -> Denial Intake -- Phase 98
  *
  * Parses structured JSON representing 835 remittance data and
  * creates DenialCase records for any denied line items.
@@ -10,7 +10,7 @@
  * 2. An external parser's JSON export
  * 3. Manual structured entry
  *
- * Raw X12 parsing is integration-pending — requires a streaming
+ * Raw X12 parsing is integration-pending -- requires a streaming
  * X12 parser (MIT-licensed) to be added in a future phase.
  */
 

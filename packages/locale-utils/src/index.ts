@@ -8,12 +8,12 @@
  * No external dependencies.
  */
 
-// ── Supported Locales ──────────────────────────────────────────
+// -- Supported Locales ------------------------------------------
 
 export const SUPPORTED_LOCALES = ['en', 'fil', 'es'] as const;
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number];
 
-// ── Date Formatting ────────────────────────────────────────────
+// -- Date Formatting --------------------------------------------
 
 export type DateFormatStyle = 'short' | 'medium' | 'long' | 'iso';
 
@@ -62,7 +62,7 @@ export function formatDate(
   }
 }
 
-// ── Time Formatting ────────────────────────────────────────────
+// -- Time Formatting --------------------------------------------
 
 export type TimeFormatStyle = 'short' | 'medium' | 'full';
 
@@ -120,7 +120,7 @@ export function formatDateTime(
   }
 }
 
-// ── Number Formatting ──────────────────────────────────────────
+// -- Number Formatting ------------------------------------------
 
 /**
  * Format a number according to the given locale.
@@ -142,7 +142,7 @@ export function formatNumber(
   }
 }
 
-// ── Currency Formatting ────────────────────────────────────────
+// -- Currency Formatting ----------------------------------------
 
 /**
  * Format a monetary value with currency symbol.
@@ -170,7 +170,7 @@ export function formatCurrency(
   }
 }
 
-// ── Relative Time ──────────────────────────────────────────────
+// -- Relative Time ----------------------------------------------
 
 /**
  * Format a relative time (e.g., "3 days ago", "in 2 hours").
@@ -214,7 +214,7 @@ export function formatRelativeTime(
   }
 }
 
-// ── RTL Detection ──────────────────────────────────────────────
+// -- RTL Detection ----------------------------------------------
 
 /**
  * RTL locales that VistA-Evolved may support in the future.

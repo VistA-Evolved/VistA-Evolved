@@ -1,5 +1,5 @@
 /**
- * Site Configuration — Phase 246: Pilot Hospital Hardening
+ * Site Configuration -- Phase 246: Pilot Hospital Hardening
  *
  * Manages pilot site configurations. Each site represents a
  * hospital or clinic deployment target with its own settings,

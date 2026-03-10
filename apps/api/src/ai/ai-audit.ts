@@ -1,5 +1,5 @@
 /**
- * AI Gateway — Audit Log (Phase 33)
+ * AI Gateway -- Audit Log (Phase 33)
  *
  * Every AI gateway invocation is audit-logged:
  * prompt hash + model + inputs/outputs + user role + patient context.
@@ -23,7 +23,13 @@ import type {
 /* ------------------------------------------------------------------ */
 
 const MAX_AUDIT_ENTRIES = 5000;
-const HASH_SALT = process.env.AI_AUDIT_HASH_SALT || 've-ai-audit-salt-33';
+
+const _runtimeMode = (process.env.PLATFORM_RUNTIME_MODE || process.env.NODE_ENV || 'dev').toLowerCase();
+const _isProduction = _runtimeMode === 'rc' || _runtimeMode === 'prod' || _runtimeMode === 'production';
+if (_isProduction && !process.env.AI_AUDIT_HASH_SALT) {
+  throw new Error('AI_AUDIT_HASH_SALT must be set in rc/prod mode');
+}
+const HASH_SALT = process.env.AI_AUDIT_HASH_SALT || 've-ai-audit-salt-dev';
 
 /* ------------------------------------------------------------------ */
 /* Ring buffer store                                                   */
@@ -36,7 +42,7 @@ let nextId = 1;
 /* Hash helpers (PHI-safe)                                             */
 /* ------------------------------------------------------------------ */
 
-/** Hash an actor/patient ID for audit — never store raw DUZ/DFN. */
+/** Hash an actor/patient ID for audit -- never store raw DUZ/DFN. */
 export function hashAiId(id: string): string {
   return createHash('sha256')
     .update(HASH_SALT + id)
@@ -97,7 +103,7 @@ export function logAiAudit(input: AuditLogInput): AIAuditEvent {
     auditLog.shift();
   }
 
-  // Structured log (no PHI — only hashes, action, outcome)
+  // Structured log (no PHI -- only hashes, action, outcome)
   log.info('AI audit event', {
     id: event.id,
     useCase: event.useCase,

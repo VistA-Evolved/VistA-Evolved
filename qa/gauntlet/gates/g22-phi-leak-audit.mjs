@@ -26,7 +26,7 @@ export async function run(opts = {}) {
   const details = [];
   let status = 'pass';
 
-  // ── 1. phi-redaction.ts has dfn identifiers in PHI_FIELDS ────────
+  // -- 1. phi-redaction.ts has dfn identifiers in PHI_FIELDS --------
   const phiRedactPath = resolve(API_SRC, 'lib/phi-redaction.ts');
   if (!existsSync(phiRedactPath)) {
     details.push('phi-redaction.ts: MISSING');
@@ -53,7 +53,7 @@ export async function run(opts = {}) {
     details.push('phi-redaction.ts: sanitizeAuditDetail export present');
   }
 
-  // ── 2. server-config.ts auditIncludesDfn must be false ───────────
+  // -- 2. server-config.ts auditIncludesDfn must be false -----------
   const serverConfigPath = resolve(API_SRC, 'config/server-config.ts');
   if (existsSync(serverConfigPath)) {
     const configSrc = readFileSync(serverConfigPath, 'utf8');
@@ -78,7 +78,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 3. Scan log statements for dfn leaks ─────────────────────────
+  // -- 3. Scan log statements for dfn leaks -------------------------
   try {
     const logLeaks = scanForLogDfnLeaks(API_SRC);
 
@@ -92,7 +92,7 @@ export async function run(opts = {}) {
     details.push(`Log scan error: ${err.message}`);
   }
 
-  // ── 4. Check audit.ts doesn't log patientDfn ────────────────────
+  // -- 4. Check audit.ts doesn't log patientDfn --------------------
   const auditPath = resolve(API_SRC, 'lib/audit.ts');
   if (existsSync(auditPath)) {
     const auditSrc = readFileSync(auditPath, 'utf8');
@@ -108,7 +108,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 5. Check portal-audit uses sanitizeAuditDetail ───────────────
+  // -- 5. Check portal-audit uses sanitizeAuditDetail ---------------
   const portalAuditPath = resolve(API_SRC, 'services/portal-audit.ts');
   if (existsSync(portalAuditPath)) {
     const paSrc = readFileSync(portalAuditPath, 'utf8');
@@ -120,7 +120,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 6. Check immutable-audit imports phi-redaction ───────────────
+  // -- 6. Check immutable-audit imports phi-redaction ---------------
   const immutableAuditPath = resolve(API_SRC, 'lib/immutable-audit.ts');
   if (existsSync(immutableAuditPath)) {
     const iaSrc = readFileSync(immutableAuditPath, 'utf8');
@@ -135,7 +135,7 @@ export async function run(opts = {}) {
   return { id, name, status, details, durationMs: Date.now() - start };
 }
 
-/* ── Helper: scan TS files for log.* calls with dfn in payload ────── */
+/* -- Helper: scan TS files for log.* calls with dfn in payload ------ */
 function scanForLogDfnLeaks(apiSrc) {
   const leaks = [];
   const dirs = ['routes', 'services'];

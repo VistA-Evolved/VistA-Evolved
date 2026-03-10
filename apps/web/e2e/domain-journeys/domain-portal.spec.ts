@@ -808,10 +808,10 @@ test.describe('Phase 65: Immunizations v1 (VistA-First) + Portal View', () => {
   test('API routes respond without 500', async ({ request }) => {
     const r__vista_immunizations = await request.get(`${API}/vista/immunizations`);
     expect(r__vista_immunizations.status(), '/vista/immunizations should not be 500').not.toBe(500);
-    const r__vista_immunizations_dfn_3 = await request.get(`${API}/vista/immunizations?dfn=3`);
+    const r__vista_immunizations_dfn_3 = await request.get(`${API}/vista/immunizations?dfn=46`);
     expect(
       r__vista_immunizations_dfn_3.status(),
-      '/vista/immunizations?dfn=3 should not be 500'
+      '/vista/immunizations?dfn=46 should not be 500'
     ).not.toBe(500);
     const r__vista_immunizations_dfn_x = await request.get(`${API}/vista/immunizations?dfn=X`);
     expect(
@@ -1103,7 +1103,7 @@ test.describe('Phase 87: Mega Prompt Audit: IMPLEMENT', () => {
   });
 });
 
-test.describe('Phase 87: Philippines RCM Foundation (PayerOps core) — IMPLEMENT', () => {
+test.describe('Phase 87: Philippines RCM Foundation (PayerOps core) -- IMPLEMENT', () => {
   test('API routes respond without 500', async ({ request }) => {
     const r__rcm_payerops_adapters = await request.get(`${API}/rcm/payerops/adapters`);
     expect(r__rcm_payerops_adapters.status(), '/rcm/payerops/adapters should not be 500').not.toBe(
@@ -1179,7 +1179,7 @@ test.describe('Phase 87: Philippines RCM Foundation (PayerOps core) — IMPLEMEN
   });
 });
 
-test.describe('Phase 89: LOA ENGINE v1 (Top 5 HMOs + Long Tail manual/portal) — IMPLE', () => {
+test.describe('Phase 89: LOA ENGINE v1 (Top 5 HMOs + Long Tail manual/portal) -- IMPLE', () => {
   test('API routes respond without 500', async ({ request }) => {
     const r__rcm_ = await request.get(`${API}/rcm/`);
     expect(r__rcm_.status(), '/rcm/ should not be 500').not.toBe(500);
@@ -1240,11 +1240,11 @@ test.describe('Phase 89: LOA ENGINE v1 (Top 5 HMOs + Long Tail manual/portal) �
 test.describe('Phase 131: 132 VERIFY', () => {
   test('API routes respond without 500', async ({ request }) => {
     const r__scheduling_appointments_cprs_dfn_3 = await request.get(
-      `${API}/scheduling/appointments/cprs?dfn=3`
+      `${API}/scheduling/appointments/cprs?dfn=46`
     );
     expect(
       r__scheduling_appointments_cprs_dfn_3.status(),
-      '/scheduling/appointments/cprs?dfn=3 should not be 500'
+      '/scheduling/appointments/cprs?dfn=46 should not be 500'
     ).not.toBe(500);
     const r__scheduling_health = await request.get(`${API}/scheduling/health`);
     expect(r__scheduling_health.status(), '/scheduling/health should not be 500').not.toBe(500);
@@ -1269,7 +1269,7 @@ test.describe('Phase 131: 132 VERIFY', () => {
   });
 
   test('integration-pending responses include nextSteps', async ({ request }) => {
-    const res = await request.get(`${API}/scheduling/appointments/cprs?dfn=3`);
+    const res = await request.get(`${API}/scheduling/appointments/cprs?dfn=46`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
       if (body?.status === 'integration-pending') {
@@ -1315,7 +1315,7 @@ test.describe('Phase 131: 132 VERIFY', () => {
   });
 
   test('scheduling endpoint contract', async ({ request }) => {
-    const res = await request.get(`${API}/scheduling/appointments/cprs?dfn=3`);
+    const res = await request.get(`${API}/scheduling/appointments/cprs?dfn=46`);
     expect([200, 401, 403]).toContain(res.status());
   });
 });

@@ -5,11 +5,11 @@
  * Reads three canonical sources and cross-references them to produce a
  * machine-checkable coverage map:
  *
- *   1. CPRS Delphi extraction   → design/contracts/cprs/v1/rpc_catalog.json
- *   2. Vivian RPC index         → data/vista/vivian/rpc_index.json
- *   3. API RPC registry         → apps/api/src/vista/rpcRegistry.ts
- *   4. Live callRpc sites       → grep through apps/api/src/**\/*.ts
- *   5. Stub routes              → auto-generated routes returning {ok:false}
+ *   1. CPRS Delphi extraction   -> design/contracts/cprs/v1/rpc_catalog.json
+ *   2. Vivian RPC index         -> data/vista/vivian/rpc_index.json
+ *   3. API RPC registry         -> apps/api/src/vista/rpcRegistry.ts
+ *   4. Live callRpc sites       -> grep through apps/api/src/**\/*.ts
+ *   5. Stub routes              -> auto-generated routes returning {ok:false}
  *
  * Outputs:
  *   - docs/vista-alignment/rpc-coverage.json   (canonical machine-readable)
@@ -123,7 +123,7 @@ const callRxPatterns = [
   /(?:callRpc|safeCallRpc|safeCallRpcWithList|cachedRpc|resilientRpc)\s*\(\s*`([^`]+)`/g,
 ];
 
-/** Map<file, Set<UPPER_NAME>> for route→RPC mapping */
+/** Map<file, Set<UPPER_NAME>> for route->RPC mapping */
 const fileToRpcs = new Map();
 
 for (const filePath of tsFiles) {
@@ -180,7 +180,7 @@ const allNames = new Set([
   ...exceptionSet,
   ...liveRpcMap.keys(),
   ...stubRpcNames,
-  // Don't include ALL vivian RPCs — too many (3747). Only include those
+  // Don't include ALL vivian RPCs -- too many (3747). Only include those
   // that overlap with CPRS or registry.
 ]);
 
@@ -231,7 +231,7 @@ for (const upperName of [...allNames].sort()) {
 }
 
 // Also add vivian-only RPCs that are relevant (in registry or CPRS coverage)
-// But don't bloat with all 3747 — only the superset already computed.
+// But don't bloat with all 3747 -- only the superset already computed.
 
 /* ------------------------------------------------------------------ */
 /* 7. Summary statistics                                               */

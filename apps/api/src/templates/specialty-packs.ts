@@ -1,8 +1,8 @@
 /**
- * Phase 158: Specialty Pack Definitions — 45+ unique specialty tags
+ * Phase 158: Specialty Pack Definitions -- 45+ unique specialty tags
  *
  * Each pack provides starter templates for rapid clinical documentation.
- * Templates are orchestration metadata — clinical truth lives in VistA.
+ * Templates are orchestration metadata -- clinical truth lives in VistA.
  * No PHI. No auto-coding. Billing suggestions are advisory only.
  *
  * Structure references:
@@ -14,7 +14,7 @@
 
 import type { ClinicalTemplate, TemplateSection, SpecialtyTag } from './types.js';
 
-// ─── Reusable Section Builders ─────────────────────────────────────
+// --- Reusable Section Builders -------------------------------------
 
 function hpiSection(order: number): TemplateSection {
   return {
@@ -240,7 +240,7 @@ function familyHistorySection(order: number): TemplateSection {
   };
 }
 
-// ─── Template Generator per Specialty ──────────────────────────────
+// --- Template Generator per Specialty ------------------------------
 
 type TemplateInput = Omit<ClinicalTemplate, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>;
 
@@ -264,7 +264,7 @@ function makeTemplate(
   };
 }
 
-// ─── Full Specialty Pack Set ───────────────────────────────────────
+// --- Full Specialty Pack Set ---------------------------------------
 
 export function getAllSpecialtyPacks(): { specialty: SpecialtyTag; templates: TemplateInput[] }[] {
   return [

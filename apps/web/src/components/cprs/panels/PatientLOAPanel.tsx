@@ -1,15 +1,15 @@
 'use client';
 
 /**
- * PatientLOAPanel — Phase 89: LOA Engine v1
+ * PatientLOAPanel -- Phase 89: LOA Engine v1
  *
  * Reusable component that shows LOA cases for a specific patient DFN.
  * Can be embedded in any clinical chart context (CPRS sidebar, patient
  * record, clinical dashboard).
  *
  * Props:
- *   - patientDfn: string — VistA patient DFN to filter LOA cases
- *   - compact?: boolean — compact mode for sidebar embedding
+ *   - patientDfn: string -- VistA patient DFN to filter LOA cases
+ *   - compact?: boolean -- compact mode for sidebar embedding
  */
 
 import { useState, useEffect, useCallback } from 'react';
@@ -142,7 +142,7 @@ export default function PatientLOAPanel({ patientDfn, compact }: PatientLOAPanel
   );
 }
 
-/* ── LOA Case Row ───────────────────────────────────────────── */
+/* -- LOA Case Row --------------------------------------------- */
 
 function LOACaseRow({
   loaCase,

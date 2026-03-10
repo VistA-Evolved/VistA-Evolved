@@ -1,16 +1,16 @@
 'use client';
 
 /**
- * Phase 86 — Shift Handoff + Signout
+ * Phase 86 -- Shift Handoff + Signout
  *
  * Standalone handoff page with 4 tabs:
- *  1) Active Handoffs — List submitted/accepted handoff reports for the ward
- *  2) Create Handoff — SBAR-style form per patient, risk flags, todos
- *  3) Accept Handoff — View submitted reports + accept as incoming shift
- *  4) Archive — View past handoff reports
+ *  1) Active Handoffs -- List submitted/accepted handoff reports for the ward
+ *  2) Create Handoff -- SBAR-style form per patient, risk flags, todos
+ *  3) Accept Handoff -- View submitted reports + accept as incoming shift
+ *  4) Archive -- View past handoff reports
  *
  * VistA-sourced: ORQPT WARD PATIENTS, ORWPS ACTIVE, ORQQAL LIST (for patient assembly).
- * VistA migration target: CRHD (Shift Handoff Tool) — 58 RPCs (not in WorldVistA sandbox).
+ * VistA migration target: CRHD (Shift Handoff Tool) -- 58 RPCs (not in WorldVistA sandbox).
  * Storage: In-memory on API (resets on restart). See grounding doc for migration plan.
  */
 
@@ -175,7 +175,7 @@ function StorageBanner() {
       <strong style={{ color: '#975a16' }}>Local Storage Mode:</strong>{' '}
       <span style={{ color: '#744210' }}>
         Handoff reports are stored in API process memory and reset on restart. VistA migration
-        target: CRHD (Shift Handoff Tool) — 58 RPCs. See grounding documentation for migration path.
+        target: CRHD (Shift Handoff Tool) -- 58 RPCs. See grounding documentation for migration path.
       </span>
     </div>
   );
@@ -290,7 +290,7 @@ function ActiveTab({ ward }: { ward: string }) {
     <div>
       <StorageBanner />
       <h3 style={{ fontSize: 15, fontWeight: 600, margin: '0 0 12px 0' }}>
-        Active Handoff Reports — {ward} ({reports.length})
+        Active Handoff Reports -- {ward} ({reports.length})
       </h3>
       {actionMsg && (
         <div
@@ -341,7 +341,7 @@ function ActiveTab({ ward }: { ward: string }) {
               {r.acceptedBy && (
                 <div style={{ fontSize: 12, color: colors.success, marginTop: 2 }}>
                   Accepted by: {r.acceptedBy.name} at{' '}
-                  {r.acceptedAt ? new Date(r.acceptedAt).toLocaleString() : '—'}
+                  {r.acceptedAt ? new Date(r.acceptedAt).toLocaleString() : '--'}
                 </div>
               )}
               <div
@@ -729,7 +729,7 @@ function CreateTab({ ward }: { ward: string }) {
                   }}
                 >
                   <h4 style={{ fontSize: 14, fontWeight: 600, margin: 0 }}>
-                    SBAR — {selected.patientName || `DFN ${selected.dfn}`}
+                    SBAR -- {selected.patientName || `DFN ${selected.dfn}`}
                   </h4>
                   <div style={{ fontSize: 12, color: colors.textMuted }}>
                     Standardized handoff communication framework
@@ -740,10 +740,10 @@ function CreateTab({ ward }: { ward: string }) {
                 {(['situation', 'background', 'assessment', 'recommendation'] as const).map(
                   (field) => {
                     const fieldLabels: Record<string, string> = {
-                      situation: 'Situation — What is going on with the patient?',
-                      background: 'Background — Relevant history and context',
-                      assessment: 'Assessment — Current clinical assessment',
-                      recommendation: 'Recommendation — What needs to be done next shift?',
+                      situation: 'Situation -- What is going on with the patient?',
+                      background: 'Background -- Relevant history and context',
+                      assessment: 'Assessment -- Current clinical assessment',
+                      recommendation: 'Recommendation -- What needs to be done next shift?',
                     };
                     return (
                       <div key={field}>
@@ -990,7 +990,7 @@ function AcceptTab({ ward }: { ward: string }) {
     <div>
       <StorageBanner />
       <h3 style={{ fontSize: 15, fontWeight: 600, margin: '0 0 12px 0' }}>
-        Submitted Handoffs Awaiting Acceptance — {ward}
+        Submitted Handoffs Awaiting Acceptance -- {ward}
       </h3>
 
       {reports.length === 0 && !selectedReport ? (
@@ -1256,7 +1256,7 @@ function ArchiveTab({ ward }: { ward: string }) {
   return (
     <div>
       <h3 style={{ fontSize: 15, fontWeight: 600, margin: '0 0 12px 0' }}>
-        Archived Handoffs — {ward} ({reports.length})
+        Archived Handoffs -- {ward} ({reports.length})
       </h3>
       {reports.length === 0 ? (
         <div style={{ padding: 20, color: colors.textMuted, fontSize: 13 }}>
@@ -1281,7 +1281,7 @@ function ArchiveTab({ ward }: { ward: string }) {
                 <div>
                   <span style={{ fontWeight: 500, fontSize: 13 }}>{r.shiftLabel}</span>
                   <span style={{ fontSize: 12, color: colors.textMuted, marginLeft: 8 }}>
-                    {r.createdBy.name} → {r.acceptedBy?.name || '(not accepted)'}
+                    {r.createdBy.name}{' -> '}{r.acceptedBy?.name || '(not accepted)'}
                   </span>
                 </div>
                 <StatusBadge status="archived" />
@@ -1353,10 +1353,10 @@ function HandoffPageContent() {
           >
             Back to Inpatient
           </button>
-          <h1 style={{ fontSize: 18, fontWeight: 700, margin: 0 }}>Shift Handoff — Signout</h1>
+          <h1 style={{ fontSize: 18, fontWeight: 700, margin: 0 }}>Shift Handoff -- Signout</h1>
         </div>
         <div style={{ fontSize: 13, opacity: 0.9, display: 'flex', alignItems: 'center', gap: 12 }}>
-          <span>Phase 86 — VistA-first + CRHD posture</span>
+          <span>Phase 86 -- VistA-first + CRHD posture</span>
           <button
             onClick={() => window.print()}
             style={{

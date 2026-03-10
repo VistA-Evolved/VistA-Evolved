@@ -64,7 +64,7 @@ function resolveAdminTargetTenant(
 }
 
 export default async function customerSuccessRoutes(server: FastifyInstance): Promise<void> {
-  /* ── Onboarding ─────────────────────────────────────────────── */
+  /* -- Onboarding ----------------------------------------------- */
 
   server.post('/customer-success/onboard', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -119,7 +119,7 @@ export default async function customerSuccessRoutes(server: FastifyInstance): Pr
     return { ok: true, onboarding: config };
   });
 
-  /* ── Training Mode ──────────────────────────────────────────── */
+  /* -- Training Mode -------------------------------------------- */
 
   server.post('/customer-success/training/:id/enable', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -156,7 +156,7 @@ export default async function customerSuccessRoutes(server: FastifyInstance): Pr
     return { ok: true, ...getTrainingStatus(tenantId) };
   });
 
-  /* ── Synthetic Data ─────────────────────────────────────────── */
+  /* -- Synthetic Data ------------------------------------------- */
 
   server.post('/customer-success/datasets/seed', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -179,7 +179,7 @@ export default async function customerSuccessRoutes(server: FastifyInstance): Pr
     return { ok: true, datasets: listDatasets(tenantId) };
   });
 
-  /* ── Demo Environments ──────────────────────────────────────── */
+  /* -- Demo Environments ---------------------------------------- */
 
   server.post('/customer-success/demo', async (request, reply) => {
     const session = await requireSession(request, reply);

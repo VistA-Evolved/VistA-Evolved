@@ -1,5 +1,5 @@
 /**
- * Runtime-Mode Integration Tests — Phase 429 (W26 P7)
+ * Runtime-Mode Integration Tests -- Phase 429 (W26 P7)
  *
  * Validates that the runtime mode system correctly enforces
  * PG, OIDC, RLS, adapter, and module constraints per mode.

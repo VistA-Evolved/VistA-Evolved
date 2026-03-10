@@ -1,5 +1,5 @@
 /**
- * HL7v2 Message Template Library — Barrel Export
+ * HL7v2 Message Template Library -- Barrel Export
  *
  * Phase 319 (W14-P3)
  */

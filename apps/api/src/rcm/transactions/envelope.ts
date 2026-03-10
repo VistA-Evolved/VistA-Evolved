@@ -11,7 +11,7 @@ import type { X12TransactionSet, IsaEnvelope, GsEnvelope } from '../edi/types.js
 import { TRANSACTION_STATE_TRANSITIONS } from './types.js';
 import { log } from '../../lib/logger.js';
 
-/* ── Control number generator ────────────────────────────────── */
+/* -- Control number generator ---------------------------------- */
 
 const controlCounters = new Map<string, number>();
 
@@ -65,7 +65,7 @@ export async function nextControlNumberDurable(
   return nextControlNumber(senderId, receiverId);
 }
 
-/* ── Envelope builder ────────────────────────────────────────── */
+/* -- Envelope builder ------------------------------------------ */
 
 export interface EnvelopeOptions {
   tenantId: string;
@@ -153,14 +153,14 @@ export function buildEnvelope(options: EnvelopeOptions): TransactionEnvelope {
   };
 }
 
-/* ── Idempotency key ─────────────────────────────────────────── */
+/* -- Idempotency key ------------------------------------------- */
 
 function buildIdempotencyKey(options: EnvelopeOptions): string {
   const payload = `${options.transactionSet}:${options.senderId}:${options.receiverId}:${options.sourceId ?? 'none'}:${Date.now()}`;
   return createHash('sha256').update(payload).digest('hex').slice(0, 32);
 }
 
-/* ── Date formatters ─────────────────────────────────────────── */
+/* -- Date formatters ------------------------------------------- */
 
 function formatISADate(d: Date): string {
   return d.toISOString().slice(2, 10).replace(/-/g, '').slice(0, 6);
@@ -170,7 +170,7 @@ function formatISATime(d: Date): string {
   return d.toISOString().slice(11, 16).replace(':', '');
 }
 
-/* ── Transaction DB repo (Phase 146: durable envelope storage) ── */
+/* -- Transaction DB repo (Phase 146: durable envelope storage) -- */
 
 interface TransactionDbRepo {
   upsert(data: any): Promise<any>;
@@ -183,7 +183,7 @@ export function initTransactionEnvelopeRepo(repo: TransactionDbRepo): void {
   txnDbRepo = repo;
 }
 
-/* ── Transaction Store (cache — PG is truth when wired) ───── */
+/* -- Transaction Store (cache -- PG is truth when wired) ----- */
 
 const transactionStore = new Map<string, TransactionRecord>();
 const correlationIndex = new Map<string, string[]>();
@@ -220,7 +220,7 @@ export function storeTransaction(
       createdAt: now,
       updatedAt: now,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   // Index by correlation
   const corr = correlationIndex.get(envelope.correlationId) ?? [];
@@ -289,7 +289,7 @@ export function transitionTransaction(
       status: record.state,
       updatedAt: record.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   return record;
 }

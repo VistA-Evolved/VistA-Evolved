@@ -4,13 +4,13 @@
  * Phase 457 (W30-P2). C-CDA XML document ingestion.
  * Extracts Problems, Medications, and Allergies sections from C-CDA XML,
  * maps them to FHIR-like batch entries for unified tracking.
- * Uses lightweight regex extraction — no heavy XML dependencies.
+ * Uses lightweight regex extraction -- no heavy XML dependencies.
  */
 
 import { randomBytes } from 'crypto';
 import type { FhirMigrationBatch, FhirImportResult } from './types.js';
 
-// ── Re-use the FHIR batch store for unified tracking ───────────────
+// -- Re-use the FHIR batch store for unified tracking ---------------
 
 const ccdaBatches = new Map<string, FhirMigrationBatch>();
 
@@ -24,7 +24,7 @@ export function listCcdaBatches(): FhirMigrationBatch[] {
   );
 }
 
-// ── C-CDA Section OIDs ─────────────────────────────────────────────
+// -- C-CDA Section OIDs ---------------------------------------------
 
 const SECTION_OIDS: Record<string, string> = {
   '2.16.840.1.113883.10.20.22.2.5.1': 'Problems',
@@ -35,7 +35,7 @@ const SECTION_OIDS: Record<string, string> = {
   '2.16.840.1.113883.10.20.22.2.6': 'Allergies',
 };
 
-// ── Lightweight XML extraction ─────────────────────────────────────
+// -- Lightweight XML extraction -------------------------------------
 
 interface CcdaSection {
   oid: string;
@@ -69,7 +69,7 @@ function extractSections(xml: string): CcdaSection[] {
   return sections;
 }
 
-// ── Ingest pipeline ────────────────────────────────────────────────
+// -- Ingest pipeline ------------------------------------------------
 
 export function ingestCcda(xmlText: string, userId: string): FhirImportResult {
   const batchId = `mig-ccda-${randomBytes(8).toString('hex')}`;

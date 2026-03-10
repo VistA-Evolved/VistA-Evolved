@@ -1,22 +1,22 @@
 'use client';
 
 /**
- * PhilHealth eClaims 3.0 — Operational Submission Page
+ * PhilHealth eClaims 3.0 -- Operational Submission Page
  *
- * Phase 96: Encounter selection → build packet → export bundle → submission tracking.
+ * Phase 96: Encounter selection -> build packet -> export bundle -> submission tracking.
  *
  * Tabs:
- *   1. Build & Export — Select claim draft, build packet, generate exports
- *   2. Submissions — Track honest status: Draft→Exported→Submitted(manual)→Accepted/Denied
- *   3. Denials — View and record denial reasons
- *   4. Spec Gates — eClaims 3.0 spec acquisition progress
+ *   1. Build & Export -- Select claim draft, build packet, generate exports
+ *   2. Submissions -- Track honest status: Draft->Exported->Submitted(manual)->Accepted/Denied
+ *   3. Denials -- View and record denial reasons
+ *   4. Spec Gates -- eClaims 3.0 spec acquisition progress
  */
 
 import React, { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 interface ClaimDraft {
   id: string;
@@ -91,7 +91,7 @@ interface ExportSummary {
 
 type Tab = 'build' | 'submissions' | 'denials' | 'spec';
 
-/* ── Status Badge Colors ────────────────────────────────────── */
+/* -- Status Badge Colors -------------------------------------- */
 
 const STATUS_COLORS: Record<string, { bg: string; text: string }> = {
   draft: { bg: '#f3f4f6', text: '#374151' },
@@ -121,7 +121,7 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-/* ── Main Component ─────────────────────────────────────────── */
+/* -- Main Component ------------------------------------------- */
 
 export default function PhilHealthEClaims3Page() {
   const [tab, setTab] = useState<Tab>('build');
@@ -151,7 +151,7 @@ export default function PhilHealthEClaims3Page() {
   // Adapter status
   const [adapterStatus, setAdapterStatus] = useState<Record<string, unknown> | null>(null);
 
-  /* ── Fetchers ───────────────────────────────────────────── */
+  /* -- Fetchers --------------------------------------------- */
 
   const fetchDrafts = useCallback(async () => {
     try {
@@ -206,7 +206,7 @@ export default function PhilHealthEClaims3Page() {
     if (tab === 'spec') fetchSpecGates();
   }, [tab, fetchDrafts, fetchSubmissions, fetchSpecGates]);
 
-  /* ── Actions ────────────────────────────────────────────── */
+  /* -- Actions ---------------------------------------------- */
 
   const handleBuild = async () => {
     if (!selectedDraftId) return;
@@ -300,7 +300,7 @@ export default function PhilHealthEClaims3Page() {
     }
   };
 
-  /* ── Styles ─────────────────────────────────────────────── */
+  /* -- Styles ----------------------------------------------- */
 
   const cardStyle: React.CSSProperties = {
     background: '#fff',
@@ -333,7 +333,7 @@ export default function PhilHealthEClaims3Page() {
 
   const disabledBtn: React.CSSProperties = { ...actionBtn, opacity: 0.5, cursor: 'not-allowed' };
 
-  /* ── Render ─────────────────────────────────────────────── */
+  /* -- Render ----------------------------------------------- */
 
   return (
     <div style={{ padding: 24, fontFamily: 'system-ui, sans-serif', maxWidth: 1100 }}>
@@ -378,7 +378,7 @@ export default function PhilHealthEClaims3Page() {
         ))}
       </div>
 
-      {/* ── Build & Export Tab ──────────────────────────────── */}
+      {/* -- Build & Export Tab -------------------------------- */}
       {tab === 'build' && (
         <div>
           <div style={cardStyle}>
@@ -572,7 +572,7 @@ export default function PhilHealthEClaims3Page() {
         </div>
       )}
 
-      {/* ── Submissions Tab ─────────────────────────────────── */}
+      {/* -- Submissions Tab ----------------------------------- */}
       {tab === 'submissions' && (
         <div>
           <div style={cardStyle}>
@@ -605,7 +605,7 @@ export default function PhilHealthEClaims3Page() {
                         <StatusBadge status={s.status} />
                       </td>
                       <td style={{ padding: '4px 8px', fontFamily: 'monospace', fontSize: 11 }}>
-                        {s.transmittalControlNumber ?? '—'}
+                        {s.transmittalControlNumber ?? '--'}
                       </td>
                       <td style={{ padding: '4px 8px' }}>{s.exportBundleIds.length}</td>
                       <td style={{ padding: '4px 8px', fontSize: 11 }}>
@@ -732,8 +732,8 @@ export default function PhilHealthEClaims3Page() {
                         <span style={{ color: '#6b7280' }}>
                           {t.timestamp.slice(0, 19).replace('T', ' ')}
                         </span>{' '}
-                        <StatusBadge status={t.fromStatus} /> → <StatusBadge status={t.toStatus} />
-                        {t.detail && <span style={{ color: '#6b7280' }}> — {t.detail}</span>}
+                        <StatusBadge status={t.fromStatus} />{' -> '}<StatusBadge status={t.toStatus} />
+                        {t.detail && <span style={{ color: '#6b7280' }}> -- {t.detail}</span>}
                       </div>
                     ))}
                   </div>
@@ -756,7 +756,7 @@ export default function PhilHealthEClaims3Page() {
         </div>
       )}
 
-      {/* ── Denials Tab ─────────────────────────────────────── */}
+      {/* -- Denials Tab --------------------------------------- */}
       {tab === 'denials' && (
         <div>
           <div style={cardStyle}>
@@ -788,7 +788,7 @@ export default function PhilHealthEClaims3Page() {
                 >
                   <div style={{ fontSize: 13 }}>
                     <strong>Submission:</strong>{' '}
-                    <code style={{ fontSize: 11 }}>{s.id.slice(0, 20)}</code> —{' '}
+                    <code style={{ fontSize: 11 }}>{s.id.slice(0, 20)}</code> --{' '}
                     <StatusBadge status={s.status} />
                   </div>
                   {s.denialReasons.length > 0 && (
@@ -876,7 +876,7 @@ export default function PhilHealthEClaims3Page() {
         </div>
       )}
 
-      {/* ── Spec Gates Tab ──────────────────────────────────── */}
+      {/* -- Spec Gates Tab ------------------------------------ */}
       {tab === 'spec' && (
         <div>
           <div style={cardStyle}>

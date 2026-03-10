@@ -1,5 +1,5 @@
 /**
- * buildSdPlan.ts — Phase 63 SD Scheduling Plan Builder
+ * buildSdPlan.ts -- Phase 63 SD Scheduling Plan Builder
  *
  * Scans Vivian snapshot + sandbox rpc_present for SD, SDOE, SDEC, SC RPCs,
  * classifies by scheduling capability, and writes sd-plan.json.
@@ -41,7 +41,7 @@ const CAPABILITY_MAP: [RegExp, string, string][] = [
   [/^SDOE ASSIGNED/, 'encounter_assignment', 'Get assigned providers/diagnoses'],
   [/^SDOE PARSE/, 'encounter_parse', 'Parse encounter data'],
 
-  // SDEC appointment management (Vivian — not in sandbox)
+  // SDEC appointment management (Vivian -- not in sandbox)
   [/^SDEC APPADD$/, 'book_appointment', 'Add appointment (SDEC)'],
   [/^SDEC APPDEL$/, 'cancel_appointment', 'Delete/cancel appointment (SDEC)'],
   [/^SDEC APPSLOTS$/, 'slot_availability', 'Get available appointment slots'],
@@ -191,13 +191,13 @@ function main() {
       description: 'List hospital locations / clinics',
       primaryRpc: 'SD W/L RETRIVE HOSP LOC(#44)',
       available: presentSet.has('SD W/L RETRIVE HOSP LOC(#44)'),
-      prerequisites: ['None — returns all locations'],
+      prerequisites: ['None -- returns all locations'],
     },
     providerLookup: {
       description: 'List providers (Person file #200)',
       primaryRpc: 'SD W/L RETRIVE PERSON(200)',
       available: presentSet.has('SD W/L RETRIVE PERSON(200)'),
-      prerequisites: ['None — returns all providers'],
+      prerequisites: ['None -- returns all providers'],
     },
     patientAppointmentList: {
       description: 'Build patient appointment list (SC module)',
@@ -209,7 +209,7 @@ function main() {
       description: 'Book/create appointment',
       primaryRpc: 'SDEC APPADD',
       available: presentSet.has('SDEC APPADD'),
-      fallbackTarget: 'SDEC APPADD (not in sandbox — request flow only)',
+      fallbackTarget: 'SDEC APPADD (not in sandbox -- request flow only)',
       prerequisites: [
         'Patient DFN',
         'Clinic IEN',
@@ -222,14 +222,14 @@ function main() {
       description: 'Cancel/delete appointment',
       primaryRpc: 'SDEC APPDEL',
       available: presentSet.has('SDEC APPDEL'),
-      fallbackTarget: 'SDEC APPDEL (not in sandbox — cancel request only)',
+      fallbackTarget: 'SDEC APPDEL (not in sandbox -- cancel request only)',
       prerequisites: ['Appointment IEN', 'Cancel reason IEN'],
     },
     getSlots: {
       description: 'Get available time slots',
       primaryRpc: 'SDEC APPSLOTS',
       available: presentSet.has('SDEC APPSLOTS'),
-      fallbackTarget: 'SDEC APPSLOTS (not in sandbox — shows pending)',
+      fallbackTarget: 'SDEC APPSLOTS (not in sandbox -- shows pending)',
       prerequisites: ['Clinic IEN', 'Date range'],
     },
     waitlistCreate: {
@@ -250,7 +250,7 @@ function main() {
     _meta: {
       generatedAt: new Date().toISOString(),
       phase: 63,
-      description: 'VistA SD Scheduling RPC Plan — Vivian + sandbox cross-reference',
+      description: 'VistA SD Scheduling RPC Plan -- Vivian + sandbox cross-reference',
     },
     summary: {
       totalSchedulingRpcsInVivian: totalVivian,
@@ -263,23 +263,23 @@ function main() {
       phase63: {
         description: 'Use available SDOE + SD W/L RPCs for reads. Request-flow for writes.',
         liveCapabilities: [
-          'SDOE LIST ENCOUNTERS FOR PAT — patient appointment/encounter list',
-          'SDOE LIST ENCOUNTERS FOR DATES — date-range appointment list',
-          'SDOE GET GENERAL DATA — encounter detail',
-          'SDOE GET PROVIDERS — provider assignments',
-          'SD W/L RETRIVE HOSP LOC(#44) — clinic lookup',
-          'SD W/L RETRIVE PERSON(200) — provider lookup',
-          'SD W/L RETRIVE FULL DATA — wait list data',
-          'SD W/L CREATE FILE — wait list entry creation',
-          'DVBAB APPOINTMENT LIST — C&P appointment fallback',
-          'SC BLD PAT APT LIST — team-based patient appointment list',
+          'SDOE LIST ENCOUNTERS FOR PAT -- patient appointment/encounter list',
+          'SDOE LIST ENCOUNTERS FOR DATES -- date-range appointment list',
+          'SDOE GET GENERAL DATA -- encounter detail',
+          'SDOE GET PROVIDERS -- provider assignments',
+          'SD W/L RETRIVE HOSP LOC(#44) -- clinic lookup',
+          'SD W/L RETRIVE PERSON(200) -- provider lookup',
+          'SD W/L RETRIVE FULL DATA -- wait list data',
+          'SD W/L CREATE FILE -- wait list entry creation',
+          'DVBAB APPOINTMENT LIST -- C&P appointment fallback',
+          'SC BLD PAT APT LIST -- team-based patient appointment list',
         ],
         pendingCapabilities: [
-          'SDEC APPADD — direct appointment booking (absent from sandbox)',
-          'SDEC APPDEL — appointment cancellation (absent from sandbox)',
-          'SDEC APPSLOTS — slot availability (absent from sandbox)',
-          'SDEC EDITAPPT — appointment editing (absent from sandbox)',
-          'SDEC CHECKIN / CHECKOUT — check-in/out (absent from sandbox)',
+          'SDEC APPADD -- direct appointment booking (absent from sandbox)',
+          'SDEC APPDEL -- appointment cancellation (absent from sandbox)',
+          'SDEC APPSLOTS -- slot availability (absent from sandbox)',
+          'SDEC EDITAPPT -- appointment editing (absent from sandbox)',
+          'SDEC CHECKIN / CHECKOUT -- check-in/out (absent from sandbox)',
         ],
         strategy:
           'Real reads via SDOE/SD W/L. Request-flow for booking (stored as wait list entry). Cancel/reschedule as request with explicit SDEC targets.',

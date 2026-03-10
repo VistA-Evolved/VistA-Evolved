@@ -25,7 +25,7 @@ const OUTPUT_FILE = join(ARTIFACTS_DIR, 'vista-release-manifest.json');
 
 console.log('=== VistA Release Manifest Generator ===\n');
 
-// ── Build SHA ──────────────────────────────────────────────────────
+// -- Build SHA ------------------------------------------------------
 let buildSha = 'unknown';
 try {
   buildSha = execSync('git rev-parse --short HEAD', { encoding: 'utf-8' }).trim();
@@ -33,7 +33,7 @@ try {
   console.warn('WARN: Could not get git SHA');
 }
 
-// ── Upstream SHAs from LOCK.json ───────────────────────────────────
+// -- Upstream SHAs from LOCK.json -----------------------------------
 const upstreamShas = {};
 if (existsSync(LOCK_FILE)) {
   const raw = readFileSync(LOCK_FILE, 'utf-8');
@@ -47,7 +47,7 @@ if (existsSync(LOCK_FILE)) {
   console.warn('WARN: vendor/worldvista/LOCK.json not found');
 }
 
-// ── RPC counts from rpcRegistry.ts ─────────────────────────────────
+// -- RPC counts from rpcRegistry.ts ---------------------------------
 let rpcCount = 0;
 let rpcExceptionCount = 0;
 if (existsSync(RPC_REGISTRY)) {
@@ -72,7 +72,7 @@ if (existsSync(RPC_REGISTRY)) {
   console.warn('WARN: rpcRegistry.ts not found');
 }
 
-// ── Custom routines ────────────────────────────────────────────────
+// -- Custom routines ------------------------------------------------
 let customRoutines = [];
 if (existsSync(ROUTINES_DIR)) {
   customRoutines = readdirSync(ROUTINES_DIR)
@@ -80,14 +80,14 @@ if (existsSync(ROUTINES_DIR)) {
     .sort();
 }
 
-// ── Image definitions (matches build-images.ps1) ───────────────────
+// -- Image definitions (matches build-images.ps1) -------------------
 const images = [
   { name: 'vista-evolved/api', tag: 'dev', digest: null, dockerfile: 'apps/api/Dockerfile' },
   { name: 'vista-evolved/web', tag: 'dev', digest: null, dockerfile: 'apps/web/Dockerfile' },
   { name: 'vista-evolved/portal', tag: 'dev', digest: null, dockerfile: 'apps/portal/Dockerfile' },
 ];
 
-// ── Assemble manifest ──────────────────────────────────────────────
+// -- Assemble manifest ----------------------------------------------
 const manifest = {
   schemaVersion: '1.0.0',
   buildSha,
@@ -106,7 +106,7 @@ const manifest = {
   patchTrainLevel: null,
 };
 
-// ── Write output ───────────────────────────────────────────────────
+// -- Write output ---------------------------------------------------
 if (!existsSync(ARTIFACTS_DIR)) {
   mkdirSync(ARTIFACTS_DIR, { recursive: true });
 }

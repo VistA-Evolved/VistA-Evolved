@@ -1,5 +1,5 @@
 /**
- * Certification Runner — Contract Tests
+ * Certification Runner -- Contract Tests
  *
  * Phase 308 (W12-P10): Tests for the departmental certification runner.
  *

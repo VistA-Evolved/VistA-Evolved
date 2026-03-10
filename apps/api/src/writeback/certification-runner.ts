@@ -1,5 +1,5 @@
 /**
- * Departmental Certification Runner — Phase 308 (W12-P10)
+ * Departmental Certification Runner -- Phase 308 (W12-P10)
  *
  * Comprehensive validation of the entire clinical writeback system.
  * Runs a suite of certification checks across all 6 writeback domains,
@@ -7,7 +7,7 @@
  *
  * Usage:
  *   - API endpoint: GET /writeback/certification (admin only)
- *   - Programmatic: runCertification() → CertificationReport
+ *   - Programmatic: runCertification() -> CertificationReport
  *
  * Certification categories:
  *   1. Infrastructure: command bus, store, gates, audit
@@ -386,7 +386,7 @@ function checkIntentDomainMapping(): CertificationCheck {
 function checkNoPhiInTypes(): CertificationCheck {
   return runCheck('safety.phi-guard', 'PHI Guard in Types', 'safety', () => {
     // Verify that ClinicalCommand uses patientRefHash (not raw DFN)
-    // This is a structural check — the type system enforces it
+    // This is a structural check -- the type system enforces it
     return {
       status: 'pass',
       message:

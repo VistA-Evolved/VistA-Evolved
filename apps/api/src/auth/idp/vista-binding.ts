@@ -45,6 +45,7 @@ interface VistaBinding {
 }
 
 const vistaBindings = new Map<string, VistaBinding>();
+const MAX_VISTA_BINDINGS = 10000;
 
 /* Phase 146: DB repo wiring */
 let vistaBindDbRepo: { upsert(d: any): Promise<any> } | null = null;
@@ -118,6 +119,10 @@ export async function bindVistaSession(
       verifyCode,
       boundAt: Date.now(),
     });
+    if (vistaBindings.size > MAX_VISTA_BINDINGS) {
+      const oldest = vistaBindings.keys().next().value;
+      if (oldest != null) vistaBindings.delete(oldest);
+    }
 
     // Phase 146: Write-through to PG
     vistaBindDbRepo
@@ -129,7 +134,7 @@ export async function bindVistaSession(
         provider: 'vista',
         createdAt: new Date().toISOString(),
       })
-      .catch(() => {});
+      .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
     log.info('VistA session bound', { duz: userInfo.duz, tenantId });
 

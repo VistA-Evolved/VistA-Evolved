@@ -1,12 +1,12 @@
 /**
- * Connector Resilience — Phase 48.
+ * Connector Resilience -- Phase 48.
  *
  * Circuit breaker + timeout + retry wrapper for RCM connector calls.
  * Mirrors the VistA RPC resilience pattern (rpc-resilience.ts) but
  * for payer/clearinghouse connector outbound operations.
  *
  * Features:
- *   - Per-connector circuit breaker (closed → open → half-open)
+ *   - Per-connector circuit breaker (closed -> open -> half-open)
  *   - Configurable timeout per call
  *   - Expo-backoff retry for transient failures
  *   - Prometheus metrics for connector latency/success/failure

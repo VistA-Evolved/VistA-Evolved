@@ -45,7 +45,7 @@ const tableFilter = process.argv.includes('--table')
   ? process.argv[process.argv.indexOf('--table') + 1]
   : null;
 
-// ─── Preflight ───────────────────────────────────────────────
+// --- Preflight -----------------------------------------------
 if (!existsSync(SQLITE_PATH)) {
   console.error(`[FATAL] SQLite DB not found at ${SQLITE_PATH}`);
   console.error('Start the API once in dev mode to create it.');
@@ -59,7 +59,7 @@ if (!pgUrl) {
   process.exit(1);
 }
 
-// ─── Dynamic imports ─────────────────────────────────────────
+// --- Dynamic imports -----------------------------------------
 let Database;
 try {
   Database = (await import('better-sqlite3')).default;
@@ -76,11 +76,11 @@ try {
   process.exit(1);
 }
 
-// ─── Connect ─────────────────────────────────────────────────
+// --- Connect -------------------------------------------------
 const sqlite = new Database(SQLITE_PATH, { readonly: true });
 const pool = new pg.Pool({ connectionString: pgUrl });
 
-// ─── Discover tables ─────────────────────────────────────────
+// --- Discover tables -----------------------------------------
 const allTables = sqlite
   .prepare(
     "SELECT name FROM sqlite_master WHERE type='table' AND name NOT LIKE 'sqlite_%' AND name NOT LIKE '_migrations%' ORDER BY name"
@@ -103,7 +103,7 @@ console.log(`SQLite: ${SQLITE_PATH}`);
 console.log(`PG: ${pgUrl.replace(/:[^@]+@/, ':***@')}`);
 console.log(`Tables: ${tables.length}\n`);
 
-// ─── Migrate each table ─────────────────────────────────────
+// --- Migrate each table -------------------------------------
 let totalRows = 0;
 let totalInserted = 0;
 let totalSkipped = 0;
@@ -166,7 +166,7 @@ for (const table of tables) {
   );
 }
 
-// ─── Summary ─────────────────────────────────────────────────
+// --- Summary -------------------------------------------------
 console.log(`\n=== Summary ===`);
 console.log(`Total rows:     ${totalRows}`);
 if (!isDryRun) {
@@ -176,7 +176,7 @@ if (!isDryRun) {
 }
 console.log(`Result: ${totalErrors === 0 ? 'SUCCESS' : 'COMPLETED WITH ERRORS'}\n`);
 
-// ─── Cleanup ─────────────────────────────────────────────────
+// --- Cleanup -------------------------------------------------
 sqlite.close();
 await pool.end();
 

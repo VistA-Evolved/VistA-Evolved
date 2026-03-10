@@ -1,5 +1,5 @@
 /**
- * PG Scheduling Request Repository — Async durable waitlist request state
+ * PG Scheduling Request Repository -- Async durable waitlist request state
  *
  * Phase 128: Imaging + Scheduling Durability (Map stores -> Postgres)
  *
@@ -14,7 +14,7 @@ import { pgSchedulingWaitlistRequest } from '../pg-schema.js';
 
 export type SchedulingRequestRow = typeof pgSchedulingWaitlistRequest.$inferSelect;
 
-/* ── Create ────────────────────────────────────────────────── */
+/* -- Create -------------------------------------------------- */
 
 export async function insertSchedulingRequest(data: {
   id: string;
@@ -49,7 +49,7 @@ export async function insertSchedulingRequest(data: {
   return row!;
 }
 
-/* ── Lookup ────────────────────────────────────────────────── */
+/* -- Lookup -------------------------------------------------- */
 
 export async function findSchedulingRequestById(
   id: string,
@@ -116,7 +116,7 @@ export async function findPendingByPatientClinicDate(
   return rows[0];
 }
 
-/* ── Update ────────────────────────────────────────────────── */
+/* -- Update -------------------------------------------------- */
 
 export async function updateSchedulingRequest(
   id: string,
@@ -137,7 +137,7 @@ export async function updateSchedulingRequest(
   return findSchedulingRequestById(id, tenantId);
 }
 
-/* ── Stats ─────────────────────────────────────────────────── */
+/* -- Stats --------------------------------------------------- */
 
 export async function countRequests(tenantId?: string): Promise<{ total: number; pending: number }> {
   const db = getPgDb();

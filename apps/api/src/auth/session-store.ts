@@ -18,6 +18,7 @@
  */
 
 import { randomBytes, createHash } from 'crypto';
+import { log } from '../lib/logger.js';
 import { SESSION_CONFIG } from '../config/server-config.js';
 import type { UserRole } from '@vista-evolved/shared-types';
 
@@ -50,7 +51,7 @@ export interface SessionData {
   /** Last activity timestamp */
   lastActivity: number;
   /**
-   * CSRF synchronizer secret — generated at session creation, stored in DB.
+   * CSRF synchronizer secret -- generated at session creation, stored in DB.
    * Delivered to the client via JSON response (login body or GET /auth/csrf-token).
    * Client sends it back as X-CSRF-Token header on mutations.
    * Server validates header === this value (NOT a cookie comparison).
@@ -73,7 +74,7 @@ function hashToken(token: string): string {
 /* ------------------------------------------------------------------ */
 
 /**
- * Session repo interface — both sync and async repos satisfy this.
+ * Session repo interface -- both sync and async repos satisfy this.
  * sync return values are auto-promoted to Promise via await.
  */
 interface SessionRepoLike {
@@ -134,18 +135,18 @@ setInterval(() => {
       sessionCache.delete(hash);
     }
   }
-  // Phase 117: repo may be async (PG) — fire-and-forget with .catch
+  // Phase 117: repo may be async (PG) -- fire-and-forget with .catch
   try {
     const result = _repo?.cleanupExpiredSessions();
     if (result && typeof result === 'object' && 'catch' in result) {
-      (result as Promise<any>).catch(() => {
-        /* non-fatal */
+      (result as Promise<any>).catch((e: unknown) => {
+        log.warn('Session cleanup PG call failed', { error: String(e) });
       });
     }
   } catch {
-    /* non-fatal */
+    /* non-fatal: cleanup timer only */
   }
-}, SESSION_CONFIG.cleanupIntervalMs);
+}, SESSION_CONFIG.cleanupIntervalMs).unref();
 
 /* ------------------------------------------------------------------ */
 /* Public API (signatures unchanged from Phase 13/15)                  */

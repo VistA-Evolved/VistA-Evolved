@@ -1,5 +1,5 @@
 /**
- * PG RCM Claim Repository — Async durable claims + remittances
+ * PG RCM Claim Repository -- Async durable claims + remittances
  *
  * Phase 126: RCM Durability Wave (Map stores -> Postgres)
  *
@@ -14,7 +14,7 @@ import { pgRcmClaim, pgRcmRemittance } from '../pg-schema.js';
 export type RcmClaimRow = typeof pgRcmClaim.$inferSelect;
 export type RcmRemittanceRow = typeof pgRcmRemittance.$inferSelect;
 
-/* ── Claims ────────────────────────────────────────────────── */
+/* -- Claims -------------------------------------------------- */
 
 export async function insertClaim(data: {
   id: string;
@@ -184,7 +184,7 @@ export async function countAllClaims(): Promise<number> {
   return result[0]?.count ?? 0;
 }
 
-/* ── Remittances ───────────────────────────────────────────── */
+/* -- Remittances --------------------------------------------- */
 
 export async function insertRemittance(data: {
   id: string;

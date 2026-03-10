@@ -1,5 +1,5 @@
 /**
- * Imaging Authorization & Break-Glass — Phase 24.
+ * Imaging Authorization & Break-Glass -- Phase 24.
  *
  * Implements imaging-specific RBAC (imaging_view, imaging_diagnostic,
  * imaging_admin) and time-limited break-glass access for emergency
@@ -11,11 +11,11 @@
  * these roles to the corresponding VistA security keys.
  *
  * Target VistA keys for future mapping:
- *   - MAG SYSTEM → imaging_admin
- *   - MAG ANNOTATE → imaging_diagnostic
- *   - MAG EDIT → imaging_diagnostic
- *   - MAG DELETE → imaging_admin
- *   - MAG REASON → imaging_view (any clinician)
+ *   - MAG SYSTEM -> imaging_admin
+ *   - MAG ANNOTATE -> imaging_diagnostic
+ *   - MAG EDIT -> imaging_diagnostic
+ *   - MAG DELETE -> imaging_admin
+ *   - MAG REASON -> imaging_view (any clinician)
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from "fastify";
@@ -170,7 +170,7 @@ function cleanupExpiredBreakGlass(): void {
 }
 
 // Periodic cleanup every 60s
-setInterval(cleanupExpiredBreakGlass, 60_000);
+setInterval(cleanupExpiredBreakGlass, 60_000).unref();
 
 /* ================================================================== */
 /* Routes                                                               */
@@ -222,7 +222,7 @@ export async function imagingAuthzRoutes(server: FastifyInstance): Promise<void>
       });
     }
 
-    // Calculate TTL (bounded: min 1 minute, max 4 hours) — BUG-041 fix
+    // Calculate TTL (bounded: min 1 minute, max 4 hours) -- BUG-041 fix
     if (body.ttlMinutes !== undefined && body.ttlMinutes <= 0) {
       return reply.code(400).send({
         ok: false,

@@ -1,14 +1,14 @@
 /**
- * Regulatory Reporting Endpoints — Phase 444.
+ * Regulatory Reporting Endpoints -- Phase 444.
  *
  * REST routes for the regulatory module:
- * - /regulatory/classify — Runtime classification
- * - /regulatory/frameworks — Framework registry
- * - /regulatory/attestations — Attestation store CRUD
- * - /regulatory/country-config — Tenant→country assignments
- * - /regulatory/export — Export packaging pipeline
- * - /regulatory/validate — Country-specific validation
- * - /regulatory/posture — Compliance posture summary
+ * - /regulatory/classify -- Runtime classification
+ * - /regulatory/frameworks -- Framework registry
+ * - /regulatory/attestations -- Attestation store CRUD
+ * - /regulatory/country-config -- Tenant->country assignments
+ * - /regulatory/export -- Export packaging pipeline
+ * - /regulatory/validate -- Country-specific validation
+ * - /regulatory/posture -- Compliance posture summary
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -71,7 +71,7 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     return null;
   }
 
-  /* ── Frameworks ─────────────────────────────────────── */
+  /* -- Frameworks --------------------------------------- */
 
   server.get('/regulatory/frameworks', async () => {
     return { ok: true, frameworks: getAllFrameworks() };
@@ -94,7 +94,7 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     }
   );
 
-  /* ── Classification ─────────────────────────────────── */
+  /* -- Classification ----------------------------------- */
 
   server.post('/regulatory/classify', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
@@ -115,7 +115,7 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     return { ok: true, classification: result };
   });
 
-  /* ── Attestations ───────────────────────────────────── */
+  /* -- Attestations ------------------------------------- */
 
   server.get('/regulatory/attestations', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
@@ -201,7 +201,7 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     return { ok: true, expiredCount: count };
   });
 
-  /* ── Country Config ─────────────────────────────────── */
+  /* -- Country Config ----------------------------------- */
 
   server.get('/regulatory/country-config', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
@@ -260,7 +260,7 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     return { ok: true, chain: verifyCountryAuditChain() };
   });
 
-  /* ── Export ─────────────────────────────────────────── */
+  /* -- Export ------------------------------------------- */
 
   server.post('/regulatory/export', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
@@ -332,7 +332,7 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     return { ok: true, chain: verifyExportAuditChain() };
   });
 
-  /* ── Validation ─────────────────────────────────────── */
+  /* -- Validation --------------------------------------- */
 
   server.get('/regulatory/validators', async () => {
     const validators = listCountryValidators();
@@ -356,7 +356,7 @@ export default async function regulatoryRoutes(server: FastifyInstance): Promise
     return { ok: true, validation: result };
   });
 
-  /* ── Posture ────────────────────────────────────────── */
+  /* -- Posture ------------------------------------------ */
 
   server.get('/regulatory/posture', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);

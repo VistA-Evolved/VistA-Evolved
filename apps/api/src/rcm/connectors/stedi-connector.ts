@@ -1,5 +1,5 @@
 /**
- * Stedi Connector — API-first EDI Platform (Feature-flagged)
+ * Stedi Connector -- API-first EDI Platform (Feature-flagged)
  *
  * Phase 40 (Superseding): Integration-ready connector for Stedi.
  * Stedi provides a modern API layer over legacy X12 EDI:

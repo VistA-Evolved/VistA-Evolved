@@ -1,5 +1,5 @@
 /**
- * RCM Domain — Acknowledgement & Claim Status Models (Phase 43)
+ * RCM Domain -- Acknowledgement & Claim Status Models (Phase 43)
  *
  * Normalized models for:
  *   - 999 Implementation Acknowledgement
@@ -7,21 +7,21 @@
  *   - 276 Claim Status Inquiry
  *   - 277 Claim Status Response
  *
- * All models are X12-agnostic — raw EDI is parsed into these
+ * All models are X12-agnostic -- raw EDI is parsed into these
  * normalized types before storage. The raw payload is preserved
  * separately for audit/compliance.
  */
 
 import { randomUUID } from 'node:crypto';
 
-/* ── Acknowledgement (999 / 277CA) ─────────────────────────── */
+/* -- Acknowledgement (999 / 277CA) --------------------------- */
 
 export type AckType = '999' | '277CA' | 'TA1';
 
 export type AckDisposition =
-  | 'accepted' // A — accepted
-  | 'accepted_errors' // E — accepted with errors
-  | 'rejected'; // R — rejected
+  | 'accepted' // A -- accepted
+  | 'accepted_errors' // E -- accepted with errors
+  | 'rejected'; // R -- rejected
 
 export interface AckError {
   segmentId?: string; // e.g. "CLM", "SV1"
@@ -93,7 +93,7 @@ export function createAck(params: {
   };
 }
 
-/* ── Claim Status (276/277) ────────────────────────────────── */
+/* -- Claim Status (276/277) ---------------------------------- */
 
 export type StatusCategoryCode =
   | 'A0' // Acknowledgement/Receipt
@@ -192,7 +192,7 @@ export function createStatusUpdate(params: {
   };
 }
 
-/* ── Claim History (aggregated timeline) ───────────────────── */
+/* -- Claim History (aggregated timeline) --------------------- */
 
 export type ClaimHistoryEventType =
   | 'created'

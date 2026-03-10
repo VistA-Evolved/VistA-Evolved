@@ -19,7 +19,7 @@
       "rpcSequence": ["ORQPT DEFAULT LIST SOURCE", "ORWPT LIST ALL"]
     },
     "coverSheet": {
-      "description": "Load cover sheet clinical data for a patient (DFN=3)",
+      "description": "Load cover sheet clinical data for a patient (dfn=46)",
       "rpcSequence": [
         "ORQQAL LIST",
         "GMV V/M ALLDATA",

@@ -209,8 +209,8 @@ export default function SurgeryPanel({ dfn }: Props) {
                         <div style={{ fontWeight: 600 }}>{doc.title}</div>
                         <div style={{ fontSize: 11, color: 'var(--cprs-text-muted)' }}>
                           #{doc.id}
-                          {doc.date ? ` • ${doc.date}` : ''}
-                          {doc.status ? ` • ${doc.status}` : ''}
+                          {doc.date ? ` * ${doc.date}` : ''}
+                          {doc.status ? ` * ${doc.status}` : ''}
                         </div>
                       </div>
                     ))}

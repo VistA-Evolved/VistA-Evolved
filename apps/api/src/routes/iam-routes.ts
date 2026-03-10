@@ -1,5 +1,5 @@
 /**
- * IAM Routes — Phase 35.
+ * IAM Routes -- Phase 35.
  *
  * REST endpoints for:
  *   - Immutable audit query/verify/stats
@@ -32,7 +32,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /iam/audit/events — Query immutable audit events.
+   * GET /iam/audit/events -- Query immutable audit events.
    * Requires admin or support role.
    */
   server.get('/iam/audit/events', async (request, reply) => {
@@ -69,7 +69,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /**
-   * GET /iam/audit/stats — Immutable audit statistics.
+   * GET /iam/audit/stats -- Immutable audit statistics.
    * Requires admin or support role.
    */
   server.get('/iam/audit/stats', async (request, reply) => {
@@ -94,7 +94,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /**
-   * GET /iam/audit/verify — Verify hash chain integrity.
+   * GET /iam/audit/verify -- Verify hash chain integrity.
    * Requires admin role only.
    */
   server.get('/iam/audit/verify', async (request, reply) => {
@@ -125,7 +125,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /iam/policy/capabilities — Get actions available to current user.
+   * GET /iam/policy/capabilities -- Get actions available to current user.
    * Any authenticated user can query their own capabilities.
    */
   server.get('/iam/policy/capabilities', async (request, reply) => {
@@ -141,7 +141,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /**
-   * POST /iam/policy/evaluate — Evaluate a policy decision (admin/support only).
+   * POST /iam/policy/evaluate -- Evaluate a policy decision (admin/support only).
    * Used for testing/debugging policies.
    */
   server.post('/iam/policy/evaluate', async (request, reply) => {
@@ -173,7 +173,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /**
-   * GET /iam/policy/roles — Get all role definitions and their permissions.
+   * GET /iam/policy/roles -- Get all role definitions and their permissions.
    * Any authenticated user can view role definitions.
    */
   server.get('/iam/policy/roles', async (request, reply) => {
@@ -203,8 +203,8 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /iam/oidc/config — Get OIDC configuration (non-sensitive).
-   * Public endpoint (no auth required) — only returns issuer and enabled status.
+   * GET /iam/oidc/config -- Get OIDC configuration (non-sensitive).
+   * Public endpoint (no auth required) -- only returns issuer and enabled status.
    */
   server.get('/iam/oidc/config', async (_request, _reply) => {
     const config = getOidcConfig();
@@ -223,7 +223,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /iam/biometric/providers — List available biometric providers.
+   * GET /iam/biometric/providers -- List available biometric providers.
    * Any authenticated user can see what's available.
    */
   server.get('/iam/biometric/providers', async (request, reply) => {
@@ -241,7 +241,7 @@ export default async function iamRoutes(server: FastifyInstance): Promise<void> 
   /* ---------------------------------------------------------------- */
 
   /**
-   * GET /iam/health — IAM subsystem health.
+   * GET /iam/health -- IAM subsystem health.
    */
   server.get('/iam/health', async (_request, _reply) => {
     const oidcConfig = getOidcConfig();

@@ -1,5 +1,5 @@
 /**
- * Device Alarms Pipeline — Types
+ * Device Alarms Pipeline -- Types
  *
  * Phase 384 (W21-P7): IHE PCD ACM (Alarm Communication Management)
  * alarm types, severity levels, escalation rules, and acknowledgment.

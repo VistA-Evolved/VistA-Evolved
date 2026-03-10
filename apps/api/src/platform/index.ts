@@ -1,10 +1,10 @@
 /**
- * Platform Module — Barrel Export
+ * Platform Module -- Barrel Export
  *
  * Phase 101: Platform Data Architecture Convergence (Postgres)
  */
 
-// Postgres (Phase 101 — primary platform store)
+// Postgres (Phase 101 -- primary platform store)
 export {
   getPgDb,
   getPgPool,

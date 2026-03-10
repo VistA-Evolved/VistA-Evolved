@@ -1,5 +1,5 @@
 /**
- * API Contract Verification — Phase 251
+ * API Contract Verification -- Phase 251
  *
  * Validates API route contracts structurally:
  * 1. Contract registry completeness and consistency
@@ -7,7 +7,7 @@
  * 3. Response shape contracts per domain
  * 4. Auth level coverage
  *
- * Runs offline — no live server needed.
+ * Runs offline -- no live server needed.
  */
 
 import { describe, it, expect } from 'vitest';
@@ -17,8 +17,8 @@ import {
   getPublicContracts,
   getSessionContracts,
   getFhirContracts,
-} from '../../src/api-contracts/index.js';
-import type { RouteContract } from '../../src/api-contracts/index.js';
+} from '../src/api-contracts/index.js';
+import type { RouteContract } from '../src/api-contracts/index.js';
 
 describe('API Contract Verification', () => {
   // --- Registry completeness ---

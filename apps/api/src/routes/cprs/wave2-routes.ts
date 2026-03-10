@@ -661,7 +661,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         );
 
         // UNLOCK (always)
-        await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+        await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed -- patient may remain locked', { dfn: validDfn, error: String(e) }));
         locked = false;
 
         disconnect();
@@ -682,7 +682,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
       } catch (err: any) {
         // ALWAYS unlock on error
         if (locked) {
-          await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+          await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed -- patient may remain locked', { dfn: validDfn, error: String(e) }));
         }
         disconnect();
         log.warn('ORWDX SAVE failed, falling back to draft', { error: err.message });
@@ -819,7 +819,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         await connect();
         const duz = getDuz();
 
-        // LOCK — positive match pattern ("1" = acquired, anything else = fail)
+        // LOCK -- positive match pattern ("1" = acquired, anything else = fail)
         const lockResp = await safeCallRpc('ORWDX LOCK', [validDfn!], { idempotent: false });
         locked = lockResp[0]?.trim() === '1';
         if (!locked) {
@@ -842,7 +842,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         );
 
         // UNLOCK
-        await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+        await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed -- patient may remain locked', { dfn: validDfn, error: String(e) }));
         locked = false;
         disconnect();
 
@@ -902,7 +902,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         return result;
       } catch (err: any) {
         if (locked) {
-          await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+          await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed -- patient may remain locked', { dfn: validDfn, error: String(e) }));
         }
         disconnect();
         log.warn('ORWDXA DC failed, falling back to draft', { error: err.message });
@@ -958,7 +958,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         validateCredentials();
         await connect();
 
-        // ORWDXA FLAG: ORIFN^FLAG REASON (flagReason is required — validated above)
+        // ORWDXA FLAG: ORIFN^FLAG REASON (flagReason is required -- validated above)
         const resp = await safeCallRpc('ORWDXA FLAG', [String(orderId), String(flagReason)], {
           idempotent: false,
         });
@@ -1106,7 +1106,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         );
 
         // UNLOCK (always)
-        await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+        await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed -- patient may remain locked', { dfn: validDfn, error: String(e) }));
         locked = false;
 
         disconnect();
@@ -1137,7 +1137,7 @@ export default async function cprsWave2Routes(server: FastifyInstance): Promise<
         return result;
       } catch (err: any) {
         if (locked) {
-          await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch(() => {});
+          await safeCallRpc('ORWDX UNLOCK', [validDfn!], { idempotent: true }).catch((e) => log.warn('ORWDX UNLOCK failed -- patient may remain locked', { dfn: validDfn, error: String(e) }));
         }
         disconnect();
         log.warn('ORWDXM AUTOACK failed, saving draft blocker', { error: safeErr(err) });

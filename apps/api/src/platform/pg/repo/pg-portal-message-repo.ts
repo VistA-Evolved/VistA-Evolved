@@ -1,5 +1,5 @@
 /**
- * PG Portal Message Repository — Async durable portal messaging
+ * PG Portal Message Repository -- Async durable portal messaging
  *
  * Phase 127: Portal + Telehealth Durability (Map stores -> Postgres)
  *
@@ -14,7 +14,7 @@ import { pgPortalMessage } from '../pg-schema.js';
 
 export type PortalMessageRow = typeof pgPortalMessage.$inferSelect;
 
-/* ── Create ────────────────────────────────────────────────── */
+/* -- Create -------------------------------------------------- */
 
 export async function insertMessage(data: {
   id?: string;
@@ -62,7 +62,7 @@ export async function insertMessage(data: {
   return row!;
 }
 
-/* ── Lookup ────────────────────────────────────────────────── */
+/* -- Lookup -------------------------------------------------- */
 
 export async function findMessageById(
   id: string,
@@ -145,7 +145,7 @@ export async function findStaffQueue(tenantId: string): Promise<PortalMessageRow
     .orderBy(desc(pgPortalMessage.createdAt));
 }
 
-/* ── Update ────────────────────────────────────────────────── */
+/* -- Update -------------------------------------------------- */
 
 export async function updateMessage(
   id: string,
@@ -169,7 +169,7 @@ export async function updateMessage(
   return findMessageById(id, tenantId);
 }
 
-/* ── Delete ────────────────────────────────────────────────── */
+/* -- Delete -------------------------------------------------- */
 
 export async function deleteMessage(id: string, tenantId: string): Promise<boolean> {
   const db = getPgDb();
@@ -179,7 +179,7 @@ export async function deleteMessage(id: string, tenantId: string): Promise<boole
   return (result as any)?.rowCount > 0;
 }
 
-/* ── Count ─────────────────────────────────────────────────── */
+/* -- Count --------------------------------------------------- */
 
 export async function countMessages(): Promise<number> {
   const db = getPgDb();

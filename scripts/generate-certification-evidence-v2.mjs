@@ -12,7 +12,7 @@
  *   4. Clinical invariants (Phase 268)
  *   5. Security gauntlet (Phase 269)
  *   6. PHI audit (Phase 270)
- *   7. GameDay drills — non-destructive only (Phase 271)
+ *   7. GameDay drills -- non-destructive only (Phase 271)
  *   8. Audit chain verification
  *   9. Safety case cross-reference
  *  10. SHA-256 manifest
@@ -264,7 +264,7 @@ if (existsSync(phiScript)) {
 addSection(6, 'PHI Audit', phiResult);
 
 /* ------------------------------------------------------------------ */
-/*  Section 7: GameDay Drills — non-destructive (Phase 271)           */
+/*  Section 7: GameDay Drills -- non-destructive (Phase 271)           */
 /* ------------------------------------------------------------------ */
 
 console.log('\n--- Section 7: GameDay Drills ---');

@@ -1,5 +1,5 @@
 /**
- * Job Runner — Phase 116: Postgres Job Queue (Graphile Worker)
+ * Job Runner -- Phase 116: Postgres Job Queue (Graphile Worker)
  *
  * Thin wrapper around graphile-worker's `run()` that:
  *  1. Uses the existing PG pool from `pg-db.ts`
@@ -9,8 +9,8 @@
  *  5. Provides `startJobRunner()` / `stopJobRunner()` lifecycle
  *
  * The runner can operate in two modes:
- *  A. Embedded — called from `index.ts` alongside the Fastify server
- *  B. Standalone — via `worker-entrypoint.ts` for `pnpm api:worker`
+ *  A. Embedded -- called from `index.ts` alongside the Fastify server
+ *  B. Standalone -- via `worker-entrypoint.ts` for `pnpm api:worker`
  */
 
 import {
@@ -26,7 +26,7 @@ import { JOB_NAMES, type JobName, getJobCronSchedule } from './registry.js';
 import { validateJobPayload, logJobStart, logJobFinish, redactErrorMessage } from './governance.js';
 import { log } from '../lib/logger.js';
 
-/* ── Task Imports ──────────────────────────────────────────── */
+/* -- Task Imports -------------------------------------------- */
 
 import { handleEligibilityCheckPoll } from './tasks/eligibility-check-poll.js';
 import { handleClaimStatusPoll } from './tasks/claim-status-poll.js';
@@ -34,7 +34,7 @@ import { handleEvidenceStalenessScan } from './tasks/evidence-staleness-scan.js'
 import { handleRetentionCleanup } from './tasks/retention-cleanup.js';
 import { handlePgBackup } from './tasks/pg-backup.js';
 
-/* ── Governance Wrapper ────────────────────────────────────── */
+/* -- Governance Wrapper -------------------------------------- */
 
 /**
  * Wrap a raw task handler with governance:
@@ -76,7 +76,7 @@ function governedTask(
   };
 }
 
-/* ── Task List ─────────────────────────────────────────────── */
+/* -- Task List ----------------------------------------------- */
 
 function buildTaskList(): TaskList {
   return {
@@ -97,7 +97,7 @@ function buildTaskList(): TaskList {
   };
 }
 
-/* ── Cron Schedules ────────────────────────────────────────── */
+/* -- Cron Schedules ------------------------------------------ */
 
 function buildCronItems() {
   const items: CronItem[] = [];
@@ -123,7 +123,7 @@ function buildCronItems() {
   return items.length > 0 ? parseCronItems(items) : [];
 }
 
-/* ── Runner Lifecycle ──────────────────────────────────────── */
+/* -- Runner Lifecycle ---------------------------------------- */
 
 let runner: Runner | null = null;
 

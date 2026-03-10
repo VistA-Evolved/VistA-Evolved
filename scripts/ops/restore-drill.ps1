@@ -1,4 +1,4 @@
-# Restore Drill — Phase 62
+# Restore Drill -- Phase 62
 
 # USAGE:
 #   .\scripts\ops\restore-drill.ps1 -ManifestPath <path-to-backup-manifest.json> [-SkipDocker]

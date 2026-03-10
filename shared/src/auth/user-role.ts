@@ -1,5 +1,5 @@
 /**
- * Canonical UserRole type — single source of truth.
+ * Canonical UserRole type -- single source of truth.
  *
  * Consolidates duplicates from:
  *   - apps/api/src/auth/session-store.ts

@@ -1,5 +1,5 @@
 /**
- * AI Gateway — Stub Provider (Phase 33)
+ * AI Gateway -- Stub Provider (Phase 33)
  *
  * Development/testing provider that generates deterministic responses
  * without calling an external model. Always available.

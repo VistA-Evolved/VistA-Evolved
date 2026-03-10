@@ -1,10 +1,10 @@
 #!/usr/bin/env node
 /**
- * GameDay Drill Runner — Phase 271
+ * GameDay Drill Runner -- Phase 271
  *
  * Automated resilience drills:
- *   1. Failover rehearsal (DB down → recovery)
- *   2. Restore validation (backup → restore → verify)
+ *   1. Failover rehearsal (DB down -> recovery)
+ *   2. Restore validation (backup -> restore -> verify)
  *   3. Rollback exercise (deploy rollback simulation)
  *
  * Usage:

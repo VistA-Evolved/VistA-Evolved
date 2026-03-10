@@ -1,5 +1,5 @@
 /**
- * Submission Tracker — Phase 97
+ * Submission Tracker â€" Phase 97
  *
  * In-memory store for HMO submission lifecycle tracking.
  * Follows the Phase 23 imaging worklist / Phase 38 claim store pattern:
@@ -15,8 +15,9 @@
 import { randomBytes } from 'node:crypto';
 import type { HmoSubmissionRecord, HmoSubmissionStatus } from './types.js';
 import { isValidHmoTransition } from './types.js';
+import { log } from '../../lib/logger.js';
 
-/* ── In-Memory Store ────────────────────────────────────────── */
+/* â"€â"€ In-Memory Store â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 const submissions = new Map<string, HmoSubmissionRecord>();
 
@@ -29,13 +30,13 @@ export function initHmoSubmissionStoreRepo(repo: typeof hmoSubDbRepo): void {
   hmoSubDbRepo = repo;
 }
 
-/* ── ID Generation ──────────────────────────────────────────── */
+/* â"€â"€ ID Generation â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 function newSubmissionId(): string {
   return `hsub-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
-/* ── CRUD ───────────────────────────────────────────────────── */
+/* â"€â"€ CRUD â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export function createSubmission(params: {
   tenantId: string;
@@ -72,7 +73,7 @@ export function createSubmission(params: {
       status: record.status,
       submittedAt: record.createdAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('hmo-submission-tracker DB write-through failed', { error: String(e) }));
 
   return record;
 }
@@ -111,7 +112,7 @@ export function transitionSubmission(
   if (!isValidHmoTransition(record.status, toStatus)) {
     return {
       ok: false,
-      error: `Invalid transition: ${record.status} → ${toStatus}`,
+      error: `Invalid transition: ${record.status} â+' ${toStatus}`,
     };
   }
 
@@ -142,7 +143,7 @@ export function transitionSubmission(
       status: updated.status,
       updatedAt: updated.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('hmo-submission-tracker DB write-through failed', { error: String(e) }));
 
   return { ok: true, record: updated };
 }
@@ -184,7 +185,7 @@ export function updateSubmissionFields(
       status: updated.status,
       updatedAt: updated.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('hmo-submission-tracker DB write-through failed', { error: String(e) }));
 
   return { ok: true, record: updated };
 }
@@ -209,7 +210,7 @@ export function addStaffNote(
       status: record.status,
       updatedAt: record.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('hmo-submission-tracker DB write-through failed', { error: String(e) }));
 
   return { ok: true };
 }
@@ -234,12 +235,12 @@ export function addExportFile(
       status: record.status,
       updatedAt: record.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('hmo-submission-tracker DB write-through failed', { error: String(e) }));
 
   return { ok: true };
 }
 
-/* ── Summary Stats ──────────────────────────────────────────── */
+/* â"€â"€ Summary Stats â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export function getSubmissionStats(tenantId: string): Record<HmoSubmissionStatus, number> {
   const stats: Partial<Record<HmoSubmissionStatus, number>> = {};
@@ -268,7 +269,7 @@ export function getSubmissionStats(tenantId: string): Record<HmoSubmissionStatus
   return stats as Record<HmoSubmissionStatus, number>;
 }
 
-/* ── Reset (testing only) ───────────────────────────────────── */
+/* â"€â"€ Reset (testing only) â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export function _resetSubmissionStore(): void {
   submissions.clear();

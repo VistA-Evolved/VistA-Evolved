@@ -1,5 +1,5 @@
 /**
- * Payer Rulepacks — Phase 94: PH HMO Workflow Automation
+ * Payer Rulepacks -- Phase 94: PH HMO Workflow Automation
  *
  * Payer-specific rule packs for LOA, claims submission, and denial
  * handling. Each rulepack contains ONLY evidence-backed data.
@@ -11,11 +11,12 @@
 import { readFileSync, existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { log } from '../../lib/logger.js';
 
 const __dirname_resolved =
   typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 export interface PayerRulepack {
   payerId: string;
@@ -24,7 +25,7 @@ export interface PayerRulepack {
   loa: {
     requiredFields: string[];
     optionalFields: string[];
-    turnaroundSla?: string; // e.g. "24h" — only if evidence
+    turnaroundSla?: string; // e.g. "24h" -- only if evidence
     turnaroundSlaEvidence?: string;
     notes: string;
   };
@@ -65,7 +66,7 @@ export interface PayerRulepacksData {
   rulepacks: PayerRulepack[];
 }
 
-/* ── Store ──────────────────────────────────────────────────── */
+/* -- Store ---------------------------------------------------- */
 
 const rulepackStore = new Map<string, PayerRulepack>();
 
@@ -76,7 +77,7 @@ export function initRulepackStoreRepo(repo: typeof rulepackDbRepo): void {
 }
 let loaded = false;
 
-/* ── Loading ────────────────────────────────────────────────── */
+/* -- Loading -------------------------------------------------- */
 
 export function loadPayerRulepacks(): { ok: boolean; count: number; error?: string } {
   if (loaded) return { ok: true, count: rulepackStore.size };
@@ -108,7 +109,7 @@ export function loadPayerRulepacks(): { ok: boolean; count: number; error?: stri
           active: true,
           createdAt: new Date().toISOString(),
         })
-        .catch(() => {});
+        .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
     }
 
     loaded = true;
@@ -123,7 +124,7 @@ export function loadPayerRulepacks(): { ok: boolean; count: number; error?: stri
   }
 }
 
-/* ── Queries ────────────────────────────────────────────────── */
+/* -- Queries -------------------------------------------------- */
 
 export function getPayerRulepack(payerId: string): PayerRulepack | undefined {
   if (!loaded) loadPayerRulepacks();

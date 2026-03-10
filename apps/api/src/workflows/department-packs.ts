@@ -1,5 +1,5 @@
 /**
- * Phase 160: Department Workflow Packs — Predefined department workflows
+ * Phase 160: Department Workflow Packs -- Predefined department workflows
  * 8 department packs with structured clinical steps.
  */
 import type { WorkflowStepDef } from './types.js';
@@ -31,7 +31,7 @@ function pendingIntegration(targetRpc: string): NonNullable<WorkflowStepDef['vis
 
 export function getAllDepartmentPacks(): PackDef[] {
   return [
-    // ── Emergency Department ──────────────────────────────────────
+    // -- Emergency Department --------------------------------------
     {
       department: 'ed',
       displayName: 'Emergency Department',
@@ -87,7 +87,7 @@ export function getAllDepartmentPacks(): PackDef[] {
       ],
     },
 
-    // ── Laboratory ────────────────────────────────────────────────
+    // -- Laboratory ------------------------------------------------
     {
       department: 'laboratory',
       displayName: 'Laboratory',
@@ -124,7 +124,7 @@ export function getAllDepartmentPacks(): PackDef[] {
       ],
     },
 
-    // ── Radiology ─────────────────────────────────────────────────
+    // -- Radiology -------------------------------------------------
     {
       department: 'radiology',
       displayName: 'Radiology',
@@ -166,7 +166,7 @@ export function getAllDepartmentPacks(): PackDef[] {
       ],
     },
 
-    // ── Surgery Clinic ────────────────────────────────────────────
+    // -- Surgery Clinic --------------------------------------------
     {
       department: 'surgery-clinic',
       displayName: 'Surgery Clinic',
@@ -212,7 +212,7 @@ export function getAllDepartmentPacks(): PackDef[] {
       ],
     },
 
-    // ── OB/GYN ────────────────────────────────────────────────────
+    // -- OB/GYN ----------------------------------------------------
     {
       department: 'ob-gyn',
       displayName: 'OB/GYN',
@@ -258,7 +258,7 @@ export function getAllDepartmentPacks(): PackDef[] {
       ],
     },
 
-    // ── ICU / Critical Care ───────────────────────────────────────
+    // -- ICU / Critical Care ---------------------------------------
     {
       department: 'icu-critical-care',
       displayName: 'ICU / Critical Care',
@@ -309,7 +309,7 @@ export function getAllDepartmentPacks(): PackDef[] {
       ],
     },
 
-    // ── Pharmacy ──────────────────────────────────────────────────
+    // -- Pharmacy --------------------------------------------------
     {
       department: 'pharmacy',
       displayName: 'Pharmacy',
@@ -352,7 +352,7 @@ export function getAllDepartmentPacks(): PackDef[] {
       ],
     },
 
-    // ── Mental Health ─────────────────────────────────────────────
+    // -- Mental Health ---------------------------------------------
     {
       department: 'mental-health',
       displayName: 'Mental Health',

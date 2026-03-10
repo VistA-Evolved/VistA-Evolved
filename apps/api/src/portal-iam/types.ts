@@ -1,5 +1,5 @@
 /**
- * Portal IAM Types — Phase 29
+ * Portal IAM Types -- Phase 29
  *
  * Identity model: PortalUser is NOT a VistA DUZ.
  * Portal identity is mapped to patient(s) by enrollment workflow.

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * TelehealthPanel — Phase 30
+ * TelehealthPanel -- Phase 30
  *
  * Clinician-side telehealth management panel in CPRS chart view.
  * Allows providers to:
@@ -175,7 +175,7 @@ export default function TelehealthPanel({ dfn }: Props) {
     }
   }, [launchableAppointments, selectedAppointmentId]);
 
-  /* ── Handlers ── */
+  /* -- Handlers -- */
 
   const handleCreateRoom = async () => {
     if (!canCreateRoom) {
@@ -233,7 +233,7 @@ export default function TelehealthPanel({ dfn }: Props) {
     setWaitState(null);
   };
 
-  /* ── Styles ── */
+  /* -- Styles -- */
 
   const sectionStyle: React.CSSProperties = { marginBottom: '1rem' };
   const cardStyle: React.CSSProperties = {
@@ -270,7 +270,7 @@ export default function TelehealthPanel({ dfn }: Props) {
 
   const visibleRoomStats = roomStats || health?.roomStats || null;
 
-  /* ── Visit mode ── */
+  /* -- Visit mode -- */
 
   if (joinUrl) {
     return (
@@ -335,7 +335,7 @@ export default function TelehealthPanel({ dfn }: Props) {
     );
   }
 
-  /* ── Management mode ── */
+  /* -- Management mode -- */
 
   return (
     <div style={{ padding: '1rem' }}>

@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-    Phase 24 device test harness — verifies imaging device registry endpoints.
+    Phase 24 device test harness -- verifies imaging device registry endpoints.
 .DESCRIPTION
     Tests CRUD operations on /imaging/devices, C-ECHO test endpoint,
     and verifies AE Title validation rules.
@@ -28,7 +28,7 @@ function Test-Gate {
             $script:fail++
         }
     } catch {
-        Write-Host "  FAIL  $Name — $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "  FAIL  $Name -- $($_.Exception.Message)" -ForegroundColor Red
         $script:fail++
     }
 }

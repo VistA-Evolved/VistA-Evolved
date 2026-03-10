@@ -1,22 +1,22 @@
 /**
- * Feature Flag Provider — Type definitions (Phase 285)
+ * Feature Flag Provider -- Type definitions (Phase 285)
  *
  * Provider-agnostic feature flag evaluation layer. DB provider is the
  * default (reads from tenant_feature_flag table with rollout_percentage
  * support). Unleash provider is optional for self-hosted OSS flag management.
  */
 
-// ─── Flag Context ──────────────────────────────────────────────
+// --- Flag Context ----------------------------------------------
 /** Context passed to every flag evaluation. */
 export interface FlagContext {
   tenantId: string;
-  /** Provider DUZ — used for deterministic hash rollout and user targeting. */
+  /** Provider DUZ -- used for deterministic hash rollout and user targeting. */
   userId?: string;
   /** Additional properties for custom targeting rules (e.g., role, module). */
   properties?: Record<string, string>;
 }
 
-// ─── Flag Evaluation Result ────────────────────────────────────
+// --- Flag Evaluation Result ------------------------------------
 export interface FlagEvaluationResult {
   /** Whether the flag is enabled for this context. */
   enabled: boolean;
@@ -26,7 +26,7 @@ export interface FlagEvaluationResult {
   source: 'db' | 'unleash' | 'fallback';
 }
 
-// ─── User Targeting Rule ───────────────────────────────────────
+// --- User Targeting Rule ---------------------------------------
 export interface UserTargetingRule {
   /** Field to match in FlagContext (userId, or a properties key). */
   field: string;
@@ -36,7 +36,7 @@ export interface UserTargetingRule {
   values: string[];
 }
 
-// ─── Provider Interface ────────────────────────────────────────
+// --- Provider Interface ----------------------------------------
 export interface FeatureFlagProvider {
   readonly providerType: FeatureFlagProviderType;
 
@@ -60,17 +60,17 @@ export interface FeatureFlagProvider {
     context: FlagContext
   ): Promise<Record<string, FlagEvaluationResult>>;
 
-  /** Health check — returns true if provider is operational. */
+  /** Health check -- returns true if provider is operational. */
   healthCheck(): Promise<boolean>;
 
   /** Graceful shutdown (close connections, stop polling). */
   destroy(): Promise<void>;
 }
 
-// ─── Provider Type ─────────────────────────────────────────────
+// --- Provider Type ---------------------------------------------
 export type FeatureFlagProviderType = 'db' | 'unleash';
 
-// ─── Provider Registry (singleton) ─────────────────────────────
+// --- Provider Registry (singleton) -----------------------------
 let _flagProvider: FeatureFlagProvider | null = null;
 
 export function setFeatureFlagProvider(p: FeatureFlagProvider): void {

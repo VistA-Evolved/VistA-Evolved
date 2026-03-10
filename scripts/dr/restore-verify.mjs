@@ -418,7 +418,7 @@ if (rlsTables.length > 0) {
   probe(
     'RLS enabled tables > 0',
     true,
-    `0 tables with RLS (expected in dev mode — PLATFORM_PG_RLS_ENABLED not set)`
+    `0 tables with RLS (expected in dev mode -- PLATFORM_PG_RLS_ENABLED not set)`
   );
 }
 
@@ -434,7 +434,7 @@ try {
     probe(
       'tenant_isolation policies exist',
       true,
-      `0 policies (expected in dev mode — RLS not activated)`
+      `0 policies (expected in dev mode -- RLS not activated)`
     );
   }
 } catch {

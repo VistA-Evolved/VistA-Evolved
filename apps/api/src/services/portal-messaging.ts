@@ -1,5 +1,5 @@
 /**
- * Portal Secure Messaging — Phase 27 -> Phase 32 enhancements
+ * Portal Secure Messaging -- Phase 27 -> Phase 32 enhancements
  *
  * Threaded inbox + compose + drafts + sent.
  * In-memory store for dev mode. Production: VistA MailMan or TIU integration.
@@ -53,7 +53,7 @@ export interface PortalMessage {
   threadId: string;
   fromDfn: string;
   fromName: string;
-  toDfn: string;        // "clinic" for patient→clinic, patient DFN for clinic→patient
+  toDfn: string;        // "clinic" for patient->clinic, patient DFN for clinic->patient
   toName: string;
   subject: string;
   category: MessageCategory;
@@ -81,7 +81,7 @@ const ALLOWED_MIME_TYPES = new Set(["application/pdf", "image/jpeg", "image/png"
 const MAX_MESSAGES_PER_HOUR = 10;
 const BLOCKLIST_WORDS = (process.env.PORTAL_MSG_BLOCKLIST || "").split(",").filter(Boolean);
 
-/** Phase 32: Attachments OFF by default — enable via env var. */
+/** Phase 32: Attachments OFF by default -- enable via env var. */
 export function areAttachmentsEnabled(): boolean {
   return process.env.PORTAL_ATTACHMENTS_ENABLED === "true";
 }
@@ -119,7 +119,7 @@ export async function initMessageRepo(repo: MsgRepo): Promise<void> {
 }
 
 /* ------------------------------------------------------------------ */
-/* In-memory cache (Ephemeral — falls back to DB on miss)               */
+/* In-memory cache (Ephemeral -- falls back to DB on miss)               */
 /* ------------------------------------------------------------------ */
 
 const messageCache = new Map<string, PortalMessage>();
@@ -280,7 +280,7 @@ export async function createDraft(opts: {
   return msg;
 }
 
-/** Internal lookup — no access-control, used for thread resolution. */
+/** Internal lookup -- no access-control, used for thread resolution. */
 async function getMessage_internal(messageId: string, tenantId?: string): Promise<PortalMessage | null> {
   const cached = messageCache.get(messageId);
   if (cached && (!tenantId || cached.tenantId === tenantId)) return cached;
@@ -376,11 +376,9 @@ export async function addAttachment(
   cacheMsg(msg);
 
   if (_repo) {
-    try {
-      _repo.updateMessage(messageId, tenantId, {
-        attachmentsJson: JSON.stringify(msg.attachments.map(a => ({ ...a, data: "(stored)" }))),
-      });
-    } catch (e) { dbWarn("persist", e); }
+    void _repo.updateMessage(messageId, tenantId, {
+      attachmentsJson: JSON.stringify(msg.attachments.map(a => ({ ...a, data: "(stored)" }))),
+    }).catch((e: unknown) => dbWarn("persist", e));
   }
 
   return { ok: true, attachment: { ...att, data: "(stored)" } };
@@ -497,7 +495,7 @@ export async function deleteDraft(messageId: string, tenantId: string, senderDfn
   if (!msg || msg.fromDfn !== senderDfn || msg.status !== "draft") return false;
   messageCache.delete(messageId);
   if (_repo) {
-    try { _repo.deleteMessage(messageId, tenantId); } catch (e) { dbWarn("persist", e); }
+    void _repo.deleteMessage(messageId, tenantId).catch((e: unknown) => dbWarn("persist", e));
   }
   return true;
 }

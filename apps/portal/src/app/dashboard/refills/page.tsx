@@ -1,5 +1,5 @@
 /**
- * Refills Page — Medication refill requests (Phase 32).
+ * Refills Page -- Medication refill requests (Phase 32).
  * Submit new refill requests, view status, cancel pending.
  */
 

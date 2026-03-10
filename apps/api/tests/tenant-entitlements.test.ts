@@ -41,7 +41,7 @@ describe('Phase 135: Module Entitlement Enforcement', () => {
     skus = loadSkus();
   });
 
-  /* ── Config integrity ──────────────────────────────── */
+  /* -- Config integrity -------------------------------- */
 
   describe('Config integrity', () => {
     it('modules.json has at least 10 modules', () => {
@@ -75,7 +75,7 @@ describe('Phase 135: Module Entitlement Enforcement', () => {
     });
   });
 
-  /* ── Route pattern validation ──────────────────────── */
+  /* -- Route pattern validation ------------------------ */
 
   describe('Route pattern matching', () => {
     it('clinical module owns /vista/patient routes', () => {
@@ -109,7 +109,7 @@ describe('Phase 135: Module Entitlement Enforcement', () => {
     });
   });
 
-  /* ── SKU module coverage ───────────────────────────── */
+  /* -- SKU module coverage ----------------------------- */
 
   describe('SKU module coverage', () => {
     it('FULL_SUITE includes all non-kernel modules', () => {
@@ -142,7 +142,7 @@ describe('Phase 135: Module Entitlement Enforcement', () => {
     });
   });
 
-  /* ── Module dependency validation ──────────────────── */
+  /* -- Module dependency validation -------------------- */
 
   describe('Module dependencies', () => {
     it('all declared dependencies exist in the module catalog', () => {
@@ -175,7 +175,7 @@ describe('Phase 135: Module Entitlement Enforcement', () => {
     });
   });
 
-  /* ── Guard response contract ───────────────────────── */
+  /* -- Guard response contract ------------------------- */
 
   describe('Guard response contract', () => {
     it('module-guard.ts returns MODULE_DISABLED code on 403', async () => {
@@ -183,7 +183,7 @@ describe('Phase 135: Module Entitlement Enforcement', () => {
         join(__dirname, '..', 'src', 'middleware', 'module-guard.ts'),
         'utf-8'
       );
-      expect(guardSrc).toContain('code: "MODULE_DISABLED"');
+      expect(guardSrc).toContain("code: 'MODULE_DISABLED'");
       expect(guardSrc).toContain('reply.code(403)');
     });
 
@@ -198,7 +198,7 @@ describe('Phase 135: Module Entitlement Enforcement', () => {
     });
   });
 
-  /* ── CLI scripts exist ─────────────────────────────── */
+  /* -- CLI scripts exist ------------------------------- */
 
   describe('Tenant CLI scripts', () => {
     it('provision.mjs exists', () => {
@@ -229,7 +229,7 @@ describe('Phase 135: Module Entitlement Enforcement', () => {
     });
   });
 
-  /* ── API response includes systemModules ───────────── */
+  /* -- API response includes systemModules ------------- */
 
   describe('API systemModules contract', () => {
     it('admin.ts returns systemModules in my-tenant response', () => {
@@ -239,7 +239,7 @@ describe('Phase 135: Module Entitlement Enforcement', () => {
     });
   });
 
-  /* ── getEnabledModules unseeded-tenant fallback (Phase 135 fix) ── */
+  /* -- getEnabledModules unseeded-tenant fallback (Phase 135 fix) -- */
 
   describe('Unseeded tenant fallback', () => {
     it('module-registry handles unseeded tenants by checking alwaysEnabled', () => {
@@ -262,7 +262,7 @@ describe('Phase 135: Module Entitlement Enforcement', () => {
     });
   });
 
-  /* ── Route → module resolution is comprehensive ────── */
+  /* -- Route -> module resolution is comprehensive ------ */
 
   describe('Route to module resolution', () => {
     it('all modules with routePatterns have valid regex', () => {

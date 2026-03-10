@@ -1,5 +1,5 @@
 /**
- * RCM — Remittance (835) Processor (Phase 43)
+ * RCM -- Remittance (835) Processor (Phase 43)
  *
  * Parses and normalizes 835 remittance advice payloads.
  * Maps CARC/RARC codes to actionable denial workqueue items.
@@ -15,6 +15,7 @@
  */
 
 import type { Remittance, RemitServiceLine, RemitAdjustment } from '../domain/remit.js';
+import { log } from '../../lib/logger.js';
 import {
   storeRemittance,
   matchRemittanceToClaim,
@@ -26,7 +27,7 @@ import { createWorkqueueItem } from '../workqueues/workqueue-store.js';
 import { appendRcmAudit } from '../audit/rcm-audit.js';
 import { lookupCarc, buildActionRecommendation } from '../reference/carc-rarc.js';
 
-/* ── Input Types ───────────────────────────────────────────── */
+/* -- Input Types --------------------------------------------- */
 
 export interface RemitIngestInput {
   /** Payer info */
@@ -85,9 +86,9 @@ export interface RemitIngestResult {
   idempotent: boolean;
 }
 
-/* ── Idempotency Store ─────────────────────────────────────── */
+/* -- Idempotency Store --------------------------------------- */
 
-const remitIdempotencyIndex = new Map<string, string>(); // key → remitId
+const remitIdempotencyIndex = new Map<string, string>(); // key -> remitId
 const processedRemittances = new Map<string, Remittance>();
 
 /* Phase 146: DB repo wiring */
@@ -96,7 +97,7 @@ export function initRemitProcessorRepo(repo: typeof remitProcDbRepo): void {
   remitProcDbRepo = repo;
 }
 
-/* ── Ingestion ─────────────────────────────────────────────── */
+/* -- Ingestion ----------------------------------------------- */
 
 export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIngestResult> {
   const tenantKey = `${input.tenantId}:${input.idempotencyKey}`;
@@ -180,7 +181,7 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
       status: 'processed',
       createdAt: new Date().toISOString(),
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   // Auto-match to claim
   let claimMatched = false;
@@ -188,12 +189,12 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
   let workqueueItemsCreated = 0;
 
   if (input.claimId) {
-    claimMatched = matchRemittanceToClaim(remittance.id, input.claimId, remittance.tenantId);
+    claimMatched = await matchRemittanceToClaim(remittance.id, input.claimId, remittance.tenantId);
   }
 
   const linkedClaimId = input.claimId ?? undefined;
   if (linkedClaimId) {
-    const claim = getClaim(linkedClaimId, remittance.tenantId);
+    const claim = await getClaim(linkedClaimId, remittance.tenantId);
     if (claim) {
       // Determine if this is a full pay, partial pay, or denial
       const isDenied = input.totalPaid === 0 && input.totalCharged > 0;
@@ -282,7 +283,7 @@ export async function ingestRemittance(input: RemitIngestInput): Promise<RemitIn
   };
 }
 
-/* ── Stats ─────────────────────────────────────────────────── */
+/* -- Stats --------------------------------------------------- */
 
 export function getRemitProcessorStats(): {
   processed: number;

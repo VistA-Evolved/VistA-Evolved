@@ -1,5 +1,5 @@
 /**
- * Regulatory module barrel export — Phase 439-443.
+ * Regulatory module barrel export -- Phase 439-443.
  */
 
 export type {

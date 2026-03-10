@@ -6,21 +6,21 @@
  * before promotion to production.
  *
  * Architecture:
- *  1. CertificationSuite — reusable test suite definitions (HL7, X12, FHIR)
- *  2. CertificationRun — execution of suites against a partner endpoint
- *  3. ConformanceScore — weighted scoring across test categories
- *  4. CertificationWorkflow — draft→submitted→in_review→certified|failed
- *  5. CertificateStore — issued certificates with expiry and revocation
+ *  1. CertificationSuite -- reusable test suite definitions (HL7, X12, FHIR)
+ *  2. CertificationRun -- execution of suites against a partner endpoint
+ *  3. ConformanceScore -- weighted scoring across test categories
+ *  4. CertificationWorkflow -- draft->submitted->in_review->certified|failed
+ *  5. CertificateStore -- issued certificates with expiry and revocation
  *
  * Depends on:
- *  - services/integration-control-plane.ts — IntegrationPartner, IntegrationEndpoint
+ *  - services/integration-control-plane.ts -- IntegrationPartner, IntegrationEndpoint
  */
 
 import crypto from "node:crypto";
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    1. CERTIFICATION SUITE DEFINITIONS
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export type SuiteCategory = "hl7v2" | "x12" | "fhir" | "transport" | "security" | "performance";
 
@@ -85,9 +85,9 @@ export function updateSuiteStatus(id: string, status: CertificationSuite["status
   return true;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
-   2. CERTIFICATION RUN — Execute suites against partner endpoints
-   ═══════════════════════════════════════════════════════════════════ */
+/* ===================================================================
+   2. CERTIFICATION RUN -- Execute suites against partner endpoints
+   =================================================================== */
 
 export type TestResult = "pass" | "fail" | "skip" | "error" | "pending";
 
@@ -242,9 +242,9 @@ export function listCertificationRuns(filters?: { partnerId?: string; suiteId?: 
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    3. CERTIFICATE ISSUANCE & LIFECYCLE
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export interface IntegrationCertificate {
   id: string;
@@ -379,9 +379,9 @@ export function verifyCertificate(id: string): { valid: boolean; reason?: string
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    4. BUILT-IN TEST SUITES (seed data)
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function seedBuiltInSuites(): void {
   // Only seed if empty
@@ -443,9 +443,9 @@ export function seedBuiltInSuites(): void {
 }
 
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    5. STATS & DASHBOARD
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function getCertificationStats(): {
   suites: { total: number; active: number };

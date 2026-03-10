@@ -169,7 +169,7 @@ export default function ConsultsPanel({ dfn }: Props) {
               </div>
               <div className={styles.formGroup}>
                 <label>Type</label>
-                <div>{selected.type || '—'}</div>
+                <div>{selected.type || '--'}</div>
               </div>
               <div className={styles.formGroup}>
                 <label>Status</label>

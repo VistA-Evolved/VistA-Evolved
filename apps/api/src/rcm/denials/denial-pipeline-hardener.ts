@@ -1,5 +1,5 @@
 /**
- * 835 → Denial Pipeline Hardener — Phase 520 (Wave 37 B8)
+ * 835 -> Denial Pipeline Hardener -- Phase 520 (Wave 37 B8)
  *
  * Maps parsed 835 remittance data to denial cases with:
  *   1. CARC/RARC code normalization and action recommendations
@@ -12,6 +12,7 @@
  */
 
 import { randomUUID, createHash } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 import {
   lookupCarc,
   lookupRarc,
@@ -25,7 +26,7 @@ import type {
   PaymentCode,
 } from '../reconciliation/types.js';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 export type PostingApprovalStatus = 'pending_review' | 'approved' | 'rejected' | 'auto_approved';
 export type LineClassification =
@@ -110,7 +111,7 @@ export interface DenialPipelineResult {
   errors: string[];
 }
 
-/* ── CARC/RARC Normalization ────────────────────────────────── */
+/* -- CARC/RARC Normalization ---------------------------------- */
 
 export function normalizeCodes(codes: PaymentCode[]): NormalizedCarcRarc[] {
   return codes.map((code) => {
@@ -157,7 +158,7 @@ function extractGroupCode(carcCode: string): string | undefined {
   return undefined;
 }
 
-/* ── Line Classification ────────────────────────────────────── */
+/* -- Line Classification -------------------------------------- */
 
 export function classifyLine(line: NormalizedPaymentLine): LineClassification {
   const billed = line.billedAmount ?? 0;
@@ -230,7 +231,7 @@ export function classifyRemittanceLine(
   };
 }
 
-/* ── SLA Deadline Computation ───────────────────────────────── */
+/* -- SLA Deadline Computation --------------------------------- */
 
 const DEFAULT_SLA_DAYS = 30;
 const PAYER_SLA_OVERRIDES: Record<string, number> = {
@@ -250,17 +251,35 @@ export function computeDeadlineDate(payerId: string, receivedDate: string): stri
   return received.toISOString().split('T')[0];
 }
 
-/* ── Posting Staging Store (in-memory, DB-ready interface) ──── */
+/* -- Posting Staging Store (in-memory, DB-ready interface) ---- */
+
+const MAX_DENIAL_BATCHES = 5_000;
+const MAX_STAGING_ENTRIES = 100_000;
+const MAX_PROCESSED_HASHES = 20_000;
 
 const batchStore = new Map<string, RemittanceBatch>();
 const stagingStore = new Map<string, PostingStagingEntry>();
 const processedHashes = new Set<string>();
 
+function evictOldestMap<V>(store: Map<string, V>, max: number): void {
+  while (store.size > max) {
+    const oldest = store.keys().next().value as string;
+    store.delete(oldest);
+  }
+}
+
+function evictOldestSet(store: Set<string>, max: number): void {
+  while (store.size > max) {
+    const oldest = store.values().next().value as string;
+    store.delete(oldest);
+  }
+}
+
 export function getStores() {
   return { batchStore, stagingStore, processedHashes };
 }
 
-/* ── Pipeline Core ──────────────────────────────────────────── */
+/* -- Pipeline Core -------------------------------------------- */
 
 export function processRemittanceBatch(
   remittance: NormalizedRemittance,
@@ -294,6 +313,7 @@ export function processRemittanceBatch(
     };
   }
   processedHashes.add(sourceHash);
+  evictOldestSet(processedHashes, MAX_PROCESSED_HASHES);
 
   const now = new Date().toISOString();
   const classified = {
@@ -365,6 +385,7 @@ export function processRemittanceBatch(
     stagingEntries.push(stagingEntry);
     stagingStore.set(stagingEntry.id, stagingEntry);
   }
+  evictOldestMap(stagingStore, MAX_STAGING_ENTRIES);
 
   // Create batch record
   const batch: RemittanceBatch = {
@@ -386,6 +407,11 @@ export function processRemittanceBatch(
     status: 'staged',
   };
   batchStore.set(batchId, batch);
+  evictOldestMap(batchStore, MAX_DENIAL_BATCHES);
+
+  if (batchStore.size % 1000 === 0 && batchStore.size > 0) {
+    log.warn('Denial pipeline store growth', { batches: batchStore.size, staging: stagingStore.size, hashes: processedHashes.size });
+  }
 
   return {
     batchId,
@@ -398,7 +424,7 @@ export function processRemittanceBatch(
   };
 }
 
-/* ── Staging Operations ─────────────────────────────────────── */
+/* -- Staging Operations --------------------------------------- */
 
 export function approveStagingEntry(
   entryId: string,
@@ -471,7 +497,7 @@ function updateBatchApprovalStatus(batchId: string): void {
   }
 }
 
-/* ── Query Helpers ──────────────────────────────────────────── */
+/* -- Query Helpers -------------------------------------------- */
 
 export function getBatch(id: string): RemittanceBatch | undefined {
   return batchStore.get(id);
@@ -517,7 +543,7 @@ export function getPipelineStats(): {
   };
 }
 
-/* ── Utility ────────────────────────────────────────────────── */
+/* -- Utility -------------------------------------------------- */
 
 function hashContent(content: string): string {
   return createHash('sha256').update(content).digest('hex').slice(0, 16);

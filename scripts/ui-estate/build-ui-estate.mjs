@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * build-ui-estate.mjs — Phase 531 (Wave 39 P1)
+ * build-ui-estate.mjs -- Phase 531 (Wave 39 P1)
  *
  * Auto-detects VistA-Evolved coverage for each UI estate surface
  * by scanning route files, page.tsx files, capabilities, and parity matrix.
@@ -17,7 +17,7 @@ import { join, resolve, relative, sep } from 'path';
 const ROOT = resolve(import.meta.dirname, '..', '..');
 const verbose = process.argv.includes('--verbose');
 
-// ── Helpers ──────────────────────────────────────────────────────────
+// -- Helpers ----------------------------------------------------------
 function loadJson(relPath) {
   const abs = join(ROOT, relPath);
   if (!existsSync(abs)) return null;
@@ -41,7 +41,7 @@ function walkDir(dir, filter) {
   return results;
 }
 
-// ── 1. Scan API routes ──────────────────────────────────────────────
+// -- 1. Scan API routes ----------------------------------------------
 function scanApiRoutes() {
   const routeDirs = [
     'apps/api/src/routes',
@@ -91,7 +91,7 @@ function scanApiRoutes() {
   return { routeFiles: [...routeFiles], routePrefixes: [...routePrefixes].sort() };
 }
 
-// ── 2. Scan UI pages ────────────────────────────────────────────────
+// -- 2. Scan UI pages ------------------------------------------------
 function scanUiPages() {
   const webPages = [];
   const portalPages = [];
@@ -116,7 +116,7 @@ function scanUiPages() {
   return { webPages: webPages.sort(), portalPages: portalPages.sort() };
 }
 
-// ── 3. Scan E2E tests ───────────────────────────────────────────────
+// -- 3. Scan E2E tests -----------------------------------------------
 function scanE2eTests() {
   const e2eDir = join(ROOT, 'apps/web/e2e');
   const tests = [];
@@ -127,7 +127,7 @@ function scanE2eTests() {
   return tests.sort();
 }
 
-// ── 4. Load capabilities ────────────────────────────────────────────
+// -- 4. Load capabilities --------------------------------------------
 function loadCapabilities() {
   const caps = loadJson('config/capabilities.json');
   if (!caps) return [];
@@ -144,14 +144,14 @@ function loadCapabilities() {
   return [];
 }
 
-// ── 5. Load estate catalogs ─────────────────────────────────────────
+// -- 5. Load estate catalogs -----------------------------------------
 function loadEstateCatalog(file) {
   const data = loadJson(file);
   if (!data || !data.systems) return [];
   return data.systems;
 }
 
-// ── 6. Compute coverage score per surface ───────────────────────────
+// -- 6. Compute coverage score per surface ---------------------------
 function coverageScore(coverage) {
   const fields = [
     'present_ui',
@@ -166,7 +166,7 @@ function coverageScore(coverage) {
   return { met, total, pct: Math.round((met / total) * 100) };
 }
 
-// ── 7. Build gap report ─────────────────────────────────────────────
+// -- 7. Build gap report ---------------------------------------------
 function buildGapReport() {
   console.log('[build-ui-estate] Scanning workspace...');
 
@@ -316,5 +316,5 @@ function buildGapReport() {
   return report;
 }
 
-// ── Main ─────────────────────────────────────────────────────────────
+// -- Main -------------------------------------------------------------
 buildGapReport();

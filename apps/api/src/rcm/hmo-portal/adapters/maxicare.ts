@@ -1,5 +1,5 @@
 /**
- * Maxicare Portal Adapter — Phase 97
+ * Maxicare Portal Adapter -- Phase 97
  *
  * Manual-assisted adapter for Maxicare (MaxiLink provider portal).
  * Portal: https://provider.maxicare.com.ph/

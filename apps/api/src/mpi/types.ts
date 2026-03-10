@@ -1,5 +1,5 @@
 /**
- * Phase 401 (W23-P3): MPI / Client Registry — Types
+ * Phase 401 (W23-P3): MPI / Client Registry -- Types
  */
 
 export type IdentifierSystem =

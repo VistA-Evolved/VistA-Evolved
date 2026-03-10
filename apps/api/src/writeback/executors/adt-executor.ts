@@ -1,13 +1,13 @@
 /**
- * ADT Writeback Executor — Phase 305 (W12-P7)
+ * ADT Writeback Executor -- Phase 305 (W12-P7)
  *
  * Domain executor for ADT (Admit/Discharge/Transfer) writeback commands.
  * Implements the RpcExecutor interface from the command bus.
  *
  * Supported intents:
- *   ADMIT_PATIENT     → integration-pending (DGPM ADMIT not in sandbox RPCs)
- *   TRANSFER_PATIENT  → integration-pending (DGPM TRANSFER not in sandbox RPCs)
- *   DISCHARGE_PATIENT → integration-pending (DGPM DISCHARGE not in sandbox RPCs)
+ *   ADMIT_PATIENT     -> integration-pending (DGPM ADMIT not in sandbox RPCs)
+ *   TRANSFER_PATIENT  -> integration-pending (DGPM TRANSFER not in sandbox RPCs)
+ *   DISCHARGE_PATIENT -> integration-pending (DGPM DISCHARGE not in sandbox RPCs)
  *
  * All 3 intents are integration-pending because the WorldVistA Docker sandbox
  * does not expose DGPM write RPCs. The executor provides:
@@ -24,7 +24,7 @@
 import type { ClinicalCommand, RpcExecutor, DryRunTranscript } from '../types.js';
 
 /* ------------------------------------------------------------------ */
-/* Intent → target RPC/routine mapping (integration-pending)           */
+/* Intent -> target RPC/routine mapping (integration-pending)           */
 /* ------------------------------------------------------------------ */
 
 const INTENT_TARGET_MAP: Record<
@@ -40,19 +40,19 @@ const INTENT_TARGET_MAP: Record<
     targetRpcs: ['DGPM ADMIT (custom)'],
     targetRoutines: ['DGPM', 'DGPMV'],
     vistaFiles: ['File 405 (Patient Movement)', 'File 2 (Patient)', 'File 42 (Ward Location)'],
-    migrationPath: 'Create ZVEADT ADMIT wrapper → register RPC → test with File 405 writes',
+    migrationPath: 'Create ZVEADT ADMIT wrapper -> register RPC -> test with File 405 writes',
   },
   TRANSFER_PATIENT: {
     targetRpcs: ['DGPM TRANSFER (custom)'],
     targetRoutines: ['DGPM', 'DGPMV'],
     vistaFiles: ['File 405 (Patient Movement)', 'File 42 (Ward Location)'],
-    migrationPath: 'Create ZVEADT TRANSFER wrapper → register RPC → test with File 405 writes',
+    migrationPath: 'Create ZVEADT TRANSFER wrapper -> register RPC -> test with File 405 writes',
   },
   DISCHARGE_PATIENT: {
     targetRpcs: ['DGPM DISCHARGE (custom)'],
     targetRoutines: ['DGPM', 'DGPMV'],
     vistaFiles: ['File 405 (Patient Movement)', 'File 2 (Patient)'],
-    migrationPath: 'Create ZVEADT DISCHARGE wrapper → register RPC → test with File 405 writes',
+    migrationPath: 'Create ZVEADT DISCHARGE wrapper -> register RPC -> test with File 405 writes',
   },
 };
 

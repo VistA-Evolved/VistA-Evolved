@@ -5,7 +5,7 @@
  * runbook library, SLA tracking, and support-ticket lifecycle.
  */
 
-// ── Types ──────────────────────────────────────────────────────────────
+// -- Types --------------------------------------------------------------
 
 export type IncidentSeverity = "sev1" | "sev2" | "sev3" | "sev4";
 export type IncidentStatus =
@@ -191,7 +191,7 @@ export interface TenantCommunication {
   createdBy: string;
 }
 
-// ── In-memory stores ──────────────────────────────────────────────────
+// -- In-memory stores --------------------------------------------------
 
 const incidents = new Map<string, Incident>();
 const statusComponents = new Map<string, StatusPageComponent>();
@@ -219,7 +219,7 @@ function genId(prefix: string): string {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-// ── Incidents ─────────────────────────────────────────────────────────
+// -- Incidents ---------------------------------------------------------
 
 export function declareIncident(
   tenantId: string,
@@ -287,7 +287,7 @@ export function getIncident(id: string, tenantId?: string): Incident | null {
   return incident;
 }
 
-// ── Status Page ────────────────────────────────────────────────────────
+// -- Status Page --------------------------------------------------------
 
 export function upsertStatusComponent(
   id: string,
@@ -334,7 +334,7 @@ export function listStatusComponents(): StatusPageComponent[] {
   return [...statusComponents.values()];
 }
 
-// ── Maintenance Windows ────────────────────────────────────────────────
+// -- Maintenance Windows ------------------------------------------------
 
 export function createMaintenanceWindow(
   tenantId: string,
@@ -385,7 +385,7 @@ export function listMaintenanceWindows(tenantId: string): MaintenanceWindow[] {
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-// ── On-Call ────────────────────────────────────────────────────────────
+// -- On-Call ------------------------------------------------------------
 
 export function upsertOnCallSchedule(
   tenantId: string,
@@ -435,7 +435,7 @@ export function listOnCallSchedules(tenantId: string): OnCallSchedule[] {
   return [...onCallSchedules.values()].filter((s) => s.tenantId === tenantId);
 }
 
-// ── Runbooks ──────────────────────────────────────────────────────────
+// -- Runbooks ----------------------------------------------------------
 
 export function createRunbook(
   tenantId: string,
@@ -502,7 +502,7 @@ export function getRunbook(id: string, tenantId?: string): Runbook | null {
   return runbook;
 }
 
-// ── SLA Definitions & Reports ──────────────────────────────────────────
+// -- SLA Definitions & Reports ------------------------------------------
 
 export function createSlaDefinition(
   tenantId: string,
@@ -582,7 +582,7 @@ export function generateSlaReport(tenantId: string): SlaReport[] {
   });
 }
 
-// ── Support Tickets ────────────────────────────────────────────────────
+// -- Support Tickets ----------------------------------------------------
 
 export function createSupportTicket(
   tenantId: string,
@@ -678,7 +678,7 @@ export function getSupportTicket(id: string, tenantId?: string): SupportTicket |
   return ticket;
 }
 
-// ── Tenant Communications ──────────────────────────────────────────────
+// -- Tenant Communications ----------------------------------------------
 
 export function sendTenantCommunication(
   tenantId: string,
@@ -711,7 +711,7 @@ export function listTenantCommunications(tenantId: string): TenantCommunication[
     .sort((a, b) => b.sentAt.localeCompare(a.sentAt));
 }
 
-// ── Audit ──────────────────────────────────────────────────────────────
+// -- Audit --------------------------------------------------------------
 
 export function getSreAuditLog(limit = 200, tenantId?: string): AuditEntry[] {
   const scopedEntries = tenantId
@@ -720,7 +720,7 @@ export function getSreAuditLog(limit = 200, tenantId?: string): AuditEntry[] {
   return scopedEntries.slice(-limit);
 }
 
-// ── Summary / Posture ──────────────────────────────────────────────────
+// -- Summary / Posture --------------------------------------------------
 
 export interface SrePostureSummary {
   openIncidents: number;

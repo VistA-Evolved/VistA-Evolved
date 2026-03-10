@@ -1,5 +1,5 @@
 /**
- * VistA Connectivity Test Suite — Phase P1-1
+ * VistA Connectivity Test Suite -- Phase P1-1
  *
  * Tests the VistaRpcBridge class against a live VistA instance.
  * All tests are skipped if VISTA_HOST is not set in the environment.
@@ -36,14 +36,14 @@ describe.skipIf(!hasVista)('VistA RPC Connectivity', () => {
     }
   });
 
-  // ── Test 1: connect() resolves without error ──────────────────────
+  // -- Test 1: connect() resolves without error ----------------------
   it('should connect to VistA without error', async () => {
     await bridge.connect();
     expect(bridge.isConnected).toBe(true);
     expect(bridge.duz).toBeTruthy();
   });
 
-  // ── Test 2: ORWU USERINFO returns user info ──────────────────────
+  // -- Test 2: ORWU USERINFO returns user info ----------------------
   it('should call ORWU USERINFO and return user info', async () => {
     const result = await bridge.call('ORWU USERINFO', []);
     expect(result).toBeTruthy();
@@ -51,7 +51,7 @@ describe.skipIf(!hasVista)('VistA RPC Connectivity', () => {
     // ORWU USERINFO returns a multi-line response with DUZ on first line
   });
 
-  // ── Test 3: ORWPT LIST ALL returns at least 1 patient ────────────
+  // -- Test 3: ORWPT LIST ALL returns at least 1 patient ------------
   it('should call ORWPT LIST ALL and return patients', async () => {
     // ORWPT LIST ALL params: [startFrom, direction]
     // startFrom="" gets beginning of list, "1" = forward
@@ -60,22 +60,22 @@ describe.skipIf(!hasVista)('VistA RPC Connectivity', () => {
     expect(result.length).toBeGreaterThan(0);
   });
 
-  // ── Test 4: ORWORDG IEN returns valid response ───────────────────
+  // -- Test 4: ORWORDG IEN returns valid response -------------------
   it('should call ORWORDG IEN and return a valid response', async () => {
-    // ORWORDG IEN returns the IEN of a display group — a simple read RPC
+    // ORWORDG IEN returns the IEN of a display group -- a simple read RPC
     // that validates RPC call round-trip without needing a patient context
     const result = await bridge.call('ORWORDG IEN', ['ALL']);
     expect(result).toBeDefined();
-    // May return an IEN number (string) or empty — both are valid VistA responses
+    // May return an IEN number (string) or empty -- both are valid VistA responses
   });
 
-  // ── Test 5: disconnect() resolves without error ──────────────────
+  // -- Test 5: disconnect() resolves without error ------------------
   it('should disconnect without error', async () => {
     await bridge.disconnect();
     expect(bridge.isConnected).toBe(false);
   });
 
-  // ── Test 6: call() after disconnect throws ────────────────────────
+  // -- Test 6: call() after disconnect throws ------------------------
   it('should throw when calling RPC after disconnect', async () => {
     await expect(bridge.call('ORWU USERINFO', [])).rejects.toThrow('Not connected');
   });

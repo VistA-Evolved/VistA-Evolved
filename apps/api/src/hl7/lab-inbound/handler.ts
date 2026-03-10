@@ -1,5 +1,5 @@
 /**
- * Lab Inbound ORU^R01 Handler — Phase 433 (W27 P3)
+ * Lab Inbound ORU^R01 Handler -- Phase 433 (W27 P3)
  *
  * Processes inbound HL7v2 ORU^R01 messages, extracts lab results,
  * validates, and stages them in the lab inbound store.
@@ -20,6 +20,7 @@ import type {
 } from './types.js';
 import { stageLabResult, validateLabResult, updateLabStatus } from './store.js';
 import { log } from '../../lib/logger.js';
+import { safeErr } from '../../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* ORU^R01 Message Parsing                                             */
@@ -139,7 +140,7 @@ export function processOruR01(rawMessage: string): OruProcessResult {
       observationDateTime: getField(obx, 14) ? hl7ToIso(getField(obx, 14)) : undefined,
     }));
 
-    // Build inbound result (without ID — store generates it)
+    // Build inbound result (without ID -- store generates it)
     const inbound: Omit<InboundLabResult, 'id'> = {
       messageControlId,
       sendingApp,
@@ -180,7 +181,7 @@ export function processOruR01(rawMessage: string): OruProcessResult {
     return { ok: true, stagedId: id, status: inbound.status, validation };
   } catch (err: any) {
     log.error('Failed to process ORU^R01', { error: err.message });
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
 }
 

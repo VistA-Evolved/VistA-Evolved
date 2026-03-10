@@ -7,6 +7,7 @@
  */
 
 import { FastifyInstance } from 'fastify';
+import { safeErr } from '../lib/safe-error.js';
 import {
   createScenario,
   getScenario,
@@ -30,9 +31,9 @@ import {
 } from '../services/dr-gameday.js';
 
 export default async function drGamedayRoutes(server: FastifyInstance): Promise<void> {
-  // ── Scenarios ───────────────────────────────────────────────────
+  // -- Scenarios ---------------------------------------------------
 
-  /** POST /platform/dr/scenarios — create a GameDay scenario */
+  /** POST /platform/dr/scenarios -- create a GameDay scenario */
   server.post('/platform/dr/scenarios', async (request, reply) => {
     const b = (request.body as any) || {};
     if (
@@ -49,7 +50,7 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     return reply.code(201).send({ ok: true, scenario });
   });
 
-  /** GET /platform/dr/scenarios/:id — get a scenario */
+  /** GET /platform/dr/scenarios/:id -- get a scenario */
   server.get('/platform/dr/scenarios/:id', async (request, reply) => {
     const { id } = request.params as any;
     const scenario = getScenario(id);
@@ -57,13 +58,13 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     return { ok: true, scenario };
   });
 
-  /** GET /platform/dr/scenarios — list scenarios */
+  /** GET /platform/dr/scenarios -- list scenarios */
   server.get('/platform/dr/scenarios', async () => {
     const scenarios = listScenarios();
     return { ok: true, count: scenarios.length, scenarios };
   });
 
-  // ── Drills ──────────────────────────────────────────────────────
+  // -- Drills ------------------------------------------------------
 
   /** POST /platform/dr/drills -- schedule a DR drill */
   server.post('/platform/dr/drills', async (request, reply) => {
@@ -83,18 +84,18 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     return reply.code(201).send({ ok: true, drill });
   });
 
-  /** POST /platform/dr/drills/:id/start — start a scheduled drill */
+  /** POST /platform/dr/drills/:id/start -- start a scheduled drill */
   server.post('/platform/dr/drills/:id/start', async (request, reply) => {
     const { id } = request.params as any;
     try {
       const drill = startDrill(id, 'admin');
       return { ok: true, drill };
     } catch (e: any) {
-      return reply.code(e.statusCode || 500).send({ ok: false, error: e.message });
+      return reply.code(e.statusCode || 500).send({ ok: false, error: safeErr(e) });
     }
   });
 
-  /** POST /platform/dr/drills/:id/steps/:seq — advance a drill step */
+  /** POST /platform/dr/drills/:id/steps/:seq -- advance a drill step */
   server.post('/platform/dr/drills/:id/steps/:seq', async (request, reply) => {
     const { id, seq } = request.params as any;
     const b = (request.body as any) || {};
@@ -103,11 +104,11 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
       const drill = advanceDrillStep(id, parseInt(seq, 10), b, 'admin');
       return { ok: true, drill };
     } catch (e: any) {
-      return reply.code(e.statusCode || 500).send({ ok: false, error: e.message });
+      return reply.code(e.statusCode || 500).send({ ok: false, error: safeErr(e) });
     }
   });
 
-  /** POST /platform/dr/drills/:id/complete — complete a drill */
+  /** POST /platform/dr/drills/:id/complete -- complete a drill */
   server.post('/platform/dr/drills/:id/complete', async (request, reply) => {
     const { id } = request.params as any;
     const b = (request.body as any) || {};
@@ -115,11 +116,11 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
       const drill = completeDrill(id, b, 'admin');
       return { ok: true, drill };
     } catch (e: any) {
-      return reply.code(e.statusCode || 500).send({ ok: false, error: e.message });
+      return reply.code(e.statusCode || 500).send({ ok: false, error: safeErr(e) });
     }
   });
 
-  /** POST /platform/dr/drills/:id/findings — add a drill finding */
+  /** POST /platform/dr/drills/:id/findings -- add a drill finding */
   server.post('/platform/dr/drills/:id/findings', async (request, reply) => {
     const { id } = request.params as any;
     const b = (request.body as any) || {};
@@ -143,7 +144,7 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     }
   });
 
-  /** POST /platform/dr/drills/:id/cancel — cancel a drill */
+  /** POST /platform/dr/drills/:id/cancel -- cancel a drill */
   server.post('/platform/dr/drills/:id/cancel', async (request, reply) => {
     const { id } = request.params as any;
     try {
@@ -154,7 +155,7 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     }
   });
 
-  /** GET /platform/dr/drills/:id — get a drill */
+  /** GET /platform/dr/drills/:id -- get a drill */
   server.get('/platform/dr/drills/:id', async (request, reply) => {
     const { id } = request.params as any;
     const drill = getDrill(id);
@@ -162,7 +163,7 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     return { ok: true, drill };
   });
 
-  /** GET /platform/dr/drills — list drills */
+  /** GET /platform/dr/drills -- list drills */
   server.get('/platform/dr/drills', async (request) => {
     const q = request.query as any;
     const drills = listDrills(
@@ -176,9 +177,9 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     return { ok: true, count: drills.length, drills };
   });
 
-  // ── Evidence Packs ──────────────────────────────────────────────
+  // -- Evidence Packs ----------------------------------------------
 
-  /** POST /platform/dr/evidence — generate an evidence pack */
+  /** POST /platform/dr/evidence -- generate an evidence pack */
   server.post('/platform/dr/evidence', async (request, reply) => {
     const b = (request.body as any) || {};
     if (!b.drillId) return reply.code(400).send({ ok: false, error: 'drillId required' });
@@ -190,7 +191,7 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     }
   });
 
-  /** GET /platform/dr/evidence/:id — get an evidence pack */
+  /** GET /platform/dr/evidence/:id -- get an evidence pack */
   server.get('/platform/dr/evidence/:id', async (request, reply) => {
     const { id } = request.params as any;
     const pack = getEvidencePack(id);
@@ -198,16 +199,16 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     return { ok: true, evidencePack: pack };
   });
 
-  /** GET /platform/dr/evidence — list evidence packs */
+  /** GET /platform/dr/evidence -- list evidence packs */
   server.get('/platform/dr/evidence', async (request) => {
     const q = request.query as any;
     const packs = listEvidencePacks(q.drillId);
     return { ok: true, count: packs.length, evidencePacks: packs };
   });
 
-  // ── Schedules ───────────────────────────────────────────────────
+  // -- Schedules ---------------------------------------------------
 
-  /** POST /platform/dr/schedules — create a DR drill schedule */
+  /** POST /platform/dr/schedules -- create a DR drill schedule */
   server.post('/platform/dr/schedules', async (request, reply) => {
     const b = (request.body as any) || {};
     if (!b.scenarioId || !b.cronExpression) {
@@ -221,13 +222,13 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     }
   });
 
-  /** GET /platform/dr/schedules — list schedules */
+  /** GET /platform/dr/schedules -- list schedules */
   server.get('/platform/dr/schedules', async () => {
     const schedules = listSchedules();
     return { ok: true, count: schedules.length, schedules };
   });
 
-  /** PUT /platform/dr/schedules/:id/toggle — enable/disable a schedule */
+  /** PUT /platform/dr/schedules/:id/toggle -- enable/disable a schedule */
   server.put('/platform/dr/schedules/:id/toggle', async (request, reply) => {
     const { id } = request.params as any;
     const b = (request.body as any) || {};
@@ -242,14 +243,14 @@ export default async function drGamedayRoutes(server: FastifyInstance): Promise<
     }
   });
 
-  // ── Summary + Audit ─────────────────────────────────────────────
+  // -- Summary + Audit ---------------------------------------------
 
-  /** GET /platform/dr/summary — DR overall summary */
+  /** GET /platform/dr/summary -- DR overall summary */
   server.get('/platform/dr/summary', async () => {
     return { ok: true, summary: getDrSummary() };
   });
 
-  /** GET /platform/dr/audit — DR audit log */
+  /** GET /platform/dr/audit -- DR audit log */
   server.get('/platform/dr/audit', async (request) => {
     const q = request.query as any;
     const limit = q.limit ? parseInt(q.limit, 10) : 100;

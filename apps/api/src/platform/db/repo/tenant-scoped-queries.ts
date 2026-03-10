@@ -1,5 +1,5 @@
 /**
- * Tenant-Scoped Query Helpers — Phase 122
+ * Tenant-Scoped Query Helpers -- Phase 122
  *
  * Utility functions that wrap common DB query patterns with
  * automatic tenant_id injection. These prevent accidental

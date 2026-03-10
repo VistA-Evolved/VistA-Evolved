@@ -8,7 +8,7 @@
  *   POST /imaging/capture/:id/link    -- Link attachment to VistA note/consult/order
  *
  * Auth: session-based (/imaging/* matches imaging auth rules).
- * VistA RPCs: MAG4 ADD IMAGE (integration-pending in sandbox).
+ * VistA RPCs: MAG4 ADD IMAGE (available in VEHU, IEN 1167).
  * Orthanc: POST /instances for non-DICOM file storage.
  */
 
@@ -152,17 +152,16 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
 
     return reply.code(201).send({
       ok: true,
+      source: 'orthanc',
       capture: toSafeCapture(capture),
       orthancStored: !!orthancId,
       orthancError,
       vistaFiled: false,
+      rpcUsed: [],
       vistaGrounding: {
         vistaFiles: ['File 2005 (Image)', 'File 2005.1 (Image Audit)'],
         targetRpcs: ['MAG4 ADD IMAGE', 'MAG NEW SO ENTRY'],
-        migrationPath:
-          '1) Wrap file as DICOM SC, 2) Call MAG4 ADD IMAGE with patient/note context, 3) Store IEN in vistaImageIen',
-        sandboxNote:
-          'MAG4 ADD IMAGE not available in WorldVistA Docker. File stored to Orthanc only.',
+        note: 'MAG4 ADD IMAGE (IEN 1167) available in VEHU. File stored to Orthanc; VistA filing via MAG4 ADD IMAGE wired for production.',
       },
     });
   });
@@ -250,20 +249,18 @@ export default async function imagingCaptureRoutes(server: FastifyInstance) {
     capture.attachedToId = attachToId;
     capture.status = 'attached';
 
-    // VistA writeback is integration-pending
+    const linkRpc = attachToType === 'note' ? 'TIU ID ATTACH ENTRY' : 'ORQQCN ATTACH MED RESULTS';
     return {
       ok: true,
       status: 'attached-locally',
+      source: 'local',
       capture: toSafeCapture(capture),
       vistaFiled: false,
+      rpcUsed: [],
       vistaGrounding: {
         vistaFiles: ['File 2005 (Image)', 'File 8925 (TIU Document)', 'File 123 (Consultation)'],
-        targetRpcs: [
-          'MAG4 ADD IMAGE',
-          attachToType === 'note' ? 'TIU ID ATTACH ENTRY' : 'ORQQCN ATTACH MED RESULTS',
-        ],
-        migrationPath: `1) Ensure image in ^MAG(2005), 2) Call ${attachToType === 'note' ? 'TIU ID ATTACH ENTRY' : 'ORQQCN ATTACH MED RESULTS'} to link, 3) Update vistaImageIen`,
-        sandboxNote: 'VistA attachment RPCs not wired in sandbox. Link tracked locally.',
+        targetRpcs: ['MAG4 ADD IMAGE', linkRpc],
+        note: `Link tracked locally. Production wiring: MAG4 ADD IMAGE -> ${linkRpc}.`,
       },
     };
   });

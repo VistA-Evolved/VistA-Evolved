@@ -15,7 +15,16 @@ import { RPC_REGISTRY, RPC_EXCEPTIONS } from '../rpcRegistry.js';
 /* ------------------------------------------------------------------ */
 /*  In-memory snapshot store                                           */
 /* ------------------------------------------------------------------ */
+const MAX_SNAPSHOTS = 50;
 const snapshotStore = new Map<string, GoldenSnapshot>();
+
+function enforceSnapshotLimit(): void {
+  while (snapshotStore.size > MAX_SNAPSHOTS) {
+    const oldest = snapshotStore.keys().next().value;
+    if (oldest) snapshotStore.delete(oldest);
+    else break;
+  }
+}
 
 /* ------------------------------------------------------------------ */
 /*  Capture a new golden snapshot                                      */
@@ -59,6 +68,7 @@ export function captureGoldenSnapshot(
   };
 
   snapshotStore.set(snapshot.id, snapshot);
+  enforceSnapshotLimit();
   return snapshot;
 }
 

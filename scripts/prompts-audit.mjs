@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * scripts/prompts-audit.mjs — Phase 286 (Wave 11 P1)
+ * scripts/prompts-audit.mjs -- Phase 286 (Wave 11 P1)
  *
  * Scans prompts/ directory for:
  *   - Duplicate numeric prefixes (collision detection)
@@ -23,7 +23,7 @@ const args = process.argv.slice(2);
 const outIdx = args.indexOf('--out');
 const outPath = outIdx >= 0 && args[outIdx + 1] ? args[outIdx + 1] : DEFAULT_OUT;
 
-// ── Scan ───────────────────────────────────────────────────────────
+// -- Scan -----------------------------------------------------------
 
 const META_PREFIXES = ['00']; // meta folders are not collisions
 const PREFIX_RE = /^(\d+)/;
@@ -133,7 +133,7 @@ function scanPrompts() {
   };
 }
 
-// ── Main ───────────────────────────────────────────────────────────
+// -- Main -----------------------------------------------------------
 
 const report = scanPrompts();
 
@@ -143,7 +143,7 @@ writeFileSync(outPath, JSON.stringify(report, null, 2) + '\n');
 
 // Console summary
 console.log(`\nPrompts Audit Report`);
-console.log(`${'─'.repeat(40)}`);
+console.log(`${'-'.repeat(40)}`);
 console.log(`Total folders:    ${report.totalFolders}`);
 console.log(`Phase folders:    ${report.totalPhases}`);
 console.log(`Prefix range:     ${report.prefixRange?.min}..${report.prefixRange?.max}`);
@@ -170,5 +170,5 @@ if (report.gaps.length > 0) {
 }
 
 const exitCode = report.collisionCount > 0 ? 1 : 0;
-console.log(exitCode === 0 ? '✓ No collisions found' : '✗ Collisions detected — fix required');
+console.log(exitCode === 0 ? '✓ No collisions found' : '✗ Collisions detected -- fix required');
 process.exit(exitCode);

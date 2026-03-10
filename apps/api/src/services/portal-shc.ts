@@ -1,12 +1,12 @@
 /**
- * Portal SMART Health Cards (SHC) — Phase 31
+ * Portal SMART Health Cards (SHC) -- Phase 31
  *
  * Feature-flagged SHC adapter for patient-directed immunization sharing.
  * Implements the minimal SHC spec subset needed for immunization records.
  *
  * IMPORTANT:
  * - Feature-flagged via PORTAL_SHC_ENABLED env var (default: disabled)
- * - No external SDK dependencies — manual JWS-like structure
+ * - No external SDK dependencies -- manual JWS-like structure
  * - Read-only, patient-initiated only
  * - Immunizations only (expandable to labs in future)
  *
@@ -38,7 +38,7 @@ export function isShcEnabled(): boolean {
 export type ShcDataset = "immunizations";
 
 export interface ShcCredential {
-  /** The raw SHC JWS (compact serialization) — in production, properly signed */
+  /** The raw SHC JWS (compact serialization) -- in production, properly signed */
   jws: string;
   /** Numeric-encoded SHC string for QR codes (shc:/...) */
   shcUri: string;
@@ -48,7 +48,7 @@ export interface ShcCredential {
     recordCount: number;
     issuedAt: string;
     issuer: string;
-    /** Always true in dev — indicates this is NOT a production credential */
+    /** Always true in dev -- indicates this is NOT a production credential */
     devMode: boolean;
   };
 }
@@ -115,7 +115,7 @@ function buildImmunizationBundle(
 }
 
 /* ------------------------------------------------------------------ */
-/* JWS stub (dev-mode — NOT production-grade signing)                   */
+/* JWS stub (dev-mode -- NOT production-grade signing)                   */
 /* ------------------------------------------------------------------ */
 
 const DEV_ISSUER = "https://vista-evolved.dev/shc";
@@ -123,9 +123,12 @@ const DEV_ISSUER = "https://vista-evolved.dev/shc";
 /**
  * Build a minimal JWS-like structure.
  * In production, this would use ES256 with a published key.
- * In dev mode, we use HMAC-SHA256 with a random key — verifiable only locally.
+ * In dev mode, we use HMAC-SHA256 with a random key -- verifiable only locally.
  */
 function buildDevJws(payload: object): string {
+  if (process.env.PLATFORM_RUNTIME_MODE === 'prod' || process.env.NODE_ENV === 'production') {
+    throw new Error('SHC signing requires ES256 key in production -- dev-mode JWS is not allowed');
+  }
   const header = { alg: "DEV-HS256", zip: "DEF", kid: "dev-key-1" };
   const headerB64 = Buffer.from(JSON.stringify(header)).toString("base64url");
   const payloadB64 = Buffer.from(JSON.stringify(payload)).toString("base64url");

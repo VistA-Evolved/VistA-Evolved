@@ -38,9 +38,15 @@ import type {
 /* ------------------------------------------------------------------ */
 
 function loadConfig(): SamlBrokerConfig {
+  const enabled = process.env.IDP_SAML_BROKER_ENABLED === 'true';
+  const runtimeMode = (process.env.PLATFORM_RUNTIME_MODE || process.env.NODE_ENV || 'dev').toLowerCase();
+  const isProd = runtimeMode === 'rc' || runtimeMode === 'prod' || runtimeMode === 'production';
+  if (enabled && isProd && !process.env.IDP_SAML_BROKER_CLIENT_SECRET) {
+    throw new Error('IDP_SAML_BROKER_CLIENT_SECRET must be set when IDP_SAML_BROKER_ENABLED=true in rc/prod mode');
+  }
   return {
     type: 'saml-broker',
-    enabled: process.env.IDP_SAML_BROKER_ENABLED === 'true',
+    enabled,
     brokerIssuer:
       process.env.IDP_SAML_BROKER_ISSUER || 'http://localhost:8180/realms/vista-evolved',
     brokerClientId: process.env.IDP_SAML_BROKER_CLIENT_ID || 'vista-evolved-saml-broker',

@@ -1,5 +1,5 @@
 /**
- * LOA Workflow — Phase 94: PH HMO Workflow Automation
+ * LOA Workflow -- Phase 94: PH HMO Workflow Automation
  *
  * Orchestrates LOA request lifecycle with payer-specific adapter
  * behaviors. Delegates packet generation to Phase 93 adapters.
@@ -14,7 +14,7 @@ import { createLoaRequestPacket } from '../payers/ph-hmo-adapter.js';
 import { createLoaRequest, getLoaRequestForTenant, transitionLoa } from './loa-store.js';
 import type { LoaRequest, LoaSubmissionMode } from './loa-types.js';
 
-/* ── Ensure registry loaded ─────────────────────────────────── */
+/* -- Ensure registry loaded ----------------------------------- */
 
 let registryInitDone = false;
 function ensureRegistry(): void {
@@ -24,7 +24,7 @@ function ensureRegistry(): void {
   }
 }
 
-/* ── Resolve submission mode from payer ─────────────────────── */
+/* -- Resolve submission mode from payer ----------------------- */
 
 export function resolveSubmissionMode(payerId: string): {
   mode: LoaSubmissionMode;
@@ -75,7 +75,7 @@ export function resolveSubmissionMode(payerId: string): {
   };
 }
 
-/* ── Create LOA with payer-aware defaults ───────────────────── */
+/* -- Create LOA with payer-aware defaults --------------------- */
 
 export function createLoaWithPayerDefaults(params: {
   tenantId: string;
@@ -105,7 +105,7 @@ export function createLoaWithPayerDefaults(params: {
   });
 }
 
-/* ── Generate LOA packet for existing request ───────────────── */
+/* -- Generate LOA packet for existing request ----------------- */
 
 export function generateLoaPacketForRequest(tenantId: string, loaId: string): {
   ok: boolean;
@@ -131,7 +131,7 @@ export function generateLoaPacketForRequest(tenantId: string, loaId: string): {
   return { ok: true, packet, instructions: resolved.instructions };
 }
 
-/* ── Submit LOA (transition + audit) ────────────────────────── */
+/* -- Submit LOA (transition + audit) -------------------------- */
 
 export function submitLoa(
   tenantId: string,
@@ -142,7 +142,7 @@ export function submitLoa(
   return transitionLoa(tenantId, loaId, 'submitted', actor, detail ?? 'LOA submitted to payer');
 }
 
-/* ── Record payer response ──────────────────────────────────── */
+/* -- Record payer response ------------------------------------ */
 
 export function recordLoaApproval(
   tenantId: string,

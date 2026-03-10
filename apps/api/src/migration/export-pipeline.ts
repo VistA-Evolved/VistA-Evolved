@@ -15,6 +15,7 @@ import { randomBytes, createCipheriv, createHash } from 'node:crypto';
 import type { ExportResult } from './types.js';
 import { getJob, updateJob, transitionJob } from './migration-store.js';
 import { log } from '../lib/logger.js';
+import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Config                                                              */
@@ -147,7 +148,7 @@ export interface ExportOptions {
 
 /**
  * Run the export pipeline for a job.
- * Transitions: validated → exporting → exported | export-failed
+ * Transitions: validated -> exporting -> exported | export-failed
  */
 export function runExport(
   jobId: string,
@@ -246,6 +247,6 @@ export function runExport(
   } catch (err: any) {
     transitionJob(jobId, 'export-failed');
     updateJob(jobId, { error: err.message });
-    return { ok: false, error: err.message };
+    return { ok: false, error: safeErr(err) };
   }
 }

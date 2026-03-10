@@ -1,12 +1,12 @@
 /**
- * G26 — Patient Identity Linking gate (Phase 169)
+ * G26 -- Patient Identity Linking gate (Phase 169)
  *
  * Validates:
  *  1. Route file exists with correct endpoints
  *  2. Types exported (LinkRequestStatus, PatientRelationship, IdentityLink)
  *  3. VistA RPC grounding (ORWPT ID INFO for demographic verification)
  *  4. No PHI stored in link records (SSN hashed, DOB cleared after verify)
- *  5. Staff-approval workflow present (pending → verified/rejected)
+ *  5. Staff-approval workflow present (pending -> verified/rejected)
  *  6. Immutable audit calls for all state transitions
  *  7. Store policy entries registered
  *  8. Runbook exists
@@ -52,9 +52,9 @@ export async function run(_ctx) {
   if (routeSrc.includes('ORWPT ID INFO')) details.push('ORWPT ID INFO used');
   else issues.push('ORWPT ID INFO not referenced');
 
-  // 4. PHI safeguards — SSN hashed, verification data cleared
+  // 4. PHI safeguards -- SSN hashed, verification data cleared
   if (routeSrc.includes('hashSensitive')) details.push('SSN hashing present');
-  else issues.push('hashSensitive not found — SSN may be stored raw');
+  else issues.push('hashSensitive not found -- SSN may be stored raw');
 
   if (routeSrc.includes('verificationData = {}'))
     details.push('Verification data cleared after review');

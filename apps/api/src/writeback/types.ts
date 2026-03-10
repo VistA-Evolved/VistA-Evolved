@@ -1,5 +1,5 @@
 /**
- * Clinical Writeback Command Bus — Types
+ * Clinical Writeback Command Bus -- Types
  *
  * Phase 300 (W12-P2): Unified safety wrapper for all VistA writebacks.
  *

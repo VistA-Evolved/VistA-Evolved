@@ -1,5 +1,5 @@
 /**
- * Phase 37 — Reusable auth helper for CPRS web e2e tests.
+ * Phase 37 -- Reusable auth helper for CPRS web e2e tests.
  *
  * Logs in via the API, stores the cookie, then navigates as authenticated user.
  * Uses env vars for credentials (never hard-coded outside this helper + login page placeholders).
@@ -8,11 +8,18 @@
 import { type Page, expect } from '@playwright/test';
 
 const API_BASE = process.env.API_URL ?? 'http://localhost:3001';
+export const TEST_DFN = process.env.VISTA_TEST_DFN ?? '46';
+export const TEST_ACCESS_CODE = process.env.VISTA_ACCESS_CODE ?? 'PRO1234';
+export const TEST_VERIFY_CODE = process.env.VISTA_VERIFY_CODE ?? 'PRO1234!!';
+
+export function chartRoute(slug: string, dfn = TEST_DFN): string {
+  return `/cprs/chart/${dfn}/${slug}`;
+}
 
 /** Authenticate via API and inject session cookie into the page context. */
 export async function loginViaAPI(page: Page): Promise<void> {
-  const accessCode = process.env.VISTA_ACCESS_CODE ?? 'PROV123';
-  const verifyCode = process.env.VISTA_VERIFY_CODE ?? 'PROV123!!';
+  const accessCode = TEST_ACCESS_CODE;
+  const verifyCode = TEST_VERIFY_CODE;
 
   // Call API login endpoint directly
   const res = await page.request.post(`${API_BASE}/auth/login`, {
@@ -23,8 +30,8 @@ export async function loginViaAPI(page: Page): Promise<void> {
 
 /** Login via the UI form (for testing the login flow itself). */
 export async function loginViaUI(page: Page): Promise<void> {
-  const accessCode = process.env.VISTA_ACCESS_CODE ?? 'PROV123';
-  const verifyCode = process.env.VISTA_VERIFY_CODE ?? 'PROV123!!';
+  const accessCode = TEST_ACCESS_CODE;
+  const verifyCode = TEST_VERIFY_CODE;
 
   await page.goto('/cprs/login');
   await page.waitForLoadState('domcontentloaded');
@@ -48,21 +55,17 @@ export async function loginViaUI(page: Page): Promise<void> {
 /** Select a patient by DFN and navigate to chart.
  * @param skipNav If true, expect the page is already on /cprs/patient-search (e.g. after loginViaUI).
  */
-export async function selectPatient(page: Page, dfn = '3', skipNav = false): Promise<void> {
+export async function selectPatient(page: Page, dfn = TEST_DFN, skipNav = false): Promise<void> {
   if (!skipNav) {
     await page.goto('/cprs/patient-search');
   }
   await page.waitForLoadState('domcontentloaded');
 
-  // Wait for the page to be ready — look for "Select a Patient" heading
+  // Wait for the page to be ready -- look for "Select a Patient" heading
   await page.locator('text=Select a Patient').waitFor({ timeout: 15_000 });
 
-  // Search for patient (don't rely on default patient list being populated)
-  const searchInput = page.locator("input[type='text']").first();
-  await searchInput.fill('CARTER');
-  await page.locator("button[type='submit']").click();
-
-  // Wait for table results to appear
+  // Patient search loads the default patient list on mount; pick the configured
+  // VEHU baseline patient by DFN instead of relying on a stale name search.
   const table = page.locator('table');
   await table.waitFor({ timeout: 20_000 });
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * G29 — Certification Evidence Export (Phase 172)
+ * G29 -- Certification Evidence Export (Phase 172)
  *
  * Validates:
  *  1. Evidence generator script exists and is executable

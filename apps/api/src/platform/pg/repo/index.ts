@@ -43,3 +43,6 @@ export * as pgRadiologyRepo from './pg-radiology-repo.js';
 
 // Wave 41: Durable Ops Stores
 export * as w41DurableRepos from './w41-durable-repos.js';
+
+// Phase 577: Inpatient durability
+export * as pgInpatientRepo from './pg-inpatient-repo.js';

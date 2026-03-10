@@ -45,18 +45,18 @@ import {
 import type { DeadClickEntry } from '../qa/types.js';
 import { safeErr } from '../lib/safe-error.js';
 
-/* ── Guard ────────────────────────────────────────────────── */
+/* -- Guard -------------------------------------------------- */
 
 function isQaEnabled(): boolean {
   return process.env.NODE_ENV === 'test' || process.env.QA_ROUTES_ENABLED === 'true';
 }
 
-/* ── Dead-click store (in-memory) ─────────────────────────── */
+/* -- Dead-click store (in-memory) --------------------------- */
 
 const MAX_DEAD_CLICKS = 500;
 const deadClicks: DeadClickEntry[] = [];
 
-/* ── Plugin ───────────────────────────────────────────────── */
+/* -- Plugin ------------------------------------------------- */
 
 export default async function qaRoutes(server: FastifyInstance) {
   // All routes under /qa/ prefix
@@ -70,7 +70,7 @@ export default async function qaRoutes(server: FastifyInstance) {
     }
   });
 
-  /* ═══ RPC TRACE ═══════════════════════════════════════════ */
+  /* === RPC TRACE =========================================== */
 
   server.get('/qa/traces', async (request) => {
     const { limit, rpc, requestId } = request.query as any;
@@ -97,7 +97,7 @@ export default async function qaRoutes(server: FastifyInstance) {
     return { ok: true, message: 'Trace buffer cleared' };
   });
 
-  /* ═══ QA FLOWS ════════════════════════════════════════════ */
+  /* === QA FLOWS ============================================ */
 
   server.post('/qa/flows/reload', async () => {
     const result = loadFlowCatalog();
@@ -137,7 +137,7 @@ export default async function qaRoutes(server: FastifyInstance) {
     }
   });
 
-  /* ═══ FLOW RESULTS ════════════════════════════════════════ */
+  /* === FLOW RESULTS ======================================== */
 
   server.get('/qa/results', async (request) => {
     const { flowId, limit } = request.query as any;
@@ -145,7 +145,7 @@ export default async function qaRoutes(server: FastifyInstance) {
     return { ok: true, results: getRecentFlowResults(Number(limit) || 50) };
   });
 
-  /* ═══ DEAD-CLICK REPORTS ══════════════════════════════════ */
+  /* === DEAD-CLICK REPORTS ================================== */
 
   server.post('/qa/dead-clicks', async (request) => {
     const body = (request.body as any) || {};
@@ -175,7 +175,7 @@ export default async function qaRoutes(server: FastifyInstance) {
     return { ok: true, message: 'Dead-click reports cleared' };
   });
 
-  /* ═══ HEALTH ══════════════════════════════════════════════ */
+  /* === HEALTH ============================================== */
 
   server.get('/qa/status', async () => {
     return {
@@ -189,8 +189,8 @@ export default async function qaRoutes(server: FastifyInstance) {
     };
   });
 
-  /* ═══ __test__ ALIAS (Phase 96B spec requirement) ═════════ */
-  /* Dev/test-only endpoint — mirrors /qa/traces for traceId lookup */
+  /* === __test__ ALIAS (Phase 96B spec requirement) ========= */
+  /* Dev/test-only endpoint -- mirrors /qa/traces for traceId lookup */
 
   server.get('/__test__/rpc-traces', async (request, reply) => {
     if (!isQaEnabled()) {
@@ -206,7 +206,7 @@ export default async function qaRoutes(server: FastifyInstance) {
     return { ok: true, traces: getRecentTraces(Number(limit) || 100) };
   });
 
-  /* ═══ CONTRACT TRACE SESSIONS (Phase 479) ═════════════════ */
+  /* === CONTRACT TRACE SESSIONS (Phase 479) ================= */
 
   /** List workflow templates and active sessions */
   server.get('/qa/contract-traces', async () => {

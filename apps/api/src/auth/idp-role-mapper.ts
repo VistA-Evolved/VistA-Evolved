@@ -1,5 +1,5 @@
 /**
- * IdP Role Mapper — Phase 141: Enterprise IAM Posture.
+ * IdP Role Mapper -- Phase 141: Enterprise IAM Posture.
  *
  * Maps identity provider claims (OIDC groups/roles, SAML attributes) to
  * the platform's UserRole type and validates tenant isolation boundaries.
@@ -50,7 +50,7 @@ export interface MappedIdentity {
 /* ------------------------------------------------------------------ */
 
 /**
- * Default IdP group → UserRole mapping.
+ * Default IdP group -> UserRole mapping.
  * Keycloak realm roles follow the convention: vista-<role>.
  * Order matters: first match wins.
  */
@@ -127,7 +127,7 @@ export function mapOidcClaimsToIdentity(claims: OidcTokenClaims): MappedIdentity
         }
       }
       role = mapping.platformRole;
-      matchedRule = `${mapping.idpGroup} → ${mapping.platformRole}`;
+      matchedRule = `${mapping.idpGroup} -> ${mapping.platformRole}`;
       break;
     }
   }
@@ -258,7 +258,7 @@ export function mapSamlAttributesToIdentity(
         }
       }
       role = mapping.platformRole;
-      matchedRule = `${mapping.idpGroup} → ${mapping.platformRole}`;
+      matchedRule = `${mapping.idpGroup} -> ${mapping.platformRole}`;
       break;
     }
   }

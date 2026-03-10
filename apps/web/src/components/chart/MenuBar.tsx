@@ -26,7 +26,7 @@ export default function MenuBar({ dfn }: MenuBarProps) {
     return () => document.removeEventListener('mousedown', handleClick);
   }, []);
 
-  // Dead-click audit: Phase 568 — all interactions wired or labeled
+  // Dead-click audit: Phase 568 -- all interactions wired or labeled
   const DISABLED_RPC_MAP: Record<string, string> = {
     mnuFileEncounter: 'ORWPCE PCE4NOTE',
     mnuFileReview: 'ORWOR1 SIG',
@@ -69,12 +69,12 @@ export default function MenuBar({ dfn }: MenuBarProps) {
       document.documentElement.style.setProperty('--chart-font-size', `${size}px`);
     } else if (item.onClick === 'about') {
       window.alert(
-        'VistA-Evolved CPRS Web Client\nIntegration pending features shown in menu tooltips.'
+        'VistA-Evolved CPRS Web Client\nSome features require additional configuration. See menu tooltips.'
       );
     } else {
-      // No dead clicks — show pending info for any unhandled action
+      // No dead clicks -- show pending info for any unhandled action
       const rpc = PENDING_RPC_MAP[item.onClick] ?? 'unknown';
-      window.alert(`Integration pending\nAction: ${item.onClick}\nTarget RPC: ${rpc}`);
+      window.alert(`Configuration required\nAction: ${item.onClick}\nTarget RPC: ${rpc}`);
     }
   }
 
@@ -95,7 +95,7 @@ export default function MenuBar({ dfn }: MenuBarProps) {
               disabled={!item.enabled}
               title={
                 !item.enabled
-                  ? `Integration pending${DISABLED_RPC_MAP[item.name] ? ' — target: ' + DISABLED_RPC_MAP[item.name] : ''}`
+                  ? `Not yet configured${DISABLED_RPC_MAP[item.name] ? ' -- target: ' + DISABLED_RPC_MAP[item.name] : ''}`
                   : undefined
               }
               onClick={() => {

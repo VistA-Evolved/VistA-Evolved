@@ -1,5 +1,5 @@
 /**
- * PhilHealth eClaims 3.0 Posture — In-Memory Store
+ * PhilHealth eClaims 3.0 Posture -- In-Memory Store
  *
  * Phase 90: Claim draft + facility setup stores.
  *
@@ -11,6 +11,7 @@
  */
 
 import { randomBytes, createHmac, randomUUID } from 'node:crypto';
+import { log } from '../../lib/logger.js';
 import {
   PH_CLAIM_TRANSITIONS,
   requiresRealIntegration,
@@ -24,17 +25,22 @@ import {
   type PhilHealthProviderAccreditation,
 } from './philhealth-types.js';
 
-/* ── ID generation ──────────────────────────────────────────── */
+/* -- ID generation -------------------------------------------- */
 
 function newId(prefix: string): string {
   return `${prefix}-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
-/* ── Claim Draft Store ──────────────────────────────────────── */
+/* -- Claim Draft Store ---------------------------------------- */
 
 const claimDrafts = new Map<string, PhilHealthClaimDraft>();
 
 /* Phase 146: DB repo wiring */
+
+function dbWarn(e: unknown): void {
+  log.warn('PhilHealth store PG write-through failed', { error: String(e) });
+}
+
 type DurabilityRepo = {
   upsert(d: any): Promise<any>;
   update?(id: string, u: any): Promise<any>;
@@ -123,7 +129,7 @@ export function createPhilHealthClaimDraft(data: {
       status: draft.status,
       createdAt: draft.createdAt,
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return draft;
 }
@@ -200,7 +206,7 @@ export function patchPhilHealthClaimDraft(
       status: draft.status,
       updatedAt: draft.updatedAt,
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return { ok: true, draft };
 }
@@ -255,12 +261,12 @@ export function transitionPhilHealthClaimStatus(
       status: draft.status,
       updatedAt: draft.updatedAt,
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return { ok: true, draft };
 }
 
-/* ── Export Pipeline ─────────────────────────────────────────── */
+/* -- Export Pipeline ------------------------------------------- */
 
 export function generateExportPackage(
   tenantId: string,
@@ -349,12 +355,12 @@ export function generateExportPackage(
       status: draft.status,
       updatedAt: draft.updatedAt,
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return { ok: true, manifest, draft };
 }
 
-/* ── SOA Generation from Draft ──────────────────────────────── */
+/* -- SOA Generation from Draft -------------------------------- */
 
 function generateSoaFromDraft(
   draft: PhilHealthClaimDraft,
@@ -408,7 +414,7 @@ function generateSoaFromDraft(
   return soa;
 }
 
-/* ── Test Upload Simulator ──────────────────────────────────── */
+/* -- Test Upload Simulator ------------------------------------ */
 
 export function simulateTestUpload(
   tenantId: string,
@@ -474,13 +480,13 @@ export function simulateTestUpload(
         status: draft.status,
         updatedAt: draft.updatedAt,
       })
-      .catch(() => {});
+      .catch(dbWarn);
   }
 
   return { ok: true, result, draft };
 }
 
-/* ── Facility Setup Store ───────────────────────────────────── */
+/* -- Facility Setup Store ------------------------------------- */
 
 const facilitySetups = new Map<string, PhilHealthFacilitySetup>();
 
@@ -520,7 +526,7 @@ export function getOrCreateFacilitySetup(
         facilityCode: setup.facilityCode,
         createdAt: setup.createdAt,
       })
-      .catch(() => {});
+      .catch(dbWarn);
   }
   return setup;
 }
@@ -558,7 +564,7 @@ export function updateFacilitySetup(
       facilityCode: setup.facilityCode,
       updatedAt: setup.updatedAt,
     })
-    .catch(() => {});
+    .catch(dbWarn);
 
   return setup;
 }
@@ -605,7 +611,7 @@ export function updateReadinessItem(
   return setup;
 }
 
-/* ── Stats ──────────────────────────────────────────────────── */
+/* -- Stats ---------------------------------------------------- */
 
 export function getPhilHealthStats(tenantId?: string): {
   claimDrafts: { total: number; byStatus: Record<string, number> };

@@ -1,5 +1,5 @@
 /**
- * UTF-8 Routes — Phase 498 (W34-P8)
+ * UTF-8 Routes -- Phase 498 (W34-P8)
  *
  * Endpoints to test and report UTF-8 round-trip fidelity through VistA.
  * Admin-only. No PHI in test strings.
@@ -14,7 +14,7 @@ import {
 } from '../vista/utf8-roundtrip.js';
 
 export async function utf8Routes(app: FastifyInstance): Promise<void> {
-  // GET /vista/utf8/status — UTF-8 support status summary
+  // GET /vista/utf8/status -- UTF-8 support status summary
   app.get('/vista/utf8/status', async () => {
     const corpus = buildTestCorpus();
     const scripts = [...new Set(corpus.map((c) => c.script))];
@@ -27,13 +27,11 @@ export async function utf8Routes(app: FastifyInstance): Promise<void> {
         scripts,
         locales,
       },
-      note: 'Use POST /vista/utf8/test to run actual round-trip tests',
-      vistaStatus: 'integration-pending',
-      vistaNote: 'VistA round-trip requires active broker connection. Use POST endpoint to test.',
+      note: 'Use POST /vista/utf8/test to run actual round-trip tests against VistA broker.',
     };
   });
 
-  // POST /vista/utf8/test — run UTF-8 round-trip test
+  // POST /vista/utf8/test -- run UTF-8 round-trip test
   // In the current scaffold, this does a local encode/decode test.
   // When VistA is wired, this will send strings through RPC and compare.
   app.post('/vista/utf8/test', async (request) => {
@@ -72,7 +70,7 @@ export async function utf8Routes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // GET /vista/utf8/corpus — return the test corpus without running tests
+  // GET /vista/utf8/corpus -- return the test corpus without running tests
   app.get('/vista/utf8/corpus', async () => {
     const corpus = buildTestCorpus();
     return { ok: true, corpus, total: corpus.length };

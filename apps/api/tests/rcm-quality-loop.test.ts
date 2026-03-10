@@ -1,5 +1,5 @@
 /**
- * Phase 43 — RCM Claim Quality Loop Unit Tests
+ * Phase 43 -- RCM Claim Quality Loop Unit Tests
  *
  * Tests:
  *   - Ack ingestion + idempotency
@@ -82,7 +82,7 @@ import {
 // Audit
 import { resetRcmAudit } from '../src/rcm/audit/rcm-audit.js';
 
-/* ─── Helpers ────────────────────────────────────────────────── */
+/* --- Helpers -------------------------------------------------- */
 
 function makeClaim(overrides?: Partial<ReturnType<typeof createDraftClaim>>) {
   const claim = createDraftClaim({
@@ -109,7 +109,7 @@ function makeSubmittedClaim() {
   return submitted;
 }
 
-/* ─── In-memory mock WorkqueueRepo for test isolation ────────── */
+/* --- In-memory mock WorkqueueRepo for test isolation ---------- */
 
 function createMockWorkqueueRepo(): WorkqueueRepoLike {
   const items = new Map<string, any>();
@@ -197,9 +197,9 @@ function createMockWorkqueueRepo(): WorkqueueRepoLike {
   };
 }
 
-/* ─── Test Suites ────────────────────────────────────────────── */
+/* --- Test Suites ---------------------------------------------- */
 
-describe('Phase 43 — RCM Claim Quality Loop', () => {
+describe('Phase 43 -- RCM Claim Quality Loop', () => {
   beforeEach(async () => {
     resetClaimStore();
     resetAckStore();

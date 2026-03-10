@@ -1,5 +1,5 @@
 /**
- * SMART on FHIR Configuration — Phase 179 (Q195).
+ * SMART on FHIR Configuration -- Phase 179 (Q195).
  *
  * Implements the /.well-known/smart-configuration endpoint per the
  * SMART App Launch Framework (HL7 FHIR IG).

@@ -1,42 +1,42 @@
 /**
- * Portal Core Routes — Phase 27 → Phase 32 enhancements
+ * Portal Core Routes -- Phase 27 -> Phase 32 enhancements
  *
  * Registers all Phase 27+ portal routes:
- *   - POST /portal/export/section/:section — PDF export per section
- *   - POST /portal/export/full — Full record bundle PDF
- *   - GET  /portal/export/json — Structured JSON export (Phase 31)
- *   - GET  /portal/export/shc/:dataset — SMART Health Card (Phase 31)
- *   - GET  /portal/shc/capabilities — SHC feature status (Phase 31)
- *   - GET/POST /portal/messages — Inbox + compose
- *   - GET /portal/messages/drafts — Draft list
- *   - GET /portal/messages/sent — Sent list
- *   - GET/PUT/DELETE /portal/messages/:id — Single message ops
- *   - POST /portal/messages/:id/send — Send a draft
- *   - POST /portal/messages/:id/attachments — Add attachment
- *   - GET /portal/appointments — List upcoming+past
- *   - POST /portal/appointments/request — Request new appointment
- *   - POST /portal/appointments/:id/cancel — Request cancellation
- *   - POST /portal/appointments/:id/reschedule — Request reschedule
- *   - GET /portal/shares — List patient's shares
- *   - POST /portal/shares — Create share link
- *   - POST /portal/shares/:id/revoke — Revoke share
- *   - GET /portal/share/preview/:token — Public: share preview
- *   - POST /portal/share/verify/:token — Public: verify + access
- *   - GET/PUT /portal/settings — Read / update settings
- *   - POST /portal/proxy/grant — Grant proxy access
- *   - POST /portal/proxy/revoke — Revoke proxy access
- *   - GET /portal/proxy/list — List proxies for patient
+ *   - POST /portal/export/section/:section -- PDF export per section
+ *   - POST /portal/export/full -- Full record bundle PDF
+ *   - GET  /portal/export/json -- Structured JSON export (Phase 31)
+ *   - GET  /portal/export/shc/:dataset -- SMART Health Card (Phase 31)
+ *   - GET  /portal/shc/capabilities -- SHC feature status (Phase 31)
+ *   - GET/POST /portal/messages -- Inbox + compose
+ *   - GET /portal/messages/drafts -- Draft list
+ *   - GET /portal/messages/sent -- Sent list
+ *   - GET/PUT/DELETE /portal/messages/:id -- Single message ops
+ *   - POST /portal/messages/:id/send -- Send a draft
+ *   - POST /portal/messages/:id/attachments -- Add attachment
+ *   - GET /portal/appointments -- List upcoming+past
+ *   - POST /portal/appointments/request -- Request new appointment
+ *   - POST /portal/appointments/:id/cancel -- Request cancellation
+ *   - POST /portal/appointments/:id/reschedule -- Request reschedule
+ *   - GET /portal/shares -- List patient's shares
+ *   - POST /portal/shares -- Create share link
+ *   - POST /portal/shares/:id/revoke -- Revoke share
+ *   - GET /portal/share/preview/:token -- Public: share preview
+ *   - POST /portal/share/verify/:token -- Public: verify + access
+ *   - GET/PUT /portal/settings -- Read / update settings
+ *   - POST /portal/proxy/grant -- Grant proxy access
+ *   - POST /portal/proxy/revoke -- Revoke proxy access
+ *   - GET /portal/proxy/list -- List proxies for patient
  *   Phase 32:
- *   - GET /portal/refills — Patient refill requests
- *   - POST /portal/refills — Submit refill request
- *   - POST /portal/refills/:id/cancel — Cancel refill request
- *   - GET /portal/tasks — Patient tasks/notifications
- *   - GET /portal/tasks/counts — Badge counts by category
- *   - POST /portal/tasks/:id/dismiss — Dismiss a task
- *   - POST /portal/tasks/:id/complete — Complete a task
- *   - GET /portal/staff/refills — Staff refill queue
- *   - POST /portal/staff/refills/:id/review — Approve/deny refill
- *   - GET /portal/staff/tasks — Staff task queue
+ *   - GET /portal/refills -- Patient refill requests
+ *   - POST /portal/refills -- Submit refill request
+ *   - POST /portal/refills/:id/cancel -- Cancel refill request
+ *   - GET /portal/tasks -- Patient tasks/notifications
+ *   - GET /portal/tasks/counts -- Badge counts by category
+ *   - POST /portal/tasks/:id/dismiss -- Dismiss a task
+ *   - POST /portal/tasks/:id/complete -- Complete a task
+ *   - GET /portal/staff/refills -- Staff refill queue
+ *   - POST /portal/staff/refills/:id/review -- Approve/deny refill
+ *   - GET /portal/staff/tasks -- Staff task queue
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -108,7 +108,7 @@ import {
 import { getStaffMessageQueue, clinicianReply } from '../services/portal-messaging.js';
 
 /* ------------------------------------------------------------------ */
-/* Session import — reuse from portal-auth                              */
+/* Session import -- reuse from portal-auth                              */
 /* ------------------------------------------------------------------ */
 
 // We import the requirePortalSession helper indirectly by reading the cookie
@@ -151,12 +151,11 @@ function requirePortalSession(request: FastifyRequest, reply: FastifyReply): Por
 /* ------------------------------------------------------------------ */
 
 import { validateCredentials } from '../vista/config.js';
-import { connect, disconnect, callRpc } from '../vista/rpcBrokerClient.js';
+import { safeCallRpc } from '../lib/rpc-resilience.js';
 
 interface PortalExportFetchResult {
   data: unknown[];
   rpcUsed: string[];
-  pendingTargets: string[];
 }
 
 function parsePortalImmunizations(lines: string[]): unknown[] {
@@ -215,15 +214,13 @@ function parsePortalLabs(lines: string[]): unknown[] {
 
 async function fetchHealthData(dfn: string, resource: string): Promise<PortalExportFetchResult> {
   const rpcUsed: string[] = [];
-  const pendingTargets: string[] = [];
   try {
     validateCredentials();
-    await connect();
     let lines: string[];
 
     switch (resource) {
       case 'allergies':
-        lines = await callRpc('ORQQAL LIST', [dfn]);
+        lines = await safeCallRpc('ORQQAL LIST', [dfn]);
         rpcUsed.push('ORQQAL LIST');
         return {
           data: lines
@@ -240,11 +237,10 @@ async function fetchHealthData(dfn: string, resource: string): Promise<PortalExp
           })
             .filter(Boolean) as unknown[],
           rpcUsed,
-          pendingTargets,
         };
 
       case 'problems':
-        lines = await callRpc('ORQQPL PROBLEM LIST', [dfn, 'A']);
+        lines = await safeCallRpc('ORQQPL PROBLEM LIST', [dfn, 'A']);
         rpcUsed.push('ORQQPL PROBLEM LIST');
         return {
           data: lines
@@ -262,11 +258,10 @@ async function fetchHealthData(dfn: string, resource: string): Promise<PortalExp
           })
             .filter(Boolean) as unknown[],
           rpcUsed,
-          pendingTargets,
         };
 
       case 'vitals':
-        lines = await callRpc('ORQQVI VITALS', [dfn, '3000101', '3991231']);
+        lines = await safeCallRpc('ORQQVI VITALS', [dfn, '3000101', '3991231']);
         rpcUsed.push('ORQQVI VITALS');
         return {
           data: lines
@@ -278,11 +273,10 @@ async function fetchHealthData(dfn: string, resource: string): Promise<PortalExp
           })
             .filter(Boolean) as unknown[],
           rpcUsed,
-          pendingTargets,
         };
 
       case 'medications':
-        lines = await callRpc('ORWPS ACTIVE', [dfn]);
+        lines = await safeCallRpc('ORWPS ACTIVE', [dfn]);
         rpcUsed.push('ORWPS ACTIVE');
         const meds: { drugName: string; status: string; sig: string }[] = [];
         let cur: { drugName: string; status: string; sig: string } | null = null;
@@ -301,45 +295,39 @@ async function fetchHealthData(dfn: string, resource: string): Promise<PortalExp
           }
         }
         if (cur) meds.push(cur);
-        return { data: meds as unknown[], rpcUsed, pendingTargets };
+        return { data: meds as unknown[], rpcUsed };
 
       case 'demographics':
-        lines = await callRpc('ORWPT SELECT', [dfn]);
+        lines = await safeCallRpc('ORWPT SELECT', [dfn]);
         rpcUsed.push('ORWPT SELECT');
         const raw = lines[0] || '';
         const p = raw.split('^');
-        if (p[0] === '-1' || !p[0]) return { data: [], rpcUsed, pendingTargets };
-        return { data: [{ name: p[0], sex: p[1] || '', dob: p[2] || '' }] as unknown[], rpcUsed, pendingTargets };
+        if (p[0] === '-1' || !p[0]) return { data: [], rpcUsed };
+        return { data: [{ name: p[0], sex: p[1] || '', dob: p[2] || '' }] as unknown[], rpcUsed };
 
       case 'immunizations':
         try {
-          lines = await callRpc('ORQQPX IMMUN LIST', [dfn]);
+          lines = await safeCallRpc('ORQQPX IMMUN LIST', [dfn]);
           rpcUsed.push('ORQQPX IMMUN LIST');
-          return { data: parsePortalImmunizations(lines), rpcUsed, pendingTargets };
+          return { data: parsePortalImmunizations(lines), rpcUsed };
         } catch {
-          pendingTargets.push('ORQQPX IMMUN LIST');
-          return { data: [], rpcUsed, pendingTargets };
+          return { data: [], rpcUsed: ['ORQQPX IMMUN LIST'] };
         }
 
       case 'labs':
         try {
-          lines = await callRpc('ORWLRR INTERIM', [dfn, '', '']);
+          lines = await safeCallRpc('ORWLRR INTERIM', [dfn, '', '']);
           rpcUsed.push('ORWLRR INTERIM');
-          return { data: parsePortalLabs(lines), rpcUsed, pendingTargets };
+          return { data: parsePortalLabs(lines), rpcUsed };
         } catch {
-          pendingTargets.push('ORWLRR INTERIM');
-          return { data: [], rpcUsed, pendingTargets };
+          return { data: [], rpcUsed: ['ORWLRR INTERIM'] };
         }
 
       default:
-        return { data: [], rpcUsed, pendingTargets };
+        return { data: [], rpcUsed };
     }
   } catch {
-    return { data: [], rpcUsed, pendingTargets };
-  } finally {
-    try {
-      disconnect();
-    } catch {}
+    return { data: [], rpcUsed };
   }
 }
 
@@ -416,22 +404,20 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
         sec_data = formatDemographicsForPdf(data as any[]);
         break;
       case 'immunizations':
-        sec_data = formatImmunizationsForPdf(data as any[], {
-          pendingTargets: result.pendingTargets,
-        });
+        sec_data = formatImmunizationsForPdf(data as any[]);
         break;
       case 'labs':
-        sec_data = formatLabsForPdf(data as any[], { pendingTargets: result.pendingTargets });
+        sec_data = formatLabsForPdf(data as any[]);
         break;
     }
 
-    const title = `${section.charAt(0).toUpperCase() + section.slice(1)} — ${session.patientName}`;
+    const title = `${section.charAt(0).toUpperCase() + section.slice(1)} -- ${session.patientName}`;
     const pdf = buildTextPdf(title, [sec_data]);
 
     portalAudit('portal.export.section', 'success', session.patientDfn, {
       tenantId: session.tenantId,
       sourceIp: request.ip,
-      detail: { section, records: data.length, pendingTargets: result.pendingTargets },
+      detail: { section, records: data.length },
     });
 
     reply.header('Content-Type', 'application/pdf');
@@ -468,18 +454,16 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
           sec_data = formatDemographicsForPdf(data as any[]);
           break;
         case 'immunizations':
-          sec_data = formatImmunizationsForPdf(data as any[], {
-            pendingTargets: result.pendingTargets,
-          });
+          sec_data = formatImmunizationsForPdf(data as any[]);
           break;
         case 'labs':
-          sec_data = formatLabsForPdf(data as any[], { pendingTargets: result.pendingTargets });
+          sec_data = formatLabsForPdf(data as any[]);
           break;
       }
       sections.push(sec_data);
     }
 
-    const title = `Health Record — ${session.patientName}`;
+    const title = `Health Record -- ${session.patientName}`;
     const pdf = buildTextPdf(title, sections);
 
     portalAudit('portal.export.full', 'success', session.patientDfn, {
@@ -666,7 +650,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
   });
 
   /* ================================================================ */
-  /* Appointments — Phase 63: wired to scheduling adapter               */
+  /* Appointments -- Phase 63: wired to scheduling adapter               */
   /* ================================================================ */
 
   server.get('/portal/appointments', async (request, reply) => {
@@ -688,14 +672,14 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
         }
       }
     } catch {
-      /* VistA unavailable — fall back to local store */
+      /* VistA unavailable -- fall back to local store */
     }
 
     // Also include local portal appointments (legacy Phase 27 store)
-    const upcoming = getUpcomingAppointments(session.tenantId, session.patientDfn);
-    const past = getPastAppointments(session.tenantId, session.patientDfn);
+    const upcoming = await getUpcomingAppointments(session.tenantId, session.patientDfn);
+    const past = await getPastAppointments(session.tenantId, session.patientDfn);
 
-    // Normalize VistA encounters → portal shape (scheduledAt, clinicName, etc.)
+    // Normalize VistA encounters -> portal shape (scheduledAt, clinicName, etc.)
     const normalizeVista = (a: any) => ({
       ...a,
       scheduledAt: a.scheduledAt || a.dateTime,
@@ -750,7 +734,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
   server.get('/portal/appointments/:id', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { id } = request.params as { id: string };
-    const appt = getAppointment(id, session.tenantId, session.patientDfn);
+    const appt = await getAppointment(id, session.tenantId, session.patientDfn);
     if (!appt) return reply.code(404).send({ ok: false, error: 'Appointment not found' });
     return reply.send({ ok: true, appointment: appt });
   });
@@ -787,7 +771,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
         }
 
         // Also store in legacy store for portal compatibility
-        const portalAppointment = requestAppointment({
+        const portalAppointment = await requestAppointment({
           tenantId: session.tenantId,
           patientDfn: session.patientDfn,
           patientName: session.patientName,
@@ -811,7 +795,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     }
 
     // Legacy fallback
-    const appt = requestAppointment({
+    const appt = await requestAppointment({
       tenantId: session.tenantId,
       patientDfn: session.patientDfn,
       patientName: session.patientName,
@@ -841,7 +825,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
       if (adapter && typeof adapter.cancelAppointment === 'function') {
         const adapterResult = await adapter.cancelAppointment(id, reason, session.patientDfn);
         if (adapterResult.ok || adapterResult.pending) {
-          const localResult = requestCancellation(id, session.tenantId, session.patientDfn, reason);
+          const localResult = await requestCancellation(id, session.tenantId, session.patientDfn, reason);
           return reply.send({
             ok: true,
             appointment: localResult || undefined,
@@ -863,7 +847,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     }
 
     // Legacy fallback
-    const result = requestCancellation(id, session.tenantId, session.patientDfn, reason);
+    const result = await requestCancellation(id, session.tenantId, session.patientDfn, reason);
     if (!result)
       return reply
         .code(404)
@@ -915,13 +899,13 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
               target: newResult.target,
             });
           }
-          const updatedOriginal = requestReschedule(
+          const updatedOriginal = await requestReschedule(
             id,
             session.tenantId,
             session.patientDfn,
             body.preference || body.preferredDate || ''
           );
-          const portalAppointment = requestAppointment({
+          const portalAppointment = await requestAppointment({
             tenantId: session.tenantId,
             patientDfn: session.patientDfn,
             patientName: session.patientName,
@@ -954,7 +938,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     }
 
     // Legacy fallback
-    const result = requestReschedule(id, session.tenantId, session.patientDfn, body.preference || '');
+    const result = await requestReschedule(id, session.tenantId, session.patientDfn, body.preference || '');
     if (!result)
       return reply
         .code(404)
@@ -987,14 +971,14 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
       return reply.code(400).send({ ok: false, error: 'sections array is required' });
     }
 
-    // Need patient DOB for verification — fetch from VistA or use placeholder
+    // Need patient DOB for verification -- fetch from VistA or use placeholder
     let dob = body.patientDob || '';
     if (!dob) {
       try {
         const demoData = await fetchHealthData(session.patientDfn, 'demographics');
         if (demoData.data.length > 0) dob = (demoData.data[0] as any).dob || '';
       } catch {
-        // DOB fetch failed — proceed with empty DOB (non-critical for share link)
+        // DOB fetch failed -- proceed with empty DOB (non-critical for share link)
       }
     }
 
@@ -1017,11 +1001,11 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
       return reply.code(400).send({ ok: false, error: result.error });
     }
 
-    // Return access code ONLY at creation time — never again
+    // Return access code ONLY at creation time -- never again
     return reply.code(201).send({
       ok: true,
       share: result,
-      notice: 'Save the access code now — it will not be shown again.',
+      notice: 'Save the access code now -- it will not be shown again.',
     });
   });
 
@@ -1034,7 +1018,7 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     return reply.send({ ok: true, deleted: id });
   });
 
-  // ─── Public share routes (no session required) ───
+  // --- Public share routes (no session required) ---
 
   server.get('/portal/share/preview/:token', async (request, reply) => {
     const { token } = request.params as { token: string };
@@ -1346,5 +1330,5 @@ export default async function portalCoreRoutes(server: FastifyInstance): Promise
     return reply.send({ ok: true, message: result });
   });
 
-  log.info('Portal core routes registered (Phase 27 → Phase 32)');
+  log.info('Portal core routes registered (Phase 27 -> Phase 32)');
 }

@@ -1,5 +1,5 @@
 /**
- * HL7 v2 MLLP Parser — Types + Parser
+ * HL7 v2 MLLP Parser -- Types + Parser
  *
  * Phase 381 (W21-P4): HL7 v2 message parser for ORU (results) and ORM
  * (orders) messages received via MLLP from medical devices and lab
@@ -13,11 +13,11 @@
 // MLLP Framing Constants
 // ---------------------------------------------------------------------------
 
-/** Vertical Tab — MLLP start byte */
+/** Vertical Tab -- MLLP start byte */
 export const MLLP_VT = 0x0b;
-/** File Separator — MLLP end byte */
+/** File Separator -- MLLP end byte */
 export const MLLP_FS = 0x1c;
-/** Carriage Return — MLLP trailing byte */
+/** Carriage Return -- MLLP trailing byte */
 export const MLLP_CR = 0x0d;
 
 // ---------------------------------------------------------------------------
@@ -62,7 +62,7 @@ export interface Hl7Observation {
   setId: string;
   /** Value type (NM, ST, CE, etc.) */
   valueType: string;
-  /** Observation identifier (OBX-3) — code^text^system */
+  /** Observation identifier (OBX-3) -- code^text^system */
   observationId: string;
   /** Observation code */
   code: string;

@@ -1,5 +1,5 @@
 /**
- * Performance Acceptance Gate Configuration — Phase 253
+ * Performance Acceptance Gate Configuration -- Phase 253
  *
  * Defines pass/fail thresholds for k6 performance tests.
  * Used by the CI pipeline and the acceptance gate runner.
@@ -32,7 +32,7 @@ export interface PerfScenario {
 }
 
 /**
- * Smoke tier — runs in CI on every PR (< 30s total)
+ * Smoke tier -- runs in CI on every PR (< 30s total)
  */
 export const SMOKE_SCENARIOS: PerfScenario[] = [
   {
@@ -92,7 +92,7 @@ export const SMOKE_SCENARIOS: PerfScenario[] = [
 ];
 
 /**
- * Load tier — runs nightly (2-5 min total)
+ * Load tier -- runs nightly (2-5 min total)
  */
 export const LOAD_SCENARIOS: PerfScenario[] = [
   {

@@ -1,5 +1,5 @@
 /**
- * Jobs Module — Barrel Export
+ * Jobs Module -- Barrel Export
  *
  * Phase 116: Postgres Job Queue (Graphile Worker) + Job Governance
  */

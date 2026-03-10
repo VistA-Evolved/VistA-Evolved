@@ -1,5 +1,5 @@
 /**
- * Pack Loader — registers all built-in packs at import time
+ * Pack Loader -- registers all built-in packs at import time
  *
  * Import this module once at server startup to populate the pack registry.
  * Total: 23 packs (1 core + 15 complaint + 5 specialty + 2 department)
@@ -10,12 +10,12 @@ import { registerPack } from '../pack-registry.js';
 // Core
 import coreEnterprisePack from './core-enterprise.js';
 
-// Complaint packs — individual
+// Complaint packs -- individual
 import chestPainPack from './complaint-chest-pain.js';
 import headachePack from './complaint-headache.js';
 import abdominalPainPack from './complaint-abdominal-pain.js';
 
-// Complaint packs — batch 1
+// Complaint packs -- batch 1
 import {
   backPainPack,
   coughPack,
@@ -24,7 +24,7 @@ import {
   dizzinessPack,
 } from './complaint-batch-1.js';
 
-// Complaint packs — batch 2
+// Complaint packs -- batch 2
 import {
   sobPack,
   soreThroatPack,
@@ -33,7 +33,7 @@ import {
   jointPainPack,
 } from './complaint-batch-2.js';
 
-// Complaint packs — behavioral health
+// Complaint packs -- behavioral health
 import { anxietyPack, depressionPack } from './complaint-behavioral-health.js';
 
 // Specialty packs

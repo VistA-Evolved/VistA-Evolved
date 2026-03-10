@@ -31,7 +31,7 @@ export default function PatientHeader({ dfn }: PatientHeaderProps) {
     return (
       <div className={styles.header}>
         <span className={styles.error}>
-          Patient {dfn} — Error: {error}
+          Patient {dfn} -- Error: {error}
         </span>
       </div>
     );

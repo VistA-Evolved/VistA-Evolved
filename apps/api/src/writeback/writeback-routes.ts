@@ -1,15 +1,15 @@
 /**
- * Clinical Writeback Command Bus — Routes
+ * Clinical Writeback Command Bus -- Routes
  *
  * Phase 300 (W12-P2): REST endpoints for submitting and querying writeback commands.
  *
  * Endpoints:
- *   POST /writeback/commands       — Submit a command
- *   GET  /writeback/commands       — List commands (filtered)
- *   GET  /writeback/commands/:id   — Get command detail
- *   POST /writeback/commands/:id/process — Process a pending command (admin/worker)
- *   GET  /writeback/gates          — Get feature gate summary
- *   GET  /writeback/stats          — Get command store statistics
+ *   POST /writeback/commands       -- Submit a command
+ *   GET  /writeback/commands       -- List commands (filtered)
+ *   GET  /writeback/commands/:id   -- Get command detail
+ *   POST /writeback/commands/:id/process -- Process a pending command (admin/worker)
+ *   GET  /writeback/gates          -- Get feature gate summary
+ *   GET  /writeback/stats          -- Get command store statistics
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -58,7 +58,7 @@ function requireTenantId(request: any, reply: any): string | null {
 
 export default async function writebackRoutes(server: FastifyInstance): Promise<void> {
   /**
-   * POST /writeback/commands — Submit a writeback command.
+   * POST /writeback/commands -- Submit a writeback command.
    * Requires session (admin or provider).
    */
   server.post('/writeback/commands', async (request, reply) => {
@@ -126,7 +126,7 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * GET /writeback/commands — List commands with optional filters.
+   * GET /writeback/commands -- List commands with optional filters.
    */
   server.get('/writeback/commands', async (request, reply) => {
     const query = (request.query as any) || {};
@@ -145,7 +145,7 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * GET /writeback/commands/:id — Get command detail (command + attempts + result).
+   * GET /writeback/commands/:id -- Get command detail (command + attempts + result).
    */
   server.get('/writeback/commands/:id', async (request, reply) => {
     const { id } = request.params as any;
@@ -169,7 +169,7 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * POST /writeback/commands/:id/process — Process a pending command (admin trigger).
+   * POST /writeback/commands/:id/process -- Process a pending command (admin trigger).
    */
   server.post('/writeback/commands/:id/process', async (request, reply) => {
     const { id } = request.params as any;
@@ -186,7 +186,7 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * POST /writeback/commands/:id/review — Approve or reject a supervised command (Phase 437).
+   * POST /writeback/commands/:id/review -- Approve or reject a supervised command (Phase 437).
    * Body: { decision: "approve" | "reject", reason?: string }
    */
   server.post('/writeback/commands/:id/review', async (request, reply) => {
@@ -215,7 +215,7 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * GET /writeback/gates — Get feature gate summary.
+   * GET /writeback/gates -- Get feature gate summary.
    */
   server.get('/writeback/gates', async (request, reply) => {
     const tenantId = requireTenantId(request, reply);
@@ -225,7 +225,7 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * GET /writeback/stats — Get command store statistics.
+   * GET /writeback/stats -- Get command store statistics.
    */
   server.get('/writeback/stats', async (request, reply) => {
     const stats = getCommandStoreStats();
@@ -233,7 +233,7 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * GET /writeback/certification — Run full departmental certification (admin only).
+   * GET /writeback/certification -- Run full departmental certification (admin only).
    * Non-destructive: all checks are read-only or dry-run mode.
    */
   server.get('/writeback/certification', async (request, reply) => {
@@ -242,7 +242,7 @@ export default async function writebackRoutes(server: FastifyInstance): Promise<
   });
 
   /**
-   * GET /writeback/certification/summary — Quick health check (lightweight).
+   * GET /writeback/certification/summary -- Quick health check (lightweight).
    */
   server.get('/writeback/certification/summary', async (request, reply) => {
     const summary = getCertificationSummary();

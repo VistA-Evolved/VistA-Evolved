@@ -2,22 +2,22 @@
  * Phase 393 (W22-P5): Lab Deep Workflows -- REST Routes
  *
  * Endpoints:
- *   GET  /lab/orders                         â€” List lab orders
- *   POST /lab/orders                         â€” Create lab order
- *   GET  /lab/orders/:id                     â€” Get single order
- *   POST /lab/orders/:id/transition          â€” Transition order status
- *   GET  /lab/specimens                      â€” List specimens
- *   POST /lab/specimens                      â€” Create specimen
- *   POST /lab/specimens/:id/transition       â€” Transition specimen status
- *   POST /lab/specimens/:id/link-device      â€” Link Wave 21 device observation
- *   GET  /lab/results                        â€” List results
- *   POST /lab/results                        â€” Record result (auto-critical-alert)
- *   PATCH /lab/results/:id/status            â€” Update result status
- *   GET  /lab/critical-alerts                â€” List critical alerts
- *   POST /lab/critical-alerts/:id/ack        â€” Acknowledge critical alert
- *   POST /lab/critical-alerts/:id/resolve    â€” Resolve critical alert
- *   GET  /lab/dashboard                      â€” Dashboard stats
- *   GET  /lab/writeback-posture              â€” Writeback posture report
+ *   GET  /lab/orders                         â€" List lab orders
+ *   POST /lab/orders                         â€" Create lab order
+ *   GET  /lab/orders/:id                     â€" Get single order
+ *   POST /lab/orders/:id/transition          â€" Transition order status
+ *   GET  /lab/specimens                      â€" List specimens
+ *   POST /lab/specimens                      â€" Create specimen
+ *   POST /lab/specimens/:id/transition       â€" Transition specimen status
+ *   POST /lab/specimens/:id/link-device      â€" Link Wave 21 device observation
+ *   GET  /lab/results                        â€" List results
+ *   POST /lab/results                        â€" Record result (auto-critical-alert)
+ *   PATCH /lab/results/:id/status            â€" Update result status
+ *   GET  /lab/critical-alerts                â€" List critical alerts
+ *   POST /lab/critical-alerts/:id/ack        â€" Acknowledge critical alert
+ *   POST /lab/critical-alerts/:id/resolve    â€" Resolve critical alert
+ *   GET  /lab/dashboard                      â€" Dashboard stats
+ *   GET  /lab/writeback-posture              â€" Writeback posture report
  *
  * Auth: session-based (see security.ts AUTH_RULES).
  */
@@ -51,10 +51,10 @@ import type {
   CriticalAlertStatus,
 } from './types.js';
 
-// â”€â”€â”€ Plugin â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+// â"€â"€â"€ Plugin â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
 export async function labRoutes(server: FastifyInstance): Promise<void> {
-  // â”€â”€ Lab Orders â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€ Lab Orders â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
   server.get('/lab/orders', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -115,7 +115,7 @@ export async function labRoutes(server: FastifyInstance): Promise<void> {
     }
   );
 
-  // â”€â”€ Specimens â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€ Specimens â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
   server.get('/lab/specimens', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -186,7 +186,7 @@ export async function labRoutes(server: FastifyInstance): Promise<void> {
     }
   );
 
-  // â”€â”€ Lab Results â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€ Lab Results â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
   server.get('/lab/results', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -245,7 +245,7 @@ export async function labRoutes(server: FastifyInstance): Promise<void> {
     return { ok: true, result: res.result };
   });
 
-  // â”€â”€ Critical Alerts â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€ Critical Alerts â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
   server.get('/lab/critical-alerts', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -285,7 +285,7 @@ export async function labRoutes(server: FastifyInstance): Promise<void> {
     }
   );
 
-  // â”€â”€ Dashboard & Posture â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€â”€
+  // â"€â"€ Dashboard & Posture â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€
 
   server.get('/lab/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);

@@ -1,5 +1,5 @@
 /**
- * Phase 405 (W23-P7): Consent + Purpose of Use — Types
+ * Phase 405 (W23-P7): Consent + Purpose of Use -- Types
  */
 
 export type ConsentStatus = 'active' | 'inactive' | 'draft' | 'revoked' | 'entered-in-error';

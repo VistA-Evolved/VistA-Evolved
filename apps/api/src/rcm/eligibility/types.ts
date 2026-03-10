@@ -1,11 +1,11 @@
 /**
- * Phase 100 — Eligibility + Claim Status Polling Framework
+ * Phase 100 -- Eligibility + Claim Status Polling Framework
  *
  * Domain types for durable eligibility checks and claim status checks.
  * Provenance tracking ensures every result records its source adapter.
  */
 
-/* ── Provenance ─────────────────────────────────────────────── */
+/* -- Provenance ----------------------------------------------- */
 
 export type EligibilityProvenance =
   | 'MANUAL'
@@ -21,7 +21,7 @@ export type ClaimStatusProvenance =
   | 'CLEARINGHOUSE'
   | 'PORTAL';
 
-/* ── Eligibility Check ──────────────────────────────────────── */
+/* -- Eligibility Check ---------------------------------------- */
 
 export interface EligibilityCheckRequest {
   patientDfn: string;
@@ -57,7 +57,7 @@ export interface EligibilityCheckRecord {
   createdAt: string; // ISO 8601
 }
 
-/* ── Claim Status Check ─────────────────────────────────────── */
+/* -- Claim Status Check --------------------------------------- */
 
 export interface ClaimStatusCheckRequest {
   claimRef: string;
@@ -92,7 +92,7 @@ export interface ClaimStatusCheckRecord {
   createdAt: string;
 }
 
-/* ── Schedule Request ───────────────────────────────────────── */
+/* -- Schedule Request ----------------------------------------- */
 
 export interface ClaimStatusScheduleRequest {
   claimRef: string;
@@ -102,7 +102,7 @@ export interface ClaimStatusScheduleRequest {
   maxPolls?: number; // default 10
 }
 
-/* ── Stats ──────────────────────────────────────────────────── */
+/* -- Stats ---------------------------------------------------- */
 
 export interface EligibilityStats {
   totalChecks: number;

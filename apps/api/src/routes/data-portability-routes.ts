@@ -120,7 +120,7 @@ export async function dataPortabilityRoutes(app: FastifyInstance): Promise<void>
       };
     }
 
-    // Not complete yet — return 202
+    // Not complete yet -- return 202
     return reply.code(202).send({
       ok: true,
       status: job.status,

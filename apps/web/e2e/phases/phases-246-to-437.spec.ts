@@ -62,7 +62,7 @@ test.describe("Phase 256: Pilot Hospital Go-Live Kit", () => {
 
 });
 
-test.describe("Phase 262: Onboarding UX v2 — IMPLEMENT", () => {
+test.describe("Phase 262: Onboarding UX v2 -- IMPLEMENT", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/admin/onboarding/integrations`);
     expect(r0.status(), "/admin/onboarding/integrations not 500").not.toBe(500);

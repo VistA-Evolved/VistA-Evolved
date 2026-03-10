@@ -11,7 +11,7 @@ import { describe, it, expect } from "vitest";
 
 const API = process.env.API_URL ?? "http://localhost:3001";
 
-describe("Phase 338: W16-P2 — Enterprise Identity Hardening — IMPLEMENT", () => {
+describe("Phase 338: W16-P2 -- Enterprise Identity Hardening -- IMPLEMENT", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/auth/security-events`);
     expect(r0.status, "/auth/security-events").not.toBe(500);
@@ -22,7 +22,7 @@ describe("Phase 338: W16-P2 — Enterprise Identity Hardening — IMPLEMENT", ()
   });
 });
 
-describe("Phase 339: W16-P3 — SCIM Provisioning — IMPLEMENT", () => {
+describe("Phase 339: W16-P3 -- SCIM Provisioning -- IMPLEMENT", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/scim/`);
     expect(r0.status, "/scim/").not.toBe(500);
@@ -122,21 +122,21 @@ describe("Phase 384: W21-P7 IMPLEMENT: Alarms Pipeline (IHE PCD ACM)", () => {
   });
 });
 
-describe("Phase 385: W21-P8 Infusion/BCMA Safety Bridge — IMPLEMENT", () => {
+describe("Phase 385: W21-P8 Infusion/BCMA Safety Bridge -- IMPLEMENT", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/devices/infusion/pump-events`);
     expect(r0.status, "/devices/infusion/pump-events").not.toBe(500);
   });
 });
 
-describe("Phase 386: W21-P9 Imaging Modality Connectivity — IMPLEMENT", () => {
+describe("Phase 386: W21-P9 Imaging Modality Connectivity -- IMPLEMENT", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/devices/`);
     expect(r0.status, "/devices/").not.toBe(500);
   });
 });
 
-describe("Phase 387: W21-P10 LOINC/UCUM Normalization — IMPLEMENT", () => {
+describe("Phase 387: W21-P10 LOINC/UCUM Normalization -- IMPLEMENT", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/devices/normalize`);
     expect(r0.status, "/devices/normalize").not.toBe(500);

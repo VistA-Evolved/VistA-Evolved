@@ -1,5 +1,5 @@
 /**
- * Secrets Management Routes — Phase 341 (W16-P5).
+ * Secrets Management Routes -- Phase 341 (W16-P5).
  *
  * Admin-only endpoints for key/secret lifecycle management.
  * Raw key material is NEVER returned in responses.
@@ -16,8 +16,8 @@ import {
 
 export async function secretsRoutes(app: FastifyInstance): Promise<void> {
   /**
-   * GET /secrets/status — Key inventory and rotation status.
-   * Returns metadata only — no raw key material.
+   * GET /secrets/status -- Key inventory and rotation status.
+   * Returns metadata only -- no raw key material.
    */
   app.get('/secrets/status', async (_request: FastifyRequest, reply: FastifyReply) => {
     const kp = resolveKeyProvider();
@@ -46,7 +46,7 @@ export async function secretsRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * POST /secrets/rotate — Trigger key rotation.
+   * POST /secrets/rotate -- Trigger key rotation.
    * Body: { keyId: string, reason?: string }
    */
   app.post('/secrets/rotate', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -69,7 +69,7 @@ export async function secretsRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /secrets/rotation-history — Rotation event history.
+   * GET /secrets/rotation-history -- Rotation event history.
    * Query: ?keyId=<id> to filter by key.
    */
   app.get('/secrets/rotation-history', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -83,7 +83,7 @@ export async function secretsRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * POST /secrets/expire-retiring — Expire keys past grace period.
+   * POST /secrets/expire-retiring -- Expire keys past grace period.
    */
   app.post('/secrets/expire-retiring', async (_request: FastifyRequest, reply: FastifyReply) => {
     const expiredCount = await expireRetiringKeys();
@@ -91,7 +91,7 @@ export async function secretsRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /secrets/health — Key provider health check.
+   * GET /secrets/health -- Key provider health check.
    */
   app.get('/secrets/health', async (_request: FastifyRequest, reply: FastifyReply) => {
     const kp = resolveKeyProvider();

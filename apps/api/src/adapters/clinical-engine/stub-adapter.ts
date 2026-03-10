@@ -1,5 +1,5 @@
 /**
- * External Stub Clinical Engine Adapter — Phase 37C, extended Phase 432.
+ * External Stub Clinical Engine Adapter -- Phase 37C, extended Phase 432.
  *
  * Safe placeholder that returns "pending" for every method.
  * Used when the clinical-engine module is enabled but no real adapter is configured.
@@ -37,7 +37,7 @@ export class StubClinicalAdapter implements ClinicalEngineAdapter {
   readonly _isStub = true;
 
   async healthCheck() {
-    return { ok: false, latencyMs: 0, detail: 'Stub adapter — no backend configured' };
+    return { ok: false, latencyMs: 0, detail: 'Stub adapter -- no backend configured' };
   }
 
   /* Read methods (Phase 37C) */

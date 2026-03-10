@@ -48,7 +48,7 @@ test.describe('Phase 118: Go-Live Hardening Pack', () => {
   });
 
   test('clinical data contract shape', async ({ request }) => {
-    const res = await request.get(`${API}/vista/allergies?dfn=3`);
+    const res = await request.get(`${API}/vista/allergies?dfn=46`);
     // Should return JSON with ok field (may be 401 without auth)
     if (res.status() === 200) {
       const body = await res.json();
@@ -279,7 +279,7 @@ test.describe('Phase 22: Imaging Platform V1', () => {
   });
 });
 
-test.describe('Phase 23: Imaging Workflow — VERIFY', () => {
+test.describe('Phase 23: Imaging Workflow -- VERIFY', () => {
   test('API routes respond without 500', async ({ request }) => {
     const r__imaging_ingest_callback = await request.get(`${API}/imaging/ingest/callback`);
     expect(

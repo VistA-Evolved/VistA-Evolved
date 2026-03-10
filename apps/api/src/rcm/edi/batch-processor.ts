@@ -1,5 +1,5 @@
 /**
- * RCM — Batch Claim Processor
+ * RCM -- Batch Claim Processor
  *
  * Phase 242 (Wave 6 P5): Groups claims by payer/connector and submits
  * them through the resilient connector pipeline in configurable batches.
@@ -199,7 +199,7 @@ async function processBatch(
 async function processOneClaim(claimId: string, tenantId: string): Promise<BatchClaimResult> {
   const start = Date.now();
   try {
-    const claim = getClaim(claimId, tenantId);
+    const claim = await getClaim(claimId, tenantId);
     if (!claim) {
       return { claimId, ok: false, error: 'Claim not found', durationMs: Date.now() - start };
     }

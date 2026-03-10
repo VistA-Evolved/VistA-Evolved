@@ -1,7 +1,7 @@
 /**
- * Share Viewer — External access to shared health records.
+ * Share Viewer -- External access to shared health records.
  * Token in URL, access code + DOB verification required.
- * No portal session needed — this is a public page.
+ * No portal session needed -- this is a public page.
  */
 
 'use client';
@@ -75,7 +75,7 @@ export default function ShareViewerPage() {
           <div style={{ ...cardStyle, marginBottom: '1rem' }}>
             <h1 style={{ fontSize: '1.25rem', marginBottom: '0.25rem' }}>Shared Health Record</h1>
             <p style={{ color: '#64748b', fontSize: '0.875rem' }}>
-              Patient: {(data as any).patientName} · Expires:{' '}
+              Patient: {(data as any).patientName} * Expires:{' '}
               {new Date((data as any).expiresAt).toLocaleDateString()}
             </p>
           </div>
@@ -103,7 +103,7 @@ export default function ShareViewerPage() {
         <h1 style={{ fontSize: '1.25rem', marginBottom: '0.5rem' }}>Verify Access</h1>
         {preview && (
           <p style={{ color: '#64748b', fontSize: '0.875rem', marginBottom: '1rem' }}>
-            Shared by: {preview.patientName} · Sections: {preview.sections?.join(', ')}· Expires:{' '}
+            Shared by: {preview.patientName} * Sections: {preview.sections?.join(', ')}* Expires:{' '}
             {new Date(preview.expiresAt).toLocaleDateString()}
           </p>
         )}

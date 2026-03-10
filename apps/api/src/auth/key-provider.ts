@@ -1,14 +1,14 @@
 /**
- * Key Provider — Phase 341 (W16-P5).
+ * Key Provider -- Phase 341 (W16-P5).
  *
  * Strategy interface for secret/key retrieval with multiple backends.
- * Pure Node.js crypto — no external dependencies.
+ * Pure Node.js crypto -- no external dependencies.
  *
  * Backends:
- *   1. env    — reads from environment variables (default, dev)
- *   2. file   — reads from encrypted key files on disk
- *   3. vault  — HTTP stub for HashiCorp Vault-compatible API
- *   4. kms    — stub for cloud KMS (AWS/GCP/Azure)
+ *   1. env    -- reads from environment variables (default, dev)
+ *   2. file   -- reads from encrypted key files on disk
+ *   3. vault  -- HTTP stub for HashiCorp Vault-compatible API
+ *   4. kms    -- stub for cloud KMS (AWS/GCP/Azure)
  */
 
 import { createHash, randomBytes } from 'node:crypto';
@@ -48,7 +48,7 @@ export interface KeyMaterial {
   metadata: KeyMetadata;
 }
 
-/** Key provider interface — all backends implement this. */
+/** Key provider interface -- all backends implement this. */
 export interface KeyProvider {
   /** Provider type identifier. */
   readonly type: KeyProviderType;
@@ -215,7 +215,7 @@ export class FileKeyProvider implements KeyProvider {
   }
 
   async healthy(): Promise<boolean> {
-    return true; // File-based — always healthy if app runs
+    return true; // File-based -- always healthy if app runs
   }
 }
 

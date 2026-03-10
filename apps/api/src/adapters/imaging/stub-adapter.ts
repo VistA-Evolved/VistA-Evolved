@@ -1,5 +1,5 @@
 /**
- * Stub Imaging Adapter — Phase 37C.
+ * Stub Imaging Adapter -- Phase 37C.
  * Returns pending stubs when no imaging backend is configured.
  */
 
@@ -12,7 +12,7 @@ export class StubImagingAdapter implements ImagingAdapter {
   readonly _isStub = true;
 
   async healthCheck() {
-    return { ok: true, latencyMs: 0, detail: 'Stub imaging adapter — no backend' };
+    return { ok: true, latencyMs: 0, detail: 'Stub imaging adapter -- no backend' };
   }
 
   async getStudies(_dfn: string): Promise<AdapterResult<ImagingStudy[]>> {

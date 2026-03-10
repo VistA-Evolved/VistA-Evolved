@@ -1,5 +1,5 @@
 /**
- * Phase 160: Department Workflow Packs — Types
+ * Phase 160: Department Workflow Packs -- Types
  */
 
 /** Workflow step status */

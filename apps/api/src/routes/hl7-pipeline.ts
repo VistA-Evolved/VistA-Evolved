@@ -1,5 +1,5 @@
 /**
- * HL7v2 Message Pipeline Routes — Phase 259 (Wave 8 P3)
+ * HL7v2 Message Pipeline Routes -- Phase 259 (Wave 8 P3)
  *
  * Endpoints for message event stream, dead-letter management, and replay.
  * Extends existing /hl7/* routes; does not replace them.
@@ -40,10 +40,10 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
     return null;
   }
 
-  /* ── Message Event Stream ─────────────────────────────── */
+  /* -- Message Event Stream ------------------------------- */
 
   /**
-   * GET /hl7/pipeline/events — Query message events
+   * GET /hl7/pipeline/events -- Query message events
    */
   server.get('/hl7/pipeline/events', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -70,7 +70,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /**
-   * GET /hl7/pipeline/events/:id — Get single event
+   * GET /hl7/pipeline/events/:id -- Get single event
    */
   server.get('/hl7/pipeline/events/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -85,7 +85,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /**
-   * GET /hl7/pipeline/stats — Event statistics by status
+   * GET /hl7/pipeline/stats -- Event statistics by status
    */
   server.get('/hl7/pipeline/stats', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -96,7 +96,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /**
-   * GET /hl7/pipeline/verify — Verify hash chain integrity
+   * GET /hl7/pipeline/verify -- Verify hash chain integrity
    */
   server.get('/hl7/pipeline/verify', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -106,10 +106,10 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ...result });
   });
 
-  /* ── Enhanced Dead-Letter Queue ───────────────────────── */
+  /* -- Enhanced Dead-Letter Queue ------------------------- */
 
   /**
-   * GET /hl7/dlq — List dead-lettered messages
+   * GET /hl7/dlq -- List dead-lettered messages
    */
   server.get('/hl7/dlq', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -129,7 +129,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /**
-   * GET /hl7/dlq/stats — DLQ summary stats
+   * GET /hl7/dlq/stats -- DLQ summary stats
    */
   server.get('/hl7/dlq/stats', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -140,7 +140,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /**
-   * GET /hl7/dlq/:id — Get single DLQ entry
+   * GET /hl7/dlq/:id -- Get single DLQ entry
    */
   server.get('/hl7/dlq/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -155,7 +155,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /**
-   * POST /hl7/dlq/:id/replay — Replay a dead-lettered message
+   * POST /hl7/dlq/:id/replay -- Replay a dead-lettered message
    */
   server.post('/hl7/dlq/:id/replay', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -189,7 +189,7 @@ export async function hl7PipelineRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /**
-   * POST /hl7/dlq/:id/resolve — Mark DLQ entry as manually resolved
+   * POST /hl7/dlq/:id/resolve -- Mark DLQ entry as manually resolved
    */
   server.post('/hl7/dlq/:id/resolve', async (request, reply) => {
     const session = await requireSession(request, reply);

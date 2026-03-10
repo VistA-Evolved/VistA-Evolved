@@ -1,5 +1,5 @@
 /**
- * Terminology Resolver Registry — Phase 313
+ * Terminology Resolver Registry -- Phase 313
  *
  * Pluggable terminology service pattern. Code systems are declared in
  * country packs and resolved at runtime through this registry.
@@ -7,7 +7,7 @@
  * See ADR-terminology-model.md for architecture decision.
  */
 
-// ── Types ──────────────────────────────────────────────────────
+// -- Types ------------------------------------------------------
 
 export type TermDomain =
   | "diagnosis"
@@ -39,7 +39,7 @@ export interface TerminologyResolver {
   search(text: string, limit?: number): TermCode[];
 }
 
-// ── Registry ───────────────────────────────────────────────────
+// -- Registry ---------------------------------------------------
 
 const resolvers = new Map<string, TerminologyResolver>();
 
@@ -109,10 +109,10 @@ export function resolveCode(
   };
 }
 
-// ── Built-In Resolvers ─────────────────────────────────────────
+// -- Built-In Resolvers -----------------------------------------
 
 /**
- * Passthrough resolver — returns VistA codes as-is.
+ * Passthrough resolver -- returns VistA codes as-is.
  * Used as fallback when no terminology mapping is available.
  */
 class PassthroughResolver implements TerminologyResolver {
@@ -150,7 +150,7 @@ class ICD10CMResolver implements TerminologyResolver {
   private readonly CODE_PATTERN = /^[A-Z]\d{2}(\.\d{1,4})?$/;
 
   resolve(vistaCode: string, _vistaFile?: number): TermCode | null {
-    // VistA File 80 stores ICD codes natively — pass through with validation
+    // VistA File 80 stores ICD codes natively -- pass through with validation
     if (this.validate(vistaCode)) {
       return {
         code: vistaCode,
@@ -262,7 +262,7 @@ class NDCResolver implements TerminologyResolver {
   search(_text: string, _limit?: number): TermCode[] { return []; }
 }
 
-// ── Initialization ─────────────────────────────────────────────
+// -- Initialization ---------------------------------------------
 
 /**
  * Register all built-in terminology resolvers.
@@ -282,7 +282,7 @@ export function initTerminologyResolvers(): void {
   registerResolver(new NDCResolver());
 }
 
-// ── Terminology Defaults (per country pack) ────────────────────
+// -- Terminology Defaults (per country pack) --------------------
 
 export interface TerminologyDefaults {
   diagnosisCodeSystem: string;

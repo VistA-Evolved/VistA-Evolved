@@ -1,12 +1,12 @@
 /**
- * Imaging Writeback Executor — Phase 306 (W12-P8)
+ * Imaging Writeback Executor -- Phase 306 (W12-P8)
  *
  * Domain executor for IMG writeback commands.
  * Implements the RpcExecutor interface from the command bus.
  *
  * Supported intents:
- *   PLACE_IMAGING_ORDER → ORWDX LOCK + ORWDX SAVE + ORWDX UNLOCK
- *   LINK_IMAGING_STUDY  → In-memory imaging worklist linkage (Phase 23 sidecar)
+ *   PLACE_IMAGING_ORDER -> ORWDX LOCK + ORWDX SAVE + ORWDX UNLOCK
+ *   LINK_IMAGING_STUDY  -> In-memory imaging worklist linkage (Phase 23 sidecar)
  *
  * Safety:
  *   - LOCK/UNLOCK for order placement (same pattern as Orders executor)
@@ -20,7 +20,7 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
-/* Intent → RPC mapping                                                */
+/* Intent -> RPC mapping                                                */
 /* ------------------------------------------------------------------ */
 
 const INTENT_RPC_MAP: Record<string, string[]> = {
@@ -176,7 +176,7 @@ function execLinkImagingStudy(cmd: ClinicalCommand): {
     );
   }
 
-  // This is a local sidecar operation — links in-memory imaging worklist entry
+  // This is a local sidecar operation -- links in-memory imaging worklist entry
   // to an Orthanc/DICOM study. VistA Radiology linkage (RA ASSIGN ACC#) is
   // integration-pending.
   log.info(

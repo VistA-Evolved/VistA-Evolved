@@ -1,6 +1,6 @@
 #!/usr/bin/env tsx
 /**
- * RPC Contract Recorder — Phase 250
+ * RPC Contract Recorder -- Phase 250
  *
  * Dev-only tool: connects to a live VistA, calls each contracted RPC,
  * sanitizes the output, and writes fixture files.
@@ -40,27 +40,27 @@ const RECORD_PLANS: RecordPlan[] = [
   {
     rpcName: 'ORQQAL LIST',
     params: ['3'],
-    description: 'Allergy list for DFN=3 (demo patient)',
+    description: 'Allergy list for dfn=46 (demo patient)',
   },
   {
     rpcName: 'GMV V/M ALLDATA',
     params: ['3'],
-    description: 'Vitals for DFN=3',
+    description: 'Vitals for dfn=46',
   },
   {
     rpcName: 'ORWPS ACTIVE',
     params: ['3'],
-    description: 'Active meds for DFN=3',
+    description: 'Active meds for dfn=46',
   },
   {
     rpcName: 'ORQQPL LIST',
     params: ['3'],
-    description: 'Problem list for DFN=3',
+    description: 'Problem list for dfn=46',
   },
   {
     rpcName: 'TIU DOCUMENTS BY CONTEXT',
     params: ['3', '1', '0', '', '0', '', '0'],
-    description: 'TIU documents for DFN=3, context=signed',
+    description: 'TIU documents for dfn=46, context=signed',
   },
   {
     rpcName: 'ORWORB FASTUSER',
@@ -69,7 +69,7 @@ const RECORD_PLANS: RecordPlan[] = [
   {
     rpcName: 'ORWLRR INTERIMG',
     params: ['3'],
-    description: 'Interim labs for DFN=3',
+    description: 'Interim labs for dfn=46',
   },
   {
     rpcName: 'ORQPT DEFAULT LIST SOURCE',
@@ -126,7 +126,7 @@ async function main() {
     mkdirSync(dir, { recursive: true });
 
     try {
-      console.log(`Recording: ${plan.rpcName} — ${plan.description}`);
+      console.log(`Recording: ${plan.rpcName} -- ${plan.description}`);
       const raw = await callRpc(plan.rpcName, plan.params);
       const lines = raw.split('\n').filter((l) => l.length > 0);
       const sanitized = sanitizeRpcOutput(plan.rpcName, lines);
@@ -143,7 +143,7 @@ async function main() {
       console.log(`  -> ${sanitized.length} lines saved to ${safeName}/success.json`);
       recorded++;
     } catch (err) {
-      console.error(`  FAILED: ${plan.rpcName} — ${err instanceof Error ? err.message : err}`);
+      console.error(`  FAILED: ${plan.rpcName} -- ${err instanceof Error ? err.message : err}`);
       failed++;
     }
   }

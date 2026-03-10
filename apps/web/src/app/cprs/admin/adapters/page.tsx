@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Adapter Health Dashboard — Phase 428 (W26 P6)
+ * Adapter Health Dashboard -- Phase 428 (W26 P6)
  *
  * Admin panel showing adapter status, VistA runtime matrix,
  * and domain write-back readiness. Combines data from:

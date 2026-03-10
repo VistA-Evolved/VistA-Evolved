@@ -1,5 +1,5 @@
 /**
- * PG Portal Patient Setting Repository — Async durable patient preferences
+ * PG Portal Patient Setting Repository -- Async durable patient preferences
  *
  * Phase 127: Portal + Telehealth Durability (Map stores -> Postgres)
  *
@@ -21,7 +21,7 @@ function requireTenantId(tenantId?: string): string {
   throw new Error('Tenant context required for portal patient settings');
 }
 
-/* ── Upsert ────────────────────────────────────────────────── */
+/* -- Upsert -------------------------------------------------- */
 
 export async function upsertSetting(data: {
   tenantId?: string;
@@ -67,7 +67,7 @@ export async function upsertSetting(data: {
   return (await findSettingById(id))!;
 }
 
-/* ── Lookup ────────────────────────────────────────────────── */
+/* -- Lookup -------------------------------------------------- */
 
 export async function findSettingById(id: string): Promise<PortalPatientSettingRow | undefined> {
   const db = getPgDb();
@@ -95,7 +95,7 @@ export async function findSettingByDfn(
   return rows[0];
 }
 
-/* ── Delete ────────────────────────────────────────────────── */
+/* -- Delete -------------------------------------------------- */
 
 export async function deleteSetting(id: string): Promise<boolean> {
   const db = getPgDb();
@@ -103,7 +103,7 @@ export async function deleteSetting(id: string): Promise<boolean> {
   return (result as any)?.rowCount > 0;
 }
 
-/* ── Count ─────────────────────────────────────────────────── */
+/* -- Count --------------------------------------------------- */
 
 export async function countSettings(): Promise<number> {
   const db = getPgDb();

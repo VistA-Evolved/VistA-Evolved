@@ -20,7 +20,7 @@ import { randomUUID } from 'node:crypto';
 import { writeFileSync, readFileSync, mkdirSync, existsSync, readdirSync } from 'node:fs';
 import { join } from 'node:path';
 
-/* ── Types ────────────────────────────────────────────────── */
+/* -- Types -------------------------------------------------- */
 
 export interface ContractTraceEntry {
   /** Unique entry ID */
@@ -85,7 +85,7 @@ export interface CompareDiff {
   detail: string;
 }
 
-/* ── Constants ────────────────────────────────────────────── */
+/* -- Constants ---------------------------------------------- */
 
 const CONTRACT_VERSION = '1.0.0';
 
@@ -115,7 +115,7 @@ export const WORKFLOW_TEMPLATES: Record<string, { description: string; expectedR
   },
 };
 
-/* ── Session Store ────────────────────────────────────────── */
+/* -- Session Store ------------------------------------------ */
 
 const activeSessions = new Map<string, TraceSession>();
 const completedSessions: TraceSession[] = [];
@@ -215,7 +215,7 @@ export function getCompletedSessions(limit = 20): TraceSession[] {
   return [...completedSessions].reverse().slice(0, limit);
 }
 
-/* ── File I/O ─────────────────────────────────────────────── */
+/* -- File I/O ----------------------------------------------- */
 
 const DEFAULT_TRACE_DIR = join(process.cwd(), 'data', 'rpc-traces');
 
@@ -313,7 +313,7 @@ export function listGoldenTraces(): { workflow: string; file: string; entryCount
     });
 }
 
-/* ── Contract Comparison ──────────────────────────────────── */
+/* -- Contract Comparison ------------------------------------ */
 
 /**
  * Compare an actual trace session against a golden baseline.
@@ -368,7 +368,7 @@ export function compareTraces(actual: TraceSession, golden: TraceSession): Compa
       });
       mismatchedRpcs++;
     } else {
-      // Same RPC — check success/failure
+      // Same RPC -- check success/failure
       const gEntry = golden.entries[i];
       const aEntry = actual.entries[i];
       if (gEntry.success !== aEntry.success) {

@@ -1,3 +1,136 @@
+## Phase 725 Update - Dead Click Tripwire Hardening
+
+- Fixed the root source-scan entrypoint by adding `pnpm qa:tripwire:source`, which uses the app-local `tsx` binary without changing the working directory. The previous delegated form executed from `apps/api` and produced a false green by scanning `0` files.
+- Added explanatory `title` tooltips to disabled clinician-facing buttons in Immunizations, Intake, Labs, Messaging Tasks, Inbox, and patient search so disabled actions communicate why they are unavailable.
+- Verification:
+	- `pnpm qa:tripwire:source` -> `Scanned: 110 files`, `Errors: 0`, `Warnings: 0`
+	- VS Code Problems check on all touched files -> no errors
+- Follow-up:
+	- Fold `pnpm qa:tripwire:source` into a broader QA runner or verifier gate when we want this source-level scan enforced automatically.
+
+# Phase 725 Update - Enterprise Readiness Program Stabilization Slice
+
+## What changed
+1. Added the canonical Phase 725 prompt set for the enterprise-readiness execution program:
+- `prompts/725-PHASE-725-ENTERPRISE-READINESS-PROGRAM/725-01-IMPLEMENT.md`
+- `prompts/725-PHASE-725-ENTERPRISE-READINESS-PROGRAM/725-99-VERIFY.md`
+
+2. Regenerated the canonical prompt index after adding the new prompt pack:
+- `docs/qa/phase-index.json`
+- command used: `pnpm qa:phase-index`
+
+3. Fixed the first substantive verifier blocker in the clinician web app.
+- Repaired broken TSX operator text handling in these files:
+	- `apps/web/src/app/cprs/admin/hmo-portal/page.tsx`
+	- `apps/web/src/app/cprs/admin/philhealth-eclaims3/page.tsx`
+	- `apps/web/src/app/cprs/admin/queue/page.tsx`
+	- `apps/web/src/app/cprs/emar/page.tsx`
+	- `apps/web/src/app/cprs/handoff/page.tsx`
+	- `apps/web/src/app/cprs/nursing/page.tsx`
+	- `apps/web/src/app/cprs/order-sets/page.tsx`
+	- `apps/web/src/app/patient-search/page.tsx`
+	- `apps/web/src/components/cprs/PatientBanner.tsx`
+- Restored the `queue` page header after a malformed patch artifact removed the React hook import and displaced the ticket row interface.
+
+4. Updated operator troubleshooting guidance:
+- `docs/runbooks/run-from-zero.md`
+- Added explicit recovery steps for prompt-index freshness failures and `G09` web compile failures.
+
+## Manual test steps
+1. Verify Docker baseline:
+	- `docker ps --format "table {{.Names}}\t{{.Status}}" | Select-String "vehu|ve-platform-db"`
+2. Verify API and VistA reachability:
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+3. Validate the isolated frontend compiler gate:
+	- `pnpm -C apps/web exec tsc --noEmit`
+4. Rebuild the prompt index if prompt folders changed:
+	- `pnpm qa:phase-index`
+5. Run the canonical repository verifier:
+	- `powershell -ExecutionPolicy Bypass -File scripts/verify-latest.ps1`
+
+## Verifier output
+- Live runtime proof remained healthy:
+	- `/health` returned `ok: true`
+	- `/vista/ping` returned `{"ok":true,"vista":"reachable","port":9431}`
+- The first failing gate in this slice was `G09` (`TypeScript Web compile`).
+- After the frontend fixes, the isolated compiler passed:
+	- `pnpm -C apps/web exec tsc --noEmit`
+- Final canonical verifier result:
+	- `PASS: 16`
+	- `FAIL: 0`
+	- `SKIP: 0`
+	- `Overall: RC_READY`
+	- report path: `evidence/wave-35/501-W35-P2-RC-VERIFY-ORCHESTRATOR/verify-rc/report.json`
+
+## Follow-ups
+1. Continue the enterprise-readiness execution program from the next real blocker surfaced by live proof or the canonical verifier, not from static warning volume alone.
+2. Use the isolated web compile command first whenever `G09` regresses so verifier triage stays fast and deterministic.
+
+# Phase 724 Update - System Stabilization Continuation
+
+## What changed
+1. Added the Phase 724 prompt set for system stabilization continuation:
+- `prompts/724-PHASE-724-SYSTEM-STABILIZATION-CONTINUATION/724-01-IMPLEMENT.md`
+- `prompts/724-PHASE-724-SYSTEM-STABILIZATION-CONTINUATION/724-99-VERIFY.md`
+
+2. Added safe API startup guard for Windows:
+- Added `scripts/start-api-safe.ps1`.
+- Behavior:
+  - Reuses an already healthy API process on port `3001`.
+  - Restarts stale/unhealthy Node listener on `3001`.
+  - Refuses to kill non-Node listeners and returns explicit guidance.
+
+3. Wired the safe starter into root scripts:
+- `package.json`:
+  - `api:start:safe`
+  - `api:restart:safe`
+
+4. Updated operational guidance:
+- `docs/runbooks/windows-port-3001-fix.md` now recommends `pnpm api:start:safe` first.
+- `scripts/dev-up.ps1` summary now points API startup guidance to `pnpm api:start:safe`.
+
+5. Resolved required verifier regression during this run:
+- `G02 Phase Index Freshness` failed once after elapsed time.
+- Rebuilt phase index with `pnpm qa:phase-index`.
+- Re-ran verifier to recover `RC_READY`.
+
+## Manual test steps
+1. Verify Docker baseline:
+	- `docker ps --format "table {{.Names}}\t{{.Status}}"`
+2. Validate safe startup behavior:
+	- `pnpm run api:start:safe`
+3. Verify API and VistA connectivity:
+	- `curl.exe -s http://127.0.0.1:3001/health`
+	- `curl.exe -s http://127.0.0.1:3001/vista/ping`
+4. Login and validate representative module routes:
+	- `POST /auth/login` with `PRO1234 / PRO1234!!`
+	- `GET /vista/allergies?dfn=46`
+	- `GET /vista/vitals?dfn=46`
+	- `GET /vista/medications?dfn=46`
+	- `GET /vista/notes?dfn=46`
+	- `GET /imaging/health`
+	- `GET /telehealth/health`
+	- `GET /scheduling/mode`
+	- `GET /rcm/payers`
+	- `GET /api/modules/status`
+5. Re-run verifier:
+	- `powershell -ExecutionPolicy Bypass -File scripts/verify-latest.ps1`
+
+## Verifier output
+- Verified startup root cause from live logs: `listen EADDRINUSE: address already in use 127.0.0.1:3001`.
+- Safe startup command now exits successfully when API is already healthy:
+  - `[OK] API already running and healthy ... Reusing existing process`.
+- Cross-module runtime checks after auth returned `200` for all tested routes listed above.
+- Final verifier report:
+  - `overallStatus: RC_READY`
+  - `summary: pass=16, fail=0, total=16`
+  - report path: `evidence/wave-35/501-W35-P2-RC-VERIFY-ORCHESTRATOR/verify-rc/report.json`
+
+## Follow-ups
+1. Continue deeper UI click-through coverage for CPRS and portal feature paths using browser automation evidence.
+2. Keep using `pnpm run api:start:safe` as the default local API startup command to avoid false crash loops.
+
 # Phase 720 Update - CPRS Inbox Acknowledge Contract Recovery
 
 ## What changed

@@ -36,7 +36,7 @@ const DRY_RUN = args.includes('--dry-run');
 const phaseRangeArg = args.find((a) => /^\d+-\d+$/.test(a)) || args[args.indexOf('--phases') + 1];
 const domainFilter = args[args.indexOf('--domain') + 1];
 
-// ── Helpers ──
+// -- Helpers --
 
 function safeId(str) {
   return str.replace(/[^a-zA-Z0-9]/g, '_').toLowerCase();
@@ -51,7 +51,7 @@ function cleanDir(dir, prefix) {
   }
 }
 
-// ── Route Classification ──
+// -- Route Classification --
 
 /** Routes that are safe to GET without auth (health, ready, etc.) */
 const PUBLIC_ROUTES = new Set(['/health', '/ready', '/vista/ping']);
@@ -74,7 +74,7 @@ function isPortal(route) {
   return route.startsWith('/portal/') || route.startsWith('/intake/');
 }
 
-// ── Playwright Journey Generator ──
+// -- Playwright Journey Generator --
 
 function generatePlaywrightJourney(domain, phases) {
   const lines = [];
@@ -235,7 +235,7 @@ function generatePlaywrightJourney(domain, phases) {
   return lines.join('\n');
 }
 
-// ── RPC Replay Test Generator ──
+// -- RPC Replay Test Generator --
 
 function generateRpcReplayTests(phases, goldenTrace) {
   const lines = [];
@@ -383,7 +383,7 @@ function generateRpcReplayTests(phases, goldenTrace) {
   return lines.join('\n');
 }
 
-// ── Restart Resilience Generator ──
+// -- Restart Resilience Generator --
 
 function generateRestartResilienceTests(phases) {
   const lines = [];
@@ -550,7 +550,7 @@ function generateRestartResilienceTests(phases) {
   return lines.join('\n');
 }
 
-// ── Main ──
+// -- Main --
 
 console.log(`\n=== QA Ladder V2 Test Generator (Phase 144) ===\n`);
 
@@ -590,7 +590,7 @@ cleanDir(RESTART_DIR, 'restart-');
 
 let filesWritten = 0;
 
-// ── 1. Playwright Domain Journeys ──
+// -- 1. Playwright Domain Journeys --
 
 const domainGroups = new Map();
 for (const p of phases) {
@@ -616,7 +616,7 @@ for (const [domain, domainPhases] of domainGroups) {
   }
 }
 
-// ── 2. RPC Replay Tests ──
+// -- 2. RPC Replay Tests --
 
 const rpcPhases = phases.filter((p) => p.rpcWorkflows.length > 0);
 if (rpcPhases.length > 0) {
@@ -643,7 +643,7 @@ if (rpcPhases.length > 0) {
   }
 }
 
-// ── 3. Restart Resilience Tests ──
+// -- 3. Restart Resilience Tests --
 
 const restartPhases = phases.filter((p) => p.stores.length > 0);
 if (restartPhases.length > 0) {
@@ -659,7 +659,7 @@ if (restartPhases.length > 0) {
   }
 }
 
-// ── Summary ──
+// -- Summary --
 
 console.log(`\n  Summary:`);
 console.log(`    Phases processed: ${phases.length}`);

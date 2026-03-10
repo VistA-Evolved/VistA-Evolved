@@ -1,5 +1,5 @@
 /**
- * Phases 406-407 (W23-P8/P9): Exchange Packs — Types
+ * Phases 406-407 (W23-P8/P9): Exchange Packs -- Types
  */
 
 export type ExchangePackId =

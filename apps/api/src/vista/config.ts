@@ -1,21 +1,21 @@
 /**
- * VistA RPC Broker configuration — loaded from environment variables.
+ * VistA RPC Broker configuration -- loaded from environment variables.
  *
- * ┌──────────────────────────────────────────────────────────────────────┐
- * │  CREDENTIALS SETUP                                                  │
- * │                                                                     │
- * │  1. Copy the template:   cp apps/api/.env.example apps/api/.env.local │
- * │  2. Fill in credentials in  apps/api/.env.local                     │
- * │                                                                     │
- * │  WorldVistA Docker sandbox default accounts (from Docker Hub docs): │
- * │    PROV123  / PROV123!!   → PROVIDER,CLYDE WV   (DUZ 87)           │
- * │    PHARM123 / PHARM123!!  → PHARMACIST,LINDA WV                    │
- * │    NURSE123 / NURSE123!!  → NURSE,HELEN WV                         │
- * │                                                                     │
- * │  .env.local is git-ignored. Never commit real credentials.          │
- * │  See also: apps/api/.env.example, docs/runbooks/vista-rpc-default- │
- * │            patient-list.md                                          │
- * └──────────────────────────────────────────────────────────────────────┘
+ * +----------------------------------------------------------------------+
+ * |  CREDENTIALS SETUP                                                  |
+ * |                                                                     |
+ * |  1. Copy the template:   cp apps/api/.env.example apps/api/.env.local |
+ * |  2. Fill in credentials in  apps/api/.env.local                     |
+ * |                                                                     |
+ * |  WorldVistA Docker sandbox default accounts (from Docker Hub docs): |
+ * |    PROV123  / PROV123!!   -> PROVIDER,CLYDE WV   (DUZ 87)           |
+ * |    PHARM123 / PHARM123!!  -> PHARMACIST,LINDA WV                    |
+ * |    NURSE123 / NURSE123!!  -> NURSE,HELEN WV                         |
+ * |                                                                     |
+ * |  .env.local is git-ignored. Never commit real credentials.          |
+ * |  See also: apps/api/.env.example, docs/runbooks/vista-rpc-default- |
+ * |            patient-list.md                                          |
+ * +----------------------------------------------------------------------+
  */
 
 export const VISTA_HOST = process.env.VISTA_HOST || '127.0.0.1';

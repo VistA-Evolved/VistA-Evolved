@@ -15,7 +15,7 @@ import type {
   Problem,
 } from '@vista-evolved/shared-types';
 
-/** @deprecated Local alias — use PatientSummary directly */
+/** @deprecated Local alias -- use PatientSummary directly */
 type Patient = PatientSummary;
 
 interface SearchResult {
@@ -528,7 +528,7 @@ export default function PatientSearchPage() {
     <div className={styles.page}>
       <div className={styles.container}>
         <Link href="/" className={styles.backLink}>
-          ← Home
+          {'<- Home'}
         </Link>
 
         <h1 className={styles.title}>Patient Search</h1>
@@ -544,7 +544,7 @@ export default function PatientSearchPage() {
             type="text"
             value={query}
             onChange={(e) => setQuery(e.target.value)}
-            placeholder="Type a last name prefix…"
+            placeholder="Type a last name prefix..."
             autoFocus
           />
         </div>
@@ -552,7 +552,7 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.patientHeader}>
             <h2 className={styles.patientHeaderTitle}>Patient Header</h2>
-            {demoLoading && <p className={styles.loading}>Loading demographics…</p>}
+            {demoLoading && <p className={styles.loading}>Loading demographics...</p>}
             {demoError && <div className={styles.error}>{demoError}</div>}
             {demographics && (
               <div className={styles.patientGrid}>
@@ -580,7 +580,7 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.allergiesSection}>
             <h2 className={styles.allergiesSectionTitle}>Allergies</h2>
-            {allergyLoading && <p className={styles.loading}>Loading allergies…</p>}
+            {allergyLoading && <p className={styles.loading}>Loading allergies...</p>}
             {allergyError && <div className={styles.error}>{allergyError}</div>}
             {!allergyLoading && !allergyError && allergies.length === 0 && (
               <p className={styles.empty}>No known allergies.</p>
@@ -627,7 +627,7 @@ export default function PatientSearchPage() {
                   onClick={addAllergy}
                   disabled={addLoading || newAllergen.trim().length < 2}
                 >
-                  {addLoading ? 'Saving…' : 'Add'}
+                  {addLoading ? 'Saving...' : 'Add'}
                 </button>
               </div>
               {addError && <div className={styles.addAllergyError}>{addError}</div>}
@@ -640,7 +640,7 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.vitalsSection}>
             <h2 className={styles.vitalsSectionTitle}>Vitals</h2>
-            {vitalsLoading && <p className={styles.loading}>Loading vitals…</p>}
+            {vitalsLoading && <p className={styles.loading}>Loading vitals...</p>}
             {vitalsError && <div className={styles.error}>{vitalsError}</div>}
             {!vitalsLoading && !vitalsError && vitals.length === 0 && (
               <p className={styles.empty}>No vitals found.</p>
@@ -705,7 +705,7 @@ export default function PatientSearchPage() {
                   onClick={addVital}
                   disabled={addVitalLoading || newVitalValue.trim().length < 1}
                 >
-                  {addVitalLoading ? 'Saving…' : 'Record'}
+                  {addVitalLoading ? 'Saving...' : 'Record'}
                 </button>
               </div>
               {addVitalError && <div className={styles.addVitalError}>{addVitalError}</div>}
@@ -718,7 +718,7 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.medsSection}>
             <h2 className={styles.medsSectionTitle}>Medications</h2>
-            {medsLoading && <p className={styles.loading}>Loading medications…</p>}
+            {medsLoading && <p className={styles.loading}>Loading medications...</p>}
             {medsError && <div className={styles.error}>{medsError}</div>}
             {!medsLoading && !medsError && medications.length === 0 && (
               <p className={styles.empty}>No active medications.</p>
@@ -764,7 +764,7 @@ export default function PatientSearchPage() {
                   onClick={addMedication}
                   disabled={addMedLoading || newMedDrug.trim().length < 2}
                 >
-                  {addMedLoading ? 'Ordering…' : 'Order'}
+                  {addMedLoading ? 'Ordering...' : 'Order'}
                 </button>
               </div>
               {addMedError && <div className={styles.addMedError}>{addMedError}</div>}
@@ -777,7 +777,7 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.notesSection}>
             <h2 className={styles.notesSectionTitle}>Notes</h2>
-            {notesLoading && <p className={styles.loading}>Loading notes…</p>}
+            {notesLoading && <p className={styles.loading}>Loading notes...</p>}
             {notesError && <div className={styles.error}>{notesError}</div>}
             {!notesLoading && !notesError && notes.length === 0 && (
               <p className={styles.empty}>No notes found.</p>
@@ -830,7 +830,7 @@ export default function PatientSearchPage() {
                     setAddNoteError(null);
                     setAddNoteSuccess(null);
                   }}
-                  placeholder="Note text…"
+                  placeholder="Note text..."
                   rows={4}
                   disabled={addNoteLoading}
                 />
@@ -842,7 +842,7 @@ export default function PatientSearchPage() {
                   addNoteLoading || newNoteTitle.trim().length < 1 || newNoteText.trim().length < 1
                 }
               >
-                {addNoteLoading ? 'Saving…' : 'Save Note'}
+                {addNoteLoading ? 'Saving...' : 'Save Note'}
               </button>
               {addNoteError && <div className={styles.addNoteError}>{addNoteError}</div>}
               {addNoteSuccess && <div className={styles.addNoteSuccess}>{addNoteSuccess}</div>}
@@ -854,7 +854,7 @@ export default function PatientSearchPage() {
         {selected && (
           <div className={styles.problemsSection}>
             <h2 className={styles.problemsSectionTitle}>Problem List</h2>
-            {problemsLoading && <p className={styles.loading}>Loading problems…</p>}
+            {problemsLoading && <p className={styles.loading}>Loading problems...</p>}
             {problemsError && <div className={styles.error}>{problemsError}</div>}
             {!problemsLoading && !problemsError && problems.length === 0 && (
               <p className={styles.empty}>No problems found.</p>
@@ -873,7 +873,7 @@ export default function PatientSearchPage() {
                     <tr key={p.id} className={styles.problemsRow}>
                       <td className={styles.problemsTd}>{p.text}</td>
                       <td className={styles.problemsTdStatus}>{p.status}</td>
-                      <td className={styles.problemsTdOnset}>{p.onset || '—'}</td>
+                      <td className={styles.problemsTdOnset}>{p.onset || '--'}</td>
                     </tr>
                   ))}
                 </tbody>
@@ -902,7 +902,7 @@ export default function PatientSearchPage() {
                 onClick={addProblem}
                 disabled={addProblemLoading || newProblemText.trim().length < 2}
               >
-                {addProblemLoading ? 'Submitting…' : 'Try Add Problem'}
+                {addProblemLoading ? 'Submitting...' : 'Try Add Problem'}
               </button>
               {addProblemError && <div className={styles.addProblemError}>{addProblemError}</div>}
               {addProblemSuccess && (
@@ -912,7 +912,7 @@ export default function PatientSearchPage() {
           </div>
         )}
 
-        {loading && <p className={styles.loading}>Searching…</p>}
+        {loading && <p className={styles.loading}>Searching...</p>}
 
         {error && <div className={styles.error}>{error}</div>}
 

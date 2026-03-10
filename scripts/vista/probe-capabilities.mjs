@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * scripts/vista/probe-capabilities.mjs — Phase 425 (W26 P3)
+ * scripts/vista/probe-capabilities.mjs -- Phase 425 (W26 P3)
  *
  * Calls the running API's /vista/rpc-capabilities?refresh=true endpoint
  * and saves the result as a dated capability snapshot under data/vista/.
@@ -22,7 +22,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = resolve(__dirname, '../..');
 
-// ── CLI args ────────────────────────────────────────
+// -- CLI args ----------------------------------------
 
 const args = process.argv.slice(2);
 let apiUrl = 'http://127.0.0.1:3001';
@@ -47,7 +47,7 @@ Options:
   }
 }
 
-// ── Probe ────────────────────────────────────────
+// -- Probe ----------------------------------------
 
 console.log('\n=== VistA Capability Probe (Phase 425) ===\n');
 console.log(`  API:  ${apiUrl}`);
@@ -153,7 +153,7 @@ async function main() {
     console.log('');
   }
 
-  // ── Output ────────────────────────────────────────
+  // -- Output ----------------------------------------
 
   if (!outputPath) {
     const date = new Date().toISOString().slice(0, 10);
@@ -166,7 +166,7 @@ async function main() {
   writeFileSync(outputPath, JSON.stringify(snapshot, null, 2) + '\n', 'utf-8');
   console.log(`  Snapshot saved: ${outputPath}`);
 
-  // ── Compare against baseline ────────────────────────────────────────
+  // -- Compare against baseline ----------------------------------------
 
   if (compareBaseline) {
     const baselinePath = join(REPO_ROOT, 'data/vista/baseline-worldvista-docker.json');

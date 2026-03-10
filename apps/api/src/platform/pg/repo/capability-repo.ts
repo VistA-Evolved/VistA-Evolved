@@ -1,10 +1,10 @@
 /**
- * Capability Repository (PostgreSQL) — payer capability matrix
+ * Capability Repository (PostgreSQL) -- payer capability matrix
  *
  * Phase 102: Migrate Prototype Stores to PlatformStore
  *
  * Mirrors apps/api/src/platform/db/repo/capability-repo.ts using Postgres.
- * Every update MUST include a reason string — enforced at repo layer.
+ * Every update MUST include a reason string -- enforced at repo layer.
  */
 
 import { randomUUID } from 'node:crypto';

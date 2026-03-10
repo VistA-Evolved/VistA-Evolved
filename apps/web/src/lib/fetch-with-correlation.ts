@@ -1,15 +1,15 @@
 import { API_BASE } from '@/lib/api-config';
 /**
- * Correlated Fetch — Phase 77.
+ * Correlated Fetch -- Phase 77.
  *
  * Wraps the native `fetch()` to:
  *   1. Generate a unique `X-Request-Id` per request (or accept a caller-supplied one)
- *   2. Always send `credentials: 'include'` (httpOnly cookie auth — AGENTS.md #20)
+ *   2. Always send `credentials: 'include'` (httpOnly cookie auth -- AGENTS.md #20)
  *   3. Surface the server-assigned correlation ID from the response
  *
  * Usage:
  *   import { correlatedFetch, correlatedGet } from '../lib/fetch-with-correlation';
- *   const res = await correlatedFetch('/vista/allergies?dfn=3');
+ *   const res = await correlatedFetch('/vista/allergies?dfn=46');
  *   console.log(res.correlationId); // from X-Request-Id response header
  */
 
@@ -94,7 +94,7 @@ export async function correlatedFetch<T = unknown>(
 }
 
 /**
- * Convenience GET with correlation — returns just the parsed body.
+ * Convenience GET with correlation -- returns just the parsed body.
  * Backward-compatible with existing `get<T>(path)` pattern.
  */
 export async function correlatedGet<T>(path: string): Promise<T> {

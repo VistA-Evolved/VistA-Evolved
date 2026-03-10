@@ -1,6 +1,6 @@
 {{- if .Values.minio.enabled }}
 ---
-# MinIO — S3-compatible storage for dev backups, audit shipping, imaging
+# MinIO -- S3-compatible storage for dev backups, audit shipping, imaging
 apiVersion: apps/v1
 kind: Deployment
 metadata:

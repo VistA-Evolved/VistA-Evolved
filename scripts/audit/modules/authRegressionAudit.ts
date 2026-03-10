@@ -95,7 +95,7 @@ export const authRegressionAudit: AuditModule = {
 
     // Test 3: protected route without session
     try {
-      const { status } = await tryFetch(`${API_BASE}/vista/allergies?dfn=3`);
+      const { status } = await tryFetch(`${API_BASE}/vista/allergies?dfn=46`);
       if (status === 401) {
         findings.push({
           rule: 'auth-no-session',

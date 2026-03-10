@@ -14,7 +14,7 @@ async function portalFetch<T = unknown>(path: string, options: RequestInit = {})
 }
 
 /* ================================================================== */
-/* Adaptive Intake Form — SDC-like $next-question questionnaire         */
+/* Adaptive Intake Form -- SDC-like $next-question questionnaire         */
 /* ================================================================== */
 
 interface QRItem {
@@ -466,7 +466,7 @@ export default function IntakeSessionPage() {
                     fontStyle: 'italic',
                   }}
                 >
-                  {/* Display items are informational — no input needed */}
+                  {/* Display items are informational -- no input needed */}
                 </p>
               )}
 
@@ -491,7 +491,7 @@ export default function IntakeSessionPage() {
           </div>
         </div>
       ) : (
-        /* All questions answered — ready to submit */
+        /* All questions answered -- ready to submit */
         !completed && (
           <div style={cardStyle}>
             <h2 style={{ fontSize: '18px', fontWeight: 600, marginBottom: '8px' }}>

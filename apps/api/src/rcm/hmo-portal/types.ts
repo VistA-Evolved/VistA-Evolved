@@ -1,12 +1,12 @@
 /**
- * HMO Portal Adapter — Domain Types
+ * HMO Portal Adapter -- Domain Types
  *
  * Phase 97: Top-5 HMO LOA + Claim Packet + Portal Adapter Interface.
  *
  * Architecture:
  *   - HmoClaimPacket extends the pattern from Phase 96 ClaimPacket with HMO-specific fields
  *   - PortalAdapter is the strict interface for per-HMO portal interactions
- *   - VaultRef pattern: credentials are never stored — only opaque vault references
+ *   - VaultRef pattern: credentials are never stored -- only opaque vault references
  *   - All adapters start in "manual_assisted" mode (download + deep link)
  *   - LOA packet types extend Phase 94 LoaRequest
  *
@@ -14,7 +14,7 @@
  * This module does NOT become its own ledger.
  */
 
-/* ── Top-5 Portal-Capable HMOs ──────────────────────────────── */
+/* -- Top-5 Portal-Capable HMOs -------------------------------- */
 
 export const PORTAL_CAPABLE_HMOS = [
   'PH-MAXICARE',
@@ -30,11 +30,11 @@ export function isPortalCapableHmo(payerId: string): payerId is PortalCapableHmo
   return (PORTAL_CAPABLE_HMOS as readonly string[]).includes(payerId);
 }
 
-/* ── Vault Reference (no credential storage) ────────────────── */
+/* -- Vault Reference (no credential storage) ------------------ */
 
 /**
  * Opaque reference to credentials stored in facility-controlled vault.
- * The adapter NEVER sees actual credentials — only the reference.
+ * The adapter NEVER sees actual credentials -- only the reference.
  * The vault is external to VistA-Evolved (e.g., HashiCorp Vault, AWS SM).
  */
 export interface VaultRef {
@@ -46,13 +46,13 @@ export interface VaultRef {
   version?: string;
 }
 
-/* ── Portal Adapter Mode ────────────────────────────────────── */
+/* -- Portal Adapter Mode -------------------------------------- */
 
 export type PortalAdapterMode =
   | 'manual_assisted' // download packet + deep link to portal (always available)
   | 'vault_automated'; // auto-submit via vault-resolved credentials (future)
 
-/* ── LOA Packet Types ───────────────────────────────────────── */
+/* -- LOA Packet Types ----------------------------------------- */
 
 export type LoaPacketFormat = 'json' | 'pdf_text';
 
@@ -81,14 +81,14 @@ export interface LoaPacketTemplate {
   payerSpecificNotes?: string;
 }
 
-/** LOA request packet — structured data for portal upload or print */
+/** LOA request packet -- structured data for portal upload or print */
 export interface LoaPacket {
   packetId: string;
   loaRequestId: string; // back-ref to Phase 94 LoaRequest.id
   payerId: string;
   payerName: string;
 
-  // Patient basics (display only — VistA is source of truth)
+  // Patient basics (display only -- VistA is source of truth)
   patientName: string;
   patientDfn: string;
   memberId?: string; // HMO card number
@@ -145,7 +145,7 @@ export interface LoaPacketExport {
   generatedAt: string;
 }
 
-/* ── HMO Claim Packet ──────────────────────────────────────── */
+/* -- HMO Claim Packet ---------------------------------------- */
 
 /**
  * HMO-specific claim packet. Follows the Phase 96 ClaimPacket pattern
@@ -240,7 +240,7 @@ export interface HmoClaimPacket {
   contentHash: string;
 }
 
-/* ── Portal Adapter Interface ───────────────────────────────── */
+/* -- Portal Adapter Interface --------------------------------- */
 
 export interface PortalSubmitResult {
   ok: boolean;
@@ -285,14 +285,14 @@ export interface PortalRemitResult {
 }
 
 /**
- * Portal Adapter — strict interface for per-HMO portal interactions.
+ * Portal Adapter -- strict interface for per-HMO portal interactions.
  *
  * CRITICAL: No credential storage. All authenticated operations receive
  * a VaultRef. In manual_assisted mode (Phase 97), the VaultRef is unused
- * — the adapter generates download packages + deep links instead.
+ * -- the adapter generates download packages + deep links instead.
  *
  * When vault-automated mode is implemented (future), the adapter will
- * resolve credentials from VaultRef → portal API calls.
+ * resolve credentials from VaultRef -> portal API calls.
  */
 export interface PortalAdapter {
   /** HMO payer ID */
@@ -336,7 +336,7 @@ export interface PortalAdapter {
   healthCheck(): Promise<{ healthy: boolean; details: string }>;
 }
 
-/* ── Portal Adapter Registry ────────────────────────────────── */
+/* -- Portal Adapter Registry ---------------------------------- */
 
 const adapterRegistry = new Map<string, PortalAdapter>();
 
@@ -362,7 +362,7 @@ export function listPortalAdapters(): Array<{
   }));
 }
 
-/* ── HMO Submission Status Tracking ─────────────────────────── */
+/* -- HMO Submission Status Tracking --------------------------- */
 
 export type HmoSubmissionStatus =
   | 'draft'
@@ -376,7 +376,7 @@ export type HmoSubmissionStatus =
   | 'claim_approved'
   | 'claim_denied'
   | 'remittance_received'
-  | 'posted_to_vista'; // terminal — ledger posting is VistA-first
+  | 'posted_to_vista'; // terminal -- ledger posting is VistA-first
 
 export const HMO_STATUS_TRANSITIONS: Record<HmoSubmissionStatus, HmoSubmissionStatus[]> = {
   draft: ['loa_pending'],
@@ -411,7 +411,7 @@ export function isHmoManualTransition(to: HmoSubmissionStatus): boolean {
   ].includes(to);
 }
 
-/* ── HMO Submission Record ──────────────────────────────────── */
+/* -- HMO Submission Record ------------------------------------ */
 
 export interface HmoSubmissionRecord {
   id: string;

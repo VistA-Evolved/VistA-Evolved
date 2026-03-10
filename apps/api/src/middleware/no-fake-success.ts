@@ -1,5 +1,5 @@
 /**
- * Phase 72 — No Fake Success Middleware
+ * Phase 72 -- No Fake Success Middleware
  *
  * Fastify onSend hook that validates API responses returning `ok: true`:
  *
@@ -40,7 +40,7 @@ const EXEMPT_PATTERNS: RegExp[] = [
 ];
 
 /**
- * Fields that count as effect proof — if ANY of these exist and are
+ * Fields that count as effect proof -- if ANY of these exist and are
  * non-null/non-undefined in the response, the check passes.
  */
 const EFFECT_PROOF_FIELDS = new Set([

@@ -6,7 +6,7 @@
  *   - OpenEMR-style export CSV (structure only -- no code copy)
  *   - FHIR Bundle placeholder (future)
  *
- * Each template defines source→target field mappings, transforms, and
+ * Each template defines source->target field mappings, transforms, and
  * validation rules. Templates are registered at startup.
  */
 
@@ -265,7 +265,7 @@ const OPENEMR_PATIENT: MappingTemplate = {
       target: 'sex',
       required: true,
       transforms: [{ fn: 'uppercase' }, { fn: 'trim' }],
-      description: 'Male→M, Female→F',
+      description: 'Male->M, Female->F',
     },
     { source: 'street', target: 'address.street', required: false, transforms: [{ fn: 'trim' }] },
     { source: 'city', target: 'address.city', required: false, transforms: [{ fn: 'trim' }] },
@@ -324,12 +324,12 @@ const OPENEMR_ALLERGY: MappingTemplate = {
 };
 
 /* ------------------------------------------------------------------ */
-/* FHIR R4 Bundle — real templates (match fhir-bundle-parser.ts)       */
+/* FHIR R4 Bundle -- real templates (match fhir-bundle-parser.ts)       */
 /* ------------------------------------------------------------------ */
 
 const FHIR_PATIENT: MappingTemplate = {
   id: 'fhir-bundle-patient',
-  name: 'FHIR R4 Bundle — Patients',
+  name: 'FHIR R4 Bundle -- Patients',
   sourceFormat: 'fhir-bundle',
   entityType: 'patient',
   version: '2.0.0',
@@ -362,7 +362,7 @@ const FHIR_PATIENT: MappingTemplate = {
 
 const FHIR_ALLERGY: MappingTemplate = {
   id: 'fhir-bundle-allergy',
-  name: 'FHIR R4 Bundle — Allergies',
+  name: 'FHIR R4 Bundle -- Allergies',
   sourceFormat: 'fhir-bundle',
   entityType: 'allergy',
   version: '2.0.0',
@@ -395,7 +395,7 @@ const FHIR_ALLERGY: MappingTemplate = {
 
 const FHIR_CONDITION: MappingTemplate = {
   id: 'fhir-bundle-condition',
-  name: 'FHIR R4 Bundle — Problems/Conditions',
+  name: 'FHIR R4 Bundle -- Problems/Conditions',
   sourceFormat: 'fhir-bundle',
   entityType: 'problem',
   version: '2.0.0',
@@ -423,7 +423,7 @@ const FHIR_CONDITION: MappingTemplate = {
 
 const FHIR_OBSERVATION: MappingTemplate = {
   id: 'fhir-bundle-observation',
-  name: 'FHIR R4 Bundle — Observations/Vitals',
+  name: 'FHIR R4 Bundle -- Observations/Vitals',
   sourceFormat: 'fhir-bundle',
   entityType: 'problem',
   version: '2.0.0',
@@ -447,7 +447,7 @@ const FHIR_OBSERVATION: MappingTemplate = {
 
 const FHIR_MEDICATION_REQUEST: MappingTemplate = {
   id: 'fhir-bundle-medication-request',
-  name: 'FHIR R4 Bundle — Medication Requests',
+  name: 'FHIR R4 Bundle -- Medication Requests',
   sourceFormat: 'fhir-bundle',
   entityType: 'medication',
   version: '2.0.0',
@@ -476,7 +476,7 @@ const FHIR_MEDICATION_REQUEST: MappingTemplate = {
 
 const FHIR_ENCOUNTER: MappingTemplate = {
   id: 'fhir-bundle-encounter',
-  name: 'FHIR R4 Bundle — Encounters',
+  name: 'FHIR R4 Bundle -- Encounters',
   sourceFormat: 'fhir-bundle',
   entityType: 'appointment',
   version: '2.0.0',
@@ -504,7 +504,7 @@ const FHIR_ENCOUNTER: MappingTemplate = {
 
 const FHIR_APPOINTMENT: MappingTemplate = {
   id: 'fhir-bundle-appointment',
-  name: 'FHIR R4 Bundle — Appointments',
+  name: 'FHIR R4 Bundle -- Appointments',
   sourceFormat: 'fhir-bundle',
   entityType: 'appointment',
   version: '2.0.0',
@@ -527,7 +527,7 @@ const FHIR_APPOINTMENT: MappingTemplate = {
 
 const FHIR_DOCUMENT_REFERENCE: MappingTemplate = {
   id: 'fhir-bundle-document-reference',
-  name: 'FHIR R4 Bundle — Document References (Notes)',
+  name: 'FHIR R4 Bundle -- Document References (Notes)',
   sourceFormat: 'fhir-bundle',
   entityType: 'note',
   version: '2.0.0',
@@ -548,7 +548,7 @@ const FHIR_DOCUMENT_REFERENCE: MappingTemplate = {
 
 const EPIC_CCDA_PATIENT: MappingTemplate = {
   id: 'epic-ccda-patient',
-  name: 'Epic C-CDA — Patients',
+  name: 'Epic C-CDA -- Patients',
   sourceFormat: 'epic-ccda',
   entityType: 'patient',
   version: '1.0.0',
@@ -582,7 +582,7 @@ const EPIC_CCDA_PATIENT: MappingTemplate = {
 
 const EPIC_CCDA_PROBLEM: MappingTemplate = {
   id: 'epic-ccda-problem',
-  name: 'Epic C-CDA — Problems',
+  name: 'Epic C-CDA -- Problems',
   sourceFormat: 'epic-ccda',
   entityType: 'problem',
   version: '1.0.0',
@@ -615,7 +615,7 @@ const EPIC_CCDA_PROBLEM: MappingTemplate = {
 
 const CERNER_CCDA_PATIENT: MappingTemplate = {
   id: 'cerner-ccda-patient',
-  name: 'Cerner/Oracle Health C-CDA — Patients',
+  name: 'Cerner/Oracle Health C-CDA -- Patients',
   sourceFormat: 'cerner-ccda',
   entityType: 'patient',
   version: '1.0.0',
@@ -642,7 +642,7 @@ const CERNER_CCDA_PATIENT: MappingTemplate = {
 
 const CERNER_CCDA_ALLERGY: MappingTemplate = {
   id: 'cerner-ccda-allergy',
-  name: 'Cerner/Oracle Health C-CDA — Allergies',
+  name: 'Cerner/Oracle Health C-CDA -- Allergies',
   sourceFormat: 'cerner-ccda',
   entityType: 'allergy',
   version: '1.0.0',
@@ -666,7 +666,7 @@ const CERNER_CCDA_ALLERGY: MappingTemplate = {
 
 const ATHENA_CCDA_PATIENT: MappingTemplate = {
   id: 'athena-ccda-patient',
-  name: 'athenahealth C-CDA — Patients',
+  name: 'athenahealth C-CDA -- Patients',
   sourceFormat: 'athena-ccda',
   entityType: 'patient',
   version: '1.0.0',
@@ -693,7 +693,7 @@ const ATHENA_CCDA_PATIENT: MappingTemplate = {
 
 const ECW_CCDA_PATIENT: MappingTemplate = {
   id: 'ecw-ccda-patient',
-  name: 'eClinicalWorks C-CDA — Patients',
+  name: 'eClinicalWorks C-CDA -- Patients',
   sourceFormat: 'ecw-ccda',
   entityType: 'patient',
   version: '1.0.0',
@@ -719,7 +719,7 @@ const ECW_CCDA_PATIENT: MappingTemplate = {
 
 const PRACTICEFUSION_CCDA_PATIENT: MappingTemplate = {
   id: 'practicefusion-ccda-patient',
-  name: 'Practice Fusion C-CDA — Patients',
+  name: 'Practice Fusion C-CDA -- Patients',
   sourceFormat: 'practicefusion-ccda',
   entityType: 'patient',
   version: '1.0.0',

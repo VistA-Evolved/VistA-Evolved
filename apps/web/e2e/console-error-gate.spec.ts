@@ -1,25 +1,25 @@
 /**
- * Phase 37 — E2E: Console Error Gate.
+ * Phase 37 -- E2E: Console Error Gate.
  *
  * Navigates through all major routes and asserts zero unexpected console.error calls.
  * This catches runtime errors, unhandled promise rejections, and broken API calls.
  */
 
 import { test, expect } from '@playwright/test';
-import { setupConsoleGate } from './helpers/auth';
+import { chartRoute, setupConsoleGate } from './helpers/auth';
 
 const ROUTES = [
   { path: '/cprs/login', requiresAuth: false, label: 'Login' },
   { path: '/cprs/patient-search', requiresAuth: true, label: 'Patient Search' },
-  { path: '/cprs/chart/3/cover', requiresAuth: true, label: 'Cover Sheet' },
-  { path: '/cprs/chart/3/problems', requiresAuth: true, label: 'Problems' },
-  { path: '/cprs/chart/3/meds', requiresAuth: true, label: 'Medications' },
-  { path: '/cprs/chart/3/orders', requiresAuth: true, label: 'Orders' },
-  { path: '/cprs/chart/3/notes', requiresAuth: true, label: 'Notes' },
-  { path: '/cprs/chart/3/consults', requiresAuth: true, label: 'Consults' },
-  { path: '/cprs/chart/3/labs', requiresAuth: true, label: 'Labs' },
-  { path: '/cprs/chart/3/reports', requiresAuth: true, label: 'Reports' },
-  { path: '/cprs/chart/3/imaging', requiresAuth: true, label: 'Imaging' },
+  { path: chartRoute('cover'), requiresAuth: true, label: 'Cover Sheet' },
+  { path: chartRoute('problems'), requiresAuth: true, label: 'Problems' },
+  { path: chartRoute('meds'), requiresAuth: true, label: 'Medications' },
+  { path: chartRoute('orders'), requiresAuth: true, label: 'Orders' },
+  { path: chartRoute('notes'), requiresAuth: true, label: 'Notes' },
+  { path: chartRoute('consults'), requiresAuth: true, label: 'Consults' },
+  { path: chartRoute('labs'), requiresAuth: true, label: 'Labs' },
+  { path: chartRoute('reports'), requiresAuth: true, label: 'Reports' },
+  { path: chartRoute('imaging'), requiresAuth: true, label: 'Imaging' },
   { path: '/cprs/inbox', requiresAuth: true, label: 'Inbox' },
   { path: '/cprs/settings/preferences', requiresAuth: true, label: 'Preferences' },
   { path: '/cprs/admin/integrations', requiresAuth: true, label: 'Admin Integrations' },

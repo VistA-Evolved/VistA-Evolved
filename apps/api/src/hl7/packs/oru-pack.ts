@@ -1,5 +1,5 @@
 /**
- * HL7v2 Message Packs — ORU (Results)
+ * HL7v2 Message Packs -- ORU (Results)
  *
  * Phase 241 (Wave 6 P4): Builders and validators for ORU messages.
  * ORU^R01 carries observation/result data (labs, vitals, radiology reports).
@@ -40,7 +40,7 @@ export interface ObservationResult {
   abnormalFlag?: string;
   /** Observation result status (F=Final, P=Preliminary, C=Corrected) */
   resultStatus: string;
-  /** Observation date/time — YYYYMMDDHHMMSS */
+  /** Observation date/time -- YYYYMMDDHHMMSS */
   observationDateTime?: string;
 }
 
@@ -191,7 +191,7 @@ export function validateOruMessage(message: Hl7Message): ValidationResult {
 
 export const oruPack: MessagePack = {
   id: 'oru',
-  name: 'ORU — Results',
+  name: 'ORU -- Results',
   messageTypes: ORU_EVENTS,
   description: 'Observation Result messages (R01) for labs, vitals, radiology reports',
   validate: validateOruMessage,

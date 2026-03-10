@@ -1,5 +1,5 @@
 /**
- * Enhanced VistA Clinical Report Pipeline — Phase 25B.
+ * Enhanced VistA Clinical Report Pipeline -- Phase 25B.
  *
  * Wraps the existing ORWRP REPORT TEXT / ORWRP REPORT LISTS RPCs with:
  *   - Per-user+patient caching (short TTL, prevents hammering VistA)
@@ -8,7 +8,7 @@
  *   - Analytics event recording (usage.report)
  *   - Error handling via safeCallRpc
  *
- * VistA remains the single source of truth — this layer is read-through only.
+ * VistA remains the single source of truth -- this layer is read-through only.
  */
 
 import { log } from "../lib/logger.js";

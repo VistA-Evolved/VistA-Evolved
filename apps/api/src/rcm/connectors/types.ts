@@ -1,15 +1,15 @@
 /**
- * RCM Connector Interface — Pluggable Transport Layer
+ * RCM Connector Interface -- Pluggable Transport Layer
  *
  * All payer connectivity goes through a connector that implements this
  * interface. The connector is selected based on payer.integrationMode.
  *
- * Phase 38 — RCM + Payer Connectivity
+ * Phase 38 -- RCM + Payer Connectivity
  */
 
 import type { X12TransactionSet, EdiResponseError } from '../edi/types.js';
 
-/* ─── Connector constants ────────────────────────────────────────── */
+/* --- Connector constants ------------------------------------------ */
 
 /** Default timeout for outbound connector calls (ms). Connectors should
  *  abort any HTTP/TCP request that exceeds this. Override per-connector
@@ -19,7 +19,7 @@ export const CONNECTOR_DEFAULT_TIMEOUT_MS = Number(process.env.RCM_CONNECTOR_TIM
 /** Default timeout for health-check probes (ms). */
 export const CONNECTOR_HEALTH_TIMEOUT_MS = Number(process.env.RCM_HEALTH_TIMEOUT_MS ?? 10_000);
 
-/* ─── Connector interface ────────────────────────────────────────── */
+/* --- Connector interface ------------------------------------------ */
 
 export interface ConnectorResult {
   success: boolean;
@@ -71,7 +71,7 @@ export interface RcmConnector {
   shutdown(): Promise<void>;
 }
 
-/* ─── Connector registry ─────────────────────────────────────────── */
+/* --- Connector registry ------------------------------------------- */
 
 const connectors = new Map<string, RcmConnector>();
 

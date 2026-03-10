@@ -1,5 +1,5 @@
 /**
- * Resilience Drill Configuration — Phase 254
+ * Resilience Drill Configuration -- Phase 254
  *
  * Defines failure injection drills for resilience certification.
  * Each drill simulates a specific failure mode and validates recovery.
@@ -67,7 +67,7 @@ export const VISTA_DOWN_DRILL: ResilienceDrill = {
       seq: 4,
       action: 'Check API health (should still be alive)',
       command: 'curl -s http://localhost:3001/health',
-      verify: "Returns {status: 'ok'} — liveness not gated on VistA",
+      verify: "Returns {status: 'ok'} -- liveness not gated on VistA",
     },
     {
       seq: 5,
@@ -95,7 +95,7 @@ export const VISTA_DOWN_DRILL: ResilienceDrill = {
     },
     {
       seq: 9,
-      action: 'Verify recovery — VistA ping succeeds again',
+      action: 'Verify recovery -- VistA ping succeeds again',
       command: 'curl -s http://localhost:3001/vista/ping',
       verify: 'Returns {ok: true}',
     },

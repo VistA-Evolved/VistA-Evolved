@@ -1,5 +1,5 @@
 /**
- * UI Extension Slot routes — Phase 359 (W18-P6)
+ * UI Extension Slot routes -- Phase 359 (W18-P6)
  *
  * REST endpoints for managing UI extension slots and policies.
  * Prefix: /ui-extensions
@@ -47,7 +47,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     return null;
   }
 
-  // ── Health ──────────────────────────────────────────────────────────
+  // -- Health ----------------------------------------------------------
   server.get('/ui-extensions/health', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -55,12 +55,12 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, phase: 359, ...stats });
   });
 
-  // ── Slot locations ─────────────────────────────────────────────────
+  // -- Slot locations -------------------------------------------------
   server.get('/ui-extensions/slots', async (_req: FastifyRequest, reply: FastifyReply) => {
     return reply.send({ ok: true, slotLocations: SLOT_LOCATIONS });
   });
 
-  // ── Register extension ─────────────────────────────────────────────
+  // -- Register extension ---------------------------------------------
   server.post('/ui-extensions', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -97,7 +97,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     }
   });
 
-  // ── Get extension ──────────────────────────────────────────────────
+  // -- Get extension --------------------------------------------------
   server.get('/ui-extensions/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -107,7 +107,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, extension: ext });
   });
 
-  // ── Update extension status (approve/disable) ─────────────────────
+  // -- Update extension status (approve/disable) ---------------------
   server.patch('/ui-extensions/:id/status', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -127,7 +127,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, extension: ext });
   });
 
-  // ── Unregister extension ───────────────────────────────────────────
+  // -- Unregister extension -------------------------------------------
   server.delete('/ui-extensions/:id', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -137,7 +137,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, deleted: true });
   });
 
-  // ── Get extensions for a slot ──────────────────────────────────────
+  // -- Get extensions for a slot --------------------------------------
   server.get('/ui-extensions/slot/:location', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -150,7 +150,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, extensions: exts, count: exts.length });
   });
 
-  // ── List all extensions ────────────────────────────────────────────
+  // -- List all extensions --------------------------------------------
   server.get('/ui-extensions/list', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -162,7 +162,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, extensions: exts, count: exts.length });
   });
 
-  // ── Set slot policy ────────────────────────────────────────────────
+  // -- Set slot policy ------------------------------------------------
   server.post('/ui-extensions/policies', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -184,7 +184,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, policy });
   });
 
-  // ── Get slot policy ────────────────────────────────────────────────
+  // -- Get slot policy ------------------------------------------------
   server.get(
     '/ui-extensions/policies/:location',
     async (req: FastifyRequest, reply: FastifyReply) => {
@@ -197,7 +197,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     }
   );
 
-  // ── List all policies ──────────────────────────────────────────────
+  // -- List all policies ----------------------------------------------
   server.get('/ui-extensions/policies', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;
@@ -205,7 +205,7 @@ export async function uiExtensionRoutes(server: FastifyInstance): Promise<void> 
     return reply.send({ ok: true, policies, count: policies.length });
   });
 
-  // ── Stats ──────────────────────────────────────────────────────────
+  // -- Stats ----------------------------------------------------------
   server.get('/ui-extensions/stats', async (req: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(req, reply);
     if (!tenantId) return;

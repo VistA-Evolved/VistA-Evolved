@@ -5,19 +5,19 @@
  * testing, credential vault, rate limiting, and transport profiles.
  *
  * Routes:
- *   GET    /clearinghouse/transports             — list transport providers
- *   POST   /clearinghouse/transports/test/:id    — test connection for a transport
- *   POST   /clearinghouse/profiles               — create transport profile
- *   GET    /clearinghouse/profiles               — list transport profiles
- *   GET    /clearinghouse/profiles/:id           — get one profile
- *   DELETE /clearinghouse/profiles/:id           — delete profile
- *   GET    /clearinghouse/vault/status           — vault health + key list
- *   POST   /clearinghouse/vault/credentials      — store a credential
- *   DELETE /clearinghouse/vault/credentials/:key — remove a credential
- *   GET    /clearinghouse/rate-limits            — rate limit dashboard
- *   POST   /clearinghouse/rate-limits            — configure rate limit
- *   GET    /clearinghouse/rate-limits/:id        — specific connector rate limit
- *   GET    /clearinghouse/health                 — transport layer health
+ *   GET    /clearinghouse/transports             -- list transport providers
+ *   POST   /clearinghouse/transports/test/:id    -- test connection for a transport
+ *   POST   /clearinghouse/profiles               -- create transport profile
+ *   GET    /clearinghouse/profiles               -- list transport profiles
+ *   GET    /clearinghouse/profiles/:id           -- get one profile
+ *   DELETE /clearinghouse/profiles/:id           -- delete profile
+ *   GET    /clearinghouse/vault/status           -- vault health + key list
+ *   POST   /clearinghouse/vault/credentials      -- store a credential
+ *   DELETE /clearinghouse/vault/credentials/:key -- remove a credential
+ *   GET    /clearinghouse/rate-limits            -- rate limit dashboard
+ *   POST   /clearinghouse/rate-limits            -- configure rate limit
+ *   GET    /clearinghouse/rate-limits/:id        -- specific connector rate limit
+ *   GET    /clearinghouse/health                 -- transport layer health
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -65,7 +65,7 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
     return `${tenantId}::${key}`;
   }
 
-  // ─── Transport Providers ─────────────────────────────────────────
+  // --- Transport Providers -----------------------------------------
 
   app.get('/clearinghouse/transports', async () => {
     const transports = listTransports();
@@ -95,7 +95,7 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
     return { ok: result.connected, result };
   });
 
-  // ─── Transport Profiles ──────────────────────────────────────────
+  // --- Transport Profiles ------------------------------------------
 
   app.post('/clearinghouse/profiles', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -158,7 +158,7 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
     return { ok: true, deleted: true };
   });
 
-  // ─── Credential Vault ───────────────────────────────────────────
+  // --- Credential Vault -------------------------------------------
 
   app.get('/clearinghouse/vault/status', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -175,7 +175,7 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
       providers,
       health,
       credentialCount: keys.filter((key) => key.startsWith(`${tenantId}::`)).length,
-      // Don't expose actual key names — just count
+      // Don't expose actual key names -- just count
     };
   });
 
@@ -222,7 +222,7 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
     return { ok: true, deleted: true };
   });
 
-  // ─── Rate Limiting ──────────────────────────────────────────────
+  // --- Rate Limiting ----------------------------------------------
 
   app.get('/clearinghouse/rate-limits', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -258,7 +258,7 @@ export async function clearinghouseTransportRoutes(app: FastifyInstance): Promis
     return { ok: true, connectorId: id, ...status };
   });
 
-  // ─── Health ─────────────────────────────────────────────────────
+  // --- Health -----------------------------------------------------
 
   app.get('/clearinghouse/health', async (request, reply) => {
     const session = await requireSession(request, reply);

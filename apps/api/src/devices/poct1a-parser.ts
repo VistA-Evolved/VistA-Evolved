@@ -5,11 +5,13 @@
  * Testing devices. Handles POCT1-A observation messages with Device,
  * Patient, and Result elements.
  *
- * No external XML dependencies — uses regex-based lightweight extraction
+ * No external XML dependencies -- uses regex-based lightweight extraction
  * for the well-defined POCT1-A schema elements.
  *
  * Reference: CLSI POCT1-A (IEEE 11073-10472)
  */
+
+import { safeErr } from '../lib/safe-error.js';
 
 // ---------------------------------------------------------------------------
 // POCT1-A Types
@@ -230,7 +232,7 @@ export function parsePoct1a(xml: string): Poct1aParseResult {
     return {
       ok: false,
       observations: [],
-      error: err.message || 'POCT1-A parse error',
+      error: safeErr(err),
     };
   }
 }

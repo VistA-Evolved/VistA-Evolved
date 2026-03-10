@@ -1,5 +1,5 @@
 /**
- * @vista-evolved/shared-types — root barrel.
+ * @vista-evolved/shared-types -- root barrel.
  *
  * Re-exports all canonical types for the VistA-Evolved monorepo.
  * Import via:

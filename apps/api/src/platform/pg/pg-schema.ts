@@ -1,5 +1,5 @@
 /**
- * Platform DB — PostgreSQL Schema (Drizzle ORM)
+ * Platform DB -- PostgreSQL Schema (Drizzle ORM)
  *
  * Phase 101: Platform Data Architecture Convergence
  *
@@ -27,11 +27,11 @@ import {
 } from 'drizzle-orm/pg-core';
 
 /* ================================================================
- *  CORE PLATFORM TABLES (new — Postgres-only)
+ *  CORE PLATFORM TABLES (new -- Postgres-only)
  * ================================================================ */
 
 /**
- * Platform Audit Event — append-only, hash-chained.
+ * Platform Audit Event -- append-only, hash-chained.
  * Replaces in-memory ring buffers for platform-level audit.
  */
 export const platformAuditEvent = pgTable(
@@ -57,7 +57,7 @@ export const platformAuditEvent = pgTable(
 );
 
 /**
- * Idempotency Key — prevents duplicate writes from retried requests.
+ * Idempotency Key -- prevents duplicate writes from retried requests.
  * Phase 101 creates the table. Phase 102 adds middleware.
  */
 export const idempotencyKey = pgTable(
@@ -80,7 +80,7 @@ export const idempotencyKey = pgTable(
 );
 
 /**
- * Outbox Event — transactional outbox for reliable event publishing.
+ * Outbox Event -- transactional outbox for reliable event publishing.
  * Phase 101 creates the table. Phase 102+ adds consumer polling.
  */
 export const outboxEvent = pgTable(
@@ -103,7 +103,7 @@ export const outboxEvent = pgTable(
 );
 
 /* ================================================================
- *  PAYER DOMAIN TABLES (mirrors of SQLite — Phase 101 Wave 1)
+ *  PAYER DOMAIN TABLES (mirrors of SQLite -- Phase 101 Wave 1)
  * ================================================================ */
 
 export const payer = pgTable(
@@ -220,7 +220,7 @@ export const payerAuditEvent = pgTable(
 );
 
 /* ================================================================
- *  DENIAL + RECONCILIATION TABLES (Wave 2 — mirror from SQLite)
+ *  DENIAL + RECONCILIATION TABLES (Wave 2 -- mirror from SQLite)
  * ================================================================ */
 
 export const denialCase = pgTable(
@@ -379,7 +379,7 @@ export const underpaymentCase = pgTable(
 );
 
 /* ================================================================
- *  ELIGIBILITY + CLAIM STATUS (Phase 100 — Wave 2)
+ *  ELIGIBILITY + CLAIM STATUS (Phase 100 -- Wave 2)
  * ================================================================ */
 
 export const eligibilityCheck = pgTable(
@@ -433,11 +433,11 @@ export const claimStatusCheck = pgTable(
 );
 
 /* ================================================================
- *  CAPABILITY MATRIX (Phase 102 — new, Postgres-only)
+ *  CAPABILITY MATRIX (Phase 102 -- new, Postgres-only)
  * ================================================================ */
 
 /**
- * Capability matrix cell — one row per (payerId × capabilityType).
+ * Capability matrix cell -- one row per (payerId x capabilityType).
  * Tracks integration readiness per payer per capability.
  */
 export const capabilityMatrixCell = pgTable(
@@ -462,7 +462,7 @@ export const capabilityMatrixCell = pgTable(
 );
 
 /**
- * Capability matrix evidence — one-to-many evidence links per cell.
+ * Capability matrix evidence -- one-to-many evidence links per cell.
  */
 export const capabilityMatrixEvidence = pgTable(
   'capability_matrix_evidence',
@@ -485,7 +485,7 @@ export const capabilityMatrixEvidence = pgTable(
  * ================================================================ */
 
 /**
- * Auth Session — durable session storage for multi-instance deployments.
+ * Auth Session -- durable session storage for multi-instance deployments.
  * Mirrors SQLite auth_session. Token hashes stored, never raw tokens.
  */
 export const pgAuthSession = pgTable(
@@ -518,7 +518,7 @@ export const pgAuthSession = pgTable(
 );
 
 /**
- * RCM Work Item — durable work queue for multi-instance deployments.
+ * RCM Work Item -- durable work queue for multi-instance deployments.
  * Mirrors SQLite rcm_work_item.
  */
 export const pgRcmWorkItem = pgTable(
@@ -565,7 +565,7 @@ export const pgRcmWorkItem = pgTable(
 );
 
 /**
- * RCM Work Item Event — audit trail for work item status changes.
+ * RCM Work Item Event -- audit trail for work item status changes.
  * Mirrors SQLite rcm_work_item_event.
  */
 export const pgRcmWorkItemEvent = pgTable(
@@ -588,11 +588,11 @@ export const pgRcmWorkItemEvent = pgTable(
 );
 
 /* ================================================================
- *  RCM DURABILITY TABLES (Phase 126: Map stores → Postgres)
+ *  RCM DURABILITY TABLES (Phase 126: Map stores -> Postgres)
  * ================================================================ */
 
 /**
- * RCM Claim — durable claim lifecycle store.
+ * RCM Claim -- durable claim lifecycle store.
  * Mirrors SQLite rcm_claim (Phase 121).
  */
 export const pgRcmClaim = pgTable(
@@ -651,7 +651,7 @@ export const pgRcmClaim = pgTable(
 );
 
 /**
- * RCM Remittance — durable remittance/ERA store.
+ * RCM Remittance -- durable remittance/ERA store.
  * Mirrors SQLite rcm_remittance (Phase 121).
  */
 export const pgRcmRemittance = pgTable(
@@ -689,7 +689,7 @@ export const pgRcmRemittance = pgTable(
 );
 
 /**
- * RCM Claim Case — durable claim lifecycle case store.
+ * RCM Claim Case -- durable claim lifecycle case store.
  * Mirrors SQLite rcm_claim_case (Phase 121).
  */
 export const pgRcmClaimCase = pgTable(
@@ -729,7 +729,7 @@ export const pgRcmClaimCase = pgTable(
 );
 
 /**
- * EDI Acknowledgement — durable 999/277CA/TA1 ack store (Phase 126).
+ * EDI Acknowledgement -- durable 999/277CA/TA1 ack store (Phase 126).
  * Replaces in-memory Map in ack-status-processor.ts.
  */
 export const pgEdiAck = pgTable(
@@ -760,7 +760,7 @@ export const pgEdiAck = pgTable(
 );
 
 /**
- * EDI Claim Status — durable 276/277 status update store (Phase 126).
+ * EDI Claim Status -- durable 276/277 status update store (Phase 126).
  * Replaces in-memory Map in ack-status-processor.ts.
  */
 export const pgEdiClaimStatus = pgTable(
@@ -793,7 +793,7 @@ export const pgEdiClaimStatus = pgTable(
 );
 
 /**
- * EDI Pipeline Entry — durable EDI pipeline tracking (Phase 126).
+ * EDI Pipeline Entry -- durable EDI pipeline tracking (Phase 126).
  * Replaces in-memory Map in pipeline.ts.
  */
 export const pgEdiPipelineEntry = pgTable(
@@ -827,7 +827,7 @@ export const pgEdiPipelineEntry = pgTable(
 /* ================================================================== */
 
 /**
- * Portal Message — durable portal messaging (Phase 127).
+ * Portal Message -- durable portal messaging (Phase 127).
  * Mirrors SQLite portal_message from Phase 115.
  */
 export const pgPortalMessage = pgTable(
@@ -863,7 +863,7 @@ export const pgPortalMessage = pgTable(
 );
 
 /**
- * Portal Access Log — durable portal access audit (Phase 127).
+ * Portal Access Log -- durable portal access audit (Phase 127).
  * Mirrors SQLite portal_access_log from Phase 121.
  */
 export const pgPortalAccessLog = pgTable(
@@ -889,7 +889,7 @@ export const pgPortalAccessLog = pgTable(
 );
 
 /**
- * Portal Patient Setting — durable patient preferences (Phase 127).
+ * Portal Patient Setting -- durable patient preferences (Phase 127).
  * NEW table (no SQLite predecessor). Persists portal-settings.ts Map.
  */
 export const pgPortalPatientSetting = pgTable(
@@ -912,7 +912,7 @@ export const pgPortalPatientSetting = pgTable(
 );
 
 /**
- * Telehealth Room — durable telehealth room state (Phase 127).
+ * Telehealth Room -- durable telehealth room state (Phase 127).
  * Mirrors SQLite telehealth_room from Phase 115.
  */
 export const pgTelehealthRoom = pgTable(
@@ -945,8 +945,8 @@ export const pgTelehealthRoom = pgTable(
 );
 
 /**
- * Telehealth Room Event — room lifecycle event log (Phase 127).
- * NEW table — tracks join/leave/start/end events for auditing.
+ * Telehealth Room Event -- room lifecycle event log (Phase 127).
+ * NEW table -- tracks join/leave/start/end events for auditing.
  */
 export const pgTelehealthRoomEvent = pgTable(
   'telehealth_room_event',
@@ -969,7 +969,7 @@ export const pgTelehealthRoomEvent = pgTable(
 );
 
 /**
- * Imaging Work Item — durable imaging worklist order (Phase 128).
+ * Imaging Work Item -- durable imaging worklist order (Phase 128).
  * Mirrors the in-memory WorklistItem from imaging-worklist.ts.
  */
 export const pgImagingWorkItem = pgTable(
@@ -1009,7 +1009,7 @@ export const pgImagingWorkItem = pgTable(
 );
 
 /**
- * Imaging Ingest Event — study linkage + unmatched quarantine (Phase 128).
+ * Imaging Ingest Event -- study linkage + unmatched quarantine (Phase 128).
  * Unified table for both linkages and unmatched studies (event_type discriminator).
  */
 export const pgImagingIngestEvent = pgTable(
@@ -1046,7 +1046,7 @@ export const pgImagingIngestEvent = pgTable(
 );
 
 /**
- * Scheduling Waitlist Request — operational tracking (Phase 128).
+ * Scheduling Waitlist Request -- operational tracking (Phase 128).
  * NOT appointment truth (VistA is source). Tracks waitlist requests,
  * scheduling intents, and operational state.
  */
@@ -1075,7 +1075,7 @@ export const pgSchedulingWaitlistRequest = pgTable(
 );
 
 /**
- * Scheduling Booking Lock — TTL-based concurrency locks (Phase 128).
+ * Scheduling Booking Lock -- TTL-based concurrency locks (Phase 128).
  * Prevents double-booking. Lock key = "dfn:date:clinic".
  * expires_at enforces TTL; safe concurrency via unique constraint.
  */
@@ -1097,7 +1097,7 @@ export const pgSchedulingBookingLock = pgTable(
 );
 
 /**
- * Scheduling Lifecycle — operational state machine (Phase 131).
+ * Scheduling Lifecycle -- operational state machine (Phase 131).
  * Tracks appointment lifecycle transitions for audit and UI.
  * States: requested, waitlisted, booked, checked_in, completed, cancelled, no_show
  * VistA remains source of truth. This tracks operational transitions only.
@@ -1372,13 +1372,13 @@ export const pgPatientPortalPref = pgTable(
 );
 
 /* ================================================================
- *  Phase 174: RCM Domain Tables — PG parity with SQLite
+ *  Phase 174: RCM Domain Tables -- PG parity with SQLite
  *  Mirrors the 12 tables from db/schema.ts that previously only
  *  lived in SQLite.  Same export names for minimal import-path-only
  *  migration in consuming RCM modules.
  * ================================================================ */
 
-/** Integration evidence — payer connectivity research artifacts. */
+/** Integration evidence -- payer connectivity research artifacts. */
 export const integrationEvidence = pgTable(
   'integration_evidence',
   {
@@ -1403,7 +1403,7 @@ export const integrationEvidence = pgTable(
   (table) => [index('idx_ie_tenant').on(table.tenantId), index('idx_ie_payer').on(table.payerId)]
 );
 
-/** LOA (Letter of Authorization) request — prior auth / referral workflows. */
+/** LOA (Letter of Authorization) request -- prior auth / referral workflows. */
 export const loaRequest = pgTable(
   'loa_request',
   {
@@ -1444,7 +1444,7 @@ export const loaRequest = pgTable(
   ]
 );
 
-/** LOA attachment — supporting documents for LOA requests. */
+/** LOA attachment -- supporting documents for LOA requests. */
 export const loaAttachment = pgTable(
   'loa_attachment',
   {
@@ -1463,7 +1463,7 @@ export const loaAttachment = pgTable(
   (table) => [index('idx_la_tenant').on(table.tenantId), index('idx_la_loa').on(table.loaRequestId)]
 );
 
-/** Accreditation status — payer enrollment/credentialing status. */
+/** Accreditation status -- payer enrollment/credentialing status. */
 export const accreditationStatus = pgTable(
   'accreditation_status',
   {
@@ -1489,7 +1489,7 @@ export const accreditationStatus = pgTable(
   ]
 );
 
-/** Accreditation task — action items for credentialing workflows. */
+/** Accreditation task -- action items for credentialing workflows. */
 export const accreditationTask = pgTable(
   'accreditation_task',
   {
@@ -1513,7 +1513,7 @@ export const accreditationTask = pgTable(
   ]
 );
 
-/** Credential artifact — provider/facility credentials (NPI, DEA, etc.). */
+/** Credential artifact -- provider/facility credentials (NPI, DEA, etc.). */
 export const credentialArtifact = pgTable(
   'credential_artifact',
   {
@@ -1544,7 +1544,7 @@ export const credentialArtifact = pgTable(
   ]
 );
 
-/** Credential document — file attachments for credential artifacts. */
+/** Credential document -- file attachments for credential artifacts. */
 export const credentialDocument = pgTable(
   'credential_document',
   {
@@ -1565,7 +1565,7 @@ export const credentialDocument = pgTable(
   ]
 );
 
-/** Claim draft — full claim lifecycle entity. */
+/** Claim draft -- full claim lifecycle entity. */
 export const claimDraft = pgTable(
   'claim_draft',
   {
@@ -1617,7 +1617,7 @@ export const claimDraft = pgTable(
   ]
 );
 
-/** Claim lifecycle event — status transitions for claim drafts. */
+/** Claim lifecycle event -- status transitions for claim drafts. */
 export const claimLifecycleEvent = pgTable(
   'claim_lifecycle_event',
   {
@@ -1639,7 +1639,7 @@ export const claimLifecycleEvent = pgTable(
   ]
 );
 
-/** Scrub rule — payer-specific and universal claim validation rules. */
+/** Scrub rule -- payer-specific and universal claim validation rules. */
 export const scrubRule = pgTable(
   'scrub_rule',
   {
@@ -1669,7 +1669,7 @@ export const scrubRule = pgTable(
   ]
 );
 
-/** Scrub result — individual scrub findings for a claim draft. */
+/** Scrub result -- individual scrub findings for a claim draft. */
 export const scrubResult = pgTable(
   'scrub_result',
   {
@@ -1693,7 +1693,7 @@ export const scrubResult = pgTable(
   ]
 );
 
-/** RCM durable job — persistent job queue for RCM background tasks. */
+/** RCM durable job -- persistent job queue for RCM background tasks. */
 export const rcmDurableJob = pgTable(
   'rcm_durable_job',
   {
@@ -1723,10 +1723,10 @@ export const rcmDurableJob = pgTable(
 );
 
 /* ================================================================
- *  Phase 174: Module Entitlement Tables — PG parity with SQLite
+ *  Phase 174: Module Entitlement Tables -- PG parity with SQLite
  * ================================================================ */
 
-/** Module catalog — registered system modules. */
+/** Module catalog -- registered system modules. */
 export const moduleCatalog = pgTable('module_catalog', {
   moduleId: text('module_id').primaryKey(),
   name: text('name').notNull(),
@@ -1743,7 +1743,7 @@ export const moduleCatalog = pgTable('module_catalog', {
   updatedAt: text('updated_at').notNull(),
 });
 
-/** Tenant module — per-tenant module enablement. */
+/** Tenant module -- per-tenant module enablement. */
 export const tenantModule = pgTable(
   'tenant_module',
   {
@@ -1764,7 +1764,7 @@ export const tenantModule = pgTable(
   ]
 );
 
-/** Tenant feature flag — per-tenant configuration overrides. */
+/** Tenant feature flag -- per-tenant configuration overrides. */
 export const tenantFeatureFlag = pgTable(
   'tenant_feature_flag',
   {
@@ -1786,10 +1786,10 @@ export const tenantFeatureFlag = pgTable(
 );
 
 /* ================================================================
- *  PAYER DOSSIER TABLES (Phase 514 — Wave 37 B2)
+ *  PAYER DOSSIER TABLES (Phase 514 -- Wave 37 B2)
  * ================================================================ */
 
-/** Payer dossier — comprehensive enrichment profile for a payer. */
+/** Payer dossier -- comprehensive enrichment profile for a payer. */
 export const payerDossier = pgTable(
   'payer_dossier',
   {
@@ -1818,7 +1818,7 @@ export const payerDossier = pgTable(
   ]
 );
 
-/** Payer onboarding task — workflow step to activate payer connectivity. */
+/** Payer onboarding task -- workflow step to activate payer connectivity. */
 export const payerOnboardingTask = pgTable(
   'payer_onboarding_task',
   {
@@ -1852,7 +1852,7 @@ export const payerOnboardingTask = pgTable(
   ]
 );
 
-/** Module audit log — append-only change history. */
+/** Module audit log -- append-only change history. */
 export const moduleAuditLog = pgTable(
   'module_audit_log',
   {
@@ -1875,9 +1875,9 @@ export const moduleAuditLog = pgTable(
  *  WAVE 38: SERVICE-LINE + DEVICE + RADIOLOGY DURABILITY TABLES
  * ================================================================ */
 
-// ── Phase 523 (C2): Emergency Department ─────────────────────────
+// -- Phase 523 (C2): Emergency Department -------------------------
 
-/** ED Visit — full lifecycle from arrival through disposition. */
+/** ED Visit -- full lifecycle from arrival through disposition. */
 export const pgEdVisit = pgTable(
   'ed_visit',
   {
@@ -1909,7 +1909,7 @@ export const pgEdVisit = pgTable(
   ]
 );
 
-/** ED Bed — bed inventory and occupancy status. */
+/** ED Bed -- bed inventory and occupancy status. */
 export const pgEdBed = pgTable(
   'ed_bed',
   {
@@ -1929,9 +1929,9 @@ export const pgEdBed = pgTable(
   ]
 );
 
-// ── Phase 524 (C3): Operating Room / Anesthesia ──────────────────
+// -- Phase 524 (C3): Operating Room / Anesthesia ------------------
 
-/** OR Case — surgical case lifecycle with milestone tracking. */
+/** OR Case -- surgical case lifecycle with milestone tracking. */
 export const pgOrCase = pgTable(
   'or_case',
   {
@@ -1962,7 +1962,7 @@ export const pgOrCase = pgTable(
   ]
 );
 
-/** OR Room — operating room inventory and status. */
+/** OR Room -- operating room inventory and status. */
 export const pgOrRoom = pgTable(
   'or_room',
   {
@@ -1982,7 +1982,7 @@ export const pgOrRoom = pgTable(
   ]
 );
 
-/** OR Block — surgical block time allocations. */
+/** OR Block -- surgical block time allocations. */
 export const pgOrBlock = pgTable(
   'or_block',
   {
@@ -2003,9 +2003,9 @@ export const pgOrBlock = pgTable(
   ]
 );
 
-// ── Phase 525 (C4): ICU ─────────────────────────────────────────
+// -- Phase 525 (C4): ICU -----------------------------------------
 
-/** ICU Admission — patient admission through discharge. */
+/** ICU Admission -- patient admission through discharge. */
 export const pgIcuAdmission = pgTable(
   'icu_admission',
   {
@@ -2034,7 +2034,7 @@ export const pgIcuAdmission = pgTable(
   ]
 );
 
-/** ICU Bed — bed inventory and status by unit. */
+/** ICU Bed -- bed inventory and status by unit. */
 export const pgIcuBed = pgTable(
   'icu_bed',
   {
@@ -2055,7 +2055,7 @@ export const pgIcuBed = pgTable(
   ]
 );
 
-/** ICU Flowsheet Entry — clinical observation charting. */
+/** ICU Flowsheet Entry -- clinical observation charting. */
 export const pgIcuFlowsheetEntry = pgTable(
   'icu_flowsheet_entry',
   {
@@ -2077,7 +2077,7 @@ export const pgIcuFlowsheetEntry = pgTable(
   ]
 );
 
-/** ICU Ventilator Record — ventilator settings history. */
+/** ICU Ventilator Record -- ventilator settings history. */
 export const pgIcuVentRecord = pgTable(
   'icu_vent_record',
   {
@@ -2105,7 +2105,7 @@ export const pgIcuVentRecord = pgTable(
   ]
 );
 
-/** ICU Intake/Output Record — fluid balance tracking. */
+/** ICU Intake/Output Record -- fluid balance tracking. */
 export const pgIcuIoRecord = pgTable(
   'icu_io_record',
   {
@@ -2127,7 +2127,7 @@ export const pgIcuIoRecord = pgTable(
   ]
 );
 
-/** ICU Severity Score — APACHE-II, SOFA, GCS, etc. */
+/** ICU Severity Score -- APACHE-II, SOFA, GCS, etc. */
 export const pgIcuScore = pgTable(
   'icu_score',
   {
@@ -2148,9 +2148,9 @@ export const pgIcuScore = pgTable(
   ]
 );
 
-// ── Phase 526 (C5): Device Registry ─────────────────────────────
+// -- Phase 526 (C5): Device Registry -----------------------------
 
-/** Managed Device — physical medical device inventory. */
+/** Managed Device -- physical medical device inventory. */
 export const pgManagedDevice = pgTable(
   'managed_device',
   {
@@ -2180,7 +2180,7 @@ export const pgManagedDevice = pgTable(
   ]
 );
 
-/** Device Patient Association — device-to-patient binding. */
+/** Device Patient Association -- device-to-patient binding. */
 export const pgDevicePatientAssociation = pgTable(
   'device_patient_association',
   {
@@ -2204,7 +2204,7 @@ export const pgDevicePatientAssociation = pgTable(
   ]
 );
 
-/** Device Location Mapping — device-to-ward/room/bed binding. */
+/** Device Location Mapping -- device-to-ward/room/bed binding. */
 export const pgDeviceLocationMapping = pgTable(
   'device_location_mapping',
   {
@@ -2226,7 +2226,7 @@ export const pgDeviceLocationMapping = pgTable(
   ]
 );
 
-/** Device Audit Log — append-only device lifecycle events. */
+/** Device Audit Log -- append-only device lifecycle events. */
 export const pgDeviceAuditLog = pgTable(
   'device_audit_log',
   {
@@ -2246,9 +2246,9 @@ export const pgDeviceAuditLog = pgTable(
   ]
 );
 
-// ── Phase 528 (C7): Radiology ───────────────────────────────────
+// -- Phase 528 (C7): Radiology -----------------------------------
 
-/** Radiology Order — order lifecycle with protocol assignment. */
+/** Radiology Order -- order lifecycle with protocol assignment. */
 export const pgRadiologyOrder = pgTable(
   'radiology_order',
   {
@@ -2288,7 +2288,7 @@ export const pgRadiologyOrder = pgTable(
   ]
 );
 
-/** Radiology Reading Worklist — study-to-radiologist assignment. */
+/** Radiology Reading Worklist -- study-to-radiologist assignment. */
 export const pgReadingWorklistItem = pgTable(
   'reading_worklist_item',
   {
@@ -2319,7 +2319,7 @@ export const pgReadingWorklistItem = pgTable(
   ]
 );
 
-/** Radiology Report — report lifecycle (draft -> prelim -> final). */
+/** Radiology Report -- report lifecycle (draft -> prelim -> final). */
 export const pgRadReport = pgTable(
   'rad_report',
   {
@@ -2357,7 +2357,7 @@ export const pgRadReport = pgTable(
   ]
 );
 
-/** Radiation Dose Registry — dose tracking with DRL comparison. */
+/** Radiation Dose Registry -- dose tracking with DRL comparison. */
 export const pgDoseRegistryEntry = pgTable(
   'dose_registry_entry',
   {
@@ -2390,7 +2390,7 @@ export const pgDoseRegistryEntry = pgTable(
   ]
 );
 
-/** Radiology Critical Alert — critical finding communication tracking. */
+/** Radiology Critical Alert -- critical finding communication tracking. */
 export const pgRadCriticalAlert = pgTable(
   'rad_critical_alert',
   {
@@ -2422,7 +2422,7 @@ export const pgRadCriticalAlert = pgTable(
   ]
 );
 
-/** Radiology Peer Review — RADPEER quality scoring. */
+/** Radiology Peer Review -- RADPEER quality scoring. */
 export const pgPeerReview = pgTable(
   'peer_review',
   {

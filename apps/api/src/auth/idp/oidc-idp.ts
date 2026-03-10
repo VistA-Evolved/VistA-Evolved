@@ -30,9 +30,15 @@ import type { IdentityProvider, IdentityResult, CallbackParams, OidcIdpConfig } 
 /* ------------------------------------------------------------------ */
 
 function loadConfig(): OidcIdpConfig {
+  const enabled = (process.env.IDP_OIDC_ENABLED || '').toLowerCase().trim() === 'true';
+  const runtimeMode = (process.env.PLATFORM_RUNTIME_MODE || process.env.NODE_ENV || 'dev').toLowerCase();
+  const isProd = runtimeMode === 'rc' || runtimeMode === 'prod' || runtimeMode === 'production';
+  if (enabled && isProd && !process.env.IDP_OIDC_CLIENT_SECRET) {
+    throw new Error('IDP_OIDC_CLIENT_SECRET must be set when IDP_OIDC_ENABLED=true in rc/prod mode');
+  }
   return {
     type: 'oidc',
-    enabled: (process.env.IDP_OIDC_ENABLED || '').toLowerCase().trim() === 'true',
+    enabled,
     issuer:
       process.env.IDP_OIDC_ISSUER ||
       process.env.OIDC_ISSUER ||

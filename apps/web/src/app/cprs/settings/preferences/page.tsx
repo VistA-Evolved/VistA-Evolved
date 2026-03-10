@@ -5,7 +5,7 @@ import { useFacilityDefaults } from '@/stores/tenant-context';
 import styles from '@/components/cprs/cprs.module.css';
 
 /**
- * Preferences page — matches frmFrame "Tools > Options" in CPRS Delphi.
+ * Preferences page -- matches frmFrame "Tools > Options" in CPRS Delphi.
  * Phase 13G: adds layout mode and extended density options.
  * Phase 17D: adds "Reset to facility defaults" button.
  */

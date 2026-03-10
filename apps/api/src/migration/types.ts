@@ -244,7 +244,7 @@ export interface RollbackPlan {
 }
 
 /* ------------------------------------------------------------------ */
-/* FHIR R4 types (Phase 456 — W30-P1)                                 */
+/* FHIR R4 types (Phase 456 -- W30-P1)                                 */
 /* ------------------------------------------------------------------ */
 
 export type FhirImportStatus =

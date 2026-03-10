@@ -22,7 +22,7 @@ const RESERVATIONS_FILE = join(ROOT, 'docs', 'qa', 'prompt-phase-range-reservati
 
 const PREFIX_RE = /^(\d+)/;
 
-// ── 1. Scan prompt folders ─────────────────────────────────────────
+// -- 1. Scan prompt folders -----------------------------------------
 
 let maxFromFolders = 0;
 try {
@@ -38,7 +38,7 @@ try {
   // prompts dir not found
 }
 
-// ── 2. Scan wave manifests for reserved ranges ─────────────────────
+// -- 2. Scan wave manifests for reserved ranges ---------------------
 
 let maxFromManifests = 0;
 try {
@@ -56,7 +56,7 @@ try {
   // no manifests
 }
 
-// ── 3. Scan reservation file ───────────────────────────────────────
+// -- 3. Scan reservation file ---------------------------------------
 
 let maxFromReservations = 0;
 try {
@@ -72,7 +72,7 @@ try {
   // no reservation file
 }
 
-// ── Output ─────────────────────────────────────────────────────────
+// -- Output ---------------------------------------------------------
 
 const maxUsed = Math.max(maxFromFolders, maxFromManifests, maxFromReservations);
 const nextBase = maxUsed + 1;

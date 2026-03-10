@@ -1,14 +1,14 @@
 /**
- * Portal Documents + Consents Routes — Phase 140
+ * Portal Documents + Consents Routes -- Phase 140
  *
  * Documents:
- *   GET  /portal/documents           — list available document types
- *   POST /portal/documents/generate  — generate a VistA-backed document (returns signed token)
- *   GET  /portal/documents/download/:token — download document by signed token
+ *   GET  /portal/documents           -- list available document types
+ *   POST /portal/documents/generate  -- generate a VistA-backed document (returns signed token)
+ *   GET  /portal/documents/download/:token -- download document by signed token
  *
  * Consents:
- *   GET  /portal/consents            — list patient consent decisions
- *   POST /portal/consents            — record/update a consent decision
+ *   GET  /portal/consents            -- list patient consent decisions
+ *   POST /portal/consents            -- record/update a consent decision
  *
  * All routes require portal session (cookie-based auth).
  * Clinical data is VistA-first. Consent state is PG-backed.
@@ -21,7 +21,7 @@ import { randomBytes, createHmac, timingSafeEqual, createHash } from 'node:crypt
 import { isPgConfigured } from '../platform/pg/pg-db.js';
 
 /* ------------------------------------------------------------------ */
-/* Session helper — same pattern as portal-core.ts                     */
+/* Session helper -- same pattern as portal-core.ts                     */
 /* ------------------------------------------------------------------ */
 
 interface PortalSessionData {
@@ -220,8 +220,8 @@ async function fetchVistaHealthSummary(dfn: string): Promise<string> {
 
     return sections.join('\n');
   } catch (_err) {
-    log.warn('VistA health summary fetch failed, returning integration-pending placeholder');
-    return 'Health Summary\n\nIntegration pending -- VistA data will appear when connection is established.';
+    log.warn('VistA health summary fetch failed, returning fallback');
+    return 'Health Summary\n\nUnable to retrieve VistA data at this time. Please try again later.';
   }
 }
 
@@ -272,7 +272,7 @@ async function fetchVistaSection(dfn: string, section: string): Promise<string> 
         return await fetchVistaHealthSummary(dfn);
     }
   } catch {
-    return `${section} -- Integration pending. VistA data will appear when connection is established.`;
+    return `${section} -- Unable to retrieve VistA data at this time. Please try again later.`;
   }
 }
 
@@ -281,9 +281,9 @@ async function fetchVistaSection(dfn: string, section: string): Promise<string> 
 /* ------------------------------------------------------------------ */
 
 export default async function portalDocumentsRoutes(server: FastifyInstance) {
-  /* ── Documents ── */
+  /* -- Documents -- */
 
-  // GET /portal/documents — list available document types
+  // GET /portal/documents -- list available document types
   server.get('/portal/documents', async (request, reply) => {
     const session = requirePortalSession(request, reply);
 
@@ -297,7 +297,7 @@ export default async function portalDocumentsRoutes(server: FastifyInstance) {
     return { ok: true, documentTypes: DOCUMENT_TYPES };
   });
 
-  // POST /portal/documents/generate — generate document, return signed token
+  // POST /portal/documents/generate -- generate document, return signed token
   server.post('/portal/documents/generate', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const body = (request.body as any) || {};
@@ -339,7 +339,7 @@ export default async function portalDocumentsRoutes(server: FastifyInstance) {
     };
   });
 
-  // GET /portal/documents/download/:token — download document by signed token
+  // GET /portal/documents/download/:token -- download document by signed token
   server.get('/portal/documents/download/:token', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { token } = request.params as { token: string };
@@ -385,9 +385,9 @@ export default async function portalDocumentsRoutes(server: FastifyInstance) {
     return doc.content;
   });
 
-  /* ── Consents ── */
+  /* -- Consents -- */
 
-  // GET /portal/consents — list consent decisions for the patient
+  // GET /portal/consents -- list consent decisions for the patient
   server.get('/portal/consents', async (request, reply) => {
     const session = requirePortalSession(request, reply);
 
@@ -426,7 +426,7 @@ export default async function portalDocumentsRoutes(server: FastifyInstance) {
     return { ok: true, consents: merged, consentTypes: CONSENT_TYPES };
   });
 
-  // POST /portal/consents — record/update a consent decision
+  // POST /portal/consents -- record/update a consent decision
   server.post('/portal/consents', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const body = (request.body as any) || {};

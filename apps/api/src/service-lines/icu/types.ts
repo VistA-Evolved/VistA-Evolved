@@ -5,7 +5,7 @@
  * Covers patient monitoring, ventilators, I&O, severity scoring.
  */
 
-// ── ICU Bed / Admission ────────────────────────────────────────────
+// -- ICU Bed / Admission --------------------------------------------
 
 export type IcuBedStatus = 'available' | 'occupied' | 'reserved' | 'cleaning' | 'blocked';
 
@@ -43,7 +43,7 @@ export interface IcuAdmission {
   updatedAt: string;
 }
 
-// ── Flowsheet ──────────────────────────────────────────────────────
+// -- Flowsheet ------------------------------------------------------
 
 export type FlowsheetCategory =
   | 'vitals'
@@ -66,7 +66,7 @@ export interface FlowsheetEntry {
   validated: boolean;
 }
 
-// ── Ventilator Settings ────────────────────────────────────────────
+// -- Ventilator Settings --------------------------------------------
 
 export type VentMode = 'ac-vc' | 'ac-pc' | 'simv' | 'psv' | 'cpap' | 'bipap' | 'aprv' | 'hfov';
 
@@ -87,7 +87,7 @@ export interface VentSettings {
   recordedBy: string;
 }
 
-// ── Intake & Output ────────────────────────────────────────────────
+// -- Intake & Output ------------------------------------------------
 
 export type IoType = 'intake' | 'output';
 export type IoSource =
@@ -114,7 +114,7 @@ export interface IoRecord {
   description?: string;
 }
 
-// ── Severity Scores ────────────────────────────────────────────────
+// -- Severity Scores ------------------------------------------------
 
 export type SeverityScoreType = 'apache-ii' | 'sofa' | 'gcs' | 'rass' | 'cam-icu' | 'braden';
 
@@ -128,7 +128,7 @@ export interface SeverityScore {
   calculatedBy: string;
 }
 
-// ── ICU Metrics ────────────────────────────────────────────────────
+// -- ICU Metrics ----------------------------------------------------
 
 export interface IcuMetrics {
   totalBeds: number;

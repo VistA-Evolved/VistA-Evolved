@@ -1,5 +1,5 @@
 /**
- * Data Residency & Region Routing — Phase 311
+ * Data Residency & Region Routing -- Phase 311
  *
  * Tenant-scoped data residency labels with region-aware routing rules.
  * Enforced at the platform layer, not the application layer.
@@ -7,7 +7,7 @@
  * See ADR-data-residency-model.md for architecture decision.
  */
 
-// ── Region Labels ──────────────────────────────────────────────
+// -- Region Labels ----------------------------------------------
 
 export const DATA_REGIONS = [
   'us-east', // US East (Virginia)
@@ -27,7 +27,7 @@ export function isValidDataRegion(value: string): value is DataRegion {
   return (DATA_REGIONS as readonly string[]).includes(value);
 }
 
-// ── Region Metadata ────────────────────────────────────────────
+// -- Region Metadata --------------------------------------------
 
 export interface RegionMetadata {
   readonly region: DataRegion;
@@ -96,7 +96,7 @@ export function getRegionMetadata(region: DataRegion): RegionMetadata | undefine
   return REGION_CATALOG.find((r) => r.region === region);
 }
 
-// ── Data Transfer Agreement ────────────────────────────────────
+// -- Data Transfer Agreement ------------------------------------
 
 export interface DataTransferAgreement {
   id: string;
@@ -112,17 +112,17 @@ export interface DataTransferAgreement {
   status: 'active' | 'expired' | 'revoked';
 }
 
-// ── Tenant Region Assignment ───────────────────────────────────
+// -- Tenant Region Assignment -----------------------------------
 
 export interface TenantRegionAssignment {
   tenantId: string;
   dataRegion: DataRegion;
   assignedAt: string; // ISO 8601
   assignedBy: string;
-  immutable: true; // Always true — cannot be changed after creation
+  immutable: true; // Always true -- cannot be changed after creation
 }
 
-// ── Region Routing ─────────────────────────────────────────────
+// -- Region Routing ---------------------------------------------
 
 /**
  * Resolve the PG connection string for a tenant's data region.
@@ -166,7 +166,7 @@ export function resolveRegionAuditBucket(tenantRegion: DataRegion): string {
   return `${baseBucket}-${tenantRegion}`;
 }
 
-// ── Cross-Border Transfer Validation ───────────────────────────
+// -- Cross-Border Transfer Validation ---------------------------
 
 export interface TransferValidationResult {
   allowed: boolean;
@@ -184,7 +184,7 @@ export function validateCrossBorderTransfer(
   hasConsent: boolean,
   hasAgreement: boolean
 ): TransferValidationResult {
-  // Same region — always allowed
+  // Same region -- always allowed
   if (sourceRegion === targetRegion) {
     return {
       allowed: true,
@@ -206,7 +206,7 @@ export function validateCrossBorderTransfer(
     };
   }
 
-  // Same country — allowed if cross-border is enabled
+  // Same country -- allowed if cross-border is enabled
   if (sourceMeta.country === targetMeta.country) {
     return {
       allowed: true,
@@ -216,7 +216,7 @@ export function validateCrossBorderTransfer(
     };
   }
 
-  // Cross-country — requires consent + agreement
+  // Cross-country -- requires consent + agreement
   if (!sourceMeta.crossBorderAllowed) {
     return {
       allowed: false,
@@ -252,7 +252,7 @@ export function validateCrossBorderTransfer(
   };
 }
 
-// ── Region Health ──────────────────────────────────────────────
+// -- Region Health ----------------------------------------------
 
 export interface RegionHealth {
   region: DataRegion;
@@ -261,7 +261,7 @@ export interface RegionHealth {
   lastChecked: string;
 }
 
-// ── Phase 495 (W34-P5): Pack-Aware Data Residency Enforcement ──
+// -- Phase 495 (W34-P5): Pack-Aware Data Residency Enforcement --
 
 export interface PackResidencyPolicy {
   region: DataRegion | string;
@@ -290,7 +290,7 @@ export function enforcePackResidency(
   hasConsent: boolean,
   hasAgreement: boolean
 ): TransferValidationResult {
-  // If tenant region matches pack's home region and target is same → allowed
+  // If tenant region matches pack's home region and target is same -> allowed
   if (tenantRegion === targetRegion) {
     return {
       allowed: true,
@@ -300,7 +300,7 @@ export function enforcePackResidency(
     };
   }
 
-  // Pack says no cross-border at all → block
+  // Pack says no cross-border at all -> block
   if (!packResidency.crossBorderTransferAllowed) {
     return {
       allowed: false,

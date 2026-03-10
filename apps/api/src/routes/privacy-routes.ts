@@ -1,5 +1,5 @@
 /**
- * Privacy Management Routes — Phase 343 (W16-P7).
+ * Privacy Management Routes -- Phase 343 (W16-P7).
  * Phase 494 (W34-P4): + /privacy/rights endpoint for pack-resolved rights.
  *
  * Endpoints for sensitivity tag management, access reason queries,
@@ -41,7 +41,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   }
 
   /**
-   * GET /privacy/tags — List sensitivity tags.
+   * GET /privacy/tags -- List sensitivity tags.
    */
   app.get('/privacy/tags', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
@@ -59,7 +59,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * POST /privacy/tags — Add a sensitivity tag.
+   * POST /privacy/tags -- Add a sensitivity tag.
    */
   app.post('/privacy/tags', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as Record<string, unknown>) || {};
@@ -86,7 +86,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * DELETE /privacy/tags/:id — Remove a sensitivity tag.
+   * DELETE /privacy/tags/:id -- Remove a sensitivity tag.
    */
   app.delete('/privacy/tags/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
@@ -102,7 +102,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * POST /privacy/check-access — Check sensitivity access for a record.
+   * POST /privacy/check-access -- Check sensitivity access for a record.
    */
   app.post('/privacy/check-access', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as Record<string, unknown>) || {};
@@ -126,7 +126,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * POST /privacy/access-reasons — Record access reason.
+   * POST /privacy/access-reasons -- Record access reason.
    */
   app.post('/privacy/access-reasons', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as Record<string, unknown>) || {};
@@ -156,7 +156,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /privacy/access-reasons — Query access reasons.
+   * GET /privacy/access-reasons -- Query access reasons.
    */
   app.get('/privacy/access-reasons', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
@@ -178,7 +178,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * GET /privacy/stats — Privacy statistics.
+   * GET /privacy/stats -- Privacy statistics.
    */
   app.get('/privacy/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
@@ -188,7 +188,7 @@ export async function privacyRoutes(app: FastifyInstance): Promise<void> {
   });
 
   /**
-   * Phase 494 (W34-P4): GET /privacy/rights — Effective privacy rights from country pack.
+   * Phase 494 (W34-P4): GET /privacy/rights -- Effective privacy rights from country pack.
    * Returns rightToErasure, dataPortability, breakGlassAllowed from the tenant's pack.
    */
   app.get('/privacy/rights', async (request: FastifyRequest, reply: FastifyReply) => {

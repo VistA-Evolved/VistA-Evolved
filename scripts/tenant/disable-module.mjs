@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Disable Module CLI — Phase 135
+ * Disable Module CLI -- Phase 135
  *
  * Disables a module for a tenant via the admin API.
  *

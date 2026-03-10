@@ -1,5 +1,5 @@
 /**
- * PG OR Repository — Async durable Operating Room / Anesthesia state
+ * PG OR Repository -- Async durable Operating Room / Anesthesia state
  *
  * Phase 524 (W38-C3): OR Durability
  *
@@ -15,9 +15,9 @@ export type OrCaseRow = typeof pgOrCase.$inferSelect;
 export type OrRoomRow = typeof pgOrRoom.$inferSelect;
 export type OrBlockRow = typeof pgOrBlock.$inferSelect;
 
-/* ═══════════════════ OR CASE ═══════════════════ */
+/* =================== OR CASE =================== */
 
-/* ── Create ──────────────────────────────────────── */
+/* -- Create ---------------------------------------- */
 
 export async function insertOrCase(data: {
   id: string;
@@ -63,7 +63,7 @@ export async function insertOrCase(data: {
   return row!;
 }
 
-/* ── Lookup ──────────────────────────────────────── */
+/* -- Lookup ---------------------------------------- */
 
 export async function findOrCaseById(id: string): Promise<OrCaseRow | undefined> {
   const db = getPgDb();
@@ -112,7 +112,7 @@ export async function findAllOrCases(tenantId = 'default'): Promise<OrCaseRow[]>
     .orderBy(desc(pgOrCase.scheduledDate));
 }
 
-/* ── Update ──────────────────────────────────────── */
+/* -- Update ---------------------------------------- */
 
 export async function updateOrCase(
   id: string,
@@ -146,9 +146,9 @@ export async function deleteOrCase(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ OR ROOM ═══════════════════ */
+/* =================== OR ROOM =================== */
 
-/* ── Create ──────────────────────────────────────── */
+/* -- Create ---------------------------------------- */
 
 export async function insertOrRoom(data: {
   id: string;
@@ -176,7 +176,7 @@ export async function insertOrRoom(data: {
   return row!;
 }
 
-/* ── Lookup ──────────────────────────────────────── */
+/* -- Lookup ---------------------------------------- */
 
 export async function findOrRoomById(id: string): Promise<OrRoomRow | undefined> {
   const db = getPgDb();
@@ -200,7 +200,7 @@ export async function findOrRoomsByStatus(
     .where(and(eq(pgOrRoom.tenantId, tenantId), eq(pgOrRoom.status, status)));
 }
 
-/* ── Update ──────────────────────────────────────── */
+/* -- Update ---------------------------------------- */
 
 export async function updateOrRoom(
   id: string,
@@ -227,9 +227,9 @@ export async function deleteOrRoom(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ OR BLOCK ═══════════════════ */
+/* =================== OR BLOCK =================== */
 
-/* ── Create ──────────────────────────────────────── */
+/* -- Create ---------------------------------------- */
 
 export async function insertOrBlock(data: {
   id: string;
@@ -259,7 +259,7 @@ export async function insertOrBlock(data: {
   return row!;
 }
 
-/* ── Lookup ──────────────────────────────────────── */
+/* -- Lookup ---------------------------------------- */
 
 export async function findOrBlockById(id: string): Promise<OrBlockRow | undefined> {
   const db = getPgDb();
@@ -283,7 +283,7 @@ export async function findAllOrBlocks(tenantId = 'default'): Promise<OrBlockRow[
   return db.select().from(pgOrBlock).where(eq(pgOrBlock.tenantId, tenantId));
 }
 
-/* ── Update ──────────────────────────────────────── */
+/* -- Update ---------------------------------------- */
 
 export async function updateOrBlock(
   id: string,

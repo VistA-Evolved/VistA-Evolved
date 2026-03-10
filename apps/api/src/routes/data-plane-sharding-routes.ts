@@ -115,7 +115,7 @@ function resolveAdminTargetTenant(
 }
 
 export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Shard CRUD ───────────────────────────────────────────────────────
+  // --- Shard CRUD -------------------------------------------------------
 
   server.post('/platform/shards', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
@@ -225,7 +225,7 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
     }
   );
 
-  // ─── Tenant-Shard Mapping ─────────────────────────────────────────────
+  // --- Tenant-Shard Mapping ---------------------------------------------
 
   server.post(
     '/platform/shards/map-tenant',
@@ -312,7 +312,7 @@ export async function dataPlaneShardingRoutes(server: FastifyInstance): Promise<
     }
   );
 
-  // ─── Migration Plans ──────────────────────────────────────────────────
+  // --- Migration Plans --------------------------------------------------
 
   server.post(
     '/platform/shards/migrations',

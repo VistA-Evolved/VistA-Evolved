@@ -1,5 +1,5 @@
 /**
- * Payer Registry Ingestion Service — Phase 88
+ * Payer Registry Ingestion Service -- Phase 88
  *
  * Repeatable, deterministic ingestion of Philippine regulatory payer lists:
  *   1. Insurance Commission "List of HMOs with CA" (as of 31 Dec 2025)
@@ -33,12 +33,12 @@ const __dirname_resolved =
   typeof __dirname !== 'undefined' ? __dirname : dirname(fileURLToPath(import.meta.url));
 const REPO_ROOT = join(__dirname_resolved, '..', '..', '..', '..', '..');
 
-/* ── Snapshot Data Paths ─────────────────────────────────────── */
+/* -- Snapshot Data Paths --------------------------------------- */
 
 const HMO_SNAPSHOT_PATH = 'data/regulator-snapshots/ph-ic-hmo-list.json';
 const BROKER_SNAPSHOT_PATH = 'data/regulator-snapshots/ph-ic-hmo-broker-list.json';
 
-/* ── Snapshot Entry Types ────────────────────────────────────── */
+/* -- Snapshot Entry Types -------------------------------------- */
 
 interface HMOEntry {
   name: string;
@@ -65,7 +65,7 @@ interface SnapshotFile<T> {
   entries: T[];
 }
 
-/* ── Load Snapshot ───────────────────────────────────────────── */
+/* -- Load Snapshot --------------------------------------------- */
 
 function loadSnapshotFile<T>(relativePath: string): SnapshotFile<T> | null {
   const fullPath = join(REPO_ROOT, relativePath);
@@ -80,7 +80,7 @@ function loadSnapshotFile<T>(relativePath: string): SnapshotFile<T> | null {
   }
 }
 
-/* ── Artifact Storage ────────────────────────────────────────── */
+/* -- Artifact Storage ------------------------------------------ */
 
 function storeArtifact(content: string, filename: string): string {
   const date = new Date().toISOString().split('T')[0];
@@ -91,7 +91,7 @@ function storeArtifact(content: string, filename: string): string {
   return `artifacts/regulator/${date}/${filename}`;
 }
 
-/* ── Ingest HMO List ─────────────────────────────────────────── */
+/* -- Ingest HMO List ------------------------------------------- */
 
 export interface IngestResult {
   ok: boolean;
@@ -228,7 +228,7 @@ export function ingestHMOList(): IngestResult {
   };
 }
 
-/* ── Ingest HMO Broker List ──────────────────────────────────── */
+/* -- Ingest HMO Broker List ------------------------------------ */
 
 export function ingestHMOBrokerList(): IngestResult {
   const snapshot = loadSnapshotFile<BrokerEntry>(BROKER_SNAPSHOT_PATH);
@@ -333,7 +333,7 @@ export function ingestHMOBrokerList(): IngestResult {
   };
 }
 
-/* ── Full Ingest (both sources) ──────────────────────────────── */
+/* -- Full Ingest (both sources) -------------------------------- */
 
 export interface FullIngestResult {
   ok: boolean;

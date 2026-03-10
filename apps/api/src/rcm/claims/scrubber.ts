@@ -1,13 +1,13 @@
 /**
- * Claims Lifecycle v1 — Deterministic Scrubber Engine (Phase 91)
+ * Claims Lifecycle v1 -- Deterministic Scrubber Engine (Phase 91)
  *
  * Evaluates a ClaimCase against core rules and payer-specific rule packs.
- * Same input → same output (no randomness, no external calls).
+ * Same input -> same output (no randomness, no external calls).
  *
  * Rule categories:
- * - core.*     — Universal rules (patient ID, diagnoses, provider)
- * - ph.*       — PhilHealth-specific (eSOA, member PIN, CF validation)
- * - us.*       — US payer rules (NPI, subscriber ID, place of service)
+ * - core.*     -- Universal rules (patient ID, diagnoses, provider)
+ * - ph.*       -- PhilHealth-specific (eSOA, member PIN, CF validation)
+ * - us.*       -- US payer rules (NPI, subscriber ID, place of service)
  *
  * Output: ClaimScrubResult with findings, outcome (pass/warn/fail),
  * and rule evaluation count.
@@ -22,7 +22,7 @@ import type {
   ScrubOutcome,
 } from './claim-types.js';
 
-/* ── Rule Definition ───────────────────────────────────────── */
+/* -- Rule Definition ----------------------------------------- */
 
 export interface ScrubRule {
   id: string;
@@ -33,7 +33,7 @@ export interface ScrubRule {
   evaluate: (claim: ClaimCase) => ScrubFinding | undefined;
 }
 
-/* ── Core Rules (Universal) ────────────────────────────────── */
+/* -- Core Rules (Universal) ---------------------------------- */
 
 const CORE_RULES: ScrubRule[] = [
   {
@@ -184,7 +184,7 @@ const CORE_RULES: ScrubRule[] = [
           ruleId: 'core.subscriber_id',
           severity: 'warning',
           field: 'subscriberId',
-          message: 'No member/subscriber ID or PIN present — may cause payer rejection',
+          message: 'No member/subscriber ID or PIN present -- may cause payer rejection',
           payerRulePack: 'core',
         };
       }
@@ -193,7 +193,7 @@ const CORE_RULES: ScrubRule[] = [
   },
 ];
 
-/* ── PhilHealth Rules ──────────────────────────────────────── */
+/* -- PhilHealth Rules ---------------------------------------- */
 
 const PH_RULES: ScrubRule[] = [
   {
@@ -297,7 +297,7 @@ const PH_RULES: ScrubRule[] = [
   },
 ];
 
-/* ── US Rules ──────────────────────────────────────────────── */
+/* -- US Rules ------------------------------------------------ */
 
 const US_RULES: ScrubRule[] = [
   {
@@ -367,7 +367,7 @@ const US_RULES: ScrubRule[] = [
   },
 ];
 
-/* ── Rule Pack Registry ────────────────────────────────────── */
+/* -- Rule Pack Registry -------------------------------------- */
 
 const RULE_PACKS: Record<string, ScrubRule[]> = {
   core: CORE_RULES,
@@ -385,7 +385,7 @@ export function registerRulePack(name: string, rules: ScrubRule[]): void {
   RULE_PACKS[name] = rules;
 }
 
-/* ── Scrubber Engine ───────────────────────────────────────── */
+/* -- Scrubber Engine ----------------------------------------- */
 
 export interface ScrubOptions {
   /** Which rule packs to evaluate. Default: ["core"] + auto-detect payer pack */

@@ -1,17 +1,17 @@
 /**
- * LOA Templates — Phase 97B: Per-HMO LOA Configuration
+ * LOA Templates -- Phase 97B: Per-HMO LOA Configuration
  *
  * Defines per-HMO LOA request templates with required fields,
  * specialty-specific rules, and payer-specific formatting.
  *
  * These templates drive the LOA packet generation in loa-workflow.ts.
- * They are NOT clinical templates — they define what information
+ * They are NOT clinical templates -- they define what information
  * each payer requires for pre-authorization.
  *
  * VistA-first: all clinical data fields reference VistA source RPCs.
  */
 
-/* ── LOA Template Types ─────────────────────────────────────── */
+/* -- LOA Template Types --------------------------------------- */
 
 export interface LoaRequiredField {
   field: string;
@@ -42,7 +42,7 @@ export interface LoaTemplateConfig {
   notes: string[];
 }
 
-/* ── Common required fields (shared across all HMOs) ────────── */
+/* -- Common required fields (shared across all HMOs) ---------- */
 
 const COMMON_REQUIRED_FIELDS: LoaRequiredField[] = [
   {
@@ -58,7 +58,7 @@ const COMMON_REQUIRED_FIELDS: LoaRequiredField[] = [
     required: true,
     vistaSource: null,
     vistaStatus: 'integration_pending',
-    notes: 'VistA IBCNS insurance file — empty in sandbox',
+    notes: 'VistA IBCNS insurance file -- empty in sandbox',
   },
   {
     field: 'dateOfBirth',
@@ -87,7 +87,7 @@ const COMMON_REQUIRED_FIELDS: LoaRequiredField[] = [
     required: true,
     vistaSource: 'ORWU NEWPERS (provider lookup)',
     vistaStatus: 'available',
-    notes: 'PRC license number not in VistA — manual entry required',
+    notes: 'PRC license number not in VistA -- manual entry required',
   },
   {
     field: 'facilityName',
@@ -105,7 +105,7 @@ const COMMON_REQUIRED_FIELDS: LoaRequiredField[] = [
   },
 ];
 
-/* ── Common specialty rules ─────────────────────────────────── */
+/* -- Common specialty rules ----------------------------------- */
 
 const SURGERY_RULE: LoaSpecialtyRule = {
   specialty: 'surgery',
@@ -142,7 +142,7 @@ const COMMON_SPECIALTY_RULES: LoaSpecialtyRule[] = [
   MATERNITY_RULE,
 ];
 
-/* ── Per-HMO LOA Template Configurations ────────────────────── */
+/* -- Per-HMO LOA Template Configurations ---------------------- */
 
 function makeTemplate(
   payerId: string,
@@ -175,13 +175,13 @@ function makeTemplate(
  * L3 HMOs default to manual submission.
  */
 export const LOA_TEMPLATES: Record<string, LoaTemplateConfig> = {
-  // ── Top-5 Portal-Capable (L1) ──────────────────────────────
+  // -- Top-5 Portal-Capable (L1) ------------------------------
   'PH-MAXICARE': makeTemplate('PH-MAXICARE', 'MaxiCare Healthcare Corp.', {
     submissionMethod: 'portal',
     portalUrl: 'https://provider.maxicare.com.ph/',
     defaultTurnaroundDays: 3,
     loaValidityDays: 30,
-    notes: ['MaxiLink portal: LOA → Claims → SOA workflow integrated'],
+    notes: ['MaxiLink portal: LOA -> Claims -> SOA workflow integrated'],
   }),
   'PH-MEDICARD': makeTemplate('PH-MEDICARD', 'MediCard Philippines, Inc.', {
     submissionMethod: 'portal',
@@ -212,24 +212,24 @@ export const LOA_TEMPLATES: Record<string, LoaTemplateConfig> = {
     notes: ['ValuCare: provider portal; turnaround may vary'],
   }),
 
-  // ── Other L1 HMOs (large, digital presence) ────────────────
+  // -- Other L1 HMOs (large, digital presence) ----------------
   'PH-INSULAR': makeTemplate('PH-INSULAR', 'Insular Health Care, Inc.', {
     submissionMethod: 'manual',
     defaultTurnaroundDays: 5,
-    notes: ['Large HMO — portal integration pending investigation'],
+    notes: ['Large HMO -- portal integration pending investigation'],
   }),
   'PH-COCOLIFE': makeTemplate('PH-COCOLIFE', 'Cocolife Health Care, Inc.', {
     submissionMethod: 'manual',
     defaultTurnaroundDays: 5,
-    notes: ['Cocolife — portal may exist; integration pending'],
+    notes: ['Cocolife -- portal may exist; integration pending'],
   }),
   'PH-PACIFIC-CROSS': makeTemplate('PH-PACIFIC-CROSS', 'Pacific Cross Health Care, Inc.', {
     submissionMethod: 'manual',
     defaultTurnaroundDays: 5,
-    notes: ['Pacific Cross — digital presence exists; integration pending'],
+    notes: ['Pacific Cross -- digital presence exists; integration pending'],
   }),
 
-  // ── L3 HMOs (smaller/regional, manual workflow) ────────────
+  // -- L3 HMOs (smaller/regional, manual workflow) ------------
   'PH-ASIANLIFE': makeTemplate('PH-ASIANLIFE', 'AsianLife and General Assurance Corporation'),
   'PH-AVEGA': makeTemplate('PH-AVEGA', 'Avega Managed Care, Inc.'),
   'PH-CAREHEALTH': makeTemplate('PH-CAREHEALTH', 'CareHealth Plus Systems International, Inc.'),
@@ -251,7 +251,7 @@ export const LOA_TEMPLATES: Record<string, LoaTemplateConfig> = {
   'PH-STARCARE': makeTemplate('PH-STARCARE', 'Starcare Health Systems, Inc.'),
 };
 
-/* ── Public API ─────────────────────────────────────────────── */
+/* -- Public API ----------------------------------------------- */
 
 /**
  * Get LOA template configuration for a specific payer.

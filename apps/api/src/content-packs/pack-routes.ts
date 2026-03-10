@@ -1,5 +1,5 @@
 /**
- * Phase 390 (W22-P2): Content Pack Routes — REST endpoints for pack management
+ * Phase 390 (W22-P2): Content Pack Routes -- REST endpoints for pack management
  *
  * Admin-only endpoints for installing, previewing, rolling back, and querying
  * content packs, plus CRUD for individual content items (order sets, flowsheets, etc.).
@@ -27,7 +27,7 @@ import type { ContentPackV2 } from './types.js';
 import { requireSession } from '../auth/auth-routes.js';
 
 export default async function contentPackRoutes(server: FastifyInstance): Promise<void> {
-  // ── Pack Management ──────────────────────────────────────
+  // -- Pack Management --------------------------------------
 
   /** Preview what a pack install would do */
   server.post('/content-packs/preview', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -81,7 +81,7 @@ export default async function contentPackRoutes(server: FastifyInstance): Promis
     return { ok: true, stats: getPackStats(session.tenantId) };
   });
 
-  // ── Order Set Endpoints ──────────────────────────────────
+  // -- Order Set Endpoints ----------------------------------
 
   server.get('/content-packs/order-sets', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -117,7 +117,7 @@ export default async function contentPackRoutes(server: FastifyInstance): Promis
     }
   );
 
-  // ── Flowsheet Endpoints ──────────────────────────────────
+  // -- Flowsheet Endpoints ----------------------------------
 
   server.get('/content-packs/flowsheets', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -160,7 +160,7 @@ export default async function contentPackRoutes(server: FastifyInstance): Promis
     }
   );
 
-  // ── CDS Rules Endpoints ──────────────────────────────────
+  // -- CDS Rules Endpoints ----------------------------------
 
   server.get('/content-packs/cds-rules', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -168,7 +168,7 @@ export default async function contentPackRoutes(server: FastifyInstance): Promis
     return { ok: true, cdsRules: listCdsRules(session.tenantId, hook) };
   });
 
-  // ── Dashboard Endpoints ──────────────────────────────────
+  // -- Dashboard Endpoints ----------------------------------
 
   server.get('/content-packs/dashboards', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -176,7 +176,7 @@ export default async function contentPackRoutes(server: FastifyInstance): Promis
     return { ok: true, dashboards: listDashboards(session.tenantId, specialty) };
   });
 
-  // ── Inbox Rules Endpoints ────────────────────────────────
+  // -- Inbox Rules Endpoints --------------------------------
 
   server.get('/content-packs/inbox-rules', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);

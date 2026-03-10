@@ -3,7 +3,7 @@
  *
  * Phase 466 (W31-P3). In-memory OR case & room store.
  *
- * Phase 524 (W38): PG write-through — fire-and-forget durability.
+ * Phase 524 (W38): PG write-through -- fire-and-forget durability.
  */
 
 import { randomBytes } from 'crypto';
@@ -18,7 +18,7 @@ import type {
   OrBoardMetrics,
 } from './types.js';
 
-// ── PG Write-Through (Phase 524 / W38) ────────────────────────────
+// -- PG Write-Through (Phase 524 / W38) ----------------------------
 
 interface OrDbRepo {
   insertOrCase(data: any): Promise<any>;
@@ -40,13 +40,13 @@ function dbWarn(op: string, err: any): void {
   }
 }
 
-// ── Stores ─────────────────────────────────────────────────────────
+// -- Stores ---------------------------------------------------------
 
 const cases = new Map<string, OrCase>();
 const rooms = new Map<string, OrRoom>();
 const blocks = new Map<string, OrBlock>();
 
-// ── Seed default rooms ─────────────────────────────────────────────
+// -- Seed default rooms ---------------------------------------------
 
 function seedRooms() {
   const defs = [
@@ -64,7 +64,7 @@ function seedRooms() {
 }
 seedRooms();
 
-// ── Room CRUD ──────────────────────────────────────────────────────
+// -- Room CRUD ------------------------------------------------------
 
 export function getRoom(id: string): OrRoom | undefined {
   return rooms.get(id);
@@ -85,7 +85,7 @@ export function updateRoomStatus(id: string, status: OrRoom['status']): boolean 
   return true;
 }
 
-// ── Case CRUD ──────────────────────────────────────────────────────
+// -- Case CRUD ------------------------------------------------------
 
 export function createCase(data: {
   patientDfn: string;
@@ -198,7 +198,7 @@ export function updateCaseStatus(id: string, status: OrCaseStatus, recordedBy: s
   return true;
 }
 
-// ── Anesthesia ─────────────────────────────────────────────────────
+// -- Anesthesia -----------------------------------------------------
 
 export function setAnesthesia(caseId: string, record: AnesthesiaRecord): boolean {
   const c = cases.get(caseId);
@@ -215,7 +215,7 @@ export function setAnesthesia(caseId: string, record: AnesthesiaRecord): boolean
   return true;
 }
 
-// ── Blocks ─────────────────────────────────────────────────────────
+// -- Blocks ---------------------------------------------------------
 
 export function createBlock(data: Omit<OrBlock, 'id'>): OrBlock {
   const id = `blk-${randomBytes(4).toString('hex')}`;
@@ -246,7 +246,7 @@ export function listBlocks(roomId?: string): OrBlock[] {
   return list;
 }
 
-// ── Board Metrics ──────────────────────────────────────────────────
+// -- Board Metrics --------------------------------------------------
 
 export function getOrBoardMetrics(): OrBoardMetrics {
   const today = new Date().toISOString().slice(0, 10);

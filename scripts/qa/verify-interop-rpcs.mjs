@@ -1,12 +1,12 @@
 /**
- * Phase 576 — VE INTEROP RPC Verifier
+ * Phase 576 -- VE INTEROP RPC Verifier
  *
  * Connects to VistA via VistaRpcBridge, authenticates, creates CPRS context,
  * and calls all 6 VE INTEROP RPCs individually.
  *
  * Classification:
- *   PASS — structured array response OR "0^NOT_AVAILABLE" (RPC exists, executed)
- *   FAIL — "doesn't exist" / "not registered" / context denial / error
+ *   PASS -- structured array response OR "0^NOT_AVAILABLE" (RPC exists, executed)
+ *   FAIL -- "doesn't exist" / "not registered" / context denial / error
  *
  * Usage:
  *   node scripts/qa/verify-interop-rpcs.mjs

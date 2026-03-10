@@ -1,5 +1,5 @@
 /**
- * Imaging Modality Connectivity — Types
+ * Imaging Modality Connectivity -- Types
  *
  * Phase 386 (W21-P9): DICOM Modality Worklist (MWL), Modality Performed
  * Procedure Step (MPPS), and DICOMweb bridge types. Extends the existing
@@ -62,7 +62,7 @@ export type WorklistItemStatus =
   | 'cancelled';
 
 // ---------------------------------------------------------------------------
-// MPPS — Modality Performed Procedure Step
+// MPPS -- Modality Performed Procedure Step
 // ---------------------------------------------------------------------------
 
 export type MppsStatus = 'IN PROGRESS' | 'COMPLETED' | 'DISCONTINUED';
@@ -90,7 +90,7 @@ export interface MppsRecord {
   procedureDescription?: string;
   /** Start date/time (YYYYMMDDHHMMSS) */
   startDateTime: string;
-  /** End date/time (YYYYMMDDHHMMSS) — set on COMPLETED */
+  /** End date/time (YYYYMMDDHHMMSS) -- set on COMPLETED */
   endDateTime?: string;
   /** Number of series in study */
   seriesCount?: number;
@@ -108,11 +108,11 @@ export interface MppsRecord {
 
 /** Radiation dose information from MPPS */
 export interface DoseReport {
-  /** Total DLP (dose-length product) in mGy·cm */
+  /** Total DLP (dose-length product) in mGy*cm */
   totalDlp?: number;
   /** CTDIvol in mGy */
   ctdiVol?: number;
-  /** DAP (dose-area product) in dGy·cm² */
+  /** DAP (dose-area product) in dGy*cm² */
   dap?: number;
   /** Fluoroscopy time in seconds */
   fluoroTime?: number;

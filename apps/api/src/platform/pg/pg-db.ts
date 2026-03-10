@@ -1,5 +1,5 @@
 /**
- * Platform DB — PostgreSQL Connection Manager
+ * Platform DB -- PostgreSQL Connection Manager
  *
  * Phase 101: Platform Data Architecture Convergence
  *
@@ -17,6 +17,7 @@ import { drizzle } from 'drizzle-orm/node-postgres';
 import pg from 'pg';
 import { readFileSync } from 'node:fs';
 import * as schema from './pg-schema.js';
+import { safeErr } from '../../lib/safe-error.js';
 
 const { Pool } = pg;
 
@@ -44,7 +45,7 @@ function resolvePgConnectionString(): string | undefined {
   const user = process.env.PLATFORM_PG_USER ?? 've_api';
   const password = process.env.PLATFORM_PG_PASSWORD ?? '';
   const db = process.env.PLATFORM_PG_DB ?? 've_platform';
-  // Build connection URL from components — split to avoid secret-scan false positive
+  // Build connection URL from components -- split to avoid secret-scan false positive
   const scheme = 'postgre' + 's://';
   const auth = encodeURIComponent(user) + ':' + encodeURIComponent(password);
   return scheme + auth + '@' + host + ':' + port + '/' + db;
@@ -113,7 +114,7 @@ export function getPgDb(): PgDb {
 
   // Log pool errors (don't crash)
   pool.on('error', (err) => {
-    // Use console.error as a fallback — the structured logger may import
+    // Use console.error as a fallback -- the structured logger may import
     // from modules that depend on this file, creating circular deps.
     console.error('[platform-pg] Pool error:', err.message);
   });
@@ -146,7 +147,7 @@ export async function closePgDb(): Promise<void> {
 }
 
 /**
- * Health check — verify the pool can execute a query.
+ * Health check -- verify the pool can execute a query.
  * Returns { ok, latencyMs, poolSize, idleCount, waitingCount }.
  */
 export async function pgHealthCheck(): Promise<{
@@ -172,6 +173,6 @@ export async function pgHealthCheck(): Promise<{
       waitingCount: pool.waitingCount,
     };
   } catch (err: any) {
-    return { ok: false, latencyMs: Date.now() - start, error: err.message };
+    return { ok: false, latencyMs: Date.now() - start, error: safeErr(err) };
   }
 }

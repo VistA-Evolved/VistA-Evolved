@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Store Policy Gate — Phase 136
+ * Store Policy Gate -- Phase 136
  *
  * Static analysis gate that validates in-memory store policy:
  *   1. Every `new Map` in apps/api/src/ must be registered in store-policy.ts
@@ -43,7 +43,7 @@ function warn(msg) {
   details.push(`WARN: ${msg}`);
 }
 
-// ─── 1. store-policy.ts exists ──────────────────────────────
+// --- 1. store-policy.ts exists ------------------------------
 
 if (!existsSync(STORE_POLICY_PATH)) {
   fail('store-policy.ts does not exist');
@@ -53,7 +53,7 @@ if (!existsSync(STORE_POLICY_PATH)) {
 
 const policySrc = readFileSync(STORE_POLICY_PATH, 'utf8');
 
-// ─── 2. Parse inventory from store-policy.ts ────────────────
+// --- 2. Parse inventory from store-policy.ts ----------------
 
 // Extract all file paths mentioned in the inventory
 const filePatterns = [];
@@ -82,7 +82,7 @@ if (totalRegistered < 80) {
   fail(`Store inventory has only ${totalRegistered} entries (expected 80+). Incomplete inventory.`);
 }
 
-// ─── 3. Check critical + in_memory_only stores ──────────────
+// --- 3. Check critical + in_memory_only stores --------------
 
 // Extract critical + in_memory_only entries using block-by-block parsing
 // (regex spanning across blocks is unreliable)
@@ -111,7 +111,7 @@ if (criticalInMemory.length > 0) {
   ok('No critical+in_memory_only stores (all critical stores are durable)');
 }
 
-// ─── 4. Check cache stores have TTL or maxSize ──────────────
+// --- 4. Check cache stores have TTL or maxSize --------------
 
 // Split inventory into individual entry blocks to avoid regex spanning
 // Each entry starts with `  {` at indent 2 and ends with `  },`
@@ -145,7 +145,7 @@ if (cacheStoresWithoutLimits.length > 0) {
   ok('All cache stores have TTL or maxSize declared');
 }
 
-// ─── 5. Cross-reference: scan source for unregistered Maps ──
+// --- 5. Cross-reference: scan source for unregistered Maps --
 
 function walkDir(dir, ext = '.ts') {
   const results = [];
@@ -222,7 +222,7 @@ if (unregisteredFiles.length > 0) {
   ok('All Map stores in source files are registered in inventory');
 }
 
-// ─── 6. Verify required exports exist ───────────────────────
+// --- 6. Verify required exports exist -----------------------
 
 const requiredExports = [
   'STORE_INVENTORY',
@@ -244,7 +244,7 @@ if (missingExports.length > 0) {
   );
 }
 
-// ─── 7. Verify migrationTarget on all critical+in_memory ───
+// --- 7. Verify migrationTarget on all critical+in_memory ---
 
 // Reuse the block-by-block approach for accurate matching
 const criticalNoMigration = [];
@@ -269,7 +269,7 @@ if (criticalNoMigration.length > 0) {
   ok('All critical+in_memory_only stores have migrationTarget declared');
 }
 
-// ─── Summary ────────────────────────────────────────────────
+// --- Summary ------------------------------------------------
 
 console.log('\n=== Store Policy Gate ===\n');
 for (const d of details) {

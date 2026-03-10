@@ -1,5 +1,5 @@
 /**
- * Phase 400 (W23-P2): Interop Gateway Layer — Routes
+ * Phase 400 (W23-P2): Interop Gateway Layer -- Routes
  *
  * REST endpoints for channel management, transform pipelines, transaction
  * routing/audit, and mediator configuration.
@@ -31,7 +31,7 @@ import {
 } from './gateway-store.js';
 
 export default async function interopGatewayRoutes(server: FastifyInstance): Promise<void> {
-  // ── Channels ─────────────────────────────────────────────
+  // -- Channels ---------------------------------------------
 
   server.get('/interop-gateway/channels', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -116,7 +116,7 @@ export default async function interopGatewayRoutes(server: FastifyInstance): Pro
     }
   );
 
-  // ── Transform Pipelines ──────────────────────────────────
+  // -- Transform Pipelines ----------------------------------
 
   server.get('/interop-gateway/pipelines', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -183,7 +183,7 @@ export default async function interopGatewayRoutes(server: FastifyInstance): Pro
     }
   );
 
-  // ── Transactions ─────────────────────────────────────────
+  // -- Transactions -----------------------------------------
 
   server.get(
     '/interop-gateway/transactions',
@@ -232,7 +232,7 @@ export default async function interopGatewayRoutes(server: FastifyInstance): Pro
     return reply.code(code).send({ ok: tx.status === 'completed', transaction: tx });
   });
 
-  // ── Mediators ────────────────────────────────────────────
+  // -- Mediators --------------------------------------------
 
   server.get('/interop-gateway/mediators', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -291,7 +291,7 @@ export default async function interopGatewayRoutes(server: FastifyInstance): Pro
     }
   );
 
-  // ── Dashboard ────────────────────────────────────────────
+  // -- Dashboard --------------------------------------------
 
   server.get('/interop-gateway/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);

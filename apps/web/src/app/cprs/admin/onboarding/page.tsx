@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Admin — Onboarding Wizard
+ * Admin -- Onboarding Wizard
  *
  * Phase 243 (Wave 6 P6): Guided multi-step facility setup wizard.
  * Steps: Facility Setup -> VistA Connection -> Module Selection -> Users -> Complete

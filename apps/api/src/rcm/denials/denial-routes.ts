@@ -1,22 +1,22 @@
 /**
- * Denial & Appeals API Routes — Phase 98
+ * Denial & Appeals API Routes -- Phase 98
  *
  * Endpoints:
- *   GET  /rcm/denials             — Paginated denial list (work queue)
- *   POST /rcm/denials             — Create denial case (manual intake)
- *   GET  /rcm/denials/stats       — Dashboard stats by status
- *   GET  /rcm/denials/:id         — Get denial with actions
- *   PATCH /rcm/denials/:id        — Update denial (status transition, assignment, codes)
- *   POST /rcm/denials/:id/actions — Add action to denial
- *   GET  /rcm/denials/:id/actions — List actions for denial
- *   POST /rcm/denials/:id/attachments — Add attachment reference
- *   GET  /rcm/denials/:id/attachments — List attachments
- *   POST /rcm/denials/:id/appeal-packet — Generate appeal packet HTML
- *   POST /rcm/denials/:id/resubmit    — Create resubmission attempt
- *   GET  /rcm/denials/:id/resubmissions — List resubmissions
- *   POST /rcm/denials/import/835      — Batch import from 835 remittance
+ *   GET  /rcm/denials             -- Paginated denial list (work queue)
+ *   POST /rcm/denials             -- Create denial case (manual intake)
+ *   GET  /rcm/denials/stats       -- Dashboard stats by status
+ *   GET  /rcm/denials/:id         -- Get denial with actions
+ *   PATCH /rcm/denials/:id        -- Update denial (status transition, assignment, codes)
+ *   POST /rcm/denials/:id/actions -- Add action to denial
+ *   GET  /rcm/denials/:id/actions -- List actions for denial
+ *   POST /rcm/denials/:id/attachments -- Add attachment reference
+ *   GET  /rcm/denials/:id/attachments -- List attachments
+ *   POST /rcm/denials/:id/appeal-packet -- Generate appeal packet HTML
+ *   POST /rcm/denials/:id/resubmit    -- Create resubmission attempt
+ *   GET  /rcm/denials/:id/resubmissions -- List resubmissions
+ *   POST /rcm/denials/import/835      -- Batch import from 835 remittance
  *
- * All routes under /rcm/ — existing security catch-all covers session auth.
+ * All routes under /rcm/ -- existing security catch-all covers session auth.
  * Mutations wired to appendRcmAudit.
  */
 
@@ -48,7 +48,7 @@ import {
 } from './types.js';
 import type { DenialStatus } from './types.js';
 
-/* ── Session helper ────────────────────────────────────────── */
+/* -- Session helper ------------------------------------------ */
 
 function getSession(request: FastifyRequest): { duz: string } {
   const s = (request as any).session;
@@ -78,10 +78,10 @@ function requireTenantId(request: FastifyRequest, reply: FastifyReply): string |
   return null;
 }
 
-/* ── Route Registration ────────────────────────────────────── */
+/* -- Route Registration -------------------------------------- */
 
 export default async function denialRoutes(server: FastifyInstance): Promise<void> {
-  /* ── List Denials (Work Queue) ─────────────────────────── */
+  /* -- List Denials (Work Queue) --------------------------- */
   server.get('/rcm/denials', async (request: FastifyRequest, reply: FastifyReply) => {
     const q = (request.query as any) || {};
     const parsed = DenialListQuerySchema.safeParse(q);
@@ -94,7 +94,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     return reply.send({ ok: true, ...result });
   });
 
-  /* ── Create Denial (Manual Intake) ─────────────────────── */
+  /* -- Create Denial (Manual Intake) ----------------------- */
   server.post('/rcm/denials', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const parsed = CreateDenialSchema.safeParse(body);
@@ -116,7 +116,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     return reply.status(201).send({ ok: true, denial });
   });
 
-  /* ── Dashboard Stats ───────────────────────────────────── */
+  /* -- Dashboard Stats ------------------------------------- */
   server.get('/rcm/denials/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
     if (!tenantId) return;
@@ -124,7 +124,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     return reply.send({ ok: true, stats });
   });
 
-  /* ── Get Denial Detail ─────────────────────────────────── */
+  /* -- Get Denial Detail ----------------------------------- */
   server.get('/rcm/denials/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const tenantId = requireTenantId(request, reply);
@@ -139,7 +139,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     return reply.send({ ok: true, denial, actions, attachments, resubmissions });
   });
 
-  /* ── Update Denial ─────────────────────────────────────── */
+  /* -- Update Denial --------------------------------------- */
   server.patch('/rcm/denials/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
@@ -159,7 +159,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
       if (!isValidDenialTransition(existing.denialStatus, parsed.data.denialStatus)) {
         return reply.status(400).send({
           ok: false,
-          error: `Invalid transition: ${existing.denialStatus} → ${parsed.data.denialStatus}`,
+          error: `Invalid transition: ${existing.denialStatus} -> ${parsed.data.denialStatus}`,
         });
       }
     }
@@ -183,7 +183,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     return reply.send({ ok: true, denial });
   });
 
-  /* ── Add Action ────────────────────────────────────────── */
+  /* -- Add Action ------------------------------------------ */
   server.post('/rcm/denials/:id/actions', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
@@ -215,7 +215,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     return reply.status(201).send({ ok: true, action });
   });
 
-  /* ── List Actions ──────────────────────────────────────── */
+  /* -- List Actions ---------------------------------------- */
   server.get('/rcm/denials/:id/actions', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const tenantId = requireTenantId(request, reply);
@@ -228,7 +228,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     return reply.send({ ok: true, actions });
   });
 
-  /* ── Add Attachment Reference ──────────────────────────── */
+  /* -- Add Attachment Reference ---------------------------- */
   server.post(
     '/rcm/denials/:id/attachments',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -267,7 +267,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     }
   );
 
-  /* ── List Attachments ──────────────────────────────────── */
+  /* -- List Attachments ------------------------------------ */
   server.get(
     '/rcm/denials/:id/attachments',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -283,7 +283,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     }
   );
 
-  /* ── Generate Appeal Packet ────────────────────────────── */
+  /* -- Generate Appeal Packet ------------------------------ */
   server.post(
     '/rcm/denials/:id/appeal-packet',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -326,7 +326,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     }
   );
 
-  /* ── Create Resubmission ───────────────────────────────── */
+  /* -- Create Resubmission --------------------------------- */
   server.post('/rcm/denials/:id/resubmit', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
@@ -373,7 +373,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     return reply.status(201).send({ ok: true, resubmission: resub });
   });
 
-  /* ── List Resubmissions ────────────────────────────────── */
+  /* -- List Resubmissions ---------------------------------- */
   server.get(
     '/rcm/denials/:id/resubmissions',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -389,7 +389,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
     }
   );
 
-  /* ── Batch Import from 835 ────────────────────────────── */
+  /* -- Batch Import from 835 ------------------------------ */
   server.post('/rcm/denials/import/835', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as any) || {};
     const parsed = Import835BatchSchema.safeParse(body);
@@ -417,7 +417,7 @@ export default async function denialRoutes(server: FastifyInstance): Promise<voi
   });
 }
 
-/* ── Helpers ───────────────────────────────────────────────── */
+/* -- Helpers ------------------------------------------------- */
 
 function mapStatusToAuditAction(status?: DenialStatus) {
   switch (status) {

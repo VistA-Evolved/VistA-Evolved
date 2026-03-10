@@ -1,10 +1,10 @@
 /**
- * QA/Audit OS — Type Definitions
+ * QA/Audit OS -- Type Definitions
  *
  * Phase 96B: QA/Audit OS v1.1
  */
 
-/* ── RPC Trace ────────────────────────────────────────────── */
+/* -- RPC Trace ---------------------------------------------- */
 
 export interface RpcTraceEntry {
   /** Unique trace entry ID */
@@ -49,7 +49,7 @@ export interface RpcTraceStats {
   newestEntry?: string;
 }
 
-/* ── QA Flow ──────────────────────────────────────────────── */
+/* -- QA Flow ------------------------------------------------ */
 
 export interface QaFlowStep {
   /** Step number (1-based) */
@@ -127,7 +127,7 @@ export interface QaStepResult {
   extracted?: Record<string, string>;
 }
 
-/* ── Dead Click ───────────────────────────────────────────── */
+/* -- Dead Click --------------------------------------------- */
 
 export interface DeadClickEntry {
   /** Page URL/path where the dead click was found */

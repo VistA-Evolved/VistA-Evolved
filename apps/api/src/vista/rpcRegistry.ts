@@ -241,6 +241,12 @@ export const RPC_REGISTRY: RpcDefinition[] = [
     tag: 'read',
     description: 'Get user notification info',
   },
+  {
+    name: 'ORB DELETE ALERT',
+    domain: 'inbox',
+    tag: 'write',
+    description: 'Delete/acknowledge a VistA alert notification',
+  },
 
   // --- Labs ---
   { name: 'ORWLRR INTERIM', domain: 'labs', tag: 'read', description: 'Interim lab results' },
@@ -884,6 +890,12 @@ export const RPC_REGISTRY: RpcDefinition[] = [
     tag: 'read',
     description: 'Detailed info for a single clinical reminder',
   },
+  {
+    name: 'PXRM REMINDER INQUIRY',
+    domain: 'reminders',
+    tag: 'read',
+    description: 'Full reminder inquiry text from PXRM package',
+  },
 
   // --- Immunizations (Phase 65: VistA-first immunization history) ---
   {
@@ -964,6 +976,24 @@ export const RPC_REGISTRY: RpcDefinition[] = [
     tag: 'write',
     description: 'Mark read/delete/move MailMan message (ZVEMSGR.m)',
   },
+  {
+    name: 'ORWPT CLINRNG',
+    domain: 'messaging',
+    tag: 'read',
+    description: 'Clinician range lookup for message recipient search (File #200)',
+  },
+  {
+    name: 'XM SEND MSG',
+    domain: 'messaging',
+    tag: 'write',
+    description: 'Send VistA MailMan message via standard kernel API',
+  },
+  {
+    name: 'XM GET MAIL',
+    domain: 'messaging',
+    tag: 'read',
+    description: 'Get MailMan messages for current user via standard kernel API',
+  },
 
   // --- Scheduling (Phase 37C: VistA scheduling adapter, enhanced Phase 123) ---
   {
@@ -996,7 +1026,7 @@ export const RPC_REGISTRY: RpcDefinition[] = [
     tag: 'read',
     description: 'List encounters for date range',
   },
-  // Phase 123: SD* integration pack — new RPCs
+  // Phase 123: SD* integration pack -- new RPCs
   {
     name: 'SDOE GET GENERAL DATA',
     domain: 'scheduling',
@@ -1389,6 +1419,71 @@ export const RPC_REGISTRY: RpcDefinition[] = [
   { name: 'VE TIU DEFINITIONS', domain: 'admin-clinical-app', tag: 'read', description: 'List TIU document definitions' },
   { name: 'VE TIU TEMPLATES', domain: 'admin-clinical-app', tag: 'read', description: 'List TIU templates' },
   { name: 'VE HEALTH SUMMARY TYPES', domain: 'admin-clinical-app', tag: 'read', description: 'List health summary types' },
+
+  // --- ADT Write RPCs (ZVEADTW.m) ---
+  { name: 'VE ADT ADMIT', domain: 'adt', tag: 'write', description: 'Admit patient to ward via DGPM wrapper' },
+  { name: 'VE ADT TRANSFER', domain: 'adt', tag: 'write', description: 'Transfer patient between wards' },
+  { name: 'VE ADT DISCHARGE', domain: 'adt', tag: 'write', description: 'Discharge patient from ward' },
+  { name: 'VE REGISTER PAT', domain: 'adt', tag: 'write', description: 'Register new patient in File #2' },
+
+  // --- Nursing / eMAR RPCs (ZVENAS.m) ---
+  { name: 'ZVENAS LIST', domain: 'nursing', tag: 'read', description: 'Nursing task list for patient' },
+  { name: 'ZVENAS ASSESS', domain: 'nursing', tag: 'read', description: 'Nursing assessments from File #211' },
+  { name: 'ZVENAS SAVE', domain: 'nursing', tag: 'write', description: 'Save nursing assessment' },
+  { name: 'ZVENAS IOLIST', domain: 'nursing', tag: 'read', description: 'I/O summary from File #126' },
+  { name: 'ZVENAS IOADD', domain: 'nursing', tag: 'write', description: 'Add I/O entry' },
+  { name: 'ZVENAS MEDLOG', domain: 'nursing', tag: 'write', description: 'Record med administration to File #53.79 BCMA log' },
+  { name: 'ZVENAS MEDLIST', domain: 'nursing', tag: 'read', description: 'Med admin history from File #53.79' },
+  { name: 'ZVENAS BCSCAN', domain: 'nursing', tag: 'read', description: 'Barcode scan validation' },
+
+  // --- Lab Write RPCs (ZVELABW.m) ---
+  { name: 'VE LAB ORDER', domain: 'lab', tag: 'write', description: 'Place lab order in File #69' },
+  { name: 'VE LAB VERIFY', domain: 'lab', tag: 'write', description: 'Verify lab result in File #63' },
+  { name: 'VE LAB RESULT', domain: 'lab', tag: 'write', description: 'Enter lab result value in File #63' },
+  { name: 'VE LAB COLLECT', domain: 'lab', tag: 'write', description: 'Log specimen collection event' },
+  { name: 'VE LAB STATUS', domain: 'lab', tag: 'read', description: 'Lab order status query from File #100' },
+  { name: 'VE LAB HISTORY', domain: 'lab', tag: 'read', description: 'Patient lab result history from File #63' },
+
+  // --- Problem List Write RPCs (ZVEPLW.m) ---
+  { name: 'VE PROBLEM ADD', domain: 'problems', tag: 'write', description: 'Add problem to File #9000011' },
+  { name: 'VE PROBLEM EDIT', domain: 'problems', tag: 'write', description: 'Edit problem in File #9000011' },
+  { name: 'VE PROBLEM REMOVE', domain: 'problems', tag: 'write', description: 'Inactivate problem in File #9000011' },
+  { name: 'VE PROBLEM LIST', domain: 'problems', tag: 'read', description: 'Full problem list from File #9000011' },
+
+  // --- Patient Registration RPCs (ZVEPATREG.m) ---
+  { name: 'VE PAT REGISTER', domain: 'registration', tag: 'write', description: 'Create new patient in File #2' },
+  { name: 'VE PAT DEMOG', domain: 'registration', tag: 'read', description: 'Get patient demographics from File #2' },
+  { name: 'VE PAT UPDATE', domain: 'registration', tag: 'write', description: 'Update patient demographics in File #2' },
+  { name: 'VE PAT SEARCH', domain: 'registration', tag: 'read', description: 'Search patients by name/SSN/DOB in File #2' },
+  { name: 'VE PAT MERGE', domain: 'registration', tag: 'read', description: 'Duplicate detection for patient merge' },
+
+  // --- Discharge Workflow RPCs (ZVEDISCH.m) ---
+  { name: 'VE DISCHARGE FULL', domain: 'discharge', tag: 'write', description: 'Full discharge: ADT + summary + instructions' },
+  { name: 'VE DISCHARGE INSTR', domain: 'discharge', tag: 'write', description: 'Discharge instructions via TIU note' },
+  { name: 'VE DISCHARGE SUMM', domain: 'discharge', tag: 'write', description: 'Discharge summary TIU document' },
+  { name: 'VE DISCHARGE FOLLOWUP', domain: 'discharge', tag: 'write', description: 'Schedule discharge follow-up' },
+
+  // --- Medication Reconciliation RPCs (ZVEMEDREC.m) ---
+  { name: 'VE MEDREC RECONCILE', domain: 'medrec', tag: 'write', description: 'Save medication reconciliation decision' },
+  { name: 'VE MEDREC MEDLIST', domain: 'medrec', tag: 'read', description: 'Combined med list for reconciliation (File 100 + File 52)' },
+  { name: 'VE MEDREC HISTORY', domain: 'medrec', tag: 'read', description: 'Reconciliation decision history' },
+  { name: 'VE MEDREC OUTSRC', domain: 'medrec', tag: 'write', description: 'Record outside/community medication' },
+
+  // --- E-Prescribing RPCs (ZVEERX.m) ---
+  { name: 'VE ERX NEWRX', domain: 'pharmacy', tag: 'write', description: 'Create new outpatient prescription (File #52)' },
+  { name: 'VE ERX RENEW', domain: 'pharmacy', tag: 'write', description: 'Renew existing prescription' },
+  { name: 'VE ERX CANCEL', domain: 'pharmacy', tag: 'write', description: 'Cancel prescription' },
+  { name: 'VE ERX DRUGSRCH', domain: 'pharmacy', tag: 'read', description: 'Drug formulary search (File #50)' },
+  { name: 'VE ERX HISTORY', domain: 'pharmacy', tag: 'read', description: 'Prescription history (File #52)' },
+  { name: 'VE ERX STATUS', domain: 'pharmacy', tag: 'read', description: 'Prescription status check' },
+
+  // --- PCE/Encounter/Immunization RPCs (ZVEPCE.m) ---
+  { name: 'VE PCE IMM GIVE', domain: 'immunizations', tag: 'write', description: 'Record immunization (File #9000010.11)' },
+  { name: 'VE PCE IMM HIST', domain: 'immunizations', tag: 'read', description: 'Immunization history' },
+  { name: 'VE PCE ENCOUNTER', domain: 'encounters', tag: 'write', description: 'Create encounter/visit (File #9000010)' },
+  { name: 'VE PCE PROCEDURE', domain: 'encounters', tag: 'write', description: 'Record procedure (File #9000010.07)' },
+  { name: 'VE PCE DIAGNOSIS', domain: 'encounters', tag: 'write', description: 'Record diagnosis (V POV)' },
+  { name: 'VE PCE VISIT HIST', domain: 'encounters', tag: 'read', description: 'Visit history' },
 ];
 
 /**
@@ -1445,6 +1540,10 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
     name: 'ORWORB UNSIG ORDERS',
     reason:
       'Unsigned order notifications; Vivian has ORWORB UNSIG ORDERS FOLLOWUP but not this variant',
+  },
+  {
+    name: 'ORB DELETE ALERT',
+    reason: 'Alert acknowledgement/deletion; ORB package RPC for dismissing notifications',
   },
   {
     name: 'ORWLRR ACK',
@@ -1522,7 +1621,7 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
     name: 'SDOE LIST ENCOUNTERS FOR DATES',
     reason: 'Scheduling encounter date range list; SD package RPCs underrepresented in Vivian',
   },
-  // Phase 123: SD* integration pack — new exception entries
+  // Phase 123: SD* integration pack -- new exception entries
   {
     name: 'SDOE GET GENERAL DATA',
     reason: 'SDOE encounter detail; SD package RPCs underrepresented in Vivian',
@@ -1608,7 +1707,7 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   },
   { name: 'SDES CHECKIN', reason: 'SDES check-in; SDES package not in Vivian index' },
   { name: 'SDES CHECKOUT', reason: 'SDES checkout; SDES package not in Vivian index' },
-  // Phase 539: Recall/Reminder RPCs — File 403.5 not populated in WorldVistA Docker
+  // Phase 539: Recall/Reminder RPCs -- File 403.5 not populated in WorldVistA Docker
   {
     name: 'SD RECALL LIST',
     reason: 'SD Recall Reminders; File 403.5 namespace not populated in sandbox',
@@ -1625,7 +1724,7 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
     name: 'SD RECALL DATE CHECK',
     reason: 'SD Recall compliance check; File 403.5 not populated in sandbox',
   },
-  // Phase 137: ZVEADT custom RPCs — expected missing until ZVEADT.m installed
+  // Phase 137: ZVEADT custom RPCs -- expected missing until ZVEADT.m installed
   {
     name: 'ZVEADT WARDS',
     reason:
@@ -1640,121 +1739,121 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
     reason:
       'Custom RPC installed by VistA-Evolved (ZVEADT.m) for patient movement history from File 405 (Phase 137)',
   },
-  // Phase 138: BCMA/PSB RPCs — target RPCs for nursing MAR + eMAR integration (not in WorldVistA sandbox)
+  // Phase 138: BCMA/PSB RPCs -- target RPCs for nursing MAR + eMAR integration (not in WorldVistA sandbox)
   {
     name: 'PSB MED LOG',
     reason:
-      'BCMA medication log read/write — requires PSB package not available in WorldVistA Docker (Phase 138)',
+      'BCMA medication log read/write -- requires PSB package not available in WorldVistA Docker (Phase 138)',
   },
   // PSB ALLERGY moved to RPC_REGISTRY -- confirmed IEN 1278 in VEHU
   {
     name: 'PSJBCMA',
     reason:
-      'Barcode-to-medication lookup via PSJ BCMA routines — requires PSJ/PSB packages (Phase 138)',
+      'Barcode-to-medication lookup via PSJ BCMA routines -- requires PSJ/PSB packages (Phase 138)',
   },
   {
     name: 'GMRIO RESULTS',
-    reason: 'I&O results from GMR(126) — RPC not exposed via OR CPRS GUI CHART context (Phase 138)',
+    reason: 'I&O results from GMR(126) -- RPC not exposed via OR CPRS GUI CHART context (Phase 138)',
   },
   {
     name: 'GMRIO ADD',
-    reason: 'I&O entry add — requires GMR IO package configuration (Phase 138)',
+    reason: 'I&O entry add -- requires GMR IO package configuration (Phase 138)',
   },
-  // Phase 431: DGPM ADT write RPCs — target RPCs for admission/transfer/discharge (not exposed in OR CPRS GUI CHART context)
+  // Phase 431: DGPM ADT write RPCs -- target RPCs for admission/transfer/discharge (not exposed in OR CPRS GUI CHART context)
   {
     name: 'DGPM NEW ADMISSION',
     reason:
-      'ADT admission write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)',
+      'ADT admission write -- DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)',
   },
   {
     name: 'DGPM NEW TRANSFER',
     reason:
-      'ADT transfer write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)',
+      'ADT transfer write -- DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)',
   },
   {
     name: 'DGPM NEW DISCHARGE',
     reason:
-      'ADT discharge write — DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)',
+      'ADT discharge write -- DGPM package RPCs not exposed in OR CPRS GUI CHART context in WorldVistA Docker (Phase 431)',
   },
-  // Phase 432: PSJ pharmacy verification RPCs — target RPCs for inpatient pharmacy verification (not in WorldVistA sandbox)
+  // Phase 432: PSJ pharmacy verification RPCs -- target RPCs for inpatient pharmacy verification (not in WorldVistA sandbox)
   {
     name: 'PSJ VERIFY',
     reason:
-      'Inpatient pharmacy order verification — requires PSJ package not available in WorldVistA Docker (Phase 432)',
+      'Inpatient pharmacy order verification -- requires PSJ package not available in WorldVistA Docker (Phase 432)',
   },
   {
     name: 'PSJ ORDER STATUS',
-    reason: 'Inpatient pharmacy order status lookup — requires PSJ package (Phase 432)',
+    reason: 'Inpatient pharmacy order status lookup -- requires PSJ package (Phase 432)',
   },
   // PSB VALIDATE ORDER moved to RPC_REGISTRY -- confirmed IEN 646 in VEHU
-  // Phase 433: Lab filing RPCs — target RPCs for HL7 ORU^R01 inbound lab result filing (not available via RPC)
+  // Phase 433: Lab filing RPCs -- target RPCs for HL7 ORU^R01 inbound lab result filing (not available via RPC)
   {
     name: 'LRFZX',
     reason:
-      'Lab result filing routine — not an RPC, requires direct M call or custom ZVE wrapper (Phase 433)',
+      'Lab result filing routine -- not an RPC, requires direct M call or custom ZVE wrapper (Phase 433)',
   },
   {
     name: 'LR VERIFY',
     reason:
-      'Lab result verification — LR package not exposed via OR CPRS GUI CHART context (Phase 433)',
+      'Lab result verification -- LR package not exposed via OR CPRS GUI CHART context (Phase 433)',
   },
-  // Phase 434: ORWDXC session RPCs — referenced in CPRS Delphi but not yet called by VistA-Evolved
+  // Phase 434: ORWDXC session RPCs -- referenced in CPRS Delphi but not yet called by VistA-Evolved
   {
     name: 'ORWDXC DELAY',
     reason:
-      'Delay order checks for complex orders — CPRS Delphi references but not yet wired (Phase 434)',
+      'Delay order checks for complex orders -- CPRS Delphi references but not yet wired (Phase 434)',
   },
   {
     name: 'ORWDXC DELORD',
-    reason: 'Remove order from active check session — CPRS Delphi references (Phase 434)',
+    reason: 'Remove order from active check session -- CPRS Delphi references (Phase 434)',
   },
   {
     name: 'ORWDXC FILLID',
-    reason: 'Get fill ID for duplicate therapy checks — requires pharmacy context (Phase 434)',
+    reason: 'Get fill ID for duplicate therapy checks -- requires pharmacy context (Phase 434)',
   },
   {
     name: 'ORWDXC ON',
-    reason: 'Check if order checking is enabled for site — CPRS Delphi references (Phase 434)',
+    reason: 'Check if order checking is enabled for site -- CPRS Delphi references (Phase 434)',
   },
   {
     name: 'ORWDXC SESSION',
-    reason: 'Order check session management — CPRS Delphi references (Phase 434)',
+    reason: 'Order check session management -- CPRS Delphi references (Phase 434)',
   },
-  // Phase 568: Labs/Meds/Problems wiring — RPCs present in CPRS Delphi but absent from some Vivian snapshots
+  // Phase 568: Labs/Meds/Problems wiring -- RPCs present in CPRS Delphi but absent from some Vivian snapshots
   {
     name: 'ORQQL DETAIL',
-    reason: 'Lab order detail — ORQQL namespace absent from Vivian (Phase 568)',
+    reason: 'Lab order detail -- ORQQL namespace absent from Vivian (Phase 568)',
   },
   {
     name: 'ORWLR RECENTSIT',
-    reason: 'Recent lab results — ORWLR namespace absent from Vivian (Phase 568)',
+    reason: 'Recent lab results -- ORWLR namespace absent from Vivian (Phase 568)',
   },
   {
     name: 'ORWLR CUMULATIVE',
-    reason: 'Cumulative lab report — ORWLR namespace absent from Vivian (Phase 568)',
+    reason: 'Cumulative lab report -- ORWLR namespace absent from Vivian (Phase 568)',
   },
   {
     name: 'LR ORDER',
-    reason: 'Lab order entry — LR package underrepresented in Vivian (Phase 568)',
+    reason: 'Lab order entry -- LR package underrepresented in Vivian (Phase 568)',
   },
   {
     name: 'ORWPS COVER',
-    reason: 'Medications cover sheet — present in CPRS Delphi but absent from Vivian (Phase 568)',
+    reason: 'Medications cover sheet -- present in CPRS Delphi but absent from Vivian (Phase 568)',
   },
   {
     name: 'ORWPS DETAIL',
-    reason: 'Medication detail — present in CPRS Delphi but absent from Vivian (Phase 568)',
+    reason: 'Medication detail -- present in CPRS Delphi but absent from Vivian (Phase 568)',
   },
   {
     name: 'GMPL PROB LIST',
-    reason: 'GMPL problem list by status — GMPL package underrepresented in Vivian (Phase 568)',
+    reason: 'GMPL problem list by status -- GMPL package underrepresented in Vivian (Phase 568)',
   },
   {
     name: 'GMPL ADD SAVE',
-    reason: 'GMPL add/save problem — GMPL package underrepresented in Vivian (Phase 568)',
+    reason: 'GMPL add/save problem -- GMPL package underrepresented in Vivian (Phase 568)',
   },
-  // Phase 578: ORWDPS/ORWPS medication order dialog RPCs — wired in meds.ts
-  { name: 'ORWDPS ALLSCHD', reason: 'Medication order schedules — ORWDPS package (Phase 578)' },
+  // Phase 578: ORWDPS/ORWPS medication order dialog RPCs -- wired in meds.ts
+  { name: 'ORWDPS ALLSCHD', reason: 'Medication order schedules -- ORWDPS package (Phase 578)' },
   { name: 'ORWDPS1 CHK94', reason: 'Medication order dialog helper (Phase 578)' },
   { name: 'ORWDPS1 DFLTSPLY', reason: 'Medication order dialog helper (Phase 578)' },
   { name: 'ORWDPS1 DOSEALT', reason: 'Medication order dialog helper (Phase 578)' },
@@ -1806,12 +1905,12 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: 'ORWDPS5 ISVTP', reason: 'Medication order dialog helper (Phase 578)' },
   { name: 'ORWDPS5 LESAPI', reason: 'Medication order dialog helper (Phase 578)' },
   { name: 'ORWDPS5 LESGRP', reason: 'Medication order dialog helper (Phase 578)' },
-  { name: 'ORWPS MEDHIST', reason: 'Medication history — ORWPS package (Phase 578)' },
-  { name: 'ORWPS REASON', reason: 'Medication reason — ORWPS package (Phase 578)' },
-  { name: 'ORWPS1 NEWDLG', reason: 'Medication new dialog — ORWPS1 package (Phase 578)' },
-  { name: 'ORWPS1 PICKUP', reason: 'Medication pickup — ORWPS1 package (Phase 578)' },
-  { name: 'ORWPS1 REFILL', reason: 'Medication refill — ORWPS1 package (Phase 578)' },
-  // Phase 580: Lab/report RPC stubs — ORWDLR32/ORWDLR33/ORWLRR/ORWRP/ORWSR families underrepresented in Vivian
+  { name: 'ORWPS MEDHIST', reason: 'Medication history -- ORWPS package (Phase 578)' },
+  { name: 'ORWPS REASON', reason: 'Medication reason -- ORWPS package (Phase 578)' },
+  { name: 'ORWPS1 NEWDLG', reason: 'Medication new dialog -- ORWPS1 package (Phase 578)' },
+  { name: 'ORWPS1 PICKUP', reason: 'Medication pickup -- ORWPS1 package (Phase 578)' },
+  { name: 'ORWPS1 REFILL', reason: 'Medication refill -- ORWPS1 package (Phase 578)' },
+  // Phase 580: Lab/report RPC stubs -- ORWDLR32/ORWDLR33/ORWLRR/ORWRP/ORWSR families underrepresented in Vivian
   {
     name: 'ORWDLR32 ABBSPEC',
     reason: 'Lab order dialog; ORWDLR32 family underrepresented in Vivian (Phase 580)',
@@ -2074,7 +2173,7 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
     name: 'ORWSR SHOW SURG TAB',
     reason: 'Surgery; ORWSR family underrepresented in Vivian (Phase 580)',
   },
-  // Notes domain RPCs (routes/notes.ts) — TIU/ORWTIU package underrepresented in Vivian
+  // Notes domain RPCs (routes/notes.ts) -- TIU/ORWTIU package underrepresented in Vivian
   { name: 'ORWTIU CANLINK', reason: 'Notes; ORWTIU package (routes/notes.ts)' },
   { name: 'ORWTIU CHKTXT', reason: 'Notes; ORWTIU package (routes/notes.ts)' },
   { name: 'ORWTIU GET DCSUMM CONTEXT', reason: 'Notes; ORWTIU package (routes/notes.ts)' },
@@ -2249,6 +2348,62 @@ export const RPC_EXCEPTIONS: Array<{ name: string; reason: string }> = [
   { name: 'VE TIU DEFINITIONS', reason: 'Custom admin RPC for TIU document definition listing' },
   { name: 'VE TIU TEMPLATES', reason: 'Custom admin RPC for TIU template listing' },
   { name: 'VE HEALTH SUMMARY TYPES', reason: 'Custom admin RPC for health summary type listing' },
+  // ADT write RPCs (ZVEADTW.m)
+  { name: 'VE ADT ADMIT', reason: 'Custom RPC (ZVEADTW.m) for patient admission via DGPM wrapper' },
+  { name: 'VE ADT TRANSFER', reason: 'Custom RPC (ZVEADTW.m) for patient transfer between wards' },
+  { name: 'VE ADT DISCHARGE', reason: 'Custom RPC (ZVEADTW.m) for patient discharge' },
+  { name: 'VE REGISTER PAT', reason: 'Custom RPC (ZVEADTW.m) for patient registration in File #2' },
+  // Nursing/eMAR RPCs (ZVENAS.m)
+  { name: 'ZVENAS LIST', reason: 'Custom RPC (ZVENAS.m) for nursing task list' },
+  { name: 'ZVENAS ASSESS', reason: 'Custom RPC (ZVENAS.m) for nursing assessments' },
+  { name: 'ZVENAS SAVE', reason: 'Custom RPC (ZVENAS.m) for saving nursing assessment' },
+  { name: 'ZVENAS IOLIST', reason: 'Custom RPC (ZVENAS.m) for I/O summary' },
+  { name: 'ZVENAS IOADD', reason: 'Custom RPC (ZVENAS.m) for adding I/O entry' },
+  { name: 'ZVENAS MEDLOG', reason: 'Custom RPC (ZVENAS.m) for recording med administration to ^PSB(53.79)' },
+  { name: 'ZVENAS MEDLIST', reason: 'Custom RPC (ZVENAS.m) for reading med admin history from ^PSB(53.79)' },
+  { name: 'ZVENAS BCSCAN', reason: 'Custom RPC (ZVENAS.m) for barcode scan validation' },
+  // Lab write RPCs (ZVELABW.m)
+  { name: 'VE LAB ORDER', reason: 'Custom RPC (ZVELABW.m) for placing lab orders in File #69' },
+  { name: 'VE LAB VERIFY', reason: 'Custom RPC (ZVELABW.m) for lab result verification in File #63' },
+  { name: 'VE LAB RESULT', reason: 'Custom RPC (ZVELABW.m) for entering lab result values in File #63' },
+  { name: 'VE LAB COLLECT', reason: 'Custom RPC (ZVELABW.m) for specimen collection logging' },
+  { name: 'VE LAB STATUS', reason: 'Custom RPC (ZVELABW.m) for lab order status from File #100' },
+  { name: 'VE LAB HISTORY', reason: 'Custom RPC (ZVELABW.m) for patient lab history from File #63' },
+  // Problem list write RPCs (ZVEPLW.m)
+  { name: 'VE PROBLEM ADD', reason: 'Custom RPC (ZVEPLW.m) for adding problems via File #9000011 FileMan' },
+  { name: 'VE PROBLEM EDIT', reason: 'Custom RPC (ZVEPLW.m) for editing problems in File #9000011' },
+  { name: 'VE PROBLEM REMOVE', reason: 'Custom RPC (ZVEPLW.m) for inactivating problems in File #9000011' },
+  { name: 'VE PROBLEM LIST', reason: 'Custom RPC (ZVEPLW.m) for reading problem list from File #9000011' },
+  // Patient registration RPCs (ZVEPATREG.m)
+  { name: 'VE PAT REGISTER', reason: 'Custom RPC (ZVEPATREG.m) for patient creation in File #2 via FileMan' },
+  { name: 'VE PAT DEMOG', reason: 'Custom RPC (ZVEPATREG.m) for patient demographics from File #2' },
+  { name: 'VE PAT UPDATE', reason: 'Custom RPC (ZVEPATREG.m) for updating patient demographics' },
+  { name: 'VE PAT SEARCH', reason: 'Custom RPC (ZVEPATREG.m) for patient search by name/SSN/DOB' },
+  { name: 'VE PAT MERGE', reason: 'Custom RPC (ZVEPATREG.m) for duplicate patient detection' },
+  // Discharge workflow RPCs (ZVEDISCH.m)
+  { name: 'VE DISCHARGE FULL', reason: 'Custom RPC (ZVEDISCH.m) for full discharge workflow' },
+  { name: 'VE DISCHARGE INSTR', reason: 'Custom RPC (ZVEDISCH.m) for discharge instructions via TIU' },
+  { name: 'VE DISCHARGE SUMM', reason: 'Custom RPC (ZVEDISCH.m) for discharge summary TIU document' },
+  { name: 'VE DISCHARGE FOLLOWUP', reason: 'Custom RPC (ZVEDISCH.m) for scheduling discharge follow-ups' },
+  // Medication reconciliation RPCs (ZVEMEDREC.m)
+  { name: 'VE MEDREC RECONCILE', reason: 'Custom RPC (ZVEMEDREC.m) for medication reconciliation decisions' },
+  { name: 'VE MEDREC MEDLIST', reason: 'Custom RPC (ZVEMEDREC.m) for combined med list (File 100 + File 52)' },
+  { name: 'VE MEDREC HISTORY', reason: 'Custom RPC (ZVEMEDREC.m) for reconciliation history' },
+  { name: 'VE MEDREC OUTSRC', reason: 'Custom RPC (ZVEMEDREC.m) for recording outside medications' },
+  // E-Prescribing RPCs (ZVEERX.m)
+  { name: 'VE ERX NEWRX', reason: 'Custom RPC (ZVEERX.m) for creating outpatient prescriptions in File #52' },
+  { name: 'VE ERX RENEW', reason: 'Custom RPC (ZVEERX.m) for prescription renewal' },
+  { name: 'VE ERX CANCEL', reason: 'Custom RPC (ZVEERX.m) for prescription cancellation' },
+  { name: 'VE ERX DRUGSRCH', reason: 'Custom RPC (ZVEERX.m) for drug formulary search in File #50' },
+  { name: 'VE ERX HISTORY', reason: 'Custom RPC (ZVEERX.m) for prescription history' },
+  { name: 'VE ERX STATUS', reason: 'Custom RPC (ZVEERX.m) for prescription status check' },
+  // PCE/Encounter/Immunization RPCs (ZVEPCE.m)
+  { name: 'VE PCE IMM GIVE', reason: 'Custom RPC (ZVEPCE.m) for recording immunizations via PCE' },
+  { name: 'VE PCE IMM HIST', reason: 'Custom RPC (ZVEPCE.m) for immunization history' },
+  { name: 'VE PCE ENCOUNTER', reason: 'Custom RPC (ZVEPCE.m) for creating encounters in File #9000010' },
+  { name: 'VE PCE PROCEDURE', reason: 'Custom RPC (ZVEPCE.m) for recording procedures' },
+  { name: 'VE PCE DIAGNOSIS', reason: 'Custom RPC (ZVEPCE.m) for recording diagnoses' },
+  { name: 'VE PCE VISIT HIST', reason: 'Custom RPC (ZVEPCE.m) for visit history' },
 ];
 
 /* ------------------------------------------------------------------ */

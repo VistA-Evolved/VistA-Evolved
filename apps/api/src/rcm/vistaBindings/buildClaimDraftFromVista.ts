@@ -15,13 +15,13 @@ import type { Claim, DiagnosisCode, ClaimLine, ProcedureCode } from '../domain/c
 import { createDraftClaim } from '../domain/claim.js';
 import { safeErr } from '../../lib/safe-error.js';
 
-/* ── RPC Caller abstraction (injectable for testing) ──────── */
+/* -- RPC Caller abstraction (injectable for testing) -------- */
 
 export interface RpcCaller {
   call(rpcName: string, params: string[]): Promise<string[]>;
 }
 
-/* ── Types ────────────────────────────────────────────────── */
+/* -- Types -------------------------------------------------- */
 
 export interface VistaEncounter {
   visitIen: string;
@@ -76,7 +76,7 @@ export interface ClaimDraftResult {
   rpcsCalled: string[];
 }
 
-/* ── Encounter parsing ───────────────────────────────────── */
+/* -- Encounter parsing ------------------------------------- */
 
 export function parseEncounters(lines: string[]): VistaEncounter[] {
   return lines
@@ -143,7 +143,7 @@ export function parseInsurance(lines: string[]): VistaInsurance[] {
     .filter((p) => p.policyId || p.insuranceName);
 }
 
-/* ── Date filter helper ──────────────────────────────────── */
+/* -- Date filter helper ------------------------------------ */
 
 function isInDateRange(dateStr: string, from?: string, to?: string): boolean {
   if (!from && !to) return true;
@@ -155,18 +155,18 @@ function isInDateRange(dateStr: string, from?: string, to?: string): boolean {
   return true;
 }
 
-/* ── Main builder ────────────────────────────────────────── */
+/* -- Main builder ------------------------------------------ */
 
 export async function buildClaimDraftFromVista(
   rpc: RpcCaller,
   patientDfn: string,
   actor: string,
-  options: {
+  options?: {
     dateFrom?: string;
     dateTo?: string;
     encounterId?: string; // specific visit IEN
     payerId?: string;
-    tenantId: string;
+    tenantId?: string;
   }
 ): Promise<ClaimDraftResult> {
   const rpcsCalled: string[] = [];
@@ -312,7 +312,7 @@ export async function buildClaimDraftFromVista(
     const payerId = options?.payerId || primaryIns?.policyId || 'UNASSIGNED';
 
     const claim = createDraftClaim({
-      tenantId: options.tenantId,
+      tenantId: options?.tenantId ?? 'default',
       patientDfn,
       payerId,
       claimType: 'professional',
@@ -343,7 +343,7 @@ export async function buildClaimDraftFromVista(
   };
 }
 
-/* ── Coverage lookup helper ──────────────────────────────── */
+/* -- Coverage lookup helper -------------------------------- */
 
 export async function getVistaCoverage(
   rpc: RpcCaller,

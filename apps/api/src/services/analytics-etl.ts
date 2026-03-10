@@ -1,5 +1,5 @@
 /**
- * Analytics ETL Writer — Phase 25.
+ * Analytics ETL Writer -- Phase 25.
  *
  * Syncs aggregated MetricBuckets from the in-memory analytics engine
  * to the Octo/ROcto SQL layer for BI tool consumption.
@@ -235,7 +235,7 @@ class PgSimpleClient {
       } else if (resp.type === "E") {
         error = this.parseError(resp.body);
       } else if (resp.type === "Z") {
-        // ReadyForQuery — end of response
+        // ReadyForQuery -- end of response
         return error ? { ok: false, error } : { ok: true, tag };
       }
       // Skip RowDescription ('T'), DataRow ('D'), NoticeResponse ('N'), etc.
@@ -296,8 +296,14 @@ let client: PgSimpleClient | null = null;
 let totalSynced = { hourly: 0, daily: 0, errors: 0 };
 let lastSyncTime: string | null = null;
 
-/** Escape single quotes for SQL string literals. */
+/** Validate that a value contains only safe SQL-literal characters. */
+const SAFE_SQL_VALUE = /^[a-zA-Z0-9_.:@\-\s]+$/;
+
+/** Escape single quotes for SQL string literals + validate input. */
 function escSql(s: string): string {
+  if (!SAFE_SQL_VALUE.test(s)) {
+    throw new Error(`Unsafe analytics ETL value rejected: ${s.slice(0, 80)}`);
+  }
   return s.replace(/'/g, "''");
 }
 
@@ -433,7 +439,7 @@ export async function initEtl(): Promise<void> {
     });
   });
 
-  // Try initial connection (non-blocking — don't block server startup)
+  // Try initial connection (non-blocking -- don't block server startup)
   ensureConnected().then((ok) => {
     if (ok) {
       log.info("ETL: Connected to ROcto", {
@@ -443,6 +449,8 @@ export async function initEtl(): Promise<void> {
     } else {
       log.info("ETL: ROcto not available, will retry on next aggregation cycle");
     }
+  }).catch((err) => {
+    log.warn("ETL: initial connection failed", { error: String(err) });
   });
 }
 

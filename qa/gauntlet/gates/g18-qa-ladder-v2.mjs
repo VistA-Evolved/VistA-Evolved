@@ -56,7 +56,7 @@ export async function run(opts = {}) {
     details.push(`WARN: ${label}`);
   }
 
-  // ── 1. Infrastructure Scripts ──
+  // -- 1. Infrastructure Scripts --
 
   check('Phase registry script exists', rd('scripts/qa/phase-registry.mjs') !== null);
   check('Test generator script exists', rd('scripts/qa/generate-phase-tests.mjs') !== null);
@@ -80,7 +80,7 @@ export async function run(opts = {}) {
   check('Trace manager has verify command', traceMgr.includes('verify'));
   check('Trace manager has record command', traceMgr.includes('record'));
 
-  // ── 2. Generated Test Files ──
+  // -- 2. Generated Test Files --
 
   const domainJourneys = ls('apps/web/e2e/domain-journeys').filter(
     (f) => f.startsWith('domain-') && f.endsWith('.spec.ts')
@@ -118,7 +118,7 @@ export async function run(opts = {}) {
     check('Restart tests have concurrent requests', restartContent.includes('Promise.all'));
   }
 
-  // ── 3. Golden Trace Validation ──
+  // -- 3. Golden Trace Validation --
 
   const goldenTrace = rd('apps/api/tests/fixtures/rpc-golden-trace.json');
   check('Golden trace file exists', goldenTrace !== null);
@@ -141,7 +141,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 4. Phase Coverage ──
+  // -- 4. Phase Coverage --
 
   // Check that phases 139-144 are represented
   const allGenerated = [
@@ -159,7 +159,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 5. No PHI in Generated Files ──
+  // -- 5. No PHI in Generated Files --
 
   let phiClean = true;
   if (/\b\d{3}-\d{2}-\d{4}\b/.test(allGenerated)) phiClean = false; // SSN

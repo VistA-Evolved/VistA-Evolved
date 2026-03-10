@@ -24,7 +24,7 @@ import {
 } from './icu-store.js';
 
 export default async function icuRoutes(server: FastifyInstance) {
-  // ── Admissions ─────────────────────────────────────────────────
+  // -- Admissions -------------------------------------------------
 
   server.post('/icu/admissions', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -67,14 +67,14 @@ export default async function icuRoutes(server: FastifyInstance) {
     return { ok: true };
   });
 
-  // ── Beds ───────────────────────────────────────────────────────
+  // -- Beds -------------------------------------------------------
 
   server.get('/icu/beds', async (request) => {
     const { unit } = request.query as any;
     return { ok: true, beds: listBeds(unit) };
   });
 
-  // ── Flowsheet ──────────────────────────────────────────────────
+  // -- Flowsheet --------------------------------------------------
 
   server.post('/icu/admissions/:id/flowsheet', async (request, reply) => {
     const { id } = request.params as any;
@@ -99,7 +99,7 @@ export default async function icuRoutes(server: FastifyInstance) {
     return { ok: true, entries: getFlowsheet(id, category) };
   });
 
-  // ── Ventilator ─────────────────────────────────────────────────
+  // -- Ventilator -------------------------------------------------
 
   server.post('/icu/admissions/:id/vent', async (request, reply) => {
     const { id } = request.params as any;
@@ -132,7 +132,7 @@ export default async function icuRoutes(server: FastifyInstance) {
     return { ok: true, ventHistory: getVentHistory(id) };
   });
 
-  // ── Intake & Output ────────────────────────────────────────────
+  // -- Intake & Output --------------------------------------------
 
   server.post('/icu/admissions/:id/io', async (request, reply) => {
     const { id } = request.params as any;
@@ -160,7 +160,7 @@ export default async function icuRoutes(server: FastifyInstance) {
     return { ok: true, records: getIoRecords(id, type), balance: getIoBalance(id) };
   });
 
-  // ── Severity Scores ────────────────────────────────────────────
+  // -- Severity Scores --------------------------------------------
 
   server.post('/icu/admissions/:id/scores', async (request, reply) => {
     const { id } = request.params as any;
@@ -187,7 +187,7 @@ export default async function icuRoutes(server: FastifyInstance) {
     return { ok: true, scores: getScores(id, scoreType) };
   });
 
-  // ── ICU Metrics ────────────────────────────────────────────────
+  // -- ICU Metrics ------------------------------------------------
 
   server.get('/icu/metrics', async () => {
     return { ok: true, metrics: getIcuMetrics() };

@@ -21,7 +21,7 @@ import { fileURLToPath } from 'node:url';
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const ROOT = resolve(__dirname, '../..');
 
-// ── Helpers ─────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------
 
 function readJson(p) {
   try {
@@ -89,7 +89,7 @@ function pnpmVersion() {
   }
 }
 
-// ── Section 1: Meta ─────────────────────────────────────────
+// -- Section 1: Meta -----------------------------------------
 
 function buildMeta() {
   return {
@@ -100,7 +100,7 @@ function buildMeta() {
   };
 }
 
-// ── Section 2: Prompts Tree ─────────────────────────────────
+// -- Section 2: Prompts Tree ---------------------------------
 
 function buildPromptsTree() {
   const promptsDir = join(ROOT, 'prompts');
@@ -156,7 +156,7 @@ function buildPromptsTree() {
   };
 }
 
-// ── Section 3: UI Inventory ─────────────────────────────────
+// -- Section 3: UI Inventory ---------------------------------
 
 function buildUiInventory() {
   const apps = [
@@ -241,7 +241,7 @@ function buildUiInventory() {
   return result;
 }
 
-// ── Section 4: API Inventory ────────────────────────────────
+// -- Section 4: API Inventory --------------------------------
 
 function buildApiInventory() {
   const apiSrc = join(ROOT, 'apps/api/src');
@@ -304,7 +304,7 @@ function buildApiInventory() {
   };
 }
 
-// ── Section 5: RPC Usage ────────────────────────────────────
+// -- Section 5: RPC Usage ------------------------------------
 
 function buildRpcUsage() {
   const apiSrc = join(ROOT, 'apps/api/src');
@@ -371,7 +371,7 @@ function buildRpcUsage() {
   };
 }
 
-// ── Section 6: Persistence Inventory ────────────────────────
+// -- Section 6: Persistence Inventory ------------------------
 
 function buildPersistenceInventory() {
   const apiSrc = join(ROOT, 'apps/api/src');
@@ -495,7 +495,7 @@ function buildPersistenceInventory() {
   };
 }
 
-// ── Section 7: External Systems ─────────────────────────────
+// -- Section 7: External Systems -----------------------------
 
 function buildExternalSystems() {
   const systems = [];
@@ -575,7 +575,7 @@ function buildExternalSystems() {
   return systems;
 }
 
-// ── Section 8: CI Inventory ─────────────────────────────────
+// -- Section 8: CI Inventory ---------------------------------
 
 function buildCiInventory() {
   const workflowsDir = join(ROOT, '.github/workflows');
@@ -614,7 +614,7 @@ function buildCiInventory() {
   return { totalWorkflows: workflows.length, workflows };
 }
 
-// ── Section 9: Known Gaps Discovery ─────────────────────────
+// -- Section 9: Known Gaps Discovery -------------------------
 
 function buildKnownGaps() {
   const dirs = [
@@ -663,7 +663,7 @@ function buildKnownGaps() {
   return { summary, details: results };
 }
 
-// ── Gap Matrix Builder ──────────────────────────────────────
+// -- Gap Matrix Builder --------------------------------------
 
 function buildGapMatrix(audit) {
   const { rpcUsage, persistenceInventory, apiInventory, uiInventory, externalSystems, knownGaps } =
@@ -1083,7 +1083,7 @@ function buildGapMatrix(audit) {
   };
 }
 
-// ── Human Summary Builder ───────────────────────────────────
+// -- Human Summary Builder -----------------------------------
 
 function buildHumanSummary(audit, gapMatrix) {
   const lines = [];
@@ -1257,7 +1257,7 @@ function buildHumanSummary(audit, gapMatrix) {
   return lines.join('\n');
 }
 
-// ── Main ────────────────────────────────────────────────────
+// -- Main ----------------------------------------------------
 
 async function main() {
   console.log('=== VistA-Evolved System Audit ===\n');

@@ -1,9 +1,9 @@
 /**
- * AI Gateway — Core Type Definitions (Phase 33)
+ * AI Gateway -- Core Type Definitions (Phase 33)
  *
  * Governed AI integration types. The gateway routes requests through
- * safety, redaction, RAG grounding, and audit layers. AI augments —
- * it never replaces — clinical decision-making.
+ * safety, redaction, RAG grounding, and audit layers. AI augments --
+ * it never replaces -- clinical decision-making.
  *
  * NOT ALLOWED: diagnosis, treatment plans, prescribing guidance,
  * autonomous ordering.
@@ -16,7 +16,7 @@
 /** Deployment locations determine PHI handling rules. */
 export type ModelDeployment = 'on-premises' | 'cloud';
 
-/** Approved model status — only "active" models accept requests. */
+/** Approved model status -- only "active" models accept requests. */
 export type ModelStatus = 'active' | 'deprecated' | 'disabled';
 
 /** A registered AI model with governance metadata. */
@@ -27,7 +27,7 @@ export interface ModelConfig {
   name: string;
   /** Provider key (maps to provider adapter). */
   provider: string;
-  /** Where model runs — determines PHI handling. */
+  /** Where model runs -- determines PHI handling. */
   deployment: ModelDeployment;
   /** Whether this model may receive un-redacted PHI. */
   phiAllowed: boolean;
@@ -55,7 +55,7 @@ export interface PromptTemplate {
   version: string;
   /** Which use case this prompt serves. */
   useCase: AIUseCase;
-  /** System prompt text — the core instruction. */
+  /** System prompt text -- the core instruction. */
   systemPrompt: string;
   /** User prompt template with {{variable}} placeholders. */
   userPromptTemplate: string;
@@ -73,14 +73,14 @@ export interface PromptTemplate {
 /* Use Case Types                                                      */
 /* ------------------------------------------------------------------ */
 
-/** Allowed AI use cases — strictly scoped. */
+/** Allowed AI use cases -- strictly scoped. */
 export type AIUseCase =
-  | 'intake-summary' // Intake → clinician-ready note draft (grounded)
+  | 'intake-summary' // Intake -> clinician-ready note draft (grounded)
   | 'lab-education' // Explain lab results in plain language
   | 'portal-search' // Navigation help ("where do I find...")
   | 'custom'; // Facility-registered custom prompts
 
-/** Disallowed content categories — requests matching these are BLOCKED. */
+/** Disallowed content categories -- requests matching these are BLOCKED. */
 export const DISALLOWED_CATEGORIES = [
   'diagnosis',
   'treatment_plan',
@@ -99,7 +99,7 @@ export type DisallowedCategory = (typeof DISALLOWED_CATEGORIES)[number];
 /** Role of the actor making the AI request. */
 export type AIActorRole = 'clinician' | 'patient' | 'proxy' | 'system';
 
-/** AI request — all fields required for audit trail. */
+/** AI request -- all fields required for audit trail. */
 export interface AIRequest {
   /** Which use case. */
   useCase: AIUseCase;
@@ -134,7 +134,7 @@ export interface Citation {
 /** Confidence level for AI-generated content. */
 export type ConfidenceLevel = 'high' | 'medium' | 'low';
 
-/** AI response — includes grounding metadata. */
+/** AI response -- includes grounding metadata. */
 export interface AIResponse {
   /** Generated text. */
   text: string;
@@ -166,7 +166,7 @@ export interface AIResponse {
 /* RAG Context Types                                                   */
 /* ------------------------------------------------------------------ */
 
-/** Allowed RAG data sources — must match role-visible data. */
+/** Allowed RAG data sources -- must match role-visible data. */
 export type RAGSourceCategory =
   | 'demographics'
   | 'medications'
@@ -206,7 +206,7 @@ export interface RAGContext {
 /* Audit Types                                                         */
 /* ------------------------------------------------------------------ */
 
-/** AI audit event — logged for every gateway invocation. */
+/** AI audit event -- logged for every gateway invocation. */
 export interface AIAuditEvent {
   /** Unique event ID. */
   id: string;
@@ -248,7 +248,7 @@ export interface AIAuditEvent {
   clinicianConfirmed: boolean | null;
 }
 
-/** Provider adapter interface — pluggable model backends. */
+/** Provider adapter interface -- pluggable model backends. */
 export interface AIProvider {
   /** Provider identifier. */
   id: string;

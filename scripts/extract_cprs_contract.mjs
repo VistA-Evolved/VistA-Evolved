@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Phase 37B — Step 0: CPRS Contract Extraction
+ * Phase 37B -- Step 0: CPRS Contract Extraction
  *
  * Reads existing design/contracts/cprs/v1/ files and merges them
  * into a single docs/grounding/cprs-contract.extracted.json.

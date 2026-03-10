@@ -1,5 +1,5 @@
 /**
- * Portal smoke test — Phase 26
+ * Portal smoke test -- Phase 26
  *
  * Pre-requisites:
  *   1. `pnpm -C apps/portal build` must succeed
@@ -73,7 +73,7 @@ test('dashboard layout has all nav items', async ({ page }) => {
 });
 
 /* ------------------------------------------------------------------ */
-/* Nav click — no dead clicks                                          */
+/* Nav click -- no dead clicks                                          */
 /* ------------------------------------------------------------------ */
 
 test('clicking each nav item navigates without error', async ({ page }) => {

@@ -7,6 +7,8 @@
     Phase 155 -- Replaces the need to run install-interop-rpcs.ps1,
     install-rpc-catalog.ps1, and install-rcm-wrappers.ps1 separately.
     Phase 476 -- Added -VistaUser and -RoutinesDir for VEHU support.
+    Phase 700 -- Added ZVEADTW (ADT writes), ZVENAS (nursing/eMAR),
+    expanded verification to cover all admin routines.
 
     Steps:
       1. Check Docker container is running
@@ -68,7 +70,7 @@ function Write-Gate($status, $msg) {
 }
 
 Write-Host ""
-Write-Host "=== Phase 155/476: Unified VistA Routine Installer ===" -ForegroundColor Cyan
+Write-Host "=== Unified VistA Routine Installer (Phase 155/476/700) ===" -ForegroundColor Cyan
 Write-Host "    Container: $ContainerName"
 
 # ================================================================
@@ -128,6 +130,15 @@ $productionRoutines = @(
     "ZVERPC.m",    # RPC catalog lister
     "ZVERCMP.m",   # RCM provider info wrapper
     "ZVEADT.m",    # ADT ward census/bed board (3 RPCs)
+    "ZVEADTW.m",   # ADT write RPCs: admit/transfer/discharge/register (4 RPCs)
+    "ZVENAS.m",    # Nursing/BCMA/eMAR RPCs: tasks, assessments, I/O, med admin (8 RPCs)
+    "ZVELABW.m",   # Lab write RPCs: order, verify, result, collect, status, history (6 RPCs)
+    "ZVEPLW.m",    # Problem list write RPCs: add, edit, remove, list (4 RPCs)
+    "ZVEPATREG.m", # Patient registration: create, demographics, update, search, merge (5 RPCs)
+    "ZVEDISCH.m",  # Discharge workflow: full discharge, instructions, summary, follow-up (4 RPCs)
+    "ZVEMEDREC.m", # Med reconciliation: reconcile, med list, history, outside meds (4 RPCs)
+    "ZVEERX.m",    # E-prescribing: new Rx, renew, cancel, drug search, history, status (6 RPCs)
+    "ZVEPCE.m",    # PCE/encounters: immunization give/hist, encounter, procedure, diagnosis, visit hist (6 RPCs)
     "ZVEPROBADD.m",# Problem add wrapper (Phase 683)
     "ZVEUSER.m",   # Admin: user/key/menu RPCs
     "ZVEFAC.m",    # Admin: facilities/divisions/services RPCs
@@ -220,7 +231,52 @@ $installSteps = @(
         Match   = "registered|already|ZVEADT"
     },
     @{
-        Label   = "Problem add wrapper (VE PROBLEM ADD)"
+        Label   = "ADT write RPCs (VE ADT ADMIT, etc.)"
+        Command = "mumps -run INSTALL^ZVEADTW"
+        Match   = "registered|already|VE ADT|VE REGISTER"
+    },
+    @{
+        Label   = "Nursing/BCMA/eMAR RPCs (ZVENAS LIST/MEDLOG/MEDLIST, etc.)"
+        Command = "mumps -run INSTALL^ZVENAS"
+        Match   = "registered|already|ZVENAS"
+    },
+    @{
+        Label   = "Lab write RPCs (VE LAB ORDER/VERIFY/RESULT/COLLECT/STATUS/HISTORY)"
+        Command = "mumps -run INSTALL^ZVELABW"
+        Match   = "registered|already|VE LAB"
+    },
+    @{
+        Label   = "Problem list RPCs (VE PROBLEM ADD/EDIT/REMOVE/LIST)"
+        Command = "mumps -run INSTALL^ZVEPLW"
+        Match   = "registered|already|VE PROBLEM"
+    },
+    @{
+        Label   = "Patient registration RPCs (VE PAT REGISTER/DEMOG/UPDATE/SEARCH/MERGE)"
+        Command = "mumps -run INSTALL^ZVEPATREG"
+        Match   = "registered|already|VE PAT"
+    },
+    @{
+        Label   = "Discharge workflow RPCs (VE DISCHARGE FULL/INSTR/SUMM/FOLLOWUP)"
+        Command = "mumps -run INSTALL^ZVEDISCH"
+        Match   = "registered|already|VE DISCHARGE"
+    },
+    @{
+        Label   = "Med reconciliation RPCs (VE MEDREC RECONCILE/MEDLIST/HISTORY/OUTSRC)"
+        Command = "mumps -run INSTALL^ZVEMEDREC"
+        Match   = "registered|already|VE MEDREC"
+    },
+    @{
+        Label   = "E-prescribing RPCs (VE ERX NEWRX/RENEW/CANCEL/DRUGSRCH/HISTORY/STATUS)"
+        Command = "mumps -run INSTALL^ZVEERX"
+        Match   = "registered|already|VE ERX"
+    },
+    @{
+        Label   = "PCE/encounter RPCs (VE PCE IMM GIVE/HIST, ENCOUNTER, PROCEDURE, DIAGNOSIS, VISIT HIST)"
+        Command = "mumps -run INSTALL^ZVEPCE"
+        Match   = "registered|already|VE PCE"
+    },
+    @{
+        Label   = "Problem add wrapper (VE PROBLEM ADD legacy)"
         Command = "mumps -run INSTALL^ZVEPROBADD"
         Match   = "registered|already|VE PROBLEM ADD"
     },
@@ -430,6 +486,46 @@ if (-not $SkipVerify) {
             Label   = "ZVEADT callable"
             Command = "mumps -run %XCMD 'N R D WARDS^ZVEADT(.R) W R(0)'"
             Match   = "\d|\^|WARD"
+        },
+        @{
+            Label   = "ZVEADTW INSTALL tag exists"
+            Command = "mumps -run %XCMD 'W $T(INSTALL+1^ZVEADTW)'"
+            Match   = "INSTALL|Register|N|S"
+        },
+        @{
+            Label   = "ZVENAS INSTALL tag exists"
+            Command = "mumps -run %XCMD 'W $T(INSTALL+1^ZVENAS)'"
+            Match   = "INSTALL|Register|N|S"
+        },
+        @{
+            Label   = "ZVEUSER callable"
+            Command = "mumps -run %XCMD 'N R D LIST^ZVEUSER(.R,"""",""0"",""5"") W R(0)'"
+            Match   = "\d|\^|USER"
+        },
+        @{
+            Label   = "ZVEFAC callable"
+            Command = "mumps -run %XCMD 'N R D INST^ZVEFAC(.R,"""",""5"") W R(0)'"
+            Match   = "\d|\^|INST"
+        },
+        @{
+            Label   = "ZVECLIN callable"
+            Command = "mumps -run %XCMD 'N R D LIST^ZVECLIN(.R,"""",""5"") W R(0)'"
+            Match   = "\d|\^|CLIN"
+        },
+        @{
+            Label   = "ZVEPHAR callable"
+            Command = "mumps -run %XCMD 'N R D DRUGS^ZVEPHAR(.R,"""",""5"") W R(0)'"
+            Match   = "\d|\^|DRUG"
+        },
+        @{
+            Label   = "ZVELAB callable"
+            Command = "mumps -run %XCMD 'N R D TESTS^ZVELAB(.R,"""",""5"") W R(0)'"
+            Match   = "\d|\^|LAB|TEST"
+        },
+        @{
+            Label   = "ZVESYS callable"
+            Command = "mumps -run %XCMD 'N R D STATUS^ZVESYS(.R) W R(0)'"
+            Match   = "\d|\^|SYS|STATUS"
         }
     )
 

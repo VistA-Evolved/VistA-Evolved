@@ -51,6 +51,7 @@ interface AuthState {
 /** In-memory store for pending auth requests. Max 5-min TTL. */
 const pendingAuthStates = new Map<string, AuthState>();
 const AUTH_STATE_TTL_MS = 5 * 60 * 1000;
+const MAX_PENDING_AUTH_STATES = 5000;
 
 // Cleanup expired states every 60s
 setInterval(() => {
@@ -148,6 +149,10 @@ export default async function idpRoutes(server: FastifyInstance): Promise<void> 
       redirectUri,
       createdAt: Date.now(),
     });
+    if (pendingAuthStates.size > MAX_PENDING_AUTH_STATES) {
+      const oldest = pendingAuthStates.keys().next().value;
+      if (oldest != null) pendingAuthStates.delete(oldest);
+    }
 
     const authUrl = provider.getAuthorizationUrl(state, nonce, redirectUri);
     if (!authUrl) {

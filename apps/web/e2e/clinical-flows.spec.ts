@@ -9,24 +9,24 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { setupConsoleGate } from './helpers/auth';
+import { chartRoute, setupConsoleGate } from './helpers/auth';
 
 test.describe('Clinical Flow Dead-Click Enforcement', () => {
   test.beforeEach(async ({ page }) => {
     // Session pre-loaded via auth.setup.ts (storageState)
-    await page.goto('/cprs/chart/3/cover');
+    await page.goto(chartRoute('cover'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(1500);
   });
 
-  test('Cover Sheet — all sections display data or pending message', async ({ page }) => {
+  test('Cover Sheet -- all sections display data or pending message', async ({ page }) => {
     const errors = setupConsoleGate(page);
 
     // Cover Sheet should show multiple clinical sections
     const main = page.locator('main').or(page.locator("[class*='content']")).first();
     await expect(main).toBeVisible({ timeout: 10_000 });
 
-    // Check for any content — at minimum allergy/problem/med/vital sections
+    // Check for any content -- at minimum allergy/problem/med/vital sections
     const text = await main.textContent();
     expect(text?.length).toBeGreaterThan(50);
 
@@ -44,9 +44,9 @@ test.describe('Clinical Flow Dead-Click Enforcement', () => {
     expect(errors, 'Console errors on Cover Sheet').toHaveLength(0);
   });
 
-  test('Problems tab — list renders and buttons respond', async ({ page }) => {
+  test('Problems tab -- list renders and buttons respond', async ({ page }) => {
     const errors = setupConsoleGate(page);
-    await page.goto('/cprs/chart/3/problems');
+    await page.goto(chartRoute('problems'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
@@ -95,9 +95,9 @@ test.describe('Clinical Flow Dead-Click Enforcement', () => {
     expect(errors, 'Console errors on Problems tab').toHaveLength(0);
   });
 
-  test('Meds tab — list renders', async ({ page }) => {
+  test('Meds tab -- list renders', async ({ page }) => {
     const errors = setupConsoleGate(page);
-    await page.goto('/cprs/chart/3/meds');
+    await page.goto(chartRoute('meds'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
@@ -116,9 +116,9 @@ test.describe('Clinical Flow Dead-Click Enforcement', () => {
     expect(errors, 'Console errors on Meds tab').toHaveLength(0);
   });
 
-  test('Orders tab — renders order list or empty state', async ({ page }) => {
+  test('Orders tab -- renders order list or empty state', async ({ page }) => {
     const errors = setupConsoleGate(page);
-    await page.goto('/cprs/chart/3/orders');
+    await page.goto(chartRoute('orders'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
@@ -131,9 +131,9 @@ test.describe('Clinical Flow Dead-Click Enforcement', () => {
     expect(errors, 'Console errors on Orders tab').toHaveLength(0);
   });
 
-  test('Notes tab — list renders and new note button responds', async ({ page }) => {
+  test('Notes tab -- list renders and new note button responds', async ({ page }) => {
     const errors = setupConsoleGate(page);
-    await page.goto('/cprs/chart/3/notes');
+    await page.goto(chartRoute('notes'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
@@ -178,9 +178,9 @@ test.describe('Clinical Flow Dead-Click Enforcement', () => {
     expect(errors, 'Console errors on Notes tab').toHaveLength(0);
   });
 
-  test('Labs tab — displays results or empty state', async ({ page }) => {
+  test('Labs tab -- displays results or empty state', async ({ page }) => {
     const errors = setupConsoleGate(page);
-    await page.goto('/cprs/chart/3/labs');
+    await page.goto(chartRoute('labs'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
@@ -193,9 +193,9 @@ test.describe('Clinical Flow Dead-Click Enforcement', () => {
     expect(errors, 'Console errors on Labs tab').toHaveLength(0);
   });
 
-  test('Reports tab — report list loads and selecting shows content', async ({ page }) => {
+  test('Reports tab -- report list loads and selecting shows content', async ({ page }) => {
     const errors = setupConsoleGate(page);
-    await page.goto('/cprs/chart/3/reports');
+    await page.goto(chartRoute('reports'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
@@ -218,9 +218,9 @@ test.describe('Clinical Flow Dead-Click Enforcement', () => {
     expect(errors, 'Console errors on Reports tab').toHaveLength(0);
   });
 
-  test('Consults tab — displays list', async ({ page }) => {
+  test('Consults tab -- displays list', async ({ page }) => {
     const errors = setupConsoleGate(page);
-    await page.goto('/cprs/chart/3/consults');
+    await page.goto(chartRoute('consults'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
@@ -233,9 +233,9 @@ test.describe('Clinical Flow Dead-Click Enforcement', () => {
     expect(errors, 'Console errors on Consults tab').toHaveLength(0);
   });
 
-  test('Surgery tab — displays list or empty state', async ({ page }) => {
+  test('Surgery tab -- displays list or empty state', async ({ page }) => {
     const errors = setupConsoleGate(page);
-    await page.goto('/cprs/chart/3/surgery');
+    await page.goto(chartRoute('surgery'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
@@ -248,9 +248,9 @@ test.describe('Clinical Flow Dead-Click Enforcement', () => {
     expect(errors, 'Console errors on Surgery tab').toHaveLength(0);
   });
 
-  test('D/C Summaries tab — displays list or empty state', async ({ page }) => {
+  test('D/C Summaries tab -- displays list or empty state', async ({ page }) => {
     const errors = setupConsoleGate(page);
-    await page.goto('/cprs/chart/3/dcsumm');
+    await page.goto(chartRoute('dcsumm'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
@@ -263,9 +263,9 @@ test.describe('Clinical Flow Dead-Click Enforcement', () => {
     expect(errors, 'Console errors on D/C Summaries tab').toHaveLength(0);
   });
 
-  test('Imaging tab — shows imaging UI or integration-pending', async ({ page }) => {
+  test('Imaging tab -- shows imaging UI or integration-pending', async ({ page }) => {
     const errors = setupConsoleGate(page);
-    await page.goto('/cprs/chart/3/imaging');
+    await page.goto(chartRoute('imaging'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 

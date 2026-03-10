@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Phase 21 verifier — VistA HL7/HLO Interop Telemetry (hardened)
+  Phase 21 verifier -- VistA HL7/HLO Interop Telemetry (hardened)
 .DESCRIPTION
   Checks all Phase 21 deliverables: interop routes with cachedRpc/circuit breaker,
   Zod validation, role gating, graceful shutdown disconnect, AUTH_RULES update,
@@ -78,7 +78,7 @@ Write-Host ""
 
 Write-Host "--- D: Admin/provider role gating ---" -ForegroundColor White
 
-# Count requireRole calls — should be 5 (one per handler)
+# Count requireRole calls -- should be 5 (one per handler)
 $roleCallCount = ([regex]::Matches($interopSrc, "requireRole\(session")).Count
 Assert-Check "requireRole called in all 5 handlers (count=$roleCallCount)" ($roleCallCount -ge 5)
 Assert-Check "Role includes admin" ($interopSrc -match 'requireRole\(session,\s*\["admin"')
@@ -124,7 +124,7 @@ if ($SkipDocker) {
   Write-Host "  SKIP  Docker gates (--SkipDocker)" -ForegroundColor Yellow
   $warn += 4
 } else {
-  # G0: M routine installed — use a temp .m file to avoid quoting hell (BUG-025)
+  # G0: M routine installed -- use a temp .m file to avoid quoting hell (BUG-025)
   $tmpM = Join-Path $repoRoot "services\vista\VECHECK.m"
   @"
 VECHECK ; Phase 21 Docker gate check

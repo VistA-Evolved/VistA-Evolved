@@ -29,7 +29,7 @@ describe('Pilot Hospital Hardening Pack -- Phase 265', () => {
       const c = fs.readFileSync(satPath, 'utf-8');
       expect(c).toContain('DEFAULT_SAT_SCENARIOS');
       // Count scenario objects (id: "xxx-nn" pattern)
-      const matches = c.match(/id:\s*"[a-z]+-\d+"/g);
+      const matches = c.match(/id:\s*'[a-z]+-\d+'/g);
       expect(matches).not.toBeNull();
       expect(matches!.length).toBeGreaterThanOrEqual(30);
     });
@@ -48,7 +48,7 @@ describe('Pilot Hospital Hardening Pack -- Phase 265', () => {
         'backup',
         'degraded-mode',
       ]) {
-        expect(c).toContain(`"${cat}"`);
+        expect(c).toContain(`'${cat}'`);
       }
     });
 
@@ -90,7 +90,7 @@ describe('Pilot Hospital Hardening Pack -- Phase 265', () => {
         'audit-shipping',
         'analytics',
       ]) {
-        expect(c).toContain(`"${src}"`);
+        expect(c).toContain(`'${src}'`);
       }
     });
 

@@ -1,10 +1,10 @@
 <#
   .SYNOPSIS
-  VistA-First Audit — Phase 93: PH HMO Deepening Pack
+  VistA-First Audit -- Phase 93: PH HMO Deepening Pack
 
   .DESCRIPTION
   Scans RCM store files to confirm each is properly tagged as
-  "orchestration cache" or "integration metadata" — never as an
+  "orchestration cache" or "integration metadata" -- never as an
   authoritative billing ledger. VistA IB/AR/PCE remains the source
   of truth for all billing data.
 

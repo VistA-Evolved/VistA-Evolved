@@ -1,5 +1,5 @@
 /**
- * Phases 406-407 (W23-P8/P9): Exchange Packs — Routes
+ * Phases 406-407 (W23-P8/P9): Exchange Packs -- Routes
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -20,7 +20,7 @@ import {
 } from './pack-store.js';
 
 export default async function exchangePackRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Pack Profiles (read-only catalog) ─────────────────────
+  // --- Pack Profiles (read-only catalog) ---------------------
 
   server.get('/exchange-packs/profiles', async (request: FastifyRequest, reply: FastifyReply) => {
     await requireSession(request, reply);
@@ -38,7 +38,7 @@ export default async function exchangePackRoutes(server: FastifyInstance): Promi
     }
   );
 
-  // ─── Connectors ────────────────────────────────────────────
+  // --- Connectors --------------------------------------------
 
   server.get('/exchange-packs/connectors', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -114,7 +114,7 @@ export default async function exchangePackRoutes(server: FastifyInstance): Promi
     }
   );
 
-  // ─── Exchange Transactions ─────────────────────────────────
+  // --- Exchange Transactions ---------------------------------
 
   server.get(
     '/exchange-packs/transactions',
@@ -152,7 +152,7 @@ export default async function exchangePackRoutes(server: FastifyInstance): Promi
     return reply.code(201).send({ ok: true, transaction: result });
   });
 
-  // ─── Dashboard ─────────────────────────────────────────────
+  // --- Dashboard ---------------------------------------------
 
   server.get('/exchange-packs/dashboard', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);

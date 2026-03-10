@@ -1,5 +1,5 @@
 /**
- * Immunizations Page — Patient immunization history from VistA via ORQQPX IMMUN LIST.
+ * Immunizations Page -- Patient immunization history from VistA via ORQQPX IMMUN LIST.
  * Phase 65: VistA-first. Real data with PDF download.
  */
 
@@ -89,7 +89,7 @@ export default function ImmunizationsPage() {
           <div className="empty-state" style={{ padding: '1.5rem' }}>
             <p>
               {isPending
-                ? 'Immunization data pending — VistA integration in progress'
+                ? 'Immunization data pending -- VistA integration in progress'
                 : 'No immunizations on file'}
             </p>
             {isPending && data?.pendingTargets?.length > 0 && (

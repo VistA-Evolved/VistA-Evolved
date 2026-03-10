@@ -1,4 +1,4 @@
--- Analytics SQL Schema — Phase 25D
+-- Analytics SQL Schema -- Phase 25D
 --
 -- Seed schema for the Octo SQL analytics layer.
 -- All tables contain AGGREGATED, DE-IDENTIFIED metrics only.

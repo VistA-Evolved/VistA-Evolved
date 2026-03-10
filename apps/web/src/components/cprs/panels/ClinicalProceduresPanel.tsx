@@ -76,7 +76,7 @@ interface ConsultLinkResponse {
 }
 
 /* ------------------------------------------------------------------ */
-/* Integration-pending info card                                       */
+/* Configuration-required info card                                    */
 /* ------------------------------------------------------------------ */
 function PendingCard({ grounding }: { grounding: VistaGrounding }) {
   return (
@@ -89,7 +89,7 @@ function PendingCard({ grounding }: { grounding: VistaGrounding }) {
         marginTop: 8,
       }}
     >
-      <div style={{ fontWeight: 600, color: '#b45309', marginBottom: 8 }}>Integration Pending</div>
+      <div style={{ fontWeight: 600, color: '#b45309', marginBottom: 8 }}>Additional Configuration Required</div>
       <div style={{ fontSize: 13, marginBottom: 6 }}>
         <strong>VistA Files:</strong> {grounding.vistaFiles.join(', ')}
       </div>
@@ -255,8 +255,8 @@ export default function ClinicalProceduresPanel({ dfn }: { dfn?: string }) {
         <div>
           <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 10 }}>
             Source: {resultsData.source || 'unknown'}
-            {resultsData.classIen ? ` • TIU class ${resultsData.classIen}` : ''}
-            {resultsData.rpcUsed?.length ? ` • RPCs: ${resultsData.rpcUsed.join(', ')}` : ''}
+            {resultsData.classIen ? ` * TIU class ${resultsData.classIen}` : ''}
+            {resultsData.rpcUsed?.length ? ` * RPCs: ${resultsData.rpcUsed.join(', ')}` : ''}
           </div>
           {resultsData.note && (
             <div
@@ -300,8 +300,8 @@ export default function ClinicalProceduresPanel({ dfn }: { dfn?: string }) {
                         <div style={{ fontWeight: 600 }}>{item.procedureName}</div>
                         <div style={{ color: '#6b7280', fontSize: 11 }}>{item.entryType}</div>
                       </td>
-                      <td style={{ padding: 8, borderTop: '1px solid #f3f4f6' }}>{item.datePerformed || '—'}</td>
-                      <td style={{ padding: 8, borderTop: '1px solid #f3f4f6' }}>{item.status || '—'}</td>
+                      <td style={{ padding: 8, borderTop: '1px solid #f3f4f6' }}>{item.datePerformed || '--'}</td>
+                      <td style={{ padding: 8, borderTop: '1px solid #f3f4f6' }}>{item.status || '--'}</td>
                     </tr>
                   ))}
                   {resultsData.results.length === 0 && (
@@ -320,15 +320,15 @@ export default function ClinicalProceduresPanel({ dfn }: { dfn?: string }) {
                 <>
                   <div style={{ fontWeight: 600, marginBottom: 8 }}>{selectedResult.procedureName}</div>
                   <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 8 }}>
-                    {selectedResult.datePerformed || '—'}
-                    {selectedResult.provider ? ` • ${selectedResult.provider}` : ''}
-                    {selectedResult.location ? ` • ${selectedResult.location}` : ''}
+                    {selectedResult.datePerformed || '--'}
+                    {selectedResult.provider ? ` * ${selectedResult.provider}` : ''}
+                    {selectedResult.location ? ` * ${selectedResult.location}` : ''}
                   </div>
                   {resultDetailLoading && <div style={{ color: '#6b7280' }}>Loading detail...</div>}
                   {!resultDetailLoading && resultDetail?.ok && (
                     <>
                       <div style={{ fontSize: 12, color: '#6b7280', marginBottom: 8 }}>
-                        RPCs: {resultDetail.rpcUsed?.join(', ') || '—'}
+                        RPCs: {resultDetail.rpcUsed?.join(', ') || '--'}
                       </div>
                       <pre style={{ whiteSpace: 'pre-wrap', fontSize: 12, lineHeight: 1.45, margin: 0 }}>
                         {resultDetail.text || '(no detail text)'}
@@ -360,7 +360,7 @@ export default function ClinicalProceduresPanel({ dfn }: { dfn?: string }) {
       {/* Medicine tab */}
       {tab === 'medicine' && dfn && medicineData && (
         <div>
-          {medicineData.status === 'integration-pending' && medicineData.vistaGrounding ? (
+          {medicineData.status === 'requires_config' && medicineData.vistaGrounding ? (
             <PendingCard grounding={medicineData.vistaGrounding} />
           ) : (
             <div>
@@ -400,8 +400,8 @@ export default function ClinicalProceduresPanel({ dfn }: { dfn?: string }) {
                       }}
                     >
                       <td style={{ padding: 8, borderTop: '1px solid #f3f4f6' }}>{item.procedureName}</td>
-                      <td style={{ padding: 8, borderTop: '1px solid #f3f4f6' }}>{item.datePerformed || '—'}</td>
-                      <td style={{ padding: 8, borderTop: '1px solid #f3f4f6' }}>{item.status || '—'}</td>
+                      <td style={{ padding: 8, borderTop: '1px solid #f3f4f6' }}>{item.datePerformed || '--'}</td>
+                      <td style={{ padding: 8, borderTop: '1px solid #f3f4f6' }}>{item.status || '--'}</td>
                     </tr>
                   ))}
                   {consultData.results.length === 0 && (

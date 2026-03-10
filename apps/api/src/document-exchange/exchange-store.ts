@@ -1,5 +1,5 @@
 /**
- * Phase 403 (W23-P5): Document Exchange — Store
+ * Phase 403 (W23-P5): Document Exchange -- Store
  */
 
 import { randomBytes, createHash } from 'crypto';
@@ -26,7 +26,7 @@ function genId(prefix: string): string {
   return `${prefix}-${randomBytes(8).toString('hex')}`;
 }
 
-// ─── Document CRUD ─────────────────────────────────────────
+// --- Document CRUD -----------------------------------------
 
 export function createDocument(
   input: Omit<DocumentReference, 'id' | 'createdAt' | 'updatedAt' | 'hash'>
@@ -91,7 +91,7 @@ export function searchDocuments(tenantId: string, query: string): DocumentRefere
   );
 }
 
-// ─── Submission Sets ───────────────────────────────────────
+// --- Submission Sets ---------------------------------------
 
 export function createSubmissionSet(
   input: Omit<DocumentSubmissionSet, 'id' | 'createdAt'>
@@ -116,7 +116,7 @@ export function listSubmissionSets(tenantId: string): DocumentSubmissionSet[] {
     .sort((a, b) => b.submissionTime.localeCompare(a.submissionTime));
 }
 
-// ─── Dashboard ─────────────────────────────────────────────
+// --- Dashboard ---------------------------------------------
 
 export function getDocumentExchangeDashboardStats(
   tenantId: string

@@ -1,8 +1,8 @@
 /**
- * CORE-Style Connectivity Rules — Engineering Gates
+ * CORE-Style Connectivity Rules -- Engineering Gates
  *
  * Phase 45: Implements practical engineering gates inspired by CAQH CORE
- * operating rules. Does NOT embed copyrighted CORE rule text — references
+ * operating rules. Does NOT embed copyrighted CORE rule text -- references
  * operating rule numbers only.
  *
  * Gates:
@@ -19,7 +19,7 @@ import type { X12TransactionSet } from '../edi/types.js';
 import type { TransactionRecord } from './types.js';
 import { getTransaction, transitionTransaction, listTransactions } from './envelope.js';
 
-/* ── Default Connectivity Profile ────────────────────────────── */
+/* -- Default Connectivity Profile ------------------------------ */
 
 const DEFAULT_PROFILE: ConnectivityProfile = {
   version: '1.0.0',
@@ -139,7 +139,7 @@ const DEFAULT_PROFILE: ConnectivityProfile = {
 
 let activeProfile: ConnectivityProfile = { ...DEFAULT_PROFILE };
 
-/* ── Profile management ──────────────────────────────────────── */
+/* -- Profile management ---------------------------------------- */
 
 export function getConnectivityProfile(): ConnectivityProfile {
   return { ...activeProfile };
@@ -156,7 +156,7 @@ export function resetConnectivityProfile(): void {
   activeProfile = { ...DEFAULT_PROFILE };
 }
 
-/* ── Enforcement Gates ───────────────────────────────────────── */
+/* -- Enforcement Gates ----------------------------------------- */
 
 export interface GateCheckResult {
   gate: string;
@@ -215,7 +215,7 @@ export function checkPreTransmitGates(
   const isTest = !usageMatch || usageMatch[1] === 'T';
   results.push({
     gate: 'usage_indicator',
-    passed: true, // Always passes — just informational
+    passed: true, // Always passes -- just informational
     message: isTest ? 'Usage indicator: T (Test)' : 'WARNING: Usage indicator: P (Production)',
     severity: isTest ? 'info' : 'warning',
   });
@@ -303,7 +303,7 @@ export function checkAckGates(transactionId: string): GateCheckResult[] {
   return results;
 }
 
-/* ── Retry Logic ─────────────────────────────────────────────── */
+/* -- Retry Logic ----------------------------------------------- */
 
 /**
  * Calculate the next retry delay using exponential backoff.
@@ -378,7 +378,7 @@ export function processRetry(transactionId: string): {
   return { retried: false, movedToDLQ: false, nextDelayMs: 0 };
 }
 
-/* ── DLQ Management ──────────────────────────────────────────── */
+/* -- DLQ Management -------------------------------------------- */
 
 export function getDLQTransactions(): TransactionRecord[] {
   return listTransactions({ state: 'dlq' });
@@ -391,7 +391,7 @@ export function retryFromDLQ(transactionId: string): boolean {
   return result !== null;
 }
 
-/* ── Connectivity Health ─────────────────────────────────────── */
+/* -- Connectivity Health --------------------------------------- */
 
 export interface ConnectivityHealth {
   status: 'healthy' | 'degraded' | 'unhealthy';

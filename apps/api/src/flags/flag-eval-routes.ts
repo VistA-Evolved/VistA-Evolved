@@ -38,7 +38,7 @@ function requireTenantId(
 }
 
 export default async function flagEvalRoutes(server: FastifyInstance): Promise<void> {
-  /** POST /admin/flags/evaluate — Evaluate a single flag. */
+  /** POST /admin/flags/evaluate -- Evaluate a single flag. */
   server.post('/admin/flags/evaluate', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -74,7 +74,7 @@ export default async function flagEvalRoutes(server: FastifyInstance): Promise<v
     return { ok: true, flagKey, result };
   });
 
-  /** POST /admin/flags/evaluate-all — Bulk-evaluate multiple flags. */
+  /** POST /admin/flags/evaluate-all -- Bulk-evaluate multiple flags. */
   server.post('/admin/flags/evaluate-all', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -110,7 +110,7 @@ export default async function flagEvalRoutes(server: FastifyInstance): Promise<v
     return { ok: true, results };
   });
 
-  /** POST /admin/flags/variant — Get variant for a flag. */
+  /** POST /admin/flags/variant -- Get variant for a flag. */
   server.post('/admin/flags/variant', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -146,7 +146,7 @@ export default async function flagEvalRoutes(server: FastifyInstance): Promise<v
     return { ok: true, flagKey, result };
   });
 
-  /** GET /admin/flags/health — Provider health check. */
+  /** GET /admin/flags/health -- Provider health check. */
   server.get('/admin/flags/health', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;

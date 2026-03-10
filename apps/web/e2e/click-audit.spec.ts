@@ -1,5 +1,5 @@
 /**
- * Phase 72 — Dead-Click Audit (Reality Verifier Pack)
+ * Phase 72 -- Dead-Click Audit (Reality Verifier Pack)
  *
  * Enhanced click-audit that crawls CPRS chart tabs, inbox, admin pages
  * and asserts EVERY visible interactive element produces a real effect:
@@ -16,7 +16,7 @@
  */
 
 import { test, expect, type Page, type Locator } from '@playwright/test';
-import { setupConsoleGate } from './helpers/auth';
+import { chartRoute, setupConsoleGate } from './helpers/auth';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -39,7 +39,7 @@ interface ClickAuditResult {
 interface ScreenTarget {
   name: string;
   url: string;
-  /** Selector scope — only test elements within this container */
+  /** Selector scope -- only test elements within this container */
   scope?: string;
   /** Max interactive elements to test per screen */
   maxElements?: number;
@@ -78,8 +78,8 @@ const TOAST_SELECTOR = [
   "[class*='Snackbar']",
 ].join(', ');
 
-/** Labels to skip — meta-UI, theme, density controls, known menu-bar items */
-const SKIP_LABELS = /^(Theme|Density|Layout|Help|Tools|File|Edit|View|Window)[\s:]*$/i;
+/** Labels to skip -- meta-UI, theme, density controls, known menu-bar items */
+const SKIP_LABELS = /^(Theme|Density|Layout|Help|Tools|File|Edit|View|Window|🌐\s*[A-Z]{2})[\s:]*$/iu;
 
 /** Check if an element has a meaningful disabled state with tooltip/title */
 async function isDisabledWithTooltip(el: Locator): Promise<string | false> {
@@ -303,13 +303,13 @@ async function auditScreen(
 /* ------------------------------------------------------------------ */
 
 const CHART_SCREENS: ScreenTarget[] = [
-  { name: 'Cover Sheet', url: '/cprs/chart/3/cover', maxElements: 12 },
-  { name: 'Problems', url: '/cprs/chart/3/problems', maxElements: 10 },
-  { name: 'Meds', url: '/cprs/chart/3/meds', maxElements: 10 },
-  { name: 'Orders', url: '/cprs/chart/3/orders', maxElements: 10 },
-  { name: 'Notes', url: '/cprs/chart/3/notes', maxElements: 10 },
-  { name: 'Labs', url: '/cprs/chart/3/labs', maxElements: 8 },
-  { name: 'Imaging', url: '/cprs/chart/3/imaging', maxElements: 8 },
+  { name: 'Cover Sheet', url: chartRoute('cover'), maxElements: 12 },
+  { name: 'Problems', url: chartRoute('problems'), maxElements: 10 },
+  { name: 'Meds', url: chartRoute('meds'), maxElements: 10 },
+  { name: 'Orders', url: chartRoute('orders'), maxElements: 10 },
+  { name: 'Notes', url: chartRoute('notes'), maxElements: 10 },
+  { name: 'Labs', url: chartRoute('labs'), maxElements: 8 },
+  { name: 'Imaging', url: chartRoute('imaging'), maxElements: 8 },
 ];
 
 const NAV_SCREENS: ScreenTarget[] = [
@@ -329,19 +329,19 @@ const ADMIN_SCREENS: ScreenTarget[] = [
 /* Tests                                                               */
 /* ------------------------------------------------------------------ */
 
-test.describe('Phase 72 — Dead-Click Audit', () => {
-  test.setTimeout(600_000); // 10 min total — large crawl
+test.describe('Phase 72 -- Dead-Click Audit', () => {
+  test.setTimeout(600_000); // 10 min total -- large crawl
 
   /* ---------- Chart screens ---------- */
   for (const screen of CHART_SCREENS) {
-    test(`[Chart] ${screen.name} — every interactive element produces effect`, async ({ page }) => {
+    test(`[Chart] ${screen.name} -- every interactive element produces effect`, async ({ page }) => {
       const errors = setupConsoleGate(page);
       const { passed, failed } = await auditScreen(page, screen);
 
       // Build failure report with full selector list for triage
       if (failed.length > 0) {
         const report = failed
-          .map((f) => `  DEAD: "${f.label}" (${f.selector}) — ${f.details}`)
+          .map((f) => `  DEAD: "${f.label}" (${f.selector}) -- ${f.details}`)
           .join('\n');
         const summary = `${failed.length} dead click(s) on ${screen.name} (${passed.length} passed):\n${report}`;
         expect(failed, summary).toHaveLength(0);
@@ -353,13 +353,13 @@ test.describe('Phase 72 — Dead-Click Audit', () => {
 
   /* ---------- Navigation screens ---------- */
   for (const screen of NAV_SCREENS) {
-    test(`[Nav] ${screen.name} — every interactive element produces effect`, async ({ page }) => {
+    test(`[Nav] ${screen.name} -- every interactive element produces effect`, async ({ page }) => {
       const errors = setupConsoleGate(page);
       const { passed, failed } = await auditScreen(page, screen);
 
       if (failed.length > 0) {
         const report = failed
-          .map((f) => `  DEAD: "${f.label}" (${f.selector}) — ${f.details}`)
+          .map((f) => `  DEAD: "${f.label}" (${f.selector}) -- ${f.details}`)
           .join('\n');
         const summary = `${failed.length} dead click(s) on ${screen.name} (${passed.length} passed):\n${report}`;
         expect(failed, summary).toHaveLength(0);
@@ -371,13 +371,13 @@ test.describe('Phase 72 — Dead-Click Audit', () => {
 
   /* ---------- Admin screens ---------- */
   for (const screen of ADMIN_SCREENS) {
-    test(`[Admin] ${screen.name} — every interactive element produces effect`, async ({ page }) => {
+    test(`[Admin] ${screen.name} -- every interactive element produces effect`, async ({ page }) => {
       const errors = setupConsoleGate(page);
       const { passed, failed } = await auditScreen(page, screen);
 
       if (failed.length > 0) {
         const report = failed
-          .map((f) => `  DEAD: "${f.label}" (${f.selector}) — ${f.details}`)
+          .map((f) => `  DEAD: "${f.label}" (${f.selector}) -- ${f.details}`)
           .join('\n');
         const summary = `${failed.length} dead click(s) on ${screen.name} (${passed.length} passed):\n${report}`;
         expect(failed, summary).toHaveLength(0);
@@ -412,13 +412,19 @@ test.describe('Phase 72 — Dead-Click Audit', () => {
     const deadEnds: string[] = [];
 
     for (const slug of tabSlugs) {
-      await page.goto(`/cprs/chart/3/${slug}`);
+      await page.goto(chartRoute(slug));
       await page.waitForLoadState('domcontentloaded');
-      await page.waitForTimeout(1500);
+      await page.waitForFunction(
+        () => !document.body.textContent?.includes('Checking session...'),
+        { timeout: 10_000 }
+      ).catch(() => {});
+      await page.waitForTimeout(1000);
 
       const bodyEl = page.locator('body').first();
       const text = await bodyEl.textContent().catch(() => '');
-      if (!text?.trim().length || (text?.trim().length || 0) < 10) {
+      if ((text || '').includes('Checking session...')) {
+        deadEnds.push(`${slug}: session check did not settle`);
+      } else if (!text?.trim().length || (text?.trim().length || 0) < 10) {
         deadEnds.push(`${slug}: blank or near-empty (${text?.length ?? 0} chars)`);
       }
     }
@@ -435,11 +441,11 @@ test.describe('Phase 72 — Dead-Click Audit', () => {
     const errors = setupConsoleGate(page);
 
     const urls = [
-      '/cprs/chart/3/cover',
-      '/cprs/chart/3/problems',
-      '/cprs/chart/3/meds',
-      '/cprs/chart/3/orders',
-      '/cprs/chart/3/imaging',
+      chartRoute('cover'),
+      chartRoute('problems'),
+      chartRoute('meds'),
+      chartRoute('orders'),
+      chartRoute('imaging'),
     ];
 
     const barePending: string[] = [];

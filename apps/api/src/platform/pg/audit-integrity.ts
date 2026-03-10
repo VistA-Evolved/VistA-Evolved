@@ -1,5 +1,5 @@
 /**
- * Platform DB — Audit Trail Integrity & Export
+ * Platform DB -- Audit Trail Integrity & Export
  *
  * Phase 104: Platform DB Security/Compliance Posture
  *
@@ -283,8 +283,8 @@ export async function exportAuditEntries(
      FROM platform_audit_event
      ${where}
      ORDER BY created_at ASC
-     LIMIT ${limit + 1}`,
-    params
+     LIMIT $${paramIdx++}`,
+    [...params, limit + 1]
   );
 
   const truncated = result.rows.length > limit;

@@ -1,5 +1,5 @@
 /**
- * Activity Log Page — Phase 29
+ * Activity Log Page -- Phase 29
  *
  * Patient-visible log of all access events (who viewed, when, what).
  * Supports filtering by event type and date range.

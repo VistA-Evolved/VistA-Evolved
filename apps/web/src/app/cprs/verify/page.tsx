@@ -293,7 +293,7 @@ export default function CPRSVerifyPage() {
       </div>
 
       <div style={{ flex: 1, padding: 24, maxWidth: 700, margin: '0 auto', width: '100%' }}>
-        <h2 style={{ fontSize: 18, margin: '0 0 4px' }}>CPRS Web Replica â€” Verification</h2>
+        <h2 style={{ fontSize: 18, margin: '0 0 4px' }}>CPRS Web Replica â€" Verification</h2>
         <p style={{ fontSize: 12, color: 'var(--cprs-text-muted)', margin: '0 0 16px' }}>
           {running ? 'Running checks...' : `${passed}/${total} passed, ${failed} failed`}
         </p>

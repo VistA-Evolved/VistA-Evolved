@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -21,7 +22,7 @@ export default async function vistaRadiologyRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE RAD PROC LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE RAD PROC LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -43,7 +44,7 @@ export default async function vistaRadiologyRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE RAD PROC DETAIL', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE RAD PROC DETAIL', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -63,7 +64,7 @@ export default async function vistaRadiologyRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE RAD IMG LOCATIONS', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE RAD IMG LOCATIONS', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -83,7 +84,7 @@ export default async function vistaRadiologyRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE RAD DIV PARAMS', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE RAD DIV PARAMS', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

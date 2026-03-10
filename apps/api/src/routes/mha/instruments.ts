@@ -1,5 +1,5 @@
 /**
- * MHA Instrument Loader — Phase 535
+ * MHA Instrument Loader -- Phase 535
  *
  * Loads FHIR R4 Questionnaire definitions from data/instruments/.
  * Each .questionnaire.json file is a standard FHIR Questionnaire resource.
@@ -82,7 +82,7 @@ function loadFilesFromDir(dir: string, files: string[]): void {
       const raw = readFileSync(join(dir, file), 'utf-8');
       const q: FhirQuestionnaire = JSON.parse(raw);
       if (q.resourceType !== 'Questionnaire' || !q.id) {
-        log.warn(`MHA: Skipping ${file} — not a valid FHIR Questionnaire`);
+        log.warn(`MHA: Skipping ${file} -- not a valid FHIR Questionnaire`);
         continue;
       }
       instrumentCatalog.set(q.id, q);

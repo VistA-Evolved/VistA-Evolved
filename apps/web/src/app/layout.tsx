@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'EHR Chart — Evolved',
+  title: 'EHR Chart -- Evolved',
   description: 'Modern EHR chart shell',
 };
 

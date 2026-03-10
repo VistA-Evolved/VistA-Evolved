@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Phase 17 verifier — Multi-Tenant Control Plane
+  Phase 17 verifier -- Multi-Tenant Control Plane
 .DESCRIPTION
   Checks all Phase 17 deliverables: tenant model, admin endpoints, feature flags,
   module gating, theme governance, templates, interop status, plus regression checks.

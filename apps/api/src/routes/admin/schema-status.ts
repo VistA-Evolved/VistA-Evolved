@@ -2,7 +2,7 @@
  * Schema Status Routes -- Phase 175
  *
  * Admin endpoint for database schema introspection:
- *   GET /admin/schema/status — Migration history, current version, drift detection
+ *   GET /admin/schema/status -- Migration history, current version, drift detection
  *
  * Provides:
  * - Current schema version (from DB)

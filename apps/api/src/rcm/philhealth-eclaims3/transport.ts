@@ -1,5 +1,5 @@
 /**
- * PhilHealth Transport Client — Phase 515 (Wave 37 B3)
+ * PhilHealth Transport Client -- Phase 515 (Wave 37 B3)
  *
  * Real HTTP transport layer for PhilHealth eClaims 3.0 API.
  * Supports mock and live modes via PHILHEALTH_MODE env var.
@@ -15,7 +15,7 @@ import https from 'node:https';
 import http from 'node:http';
 import { readFileSync } from 'node:fs';
 
-/* ── Types ───────────────────────────────────────────────── */
+/* -- Types ------------------------------------------------- */
 
 export interface PhTransportConfig {
   mode: 'mock' | 'live';
@@ -61,7 +61,7 @@ export interface PhAttachmentResult {
   errors: Array<{ code: string; description: string }>;
 }
 
-/* ── Config loader ───────────────────────────────────────── */
+/* -- Config loader ----------------------------------------- */
 
 export function loadTransportConfig(): PhTransportConfig {
   return {
@@ -76,7 +76,7 @@ export function loadTransportConfig(): PhTransportConfig {
   };
 }
 
-/* ── Mock transport ──────────────────────────────────────── */
+/* -- Mock transport ---------------------------------------- */
 
 const mockStore = new Map<string, { status: string; claimRefNo: string; submittedAt: string }>();
 
@@ -124,7 +124,7 @@ function mockUploadAttachment(_claimRefNo: string, _filename: string): PhAttachm
   };
 }
 
-/* ── Live HTTP helper ────────────────────────────────────── */
+/* -- Live HTTP helper -------------------------------------- */
 
 function makeRequest(
   config: PhTransportConfig,
@@ -156,7 +156,7 @@ function makeRequest(
         (options as any).cert = readFileSync(config.certPath);
         (options as any).key = readFileSync(config.certKeyPath);
       } catch {
-        // Cert files not available — proceed without mTLS
+        // Cert files not available -- proceed without mTLS
       }
     }
 
@@ -184,7 +184,7 @@ function makeRequest(
   });
 }
 
-/* ── PhilHealth Transport Client ─────────────────────────── */
+/* -- PhilHealth Transport Client --------------------------- */
 
 export class PhilHealthTransport {
   private config: PhTransportConfig;
@@ -294,7 +294,7 @@ export class PhilHealthTransport {
 
   /**
    * Upload supporting document / attachment for a claim.
-   * eClaims 3.0 requires electronic SOA — scanned PDFs are rejected.
+   * eClaims 3.0 requires electronic SOA -- scanned PDFs are rejected.
    */
   async uploadAttachment(
     claimRefNo: string,
@@ -306,7 +306,7 @@ export class PhilHealthTransport {
 
     try {
       // Note: Actual PhilHealth API may use multipart/form-data.
-      // This is a structural scaffold — production implementation would
+      // This is a structural scaffold -- production implementation would
       // need the exact multipart format from PHIC API docs.
       const base64 = content.toString('base64');
       const { status, data } = await makeRequest(
@@ -338,7 +338,7 @@ export class PhilHealthTransport {
   }
 
   /**
-   * Health check — ping the PhilHealth eClaims API.
+   * Health check -- ping the PhilHealth eClaims API.
    */
   async healthCheck(): Promise<{ ok: boolean; mode: string; latencyMs: number }> {
     const start = Date.now();

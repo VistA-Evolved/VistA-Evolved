@@ -1,5 +1,5 @@
 /**
- * VistA Billing Adapter — Phase 37C.
+ * VistA Billing Adapter -- Phase 37C.
  * Placeholder: IB (Integrated Billing) RPCs not available in sandbox.
  */
 

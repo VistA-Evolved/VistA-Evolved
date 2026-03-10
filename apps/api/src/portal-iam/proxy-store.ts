@@ -1,5 +1,5 @@
 /**
- * Proxy Invitation Store — Phase 29
+ * Proxy Invitation Store â€" Phase 29
  *
  * Manages the proxy invitation workflow:
  * 1. Portal user requests proxy connection (guardian/caregiver)
@@ -328,7 +328,7 @@ export function createProxyInvitation(opts: {
   // Phase 146: Write-through to PG
   proxyDbRepo
     ?.upsert(toProxyInvitationRepoRow(invitation))
-    .catch(() => {});
+    .catch((e) => log.warn('proxy-store DB write-through failed', { error: String(e) }));
 
   portalAudit('portal.proxy.grant', policyResult.allowed ? 'success' : 'failure', opts.patientDfn, {
     tenantId: opts.tenantId,
@@ -403,7 +403,7 @@ export function respondToInvitation(
   // Phase 146: Write-through invitation response
   proxyDbRepo
     ?.upsert(toProxyInvitationRepoRow(inv))
-    .catch(() => {});
+    .catch((e) => log.warn('proxy-store DB write-through failed', { error: String(e) }));
 
   return inv;
 }
@@ -422,7 +422,7 @@ export function cancelInvitation(invitationId: string, tenantId: string, cancell
   // Phase 146: Write-through invitation cancel
   proxyDbRepo
     ?.upsert(toProxyInvitationRepoRow(inv))
-    .catch(() => {});
+    .catch((e) => log.warn('proxy-store DB write-through failed', { error: String(e) }));
 
   log.info(`Proxy invitation cancelled: ${invitationId} by ${cancelledBy}`);
   return true;
@@ -465,7 +465,7 @@ setInterval(() => {
       inv.status = 'expired';
     }
   }
-}, 60_000);
+}, 60_000).unref();
 
 /* ------------------------------------------------------------------ */
 /* Stats                                                                */

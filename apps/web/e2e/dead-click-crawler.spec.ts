@@ -1,5 +1,5 @@
 /**
- * Dead-Click Crawler — Automated Dead Click Detection
+ * Dead-Click Crawler -- Automated Dead Click Detection
  *
  * Phase 96B: QA/Audit OS v1.1
  *
@@ -48,7 +48,7 @@ async function findDeadClicks(page: Page, url: string): Promise<DeadClickReport[
   try {
     await page.goto(url, { waitUntil: 'networkidle', timeout: 15000 });
   } catch {
-    // Page may not exist or may timeout — skip
+    // Page may not exist or may timeout -- skip
     return [];
   }
 
@@ -110,7 +110,7 @@ async function findDeadClicks(page: Page, url: string): Promise<DeadClickReport[
           await el.click({ timeout: 2000, force: false });
           await page.waitForTimeout(500); // Wait for effects
         } catch {
-          // Click failed (element disappeared, navigation, etc.) — not a dead click
+          // Click failed (element disappeared, navigation, etc.) -- not a dead click
           page.off('request', requestHandler);
           continue;
         }
@@ -136,7 +136,7 @@ async function findDeadClicks(page: Page, url: string): Promise<DeadClickReport[
           });
         }
       } catch {
-        // Element may have been removed during interaction — skip
+        // Element may have been removed during interaction -- skip
         continue;
       }
     }
@@ -162,7 +162,7 @@ test.describe('Dead-Click Crawler', () => {
         data: { entries: allDeadClicks },
       });
     } catch {
-      // QA routes may not be enabled — that's OK
+      // QA routes may not be enabled -- that's OK
     }
 
     // Allow up to 3 dead clicks (some UI elements may be legitimately

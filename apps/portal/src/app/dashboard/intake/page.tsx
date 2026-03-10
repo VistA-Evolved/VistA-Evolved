@@ -16,7 +16,7 @@ async function portalFetch<T = unknown>(path: string, options: RequestInit = {})
 }
 
 /* ================================================================== */
-/* Intake Start Page — locale-aware with question schema (Phase 132)   */
+/* Intake Start Page -- locale-aware with question schema (Phase 132)   */
 /* ================================================================== */
 
 interface IntakeQuestion {
@@ -75,7 +75,7 @@ export default function IntakeStartPage() {
         setQuestions(res.questions);
       }
     } catch {
-      // fallback to empty — static text still shows
+      // fallback to empty -- static text still shows
     }
   }
 
@@ -86,7 +86,7 @@ export default function IntakeStartPage() {
         setProviders(res.providers);
       }
     } catch {
-      // fallback to empty — rules_engine always available
+      // fallback to empty -- rules_engine always available
     }
   }
 

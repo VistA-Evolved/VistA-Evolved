@@ -1,5 +1,5 @@
 /**
- * Payer Persistence — Phase 95: Payer Registry Persistence + Audit
+ * Payer Persistence -- Phase 95: Payer Registry Persistence + Audit
  *
  * JSON-file-backed durable store for the payer registry.
  * In-memory Map cache for fast reads, atomic writes to disk.
@@ -45,7 +45,7 @@ const DATA_DIR = join(REPO_ROOT, 'data', 'payers');
 const REGISTRY_DB_PATH = join(DATA_DIR, 'registry-db.json');
 const TENANT_OVERRIDES_PATH = join(DATA_DIR, 'tenant-overrides.json');
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 /** A payer record in the persistent store (extends PhHmo with persistence metadata) */
 export interface PersistedPayer extends PhHmo {
@@ -111,20 +111,20 @@ interface TenantOverridesFile {
   overrides: TenantPayerOverride[];
 }
 
-/** Vault interface — no implementation stores secrets in plaintext */
+/** Vault interface -- no implementation stores secrets in plaintext */
 export interface VaultInterface {
   getSecret(vaultRef: string): Promise<string | null>;
   setSecret(vaultRef: string, value: string): Promise<void>;
   deleteSecret(vaultRef: string): Promise<void>;
 }
 
-/* ── In-memory cache ────────────────────────────────────────── */
+/* -- In-memory cache ------------------------------------------ */
 
 const payerCache = new Map<string, PersistedPayer>();
 const tenantOverrideCache = new Map<string, TenantPayerOverride>(); // key: `${tenantId}:${payerId}`
 let initialized = false;
 
-/* ── Helpers ────────────────────────────────────────────────── */
+/* -- Helpers -------------------------------------------------- */
 
 function ensureDir(dir: string): void {
   if (!existsSync(dir)) mkdirSync(dir, { recursive: true });
@@ -152,7 +152,7 @@ function atomicWrite(path: string, data: unknown): void {
   renameSync(tmpPath, path);
 }
 
-/* ── Initialization (load from disk) ────────────────────────── */
+/* -- Initialization (load from disk) -------------------------- */
 
 export function initPayerPersistence(): { ok: boolean; count: number; error?: string } {
   if (initialized) return { ok: true, count: payerCache.size };
@@ -194,7 +194,7 @@ export function initPayerPersistence(): { ok: boolean; count: number; error?: st
   return { ok: true, count: payerCache.size };
 }
 
-/* ── Flush to disk ──────────────────────────────────────────── */
+/* -- Flush to disk -------------------------------------------- */
 
 function flushRegistryDb(): void {
   ensureDir(DATA_DIR);
@@ -221,7 +221,7 @@ function flushTenantOverrides(): void {
   atomicWrite(TENANT_OVERRIDES_PATH, file);
 }
 
-/* ── Import from snapshot JSON ──────────────────────────────── */
+/* -- Import from snapshot JSON -------------------------------- */
 
 export function importFromSnapshot(params: {
   sourceType: PayerProvenance['sourceType'];
@@ -363,7 +363,7 @@ export function importFromSnapshot(params: {
   return { ok: errors.length === 0, imported, skipped, errors };
 }
 
-/* ── CRUD operations ────────────────────────────────────────── */
+/* -- CRUD operations ------------------------------------------ */
 
 export function getPayer(payerId: string): PersistedPayer | undefined {
   if (!initialized) initPayerPersistence();
@@ -493,7 +493,7 @@ export function addPayerEvidence(
   return { ok: true, payer: updated };
 }
 
-/* ── Tenant overrides ───────────────────────────────────────── */
+/* -- Tenant overrides ----------------------------------------- */
 
 export function getTenantOverride(
   tenantId: string,
@@ -536,7 +536,7 @@ export function resolvePayerForTenant(
   };
 }
 
-/* ── Stats ──────────────────────────────────────────────────── */
+/* -- Stats ---------------------------------------------------- */
 
 export function getPayerRegistryStats(): {
   total: number;

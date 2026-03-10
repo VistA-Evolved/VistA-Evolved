@@ -1,5 +1,5 @@
 /**
- * Unified Audit Query — Phase 48.
+ * Unified Audit Query -- Phase 48.
  *
  * Provides a single query API across the 3 audit stores:
  *   1. Immutable Audit (general auth/security/write events)

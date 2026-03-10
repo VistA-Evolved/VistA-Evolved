@@ -17,7 +17,7 @@ import { createHash } from 'node:crypto';
 import { getPgPool } from '../pg-db.js';
 import { log } from '../../../lib/logger.js';
 
-/* ── Types ────────────────────────────────────────────────── */
+/* -- Types -------------------------------------------------- */
 
 export interface PortalSessionRow {
   id: string;
@@ -33,7 +33,7 @@ export interface PortalSessionRow {
   revokedAt: string | null;
 }
 
-/* ── Hash helper ──────────────────────────────────────────── */
+/* -- Hash helper -------------------------------------------- */
 
 /**
  * Hash a raw portal session token with SHA-256.
@@ -43,7 +43,7 @@ export function hashPortalToken(rawToken: string): string {
   return createHash('sha256').update(rawToken).digest('hex');
 }
 
-/* ── Singleton repo ───────────────────────────────────────── */
+/* -- Singleton repo ----------------------------------------- */
 
 let pgRepo: ReturnType<typeof import('./generic-pg-repo.js').createPgRepo> | null = null;
 
@@ -53,7 +53,7 @@ export function initPortalSessionPgRepo(
   pgRepo = repo;
 }
 
-/* ── Repo operations ──────────────────────────────────────── */
+/* -- Repo operations ---------------------------------------- */
 
 /**
  * Upsert a portal session (insert or update on conflict).

@@ -1,9 +1,9 @@
 /**
- * PortalNav — Main navigation for the patient portal.
+ * PortalNav -- Main navigation for the patient portal.
  *
  * Rules:
  * - No VA-specific terminology (no "CPRS", "VistA", "DUZ", "DFN")
- * - No dead clicks — every link goes to a real route
+ * - No dead clicks -- every link goes to a real route
  * - Plain-language labels only
  */
 
@@ -39,7 +39,7 @@ const NAV_ITEMS = [
   { href: '/dashboard/ai-help', i18nKey: 'aiHelp', icon: '🤖' },
 ] as const;
 
-// Dead-click audit: Phase 568 — all interactions wired or labeled
+// Dead-click audit: Phase 568 -- all interactions wired or labeled
 export function PortalNav() {
   const pathname = usePathname();
   const router = useRouter();

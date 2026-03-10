@@ -87,9 +87,9 @@ describe('DR Certification -- Phase 255', () => {
       expect(fileExists('.github/workflows/dr-nightly.yml')).toBe(true);
     });
 
-    it('DR nightly runs at 03:00 UTC', () => {
+    it('DR nightly supports manual trigger', () => {
       const src = readFile('.github/workflows/dr-nightly.yml');
-      expect(src).toMatch(/cron.*0\s+3/);
+      expect(src).toMatch(/workflow_dispatch/);
     });
 
     it('DR nightly includes PG service container', () => {

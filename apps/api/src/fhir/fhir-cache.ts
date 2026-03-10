@@ -1,5 +1,5 @@
 /**
- * FHIR R4 Response Cache with ETag Support — Phase 179 (Q194).
+ * FHIR R4 Response Cache with ETag Support -- Phase 179 (Q194).
  *
  * Lightweight in-memory cache for FHIR responses. Computes a weak ETag
  * from SHA-256 hash of the JSON response body and supports If-None-Match

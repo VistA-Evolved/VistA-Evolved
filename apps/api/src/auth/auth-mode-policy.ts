@@ -1,10 +1,10 @@
 /**
- * Auth Mode Policy — Phase 141: Enterprise IAM Posture.
+ * Auth Mode Policy -- Phase 141: Enterprise IAM Posture.
  *
  * Controls the default authentication mechanism for the platform.
  *
  * Environment variable:
- *   AUTH_MODE — "oidc" | "dev_local" (default: "dev_local")
+ *   AUTH_MODE -- "oidc" | "dev_local" (default: "dev_local")
  *
  * Runtime mode enforcement:
  *   - In rc/prod modes: AUTH_MODE must be "oidc". VistA-only dev_local is blocked.

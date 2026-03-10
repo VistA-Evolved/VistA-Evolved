@@ -54,7 +54,7 @@ for (const folder of folders) {
   for (const pat of OLD_PATTERNS) {
     const oldFile = files.find((f) => pat.test(f) && !REQUIRED_FILES.includes(f));
     if (oldFile) {
-      fail('old-style-name', `${folder}/${oldFile} — must be renamed to standard form`);
+      fail('old-style-name', `${folder}/${oldFile} -- must be renamed to standard form`);
       oldStyleCount++;
     }
   }

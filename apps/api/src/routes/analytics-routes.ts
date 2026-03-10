@@ -1,19 +1,19 @@
 /**
- * Analytics Routes — Phase 25C/E.
+ * Analytics Routes -- Phase 25C/E.
  *
  * Fastify plugin providing dashboard, event query, export, and health
  * endpoints for the analytics subsystem.
  *
  * Routes:
- *   GET  /analytics/dashboards/ops                — Operational dashboard (metrics, RPC health)
- *   GET  /analytics/dashboards/clinical            — Clinical utilization dashboard
- *   GET  /analytics/events                         — Query raw analytics events (non-PHI)
- *   GET  /analytics/aggregated                     — Query aggregated metric buckets
- *   GET  /analytics/series/:metric                 — Time-series for a single metric
- *   POST /analytics/export                         — Export analytics data (CSV)
- *   GET  /analytics/health                         — Analytics subsystem health
- *   GET  /analytics/clinical-reports                — List available VistA clinical reports
- *   GET  /analytics/clinical-reports/text           — Fetch VistA clinical report text
+ *   GET  /analytics/dashboards/ops                -- Operational dashboard (metrics, RPC health)
+ *   GET  /analytics/dashboards/clinical            -- Clinical utilization dashboard
+ *   GET  /analytics/events                         -- Query raw analytics events (non-PHI)
+ *   GET  /analytics/aggregated                     -- Query aggregated metric buckets
+ *   GET  /analytics/series/:metric                 -- Time-series for a single metric
+ *   POST /analytics/export                         -- Export analytics data (CSV)
+ *   GET  /analytics/health                         -- Analytics subsystem health
+ *   GET  /analytics/clinical-reports                -- List available VistA clinical reports
+ *   GET  /analytics/clinical-reports/text           -- Fetch VistA clinical report text
  *
  * All routes require session auth. Permission checks (analytics_viewer,
  * analytics_admin) are performed in-handler using the analytics config.
@@ -114,7 +114,7 @@ function getTenantCacheSize(tenantId: string): number {
 /* ================================================================== */
 
 export default async function analyticsRoutes(server: FastifyInstance): Promise<void> {
-  /* ── GET /analytics/dashboards/ops ────────────────────────── */
+  /* -- GET /analytics/dashboards/ops -------------------------- */
   server.get('/analytics/dashboards/ops', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_viewer', reply);
@@ -162,7 +162,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     return { ok: true, cached: false, ...dashboard };
   });
 
-  /* ── GET /analytics/dashboards/clinical ───────────────────── */
+  /* -- GET /analytics/dashboards/clinical --------------------- */
   server.get('/analytics/dashboards/clinical', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_viewer', reply);
@@ -225,7 +225,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     return { ok: true, cached: false, ...dashboard };
   });
 
-  /* ── GET /analytics/events ────────────────────────────────── */
+  /* -- GET /analytics/events ---------------------------------- */
   server.get('/analytics/events', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_viewer', reply);
@@ -244,7 +244,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     return { ok: true, ...result };
   });
 
-  /* ── GET /analytics/aggregated ────────────────────────────── */
+  /* -- GET /analytics/aggregated ------------------------------ */
   server.get('/analytics/aggregated', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_viewer', reply);
@@ -264,7 +264,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     return { ok: true, ...result };
   });
 
-  /* ── GET /analytics/series/:metric ────────────────────────── */
+  /* -- GET /analytics/series/:metric -------------------------- */
   server.get('/analytics/series/:metric', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_viewer', reply);
@@ -287,7 +287,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     return { ok: true, ...series };
   });
 
-  /* ── POST /analytics/export ───────────────────────────────── */
+  /* -- POST /analytics/export --------------------------------- */
   server.post('/analytics/export', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_admin', reply);
@@ -340,7 +340,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     return csv;
   });
 
-  /* ── POST /analytics/aggregate ─────────────────────────────── */
+  /* -- POST /analytics/aggregate ------------------------------- */
   server.post('/analytics/aggregate', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_admin', reply);
@@ -355,7 +355,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     return { ok: true, ...result };
   });
 
-  /* ── GET /analytics/health ────────────────────────────────── */
+  /* -- GET /analytics/health ---------------------------------- */
   server.get('/analytics/health', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_viewer', reply);
@@ -374,7 +374,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     };
   });
 
-  /* ── GET /analytics/clinical-reports ──────────────────────── */
+  /* -- GET /analytics/clinical-reports ------------------------ */
   server.get('/analytics/clinical-reports', async (request, reply) => {
     const session = await requireSession(request, reply);
     // Any authenticated user can list reports
@@ -382,7 +382,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     return result;
   });
 
-  /* ── GET /analytics/clinical-reports/text ─────────────────── */
+  /* -- GET /analytics/clinical-reports/text ------------------- */
   server.get('/analytics/clinical-reports/text', async (request, reply) => {
     const session = await requireSession(request, reply);
     // Any authenticated user can view clinical reports
@@ -405,14 +405,14 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     return result;
   });
 
-  /* ── GET /analytics/etl/status ──────────────────────────── */
+  /* -- GET /analytics/etl/status ---------------------------- */
   server.get('/analytics/etl/status', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_admin', reply);
     return { ok: true, ...getEtlStatus() };
   });
 
-  /* ── POST /analytics/etl/sync ──────────────────────────── */
+  /* -- POST /analytics/etl/sync ---------------------------- */
   server.post('/analytics/etl/sync', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireAnalyticsPermission(session, 'analytics_admin', reply);
@@ -437,7 +437,7 @@ export default async function analyticsRoutes(server: FastifyInstance): Promise<
     return { ok: true, ...result };
   });
 
-  /* ── GET /analytics/revenue-summary ─────────────────────── */
+  /* -- GET /analytics/revenue-summary ----------------------- */
   /* CFO Dashboard: 5 PG-backed financial metrics (BILLING-2)  */
   server.get('/analytics/revenue-summary', async (request, reply) => {
     const session = await requireSession(request, reply);

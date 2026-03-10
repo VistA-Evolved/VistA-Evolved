@@ -1,16 +1,16 @@
--- on-stable-study.lua — Orthanc Lua callback for Phase 23 ingest workflow.
+-- on-stable-study.lua -- Orthanc Lua callback for Phase 23 ingest workflow.
 --
 -- Called by Orthanc when a study becomes "stable" (no new instances
--- for StableAge seconds — default 60s in orthanc.json).
+-- for StableAge seconds -- default 60s in orthanc.json).
 --
 -- Extracts DICOM tags and POSTs them to the API ingest callback.
 -- The API handles reconciliation, not this script.
 --
 -- Configuration:
---   INGEST_CALLBACK_URL   — API endpoint (default: http://host.docker.internal:3001/imaging/ingest/callback)
---   INGEST_SERVICE_KEY    — shared secret for X-Service-Key header
+--   INGEST_CALLBACK_URL   -- API endpoint (default: http://host.docker.internal:3001/imaging/ingest/callback)
+--   INGEST_SERVICE_KEY    -- shared secret for X-Service-Key header
 
--- Configuration — override via Orthanc env or edit here
+-- Configuration -- override via Orthanc env or edit here
 local CALLBACK_URL = os.getenv("INGEST_CALLBACK_URL") or "http://host.docker.internal:3001/imaging/ingest/callback"
 local SERVICE_KEY  = os.getenv("INGEST_SERVICE_KEY")  or "dev-imaging-ingest-key-change-in-production"
 
@@ -81,6 +81,6 @@ function OnStableStudy(studyId, tags, metadata)
   if response then
     print("[INGEST] Callback response: " .. tostring(response))
   else
-    print("[INGEST] WARNING: Callback failed for study " .. studyId .. " — will retry on next stable event")
+    print("[INGEST] WARNING: Callback failed for study " .. studyId .. " -- will retry on next stable event")
   end
 end

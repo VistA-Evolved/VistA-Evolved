@@ -1,5 +1,5 @@
 /**
- * Portal Sensitivity & Proxy Access — Phase 27
+ * Portal Sensitivity & Proxy Access -- Phase 27
  *
  * Implements:
  * 1. Authorized representative (proxy) relationships
@@ -17,6 +17,7 @@
 
 import { randomBytes } from "node:crypto";
 import { portalAudit } from "./portal-audit.js";
+import { log } from "../lib/logger.js";
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -117,7 +118,7 @@ export function grantProxy(
   proxyStore.set(id, proxy);
 
   // Phase 146: Write-through to PG
-  sensitivityDbRepo?.upsert({ id, tenantId, entityId: patientDfn, entityType: 'proxy', policy: JSON.stringify(proxy) }).catch(() => {});
+  sensitivityDbRepo?.upsert({ id, tenantId, entityId: patientDfn, entityType: 'proxy', policy: JSON.stringify(proxy) }).catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 
   portalAudit("portal.proxy.grant", "success", patientDfn, {
     tenantId,

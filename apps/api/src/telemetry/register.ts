@@ -78,7 +78,7 @@ if (OTEL_ENABLED) {
   (globalThis as any).__otelSdk = sdk;
 
   // eslint-disable-next-line no-console
-  console.log(`[otel] SDK started → ${OTEL_ENDPOINT} (service=${SERVICE_NAME})`);
+  console.log(`[otel] SDK started -> ${OTEL_ENDPOINT} (service=${SERVICE_NAME})`);
 } else {
   // eslint-disable-next-line no-console
   console.log('[otel] Tracing disabled (OTEL_ENABLED != true)');

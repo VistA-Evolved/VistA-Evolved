@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Analytics & BI Dashboard — Phase 25E.
+ * Analytics & BI Dashboard -- Phase 25E.
  *
  * Provides a multi-tab analytics dashboard with:
  *   - Ops Dashboard: system health, RPC circuit breaker, event buffer, aggregation stats
@@ -193,7 +193,7 @@ export default function AnalyticsPage() {
   const [exporting, setExporting] = useState(false);
   const [exportMsg, setExportMsg] = useState<string | null>(null);
 
-  /* ── Fetchers ──────────────────────────────────────────────────── */
+  /* -- Fetchers ---------------------------------------------------- */
 
   const apiFetch = useCallback(async (path: string, opts?: RequestInit) => {
     const res = await fetch(`${API_BASE}${path}`, {
@@ -255,7 +255,7 @@ export default function AnalyticsPage() {
     loadTab(tab);
   }, [tab, loadTab]);
 
-  /* ── Export handler ────────────────────────────────────────────── */
+  /* -- Export handler ---------------------------------------------- */
 
   const handleExport = useCallback(
     async (exportType: 'events' | 'aggregated') => {
@@ -285,7 +285,7 @@ export default function AnalyticsPage() {
     [apiFetch]
   );
 
-  /* ── Render ────────────────────────────────────────────────────── */
+  /* -- Render ------------------------------------------------------ */
 
   return (
     <div
@@ -293,7 +293,7 @@ export default function AnalyticsPage() {
     >
       <h1 style={{ fontSize: 24, fontWeight: 600, marginBottom: 4 }}>Analytics & BI Dashboard</h1>
       <p style={{ color: '#666', marginBottom: 16, fontSize: 14 }}>
-        Phase 25 — Enterprise BI, Analytics & Clinical Reporting
+        Phase 25 -- Enterprise BI, Analytics & Clinical Reporting
       </p>
 
       {/* Tab bar */}
@@ -347,7 +347,7 @@ export default function AnalyticsPage() {
         </div>
       )}
 
-      {/* ── Ops Dashboard Tab ── */}
+      {/* -- Ops Dashboard Tab -- */}
       {tab === 'ops' && opsDash && !loading && (
         <div>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
@@ -366,7 +366,7 @@ export default function AnalyticsPage() {
               {opsDash.rpcHealth.circuitBreaker.state.toUpperCase()}
             </span>
             <span style={{ color: '#666', fontSize: 13 }}>
-              — {opsDash.rpcHealth.circuitBreaker.failures} failures,
+              -- {opsDash.rpcHealth.circuitBreaker.failures} failures,
               {opsDash.rpcHealth.cacheSize} cached RPCs
             </span>
           </div>
@@ -432,7 +432,7 @@ export default function AnalyticsPage() {
         </div>
       )}
 
-      {/* ── Clinical Utilization Tab ── */}
+      {/* -- Clinical Utilization Tab -- */}
       {tab === 'clinical' && clinicalDash && !loading && (
         <div>
           <div style={{ display: 'flex', gap: 12, flexWrap: 'wrap', marginBottom: 20 }}>
@@ -508,7 +508,7 @@ export default function AnalyticsPage() {
         </div>
       )}
 
-      {/* ── Events Explorer Tab ── */}
+      {/* -- Events Explorer Tab -- */}
       {tab === 'events' && !loading && (
         <div>
           <div style={{ display: 'flex', gap: 12, marginBottom: 16, alignItems: 'flex-end' }}>
@@ -646,7 +646,7 @@ export default function AnalyticsPage() {
         </div>
       )}
 
-      {/* ── Export Tab ── */}
+      {/* -- Export Tab -- */}
       {tab === 'export' && !loading && (
         <div>
           {health && (

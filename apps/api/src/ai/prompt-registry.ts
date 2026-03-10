@@ -1,5 +1,5 @@
 /**
- * AI Gateway — Prompt Registry (Phase 33)
+ * AI Gateway -- Prompt Registry (Phase 33)
  *
  * Versioned prompt templates. No ad-hoc hidden prompts.
  * Every prompt has a SHA-256 content hash for tamper-detection
@@ -90,7 +90,7 @@ const LAB_EDUCATION_PROMPT: PromptTemplate = {
     '- Recommend treatment or medication changes',
     '- Make predictions about health outcomes',
     '- Tell the patient to stop or start any medication',
-    '- Cause alarm — use reassuring, educational tone',
+    '- Cause alarm -- use reassuring, educational tone',
   ].join('\n'),
   userPromptTemplate: [
     'Please explain the following lab result in simple terms:',

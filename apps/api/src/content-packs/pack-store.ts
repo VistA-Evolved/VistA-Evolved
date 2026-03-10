@@ -1,5 +1,5 @@
 /**
- * Phase 390 (W22-P2): Content Pack Store — In-memory stores for pack content
+ * Phase 390 (W22-P2): Content Pack Store -- In-memory stores for pack content
  *
  * Manages order sets, flowsheets, inbox rules, dashboards, CDS rules, and
  * pack installation events. All stores follow the established Map pattern
@@ -19,7 +19,7 @@ import type {
   PackInstallAction,
 } from './types.js';
 
-// ─── Stores ─────────────────────────────────────────────────────
+// --- Stores -----------------------------------------------------
 
 const MAX_ITEMS = 5000;
 
@@ -29,12 +29,13 @@ const inboxRuleStore = new Map<string, InboxRule>();
 const dashboardStore = new Map<string, Dashboard>();
 const cdsRuleStore = new Map<string, CdsRule>();
 const installEventStore: PackInstallEvent[] = [];
+const MAX_INSTALL_EVENTS = 5000;
 const installedPacks = new Map<
   string,
   { packId: string; version: string; tenantId: string; installedAt: string }
 >();
 
-// ─── Helpers ────────────────────────────────────────────────────
+// --- Helpers ----------------------------------------------------
 
 function tenantPackKey(tenantId: string, packId: string): string {
   return `${tenantId}:${packId}`;
@@ -47,7 +48,7 @@ function evict<T>(store: Map<string, T>): void {
   }
 }
 
-// ─── Order Set CRUD ─────────────────────────────────────────────
+// --- Order Set CRUD ---------------------------------------------
 
 export function createOrderSet(
   tenantId: string,
@@ -89,7 +90,7 @@ export function updateOrderSet(
   return updated;
 }
 
-// ─── Flowsheet CRUD ─────────────────────────────────────────────
+// --- Flowsheet CRUD ---------------------------------------------
 
 export function createFlowsheet(
   tenantId: string,
@@ -133,7 +134,7 @@ export function updateFlowsheet(
   return updated;
 }
 
-// ─── Inbox Rule CRUD ────────────────────────────────────────────
+// --- Inbox Rule CRUD --------------------------------------------
 
 export function createInboxRule(
   tenantId: string,
@@ -152,7 +153,7 @@ export function listInboxRules(tenantId: string): InboxRule[] {
   );
 }
 
-// ─── Dashboard CRUD ─────────────────────────────────────────────
+// --- Dashboard CRUD ---------------------------------------------
 
 export function createDashboard(
   tenantId: string,
@@ -174,7 +175,7 @@ export function listDashboards(tenantId: string, specialty?: string): Dashboard[
   );
 }
 
-// ─── CDS Rule CRUD ──────────────────────────────────────────────
+// --- CDS Rule CRUD ----------------------------------------------
 
 export function createCdsRule(
   tenantId: string,
@@ -197,7 +198,7 @@ export function listCdsRules(tenantId: string, hook?: string): CdsRule[] {
   );
 }
 
-// ─── Pack Install / Rollback ────────────────────────────────────
+// --- Pack Install / Rollback ------------------------------------
 
 export function previewPackInstall(tenantId: string, pack: ContentPackV2): PackInstallPreview {
   const existing = installedPacks.get(tenantPackKey(tenantId, pack.packId));
@@ -298,6 +299,7 @@ export function installPack(
     createdAt: now,
   };
   installEventStore.push(event);
+  if (installEventStore.length > MAX_INSTALL_EVENTS) installEventStore.splice(0, installEventStore.length - MAX_INSTALL_EVENTS);
   return event;
 }
 
@@ -355,10 +357,11 @@ export function rollbackPack(tenantId: string, packId: string, actor: string): P
     createdAt: now,
   };
   installEventStore.push(event);
+  if (installEventStore.length > MAX_INSTALL_EVENTS) installEventStore.splice(0, installEventStore.length - MAX_INSTALL_EVENTS);
   return event;
 }
 
-// ─── Queries ────────────────────────────────────────────────────
+// --- Queries ----------------------------------------------------
 
 export function listInstalledPacks(
   tenantId: string
@@ -388,7 +391,7 @@ export function getPackStats(tenantId: string): {
   };
 }
 
-// ─── Reset (for tests) ─────────────────────────────────────────
+// --- Reset (for tests) -----------------------------------------
 
 export function _resetContentPackStores(): void {
   orderSetStore.clear();

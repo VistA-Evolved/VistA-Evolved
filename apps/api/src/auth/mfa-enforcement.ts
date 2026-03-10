@@ -1,5 +1,5 @@
 /**
- * MFA Enforcement Hooks — Phase 338 (W16-P2).
+ * MFA Enforcement Hooks -- Phase 338 (W16-P2).
  *
  * Provides MFA enrollment tracking, verification recording, and policy
  * enforcement hooks. Feature-flagged via MFA_ENFORCEMENT_ENABLED env var.
@@ -87,10 +87,11 @@ const MFA_EXEMPT_ACTIONS: Set<string> = new Set([
 ]);
 
 /* ------------------------------------------------------------------ */
-/* In-memory enrollment store (Ephemeral — DB-backed when PG available) */
+/* In-memory enrollment store (Ephemeral -- DB-backed when PG available) */
 /* ------------------------------------------------------------------ */
 
 const enrollmentStore = new Map<string, MfaEnrollment>();
+const MAX_MFA_ENROLLMENTS = 10000;
 
 /** Store key: tenantId:userId */
 function enrollKey(tenantId: string, userId: string): string {
@@ -148,18 +149,18 @@ export function checkMfaRequired(
   const enrollment = getEnrollment(tenantId, userId);
 
   if (!enrollment || !enrollment.enrolled) {
-    // Not enrolled — check grace period
+    // Not enrolled -- check grace period
     if (enrollment && enrollment.graceExpiresAt > 0 && ts < enrollment.graceExpiresAt) {
       return {
         allowed: true,
         inGracePeriod: true,
         enrollmentRequired: true,
         verificationRequired: false,
-        reason: 'MFA enrollment required — grace period active',
+        reason: 'MFA enrollment required -- grace period active',
       };
     }
 
-    // No enrollment and no/expired grace — require enrollment
+    // No enrollment and no/expired grace -- require enrollment
     return {
       allowed: false,
       inGracePeriod: false,
@@ -169,9 +170,9 @@ export function checkMfaRequired(
     };
   }
 
-  // Enrolled — check recent verification
+  // Enrolled -- check recent verification
   if (!mfaState.enrolled) {
-    // Session doesn't have MFA state yet — need verification
+    // Session doesn't have MFA state yet -- need verification
     return {
       allowed: false,
       inGracePeriod: false,
@@ -187,7 +188,7 @@ export function checkMfaRequired(
       inGracePeriod: false,
       enrollmentRequired: false,
       verificationRequired: true,
-      reason: 'MFA verification expired — re-verification required',
+      reason: 'MFA verification expired -- re-verification required',
     };
   }
 
@@ -216,6 +217,10 @@ export function recordMfaEnrollment(
     graceExpiresAt: 0,
   };
   enrollmentStore.set(enrollKey(tenantId, userId), enrollment);
+  if (enrollmentStore.size > MAX_MFA_ENROLLMENTS) {
+    const oldest = enrollmentStore.keys().next().value;
+    if (oldest != null) enrollmentStore.delete(oldest);
+  }
   log.info('MFA enrollment recorded', { userId, tenantId, methods });
   return enrollment;
 }
@@ -234,6 +239,10 @@ export function startMfaGracePeriod(tenantId: string, userId: string): MfaEnroll
     graceExpiresAt: Date.now() + MFA_GRACE_PERIOD_MS,
   };
   enrollmentStore.set(enrollKey(tenantId, userId), enrollment);
+  if (enrollmentStore.size > MAX_MFA_ENROLLMENTS) {
+    const oldest = enrollmentStore.keys().next().value;
+    if (oldest != null) enrollmentStore.delete(oldest);
+  }
   return enrollment;
 }
 

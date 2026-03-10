@@ -203,7 +203,7 @@ function runPackConformance(dir) {
   return { countryCode: pack.countryCode, gates: results, overall };
 }
 
-// ── Main ───────────────────────────────────────────────────────
+// -- Main -------------------------------------------------------
 
 console.log('\n=== Country Conformance Runner (Phase 499) ===\n');
 
@@ -232,7 +232,7 @@ for (const dir of packDirs) {
   console.log(`  => ${result.overall.toUpperCase()}\n`);
 }
 
-// ── Evidence Summary ───────────────────────────────────────────
+// -- Evidence Summary -------------------------------------------
 
 console.log('=== Evidence Summary ===');
 for (const e of evidence) {

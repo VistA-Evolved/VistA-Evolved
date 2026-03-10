@@ -1,7 +1,7 @@
 /**
- * Phase 392 (W22-P4): Pharmacy Deep Workflows — Types
+ * Phase 392 (W22-P4): Pharmacy Deep Workflows -- Types
  *
- * Full pharmacy lifecycle: order → verify → dispense → administer → discontinue
+ * Full pharmacy lifecycle: order -> verify -> dispense -> administer -> discontinue
  * Bridges existing eMAR, writeback executor, BCMA, and med-rec modules into a
  * unified pharmacy workflow FSM.
  *
@@ -12,7 +12,7 @@
  *   - Med-Rec (Phase 168): Reconciliation sessions
  */
 
-// ─── Pharmacy Order Lifecycle ───────────────────────────────
+// --- Pharmacy Order Lifecycle -------------------------------
 
 export type PharmOrderStatus =
   | 'pending'
@@ -70,7 +70,7 @@ export interface PharmOrder {
   updatedAt: string;
 }
 
-// ─── Clinical Checks (DDI, Allergy, Duplicate) ─────────────
+// --- Clinical Checks (DDI, Allergy, Duplicate) -------------
 
 export type ClinicalCheckType =
   | 'ddi'
@@ -92,7 +92,7 @@ export interface ClinicalCheckResult {
   overriddenAt: string | null;
 }
 
-// ─── Dispensing ─────────────────────────────────────────────
+// --- Dispensing ---------------------------------------------
 
 export type DispenseStatus = 'pending' | 'picking' | 'checked' | 'ready' | 'delivered' | 'returned';
 
@@ -124,7 +124,7 @@ export interface DispenseEvent {
   updatedAt: string;
 }
 
-// ─── Administration Record ──────────────────────────────────
+// --- Administration Record ----------------------------------
 
 export type AdminStatus = 'scheduled' | 'given' | 'held' | 'refused' | 'missed' | 'self_admin';
 
@@ -160,7 +160,7 @@ export interface AdminRecord {
   createdAt: string;
 }
 
-// ─── Pharmacy Dashboard Stats ───────────────────────────────
+// --- Pharmacy Dashboard Stats -------------------------------
 
 export interface PharmacyDashboardStats {
   pendingVerification: number;
@@ -172,7 +172,7 @@ export interface PharmacyDashboardStats {
   clinicalChecksOverridden: number;
 }
 
-// ─── Writeback Posture ──────────────────────────────────────
+// --- Writeback Posture --------------------------------------
 
 export interface PharmWritebackPosture {
   orderPlace: { rpc: string; status: 'available' | 'integration_pending'; note: string };

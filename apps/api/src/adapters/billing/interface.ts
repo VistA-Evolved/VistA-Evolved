@@ -1,5 +1,5 @@
 /**
- * Billing Adapter Interface — Phase 37C.
+ * Billing Adapter Interface -- Phase 37C.
  */
 
 import type { BaseAdapter, AdapterResult } from '../types.js';

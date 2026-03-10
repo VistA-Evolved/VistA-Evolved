@@ -1,5 +1,5 @@
 /**
- * WebSocket console gateway — Phase 13F.
+ * WebSocket console gateway -- Phase 13F.
  *
  * Provides a WebSocket endpoint at /ws/console that allows
  * authenticated admin users to execute RPC calls in real-time.
@@ -230,7 +230,7 @@ export default async function wsConsoleRoutes(server: FastifyInstance): Promise<
     });
   });
 
-  // GET /admin/audit-log — retrieve console audit log from centralized system
+  // GET /admin/audit-log -- retrieve console audit log from centralized system
   server.get('/admin/audit-log', async (_request, _reply) => {
     // Filter centralized audit events to ws-console-related actions
     const events = queryAuditEvents({ limit: 100 });

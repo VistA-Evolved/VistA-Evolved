@@ -34,7 +34,7 @@ export async function run(opts = {}) {
   let status = 'pass';
   const strict = opts.strict || false;
 
-  // ── 1. tenant-guard.ts exists ────────────────────────────
+  // -- 1. tenant-guard.ts exists ----------------------------
   const guardPath = resolve(REPO_DIR, 'tenant-guard.ts');
   if (!existsSync(guardPath)) {
     details.push('tenant-guard.ts: MISSING');
@@ -64,7 +64,7 @@ export async function run(opts = {}) {
     );
   }
 
-  // ── 2. tenant-scoped-queries.ts exists ───────────────────
+  // -- 2. tenant-scoped-queries.ts exists -------------------
   const scopedPath = resolve(REPO_DIR, 'tenant-scoped-queries.ts');
   if (!existsSync(scopedPath)) {
     details.push('tenant-scoped-queries.ts: MISSING');
@@ -79,7 +79,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 3. TENANT_SCOPED_TABLES coverage ─────────────────────
+  // -- 3. TENANT_SCOPED_TABLES coverage ---------------------
   const tablesMatch = guardSrc.match(/TENANT_SCOPED_TABLES\s*=\s*\[([\s\S]*?)\]\s*as\s+const/);
   let scopedTableCount = 0;
   const criticalTables = [
@@ -105,7 +105,7 @@ export async function run(opts = {}) {
     status = 'fail';
   }
 
-  // ── 4. Barrel export check ───────────────────────────────
+  // -- 4. Barrel export check -------------------------------
   const barrelPath = resolve(REPO_DIR, 'index.ts');
   if (existsSync(barrelPath)) {
     const barrelSrc = readFileSync(barrelPath, 'utf8');
@@ -127,7 +127,7 @@ export async function run(opts = {}) {
     status = 'fail';
   }
 
-  // ── 5. PG RLS table list coverage ────────────────────────
+  // -- 5. PG RLS table list coverage ------------------------
   const pgMigratePath = resolve(API_SRC, 'platform/pg/pg-migrate.ts');
   if (existsSync(pgMigratePath)) {
     const pgSrc = readFileSync(pgMigratePath, 'utf8');
@@ -146,7 +146,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 6. Auto-enable logic present ─────────────────────────
+  // -- 6. Auto-enable logic present -------------------------
   if (existsSync(pgMigratePath)) {
     const pgSrc = readFileSync(pgMigratePath, 'utf8');
     const hasAutoEnable =
@@ -161,7 +161,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 7. Tenant isolation test exists and passes ───────────
+  // -- 7. Tenant isolation test exists and passes -----------
   const testPath = resolve(ROOT, 'apps/api/tests/tenant-isolation.test.ts');
   if (!existsSync(testPath)) {
     details.push('tenant-isolation.test.ts: MISSING');
@@ -205,7 +205,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── 8. Posture endpoint exists ───────────────────────────
+  // -- 8. Posture endpoint exists ---------------------------
   const posturePath = resolve(API_SRC, 'posture/index.ts');
   if (existsSync(posturePath)) {
     const postureSrc = readFileSync(posturePath, 'utf8');
@@ -219,7 +219,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── Strict-mode extras ───────────────────────────────────
+  // -- Strict-mode extras -----------------------------------
   if (strict) {
     // Check that repo files importing db schema also import tenant guard
     const repoFiles = existsSync(REPO_DIR)

@@ -179,7 +179,7 @@ export default function PilotPage() {
         </div>
       )}
 
-      {/* ── Sites tab ──────────────────────────────────────────── */}
+      {/* -- Sites tab -------------------------------------------- */}
       {tab === 'sites' && (
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
@@ -356,7 +356,7 @@ export default function PilotPage() {
         </div>
       )}
 
-      {/* ── Preflight tab ──────────────────────────────────────── */}
+      {/* -- Preflight tab ---------------------------------------- */}
       {tab === 'preflight' && (
         <div>
           {!preflight && !loading && (

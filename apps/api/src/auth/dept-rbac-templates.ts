@@ -1,19 +1,19 @@
 /**
- * Department RBAC Templates — Phase 348
+ * Department RBAC Templates -- Phase 348
  *
  * Provides department-scoped role templates that constrain RBAC grants.
  * Templates define which actions are available per department type + role
- * combination. Integrates with the existing ABAC engine (Phase 340) —
+ * combination. Integrates with the existing ABAC engine (Phase 340) --
  * department templates DENY or CONSTRAIN, never grant beyond RBAC.
  *
- * Pattern: RBAC allows by role → Department template constrains by
- * department membership → ABAC further constrains by attributes.
+ * Pattern: RBAC allows by role -> Department template constrains by
+ * department membership -> ABAC further constrains by attributes.
  */
 
 import { randomUUID } from 'node:crypto';
 import type { DepartmentType } from '../services/facility-service.js';
 
-// ─── Types ───────────────────────────────────────────────
+// --- Types -----------------------------------------------
 
 export type DeptRoleAction =
   | 'view_patient'
@@ -81,7 +81,7 @@ export interface DeptAccessDecision {
   constraints: Record<string, unknown>;
 }
 
-// ─── Default Templates per Department Type ───────────────
+// --- Default Templates per Department Type ---------------
 
 const DEFAULT_TEMPLATES: Array<{
   departmentType: DepartmentType;
@@ -345,12 +345,12 @@ const DEFAULT_TEMPLATES: Array<{
   },
 ];
 
-// ─── Stores ──────────────────────────────────────────────
+// --- Stores ----------------------------------------------
 
 const templateStore = new Map<string, DeptRoleTemplate>();
 const membershipStore = new Map<string, DeptRoleMembership>();
 
-// ─── Template CRUD ───────────────────────────────────────
+// --- Template CRUD ---------------------------------------
 
 export function seedDefaultTemplates(tenantId: string): DeptRoleTemplate[] {
   const seeded: DeptRoleTemplate[] = [];
@@ -443,7 +443,7 @@ export function updateTemplate(
   return updated;
 }
 
-// ─── Membership CRUD ─────────────────────────────────────
+// --- Membership CRUD -------------------------------------
 
 export function assignMembership(
   tenantId: string,
@@ -482,7 +482,7 @@ export function revokeMembership(tenantId: string, id: string): boolean {
   return true;
 }
 
-// ─── Access Decision ─────────────────────────────────────
+// --- Access Decision -------------------------------------
 
 export function evaluateDeptAccess(
   tenantId: string,
@@ -533,7 +533,7 @@ export function evaluateDeptAccess(
     }
   }
 
-  // Default deny — action not in any template
+  // Default deny -- action not in any template
   return {
     allowed: false,
     action,
@@ -544,7 +544,7 @@ export function evaluateDeptAccess(
   };
 }
 
-// ─── Store Reset ─────────────────────────────────────────
+// --- Store Reset -----------------------------------------
 
 export function _resetDeptRbacStores(): void {
   templateStore.clear();

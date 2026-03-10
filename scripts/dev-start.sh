@@ -30,7 +30,7 @@ echo "[OK] Docker is running"
 if [ ! -f .env ]; then
   echo "[SETUP] Creating .env from .env.example..."
   cp .env.example .env
-  echo "[WARN] .env created with placeholder values — edit it before starting services."
+  echo "[WARN] .env created with placeholder values -- edit it before starting services."
   echo "       At minimum, set POSTGRES_PASSWORD and VISTA credentials."
   echo ""
   echo "  nano .env   # or your preferred editor"

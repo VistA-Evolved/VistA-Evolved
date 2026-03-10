@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * scripts/regen-rpc-snapshot.mjs — Regenerates data/vista/rpc-catalog-snapshot.json
+ * scripts/regen-rpc-snapshot.mjs -- Regenerates data/vista/rpc-catalog-snapshot.json
  *
  * Reads apps/api/src/vista/rpcRegistry.ts and extracts all RPC entries
  * and exceptions, then writes a fresh snapshot file.
@@ -29,7 +29,7 @@ const exceptionSrc = exceptIdx > 0 ? regSrc.slice(exceptIdx) : '';
 
 function extractEntries(src) {
   const entries = [];
-  // Match each { name: "...", ... } object — handles multi-line
+  // Match each { name: "...", ... } object -- handles multi-line
   const objRe = /\{\s*name:\s*["']([^"']+)["']([^}]*)\}/g;
   let m;
   while ((m = objRe.exec(src)) !== null) {
@@ -40,11 +40,11 @@ function extractEntries(src) {
     const domainMatch = rest.match(/domain:\s*["']([^"']+)["']/);
     const domain = domainMatch ? domainMatch[1] : undefined;
 
-    // Extract tag (singular string) — used by RPC_REGISTRY
+    // Extract tag (singular string) -- used by RPC_REGISTRY
     const tagMatch = rest.match(/\btag:\s*["']([^"']+)["']/);
     const tag = tagMatch ? tagMatch[1] : undefined;
 
-    // Extract tags (plural array) — used by RPC_EXCEPTIONS
+    // Extract tags (plural array) -- used by RPC_EXCEPTIONS
     const tagsMatch = rest.match(/tags:\s*\[([^\]]*)\]/);
     let tags;
     if (tagsMatch) {

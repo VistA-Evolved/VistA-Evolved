@@ -1,11 +1,11 @@
 /**
- * Phase 172: Certification Evidence Export — API Routes
+ * Phase 172: Certification Evidence Export -- API Routes
  *
  * Provides admin-only endpoints for certification evidence:
- *   GET  /admin/certification/status    — Current certification readiness
- *   POST /admin/certification/generate  — Trigger evidence generation
- *   GET  /admin/certification/bundles   — List generated bundles
- *   GET  /admin/certification/bundle/:id — Get bundle manifest
+ *   GET  /admin/certification/status    -- Current certification readiness
+ *   POST /admin/certification/generate  -- Trigger evidence generation
+ *   GET  /admin/certification/bundles   -- List generated bundles
+ *   GET  /admin/certification/bundle/:id -- Get bundle manifest
  *
  * All endpoints require admin role (AUTH_RULES /admin/*).
  */
@@ -18,7 +18,7 @@ import { resolve, join } from 'node:path';
 import { createHash } from 'node:crypto';
 import { execFile } from 'node:child_process';
 
-// ── Types ───────────────────────────────────────────────────
+// -- Types ---------------------------------------------------
 
 export interface CertBundleInfo {
   buildId: string;
@@ -40,7 +40,7 @@ export interface CertStatus {
   lastBundleId: string | null;
 }
 
-// ── Helpers ─────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------
 
 function getRepoRoot(): string {
   return resolve(import.meta.dirname, '../../../..');
@@ -66,13 +66,13 @@ function safeReadJson(filePath: string): any {
   }
 }
 
-// ── Routes ──────────────────────────────────────────────────
+// -- Routes --------------------------------------------------
 
 export default async function certificationEvidenceRoutes(server: FastifyInstance) {
   const root = getRepoRoot();
   const bundlesDir = join(root, 'artifacts', 'evidence', 'certification');
 
-  // GET /admin/certification/status — readiness assessment
+  // GET /admin/certification/status -- readiness assessment
   server.get(
     '/admin/certification/status',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -131,7 +131,7 @@ export default async function certificationEvidenceRoutes(server: FastifyInstanc
     }
   );
 
-  // POST /admin/certification/generate — trigger evidence bundle generation
+  // POST /admin/certification/generate -- trigger evidence bundle generation
   server.post(
     '/admin/certification/generate',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -182,7 +182,7 @@ export default async function certificationEvidenceRoutes(server: FastifyInstanc
     }
   );
 
-  // GET /admin/certification/bundles — list generated bundles
+  // GET /admin/certification/bundles -- list generated bundles
   server.get(
     '/admin/certification/bundles',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -225,7 +225,7 @@ export default async function certificationEvidenceRoutes(server: FastifyInstanc
     }
   );
 
-  // GET /admin/certification/bundle/:buildId — get specific bundle manifest
+  // GET /admin/certification/bundle/:buildId -- get specific bundle manifest
   server.get(
     '/admin/certification/bundle/:buildId',
     async (request: FastifyRequest, reply: FastifyReply) => {

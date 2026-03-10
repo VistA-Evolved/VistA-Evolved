@@ -1,5 +1,5 @@
 /**
- * Quality & Safety Metrics v1 — Phase 366 (W19-P5)
+ * Quality & Safety Metrics v1 -- Phase 366 (W19-P5)
  *
  * Basic clinical quality measures computed on extract data.
  * These are engineering metrics, NOT regulatory certification claims.
@@ -20,7 +20,7 @@ import type {
 import { getExtractRuns, getExtractRecords } from './extract-layer.js';
 import { registerReportGenerator } from './reporting-service.js';
 
-// ── Measure Definitions ─────────────────────────────────────────────────
+// -- Measure Definitions -------------------------------------------------
 
 const QUALITY_MEASURES: QualityMeasure[] = [
   {
@@ -49,12 +49,12 @@ const QUALITY_MEASURES: QualityMeasure[] = [
   },
 ];
 
-// ── In-memory metric runs ───────────────────────────────────────────────
+// -- In-memory metric runs -----------------------------------------------
 
 const metricRuns: QualityMetricRun[] = [];
 const MAX_METRIC_RUNS = 500;
 
-// ── Computation ─────────────────────────────────────────────────────────
+// -- Computation ---------------------------------------------------------
 
 export function getQualityMeasures(): QualityMeasure[] {
   return [...QUALITY_MEASURES];
@@ -127,7 +127,7 @@ export function getMetricRuns(
   return filtered.slice(-limit);
 }
 
-// ── Metric Computers ────────────────────────────────────────────────────
+// -- Metric Computers ----------------------------------------------------
 
 type MetricComputer = (
   tenantId: string,
@@ -173,7 +173,7 @@ const METRIC_COMPUTERS: Record<QualityMeasureId, MetricComputer> = {
   },
 };
 
-// ── Report Generator Registration ───────────────────────────────────────
+// -- Report Generator Registration ---------------------------------------
 
 function qualityToReportResult(
   reportId: ReportId,
@@ -227,7 +227,7 @@ export function initQualityReportGenerators(): void {
   log.info('Quality report generators registered (Phase 366)');
 }
 
-// ── Helpers ─────────────────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------------------
 
 function makeMetricRun(
   measureId: QualityMeasureId,

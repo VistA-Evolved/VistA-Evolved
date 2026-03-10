@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Phase 276 — Durability Read-Through QA Gate
+ * Phase 276 -- Durability Read-Through QA Gate
  *
  * Scans store-policy.ts to find all pg_backed stores, then checks
  * which ones have read-through wiring (import from read-through.ts
@@ -144,5 +144,5 @@ console.log(`  Write-through only:   ${report.withoutReadThrough}`);
 console.log(`  Coverage:             ${coverage}%`);
 console.log(`\n  Output: artifacts/durability-readthrough-gate.json\n`);
 
-// Gate passes at >5% coverage (baseline — will ratchet up)
+// Gate passes at >5% coverage (baseline -- will ratchet up)
 process.exit(report.withReadThrough >= 3 ? 0 : 1);

@@ -32,6 +32,11 @@ import {
   AIAssistPanel,
   ADTPanel,
   NursingPanel,
+  VitalsPanel,
+  AllergiesPanel,
+  MedReconciliationPanel,
+  EPrescribingPanel,
+  EncountersPanel,
 } from '@/components/cprs/panels';
 import ActionInspector from '@/components/cprs/ActionInspector';
 import styles from '@/components/cprs/cprs.module.css';
@@ -60,6 +65,11 @@ const TAB_LOCATION_MAP: Record<string, string> = {
   aiassist: 'AIAssist',
   adt: 'ADT',
   nursing: 'Nursing',
+  vitals: 'Vitals',
+  allergies: 'Allergies',
+  medrec: 'MedRec',
+  erx: 'ePrescribing',
+  encounters: 'Encounters',
 };
 
 const TAB_DOMAIN_PREFETCH: Partial<Record<string, keyof ClinicalData>> = {
@@ -70,6 +80,8 @@ const TAB_DOMAIN_PREFETCH: Partial<Record<string, keyof ClinicalData>> = {
   surgery: 'surgery',
   dcsumm: 'dcSummaries',
   labs: 'labs',
+  vitals: 'vitals',
+  allergies: 'allergies',
 };
 
 const TAB_ALIASES: Record<string, string> = {
@@ -78,6 +90,10 @@ const TAB_ALIASES: Record<string, string> = {
   'dc-summ': 'dcsumm',
   'ai-assist': 'aiassist',
   'tele-health': 'telehealth',
+  'med-rec': 'medrec',
+  'med-reconciliation': 'medrec',
+  'e-prescribing': 'erx',
+  'eprescribing': 'erx',
 };
 
 function normalizeTabSlug(tab: string): string {
@@ -122,6 +138,16 @@ function TabContent({ dfn, tab }: { dfn: string; tab: string }) {
       return <ADTPanel dfn={dfn} />;
     case 'nursing':
       return <NursingPanel dfn={dfn} />;
+    case 'vitals':
+      return <VitalsPanel dfn={dfn} />;
+    case 'allergies':
+      return <AllergiesPanel dfn={dfn} />;
+    case 'medrec':
+      return <MedReconciliationPanel dfn={dfn} />;
+    case 'erx':
+      return <EPrescribingPanel dfn={dfn} />;
+    case 'encounters':
+      return <EncountersPanel dfn={dfn} />;
     default:
       return (
         <div style={{ padding: 24 }}>
@@ -151,6 +177,11 @@ const VALID_TABS = new Set([
   'aiassist',
   'adt',
   'nursing',
+  'vitals',
+  'allergies',
+  'medrec',
+  'erx',
+  'encounters',
 ]);
 
 export default function CPRSChartPage({ params }: ChartPageProps) {
@@ -278,6 +309,9 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
               'telehealth',
               'tasks',
               'aiassist',
+              'medrec',
+              'erx',
+              'encounters',
             ]
               .filter((t) => isModuleEnabled(t))
               .map((t) => {
@@ -288,6 +322,9 @@ export default function CPRSChartPage({ params }: ChartPageProps) {
                       dcsumm: 'DC Summaries',
                       adt: 'ADT',
                       aiassist: 'AI Assist',
+                      medrec: 'Med Rec',
+                      erx: 'e-Prescribing',
+                      encounters: 'Encounters',
                     } as Record<string, string>
                   )[t] ?? t.charAt(0).toUpperCase() + t.slice(1);
                 return (

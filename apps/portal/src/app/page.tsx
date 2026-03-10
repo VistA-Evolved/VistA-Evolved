@@ -102,6 +102,16 @@ export default function LoginPage() {
           </button>
         </form>
 
+        <div style={{ marginTop: '1rem', textAlign: 'center', fontSize: '0.875rem' }}>
+          <span style={{ color: '#64748b' }}>Don&#39;t have an account? </span>
+          <a
+            href="/dashboard/registration/verify"
+            style={{ color: '#2563eb', textDecoration: 'underline', fontWeight: 500 }}
+          >
+            Register here
+          </a>
+        </div>
+
         {isDev && (
           <div className="sandbox-hint">
             <strong>Development mode</strong>

@@ -1,5 +1,5 @@
 /**
- * Lab Inbound — Barrel Export — Phase 433 (W27 P3)
+ * Lab Inbound -- Barrel Export -- Phase 433 (W27 P3)
  */
 export type {
   InboundLabResult,

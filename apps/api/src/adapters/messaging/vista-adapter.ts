@@ -1,5 +1,5 @@
 /**
- * VistA Messaging Adapter — Phase 37C.
+ * VistA Messaging Adapter -- Phase 37C.
  * Delegates to ZVEMIOP.m interop RPCs via rpc-resilience.
  */
 

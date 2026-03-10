@@ -1,4 +1,4 @@
--- Platform DB — Initialization Script (Phase 101)
+-- Platform DB -- Initialization Script (Phase 101)
 --
 -- Runs once on first container start via docker-entrypoint-initdb.d.
 -- Creates extensions and optional RLS setup function.

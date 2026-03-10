@@ -1,0 +1,12 @@
+{
+  "rpcName": "ORQQPL LIST",
+  "caseName": "success",
+  "recordedAt": "2026-03-05T00:00:00Z",
+  "sanitized": true,
+  "params": ["46"],
+  "response": [
+    "1^SLEEP APNEA^780.57^A^3260101",
+    "2^POST-TRAUMATIC STRESS DISORDER^309.81^A^3260101"
+  ],
+  "responseHash": "f6a1b2c3d4e5"
+}

@@ -1,5 +1,5 @@
 /**
- * Session Security Controls — Phase 338 (W16-P2).
+ * Session Security Controls -- Phase 338 (W16-P2).
  *
  * Provides device fingerprinting, concurrent session limiting,
  * and session security event logging for hardened auth.
@@ -99,7 +99,7 @@ export interface SessionInfo {
 
 /**
  * Extract IP /24 prefix (IPv4) or /48 prefix (IPv6).
- * Used for fingerprinting — not exact IP, reduces sensitivity.
+ * Used for fingerprinting -- not exact IP, reduces sensitivity.
  */
 function extractIpPrefix(ip: string): string {
   if (!ip) return 'unknown';
@@ -185,6 +185,7 @@ const userSessionsMap = new Map<string, Set<string>>();
 
 /** Map of tokenHash -> SessionInfo. For session listing. */
 const sessionInfoMap = new Map<string, SessionInfo>();
+const MAX_TOTAL_SESSIONS = 50000;
 
 /**
  * Register a new session for concurrent tracking.
@@ -214,6 +215,13 @@ export function registerSession(
     lastActivity: now,
     mfaVerified: false,
   });
+
+  // Enforce total session cap -- evict oldest sessions first
+  if (sessionInfoMap.size > MAX_TOTAL_SESSIONS) {
+    const iter = sessionInfoMap.keys();
+    const oldest = iter.next().value;
+    if (oldest != null) unregisterSession(oldest);
+  }
 }
 
 /**

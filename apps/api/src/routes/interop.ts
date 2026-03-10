@@ -1,5 +1,5 @@
 /**
- * Interop routes — Phase 18B/D.
+ * Interop routes -- Phase 18B/D.
  *
  * API endpoints for managing the integration registry, probing integrations,
  * and onboarding devices/modalities.
@@ -7,11 +7,11 @@
  * VistA HL7/HLO file binding:
  *   The integration registry is a PLATFORM connector catalog. For hl7v2-type
  *   integrations, the ground-truth HL7 link status lives in VistA files:
- *     - #870  HL LOGICAL LINK       — link definitions, status, address/port
- *     - #772  HL7 MESSAGE TEXT       — raw HL7 message segments
- *     - #773  HL7 MESSAGE ADMIN      — message-level status/tracking
- *     - #776  HL MONITOR JOB         — background filer job health
- *     - #779.x HLO registries/queues — HLO app registry, subscriptions, queues
+ *     - #870  HL LOGICAL LINK       -- link definitions, status, address/port
+ *     - #772  HL7 MESSAGE TEXT       -- raw HL7 message segments
+ *     - #773  HL7 MESSAGE ADMIN      -- message-level status/tracking
+ *     - #776  HL MONITOR JOB         -- background filer job health
+ *     - #779.x HLO registries/queues -- HLO app registry, subscriptions, queues
  *   Future: read VistA HL7 files via custom RPCs (see docs/interop-grounding.md).
  *
  * All endpoints are admin-only (enforced by AUTH_RULES in security.ts which
@@ -20,16 +20,16 @@
  * See: docs/interop-grounding.md
  *
  * Routes:
- *   GET    /admin/registry/:tenantId                    — list integrations
- *   GET    /admin/registry/:tenantId/:integrationId     — get single integration
- *   PUT    /admin/registry/:tenantId/:integrationId     — create/update integration
- *   DELETE /admin/registry/:tenantId/:integrationId     — delete integration
- *   POST   /admin/registry/:tenantId/:integrationId/toggle — enable/disable
- *   POST   /admin/registry/:tenantId/:integrationId/probe  — probe single
- *   POST   /admin/registry/:tenantId/probe-all             — probe all enabled
- *   GET    /admin/registry/:tenantId/health-summary        — integration health summary
- *   GET    /admin/registry/:tenantId/error-log/:integrationId — error log for one
- *   POST   /admin/registry/:tenantId/onboard-device        — onboard a new device
+ *   GET    /admin/registry/:tenantId                    -- list integrations
+ *   GET    /admin/registry/:tenantId/:integrationId     -- get single integration
+ *   PUT    /admin/registry/:tenantId/:integrationId     -- create/update integration
+ *   DELETE /admin/registry/:tenantId/:integrationId     -- delete integration
+ *   POST   /admin/registry/:tenantId/:integrationId/toggle -- enable/disable
+ *   POST   /admin/registry/:tenantId/:integrationId/probe  -- probe single
+ *   POST   /admin/registry/:tenantId/probe-all             -- probe all enabled
+ *   GET    /admin/registry/:tenantId/health-summary        -- integration health summary
+ *   GET    /admin/registry/:tenantId/error-log/:integrationId -- error log for one
+ *   POST   /admin/registry/:tenantId/onboard-device        -- onboard a new device
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -164,7 +164,7 @@ async function probeIntegration(entry: IntegrationEntry): Promise<IntegrationSta
 /* ------------------------------------------------------------------ */
 
 export default async function interopRoutes(server: FastifyInstance): Promise<void> {
-  // ── List integrations ───────────────────────────────────────────
+  // -- List integrations -------------------------------------------
 
   server.get('/admin/registry/:tenantId', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -177,7 +177,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
     return { ok: true, tenantId, integrations: entries, count: entries.length };
   });
 
-  // ── Get single integration ─────────────────────────────────────
+  // -- Get single integration -------------------------------------
 
   server.get('/admin/registry/:tenantId/:integrationId', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -194,7 +194,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
     return { ok: true, tenantId, integration: entry };
   });
 
-  // ── Create/update integration ──────────────────────────────────
+  // -- Create/update integration ----------------------------------
 
   server.put('/admin/registry/:tenantId/:integrationId', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -249,7 +249,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
     return { ok: true, tenantId, integration: result };
   });
 
-  // ── Delete integration ─────────────────────────────────────────
+  // -- Delete integration -----------------------------------------
 
   server.delete('/admin/registry/:tenantId/:integrationId', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -273,7 +273,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
     return { ok: true, deleted: integrationId };
   });
 
-  // ── Toggle enable/disable ──────────────────────────────────────
+  // -- Toggle enable/disable --------------------------------------
 
   server.post('/admin/registry/:tenantId/:integrationId/toggle', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -299,7 +299,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
     return { ok: true, tenantId, integration: result };
   });
 
-  // ── Probe single integration ───────────────────────────────────
+  // -- Probe single integration -----------------------------------
 
   server.post('/admin/registry/:tenantId/:integrationId/probe', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -336,7 +336,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
     return { ok: true, tenantId, integrationId, status, latencyMs };
   });
 
-  // ── Probe all enabled integrations ─────────────────────────────
+  // -- Probe all enabled integrations -----------------------------
 
   server.post('/admin/registry/:tenantId/probe-all', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -368,7 +368,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
     return { ok: true, tenantId, results };
   });
 
-  // ── Health summary ─────────────────────────────────────────────
+  // -- Health summary ---------------------------------------------
 
   server.get('/admin/registry/:tenantId/health-summary', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -388,7 +388,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
     return { ok: true, tenantId, summary };
   });
 
-  // ── Error log for one integration ──────────────────────────────
+  // -- Error log for one integration ------------------------------
 
   server.get('/admin/registry/:tenantId/error-log/:integrationId', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -405,7 +405,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
     return { ok: true, tenantId, integrationId, errorLog: entry.errorLog };
   });
 
-  // ── Device onboarding ──────────────────────────────────────────
+  // -- Device onboarding ------------------------------------------
 
   /**
    * POST /admin/registry/:tenantId/onboard-device
@@ -472,7 +472,7 @@ export default async function interopRoutes(server: FastifyInstance): Promise<vo
       errorLog: [],
       queueMetrics: { pending: 0, processed: 0, errors: 0, lastProcessed: null, avgLatencyMs: 0 },
       config: deviceConfig,
-      notes: body.notes || `${body.manufacturer} ${body.model} — ${body.modalityCode}`,
+      notes: body.notes || `${body.manufacturer} ${body.model} -- ${body.modalityCode}`,
       createdAt: now,
       updatedAt: now,
     };

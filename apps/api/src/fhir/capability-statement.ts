@@ -80,7 +80,7 @@ export function buildCapabilityStatement(baseUrl: string): FhirCapabilityStateme
     },
     implementation: {
       description:
-        'VistA-Evolved FHIR R4 read-only gateway. Maps VistA RPC data to FHIR R4 resources via the clinical engine adapter layer. Supports SMART-on-FHIR bearer token and session cookie authentication.',
+        'VistA-Evolved FHIR R4 gateway. Read endpoints map VistA RPC data to FHIR R4 resources via the clinical engine adapter layer. Write endpoints (Patient, AllergyIntolerance, Condition, MedicationRequest, Immunization) map FHIR resources back to VistA RPCs. Supports SMART-on-FHIR bearer token and session cookie authentication.',
       url: baseUrl,
     },
     rest: [
@@ -91,7 +91,7 @@ export function buildCapabilityStatement(baseUrl: string): FhirCapabilityStateme
           {
             type: 'Patient',
             profile: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-patient',
-            interaction: [{ code: 'read' }, { code: 'search-type' }],
+            interaction: [{ code: 'read' }, { code: 'search-type' }, { code: 'create' }],
             searchParam: [
               { name: 'name', type: 'string', documentation: 'Patient name (partial match)' },
               { name: '_id', type: 'token', documentation: 'Patient DFN (logical ID)' },
@@ -103,7 +103,7 @@ export function buildCapabilityStatement(baseUrl: string): FhirCapabilityStateme
           {
             type: 'AllergyIntolerance',
             profile: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-allergyintolerance',
-            interaction: [{ code: 'search-type' }],
+            interaction: [{ code: 'search-type' }, { code: 'create' }],
             searchParam: [
               { name: 'patient', type: 'reference', documentation: 'Patient DFN' },
               {
@@ -119,7 +119,7 @@ export function buildCapabilityStatement(baseUrl: string): FhirCapabilityStateme
             type: 'Condition',
             profile:
               'http://hl7.org/fhir/us/core/StructureDefinition/us-core-condition-problems-health-concerns',
-            interaction: [{ code: 'search-type' }],
+            interaction: [{ code: 'search-type' }, { code: 'create' }],
             searchParam: [
               { name: 'patient', type: 'reference', documentation: 'Patient DFN' },
               {
@@ -151,7 +151,7 @@ export function buildCapabilityStatement(baseUrl: string): FhirCapabilityStateme
           {
             type: 'MedicationRequest',
             profile: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-medicationrequest',
-            interaction: [{ code: 'search-type' }],
+            interaction: [{ code: 'search-type' }, { code: 'create' }],
             searchParam: [
               { name: 'patient', type: 'reference', documentation: 'Patient DFN' },
               { name: 'status', type: 'token', documentation: 'active | stopped | completed' },
@@ -189,6 +189,11 @@ export function buildCapabilityStatement(baseUrl: string): FhirCapabilityStateme
               { name: '_count', type: 'number' },
               { name: '_offset', type: 'number' },
             ],
+          },
+          {
+            type: 'Immunization',
+            profile: 'http://hl7.org/fhir/us/core/StructureDefinition/us-core-immunization',
+            interaction: [{ code: 'create' }],
           },
         ],
       },

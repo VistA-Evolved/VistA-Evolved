@@ -3,13 +3,13 @@
 import { useEffect, useState, useCallback } from 'react';
 import { getCsrfTokenSync } from '@/lib/csrf';
 
-/* ── Helpers ────────────────────────────────────────────────── */
+/* -- Helpers -------------------------------------------------- */
 
 function getCsrfToken(): string {
   return getCsrfTokenSync();
 }
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 interface Task {
   id: string;
@@ -44,7 +44,7 @@ interface Dashboard {
   payers: ContractingSummary[];
 }
 
-/* ── Badge ──────────────────────────────────────────────────── */
+/* -- Badge ---------------------------------------------------- */
 
 function StatusBadge({ status }: { status: string }) {
   const colors: Record<string, string> = {
@@ -70,7 +70,7 @@ function StatusBadge({ status }: { status: string }) {
   );
 }
 
-/* ── Main Page ──────────────────────────────────────────────── */
+/* -- Main Page ------------------------------------------------ */
 
 export default function ContractingHubPage() {
   const [dashboard, setDashboard] = useState<Dashboard | null>(null);

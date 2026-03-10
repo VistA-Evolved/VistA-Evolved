@@ -5,7 +5,7 @@
  * Existing /vista/* endpoints (allergies, problems, vitals, meds, notes, labs)
  * already satisfy most Wave 1 needs. This file adds:
  *   - /vista/cprs/orders-summary
- *   - /vista/cprs/appointments (integration-pending -- scheduling adapter)
+ *   - /vista/cprs/appointments (ORWPT APPTLST or scheduling adapter)
  *   - /vista/cprs/reminders (Phase 78: wired to ORQQPX REMINDERS LIST)
  *   - /vista/cprs/meds/detail
  *   - /vista/cprs/labs/chart
@@ -101,7 +101,7 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
 
       // Guard: if the RPC doesn't exist on this VistA instance, the response
       // contains an error message like "Remote Procedure '...' doesn't exist".
-      // Surface that as integration-pending rather than fake empty data.
+      // RPC missing: fall back to active orders list for unsigned order extraction.
       const rpcMissing = lines.some(
         (l: string) => l.includes("doesn't exist") || l.includes('not found')
       );
@@ -116,21 +116,17 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
             recent: fallback.orders,
             rpcUsed: ['ORWORB UNSIG ORDERS', ...fallback.rpcUsed],
             vivianPresence,
-            pendingTargets: [],
-            pendingNote:
+            _note:
               'ORWORB UNSIG ORDERS is unavailable on this VistA instance; summary derived from recovered live active orders.',
           };
-        } catch {
+        } catch (fallbackErr: any) {
           return {
-            ok: true,
-            status: 'integration-pending',
+            ok: false,
+            error: `Unsigned orders unavailable: ORWORB UNSIG ORDERS missing and ORWORR AGET fallback failed (${safeErr(fallbackErr)})`,
             unsigned: 0,
             recent: [],
-            rpcUsed,
+            rpcUsed: [...rpcUsed, 'ORWORR AGET'],
             vivianPresence,
-            pendingTargets: ['ORWORB UNSIG ORDERS', 'ORWORR AGET'],
-            pendingNote:
-              'Unsigned orders RPC is unavailable on this VistA instance and the active-orders fallback could not provide trustworthy data.',
           };
         }
       }
@@ -163,7 +159,6 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
         recent: orders,
         rpcUsed,
         vivianPresence,
-        pendingTargets: [],
       };
     } catch (err: any) {
       return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
@@ -171,7 +166,7 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
   });
 
   /* ----------------------------------------------------------------
-   * GET /vista/cprs/appointments — CPRS Cover Sheet appointment summary
+   * GET /vista/cprs/appointments -- CPRS Cover Sheet appointment summary
    * Uses ORWPT APPTLST instead of the merged request-store scheduling feed
    * so the chart only shows truthful appointment data.
    * ---------------------------------------------------------------- */
@@ -180,50 +175,74 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
     if (!dfn || !/^\d+$/.test(String(dfn)))
       return { ok: false, error: 'Missing or non-numeric dfn' };
 
+    await requireSession(request, reply);
+    const rpcUsed: string[] = [];
+
+    // Try adapter first
     try {
-      await requireSession(request, reply);
       const { getAdapter } = await import('../../adapters/adapter-loader.js');
       const adapter = getAdapter('scheduling') as any;
       if (adapter && typeof adapter.getAppointmentsCprs === 'function') {
         const result = await adapter.getAppointmentsCprs(String(dfn));
-        return {
-          ok: true,
-          status: result.ok ? 'ok' : 'integration-pending',
-          results: result.ok
-            ? (result.data || []).map((appt: any, index: number) => ({
-                id: `cprs-appt-${index}-${appt.dateTime || 'unknown'}-${appt.clinicIen || appt.clinicName || 'unknown'}`,
-                dateTime: appt.dateTime || '',
-                clinic: appt.clinicName || '',
-                clinicIen: appt.clinicIen || '',
-                status: appt.status || 'scheduled',
-                source: 'vista',
-              }))
-            : [],
-          rpcUsed: result.ok ? ['ORWPT APPTLST'] : [],
-          pendingTargets: result.ok ? [] : ['ORWPT APPTLST'],
-          pendingNote: result.ok
-            ? undefined
-            : 'CPRS appointment summary is unavailable because ORWPT APPTLST did not return a trustworthy response.',
-        };
+        if (result.ok) {
+          rpcUsed.push('ORWPT APPTLST');
+          return {
+            ok: true,
+            status: 'ok',
+            results: (result.data || []).map((appt: any, index: number) => ({
+              id: `cprs-appt-${index}-${appt.dateTime || 'unknown'}-${appt.clinicIen || appt.clinicName || 'unknown'}`,
+              dateTime: appt.dateTime || '',
+              clinic: appt.clinicName || '',
+              clinicIen: appt.clinicIen || '',
+              status: appt.status || 'scheduled',
+              source: 'vista',
+            })),
+            rpcUsed,
+          };
+        }
       }
     } catch {
-      /* adapter unavailable */
+      /* adapter unavailable, fall through to direct RPC */
     }
 
-    return {
-      ok: true,
-      status: 'integration-pending',
-      results: [],
-      rpcUsed: [],
-      pendingTargets: ['ORWPT APPTLST'],
-      pendingNote:
-        'Scheduling adapter unavailable. CPRS appointment summary requires ORWPT APPTLST.',
-    };
+    // Direct RPC fallback
+    try {
+      const lines = await safeCallRpc('ORWPT APPTLST', [String(dfn)]);
+      rpcUsed.push('ORWPT APPTLST');
+      const results = lines
+        .filter((l: string) => l.trim())
+        .map((line: string, i: number) => {
+          const parts = line.split('^');
+          return {
+            id: `cprs-appt-${i}`,
+            dateTime: parts[0]?.trim() || '',
+            clinic: parts[1]?.trim() || '',
+            clinicIen: parts[2]?.trim() || '',
+            status: parts[3]?.trim() || 'scheduled',
+            source: 'vista',
+          };
+        });
+
+      return {
+        ok: true,
+        status: results.length > 0 ? 'ok' : 'ok-empty',
+        results,
+        rpcUsed,
+      };
+    } catch (err: any) {
+      rpcUsed.push('ORWPT APPTLST');
+      return {
+        ok: false,
+        error: `ORWPT APPTLST failed: ${safeErr(err)}`,
+        results: [],
+        rpcUsed,
+      };
+    }
   });
 
   /* ----------------------------------------------------------------
    * GET /vista/cprs/reminders  (Phase 78: wired to ORQQPX REMINDERS LIST)
-   * RPC: ORQQPX REMINDERS LIST — evaluates clinical reminders for patient
+   * RPC: ORQQPX REMINDERS LIST -- evaluates clinical reminders for patient
    * May return empty in sandbox if PXRM reminder definitions not loaded.
    * ---------------------------------------------------------------- */
   server.get('/vista/cprs/reminders', async (request, reply) => {
@@ -248,15 +267,13 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       if (hasWave1BrokerExecutionError(lines)) {
         const firstLine = lines.find((line: string) => line.trim()) || '';
         return {
-          ok: true,
-          status: 'integration-pending',
+          ok: false,
+          error: isWave1RpcMissingLine(firstLine)
+            ? 'ORQQPX REMINDERS LIST is not available on this VistA instance'
+            : `ORQQPX REMINDERS LIST returned a broker error: ${firstLine.substring(0, 120)}`,
           results: [],
           rpcUsed,
           vivianPresence,
-          pendingTargets: ['ORQQPX REMINDERS LIST'],
-          pendingNote: isWave1RpcMissingLine(firstLine)
-            ? 'Clinical reminders RPC is unavailable on this VistA instance.'
-            : 'Clinical reminders returned a broker/runtime error payload and were withheld from the chart to preserve truthful display.',
         };
       }
 
@@ -280,6 +297,115 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       };
     } catch (err: any) {
       return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
+    }
+  });
+
+  /* ----------------------------------------------------------------
+   * GET /vista/cprs/reminders/detail
+   * RPC: ORQQPX REMINDER DETAIL -- get detail for a single reminder IEN
+   * Params: ?ien=<reminder IEN>
+   * ---------------------------------------------------------------- */
+  server.get('/vista/cprs/reminders/detail', async (request, reply) => {
+    const ien = (request.query as any)?.ien;
+    if (!ien || !/^\d+$/.test(String(ien)))
+      return { ok: false, error: 'Missing or non-numeric ien' };
+
+    const rpcUsed = ['ORQQPX REMINDER DETAIL'];
+    const vivianPresence = {
+      'ORQQPX REMINDER DETAIL': 'present' as const,
+    };
+
+    try {
+      await requireSession(request, reply);
+      const lines = await safeCallRpc('ORQQPX REMINDER DETAIL', [String(ien)]);
+
+      if (hasWave1BrokerExecutionError(lines)) {
+        const firstLine = lines.find((line: string) => line.trim()) || '';
+        return {
+          ok: false,
+          error: isWave1RpcMissingLine(firstLine)
+            ? 'ORQQPX REMINDER DETAIL is not available on this VistA instance'
+            : `ORQQPX REMINDER DETAIL returned a broker error: ${firstLine.substring(0, 120)}`,
+          rpcUsed,
+          vivianPresence,
+          source: 'vista',
+        };
+      }
+
+      const text = lines.join('\n');
+      const fields: Record<string, string> = {};
+      for (const line of lines) {
+        const sep = line.indexOf('^');
+        if (sep > 0) {
+          fields[line.substring(0, sep).trim()] = line.substring(sep + 1).trim();
+        }
+      }
+
+      audit('phi.reminders-view', 'success', auditActor(request), {
+        detail: { ien: String(ien), type: 'detail' },
+      });
+
+      return {
+        ok: true,
+        source: 'vista',
+        ien: String(ien),
+        text,
+        fields: Object.keys(fields).length > 0 ? fields : undefined,
+        rpcUsed,
+        vivianPresence,
+      };
+    } catch (err: any) {
+      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence, source: 'vista' };
+    }
+  });
+
+  /* ----------------------------------------------------------------
+   * GET /vista/cprs/reminders/inquiry
+   * RPC: PXRM REMINDER INQUIRY -- full clinical reminder inquiry text
+   * Params: ?ien=<reminder IEN>
+   * ---------------------------------------------------------------- */
+  server.get('/vista/cprs/reminders/inquiry', async (request, reply) => {
+    const ien = (request.query as any)?.ien;
+    if (!ien || !/^\d+$/.test(String(ien)))
+      return { ok: false, error: 'Missing or non-numeric ien' };
+
+    const rpcUsed = ['PXRM REMINDER INQUIRY'];
+    const vivianPresence = {
+      'PXRM REMINDER INQUIRY': 'present' as const,
+    };
+
+    try {
+      await requireSession(request, reply);
+      const lines = await safeCallRpc('PXRM REMINDER INQUIRY', [String(ien)]);
+
+      if (hasWave1BrokerExecutionError(lines)) {
+        const firstLine = lines.find((line: string) => line.trim()) || '';
+        return {
+          ok: false,
+          error: isWave1RpcMissingLine(firstLine)
+            ? 'PXRM REMINDER INQUIRY is not available on this VistA instance'
+            : `PXRM REMINDER INQUIRY returned a broker error: ${firstLine.substring(0, 120)}`,
+          rpcUsed,
+          vivianPresence,
+          source: 'vista',
+        };
+      }
+
+      audit('phi.reminders-view', 'success', auditActor(request), {
+        detail: { ien: String(ien), type: 'inquiry' },
+      });
+
+      return {
+        ok: true,
+        source: 'vista',
+        ien: String(ien),
+        text: lines.join('\n'),
+        lineCount: lines.length,
+        rpcUsed,
+        vivianPresence,
+      };
+    } catch (err: any) {
+      return { ok: false, error: safeErr(err), rpcUsed, vivianPresence, source: 'vista' };
     }
   });
 
@@ -354,8 +480,10 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
       await requireSession(request, reply);
       const lines = await safeCallRpc('ORQQPL4 LEX', [String(term)]);
 
+      const MAX_RESULTS = 200;
       const results = lines
         .filter((l: string) => l.trim())
+        .slice(0, MAX_RESULTS)
         .map((line: string) => {
           const parts = line.split('^');
           return {
@@ -365,7 +493,8 @@ export default async function cprsWave1Routes(server: FastifyInstance): Promise<
           };
         });
 
-      return { ok: true, results, rpcUsed, vivianPresence };
+      const truncated = lines.filter((l: string) => l.trim()).length > MAX_RESULTS;
+      return { ok: true, results, truncated, rpcUsed, vivianPresence };
     } catch (err: any) {
       return { ok: false, error: safeErr(err), rpcUsed, vivianPresence };
     }

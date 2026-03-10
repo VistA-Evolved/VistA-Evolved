@@ -1,15 +1,15 @@
 /**
- * Phase 391 (W22-P3): Inpatient Core — Bedboard + Flowsheet + Vitals Store
+ * Phase 391 (W22-P3): Inpatient Core -- Bedboard + Flowsheet + Vitals Store
  *
- * In-memory stores for:
+ * In-memory stores with PG write-through for:
  *   - Bed assignments (bedboard)
  *   - ADT events (movement log)
  *   - Nursing flowsheet rows
  *   - Vitals entries
  *   - Writeback posture cache
  *
- * All stores are tenant-scoped. Reset on API restart (standard pattern).
- * Migration target: PG tables (future phase).
+ * All stores are tenant-scoped. In-memory Maps serve as hot cache;
+ * PG is the durable backing store (Phase 577 write-through).
  */
 
 import { randomUUID } from 'node:crypto';
@@ -21,26 +21,147 @@ import type {
   VitalsEntry,
   WritebackPosture,
 } from './types.js';
+import { log } from '../lib/logger.js';
 
-// ─── Constants ──────────────────────────────────────────────
+// --- Constants ----------------------------------------------
 
 const MAX_ITEMS = 10_000;
 
-// ─── Stores ─────────────────────────────────────────────────
+// --- PG write-through repos (Phase 577) ---------------------
+
+interface InpatientRepos {
+  bedAssignment: { insert(data: any): Promise<any>; update(id: string, updates: any): Promise<any>; findByTenant(tenantId: string, opts?: any): Promise<any[]> };
+  adtEvent: { insert(data: any): Promise<any>; findByTenant(tenantId: string, opts?: any): Promise<any[]> };
+  flowsheetRow: { insert(data: any): Promise<any>; findByTenant(tenantId: string, opts?: any): Promise<any[]> };
+  vitalsEntry: { insert(data: any): Promise<any>; update(id: string, updates: any): Promise<any>; findByTenant(tenantId: string, opts?: any): Promise<any[]> };
+}
+
+let _repos: InpatientRepos | null = null;
+
+function dbWarn(op: string, err: unknown): void {
+  log.warn(`inpatient-store DB ${op} failed`, { error: String(err) });
+}
+
+function pgWrite(op: string, fn: () => Promise<any>): void {
+  fn().catch((e) => dbWarn(op, e));
+}
+
+/** Wire PG repos for write-through. Called from index.ts after initPlatformDb(). */
+export function initInpatientRepos(repos: InpatientRepos): void {
+  _repos = repos;
+}
+
+/** Rehydrate all in-memory stores from PG on startup. */
+export async function rehydrateInpatientStores(tenantId: string): Promise<void> {
+  if (!_repos) return;
+  try {
+    const beds = await _repos.bedAssignment.findByTenant(tenantId, { limit: MAX_ITEMS });
+    for (const row of beds) {
+      bedAssignmentStore.set(row.id, pgRowToBed(row));
+    }
+    const events = await _repos.adtEvent.findByTenant(tenantId, { limit: MAX_ITEMS });
+    for (const row of events) {
+      adtEventStore.push(pgRowToAdtEvent(row));
+    }
+    const fRows = await _repos.flowsheetRow.findByTenant(tenantId, { limit: MAX_ITEMS });
+    for (const row of fRows) {
+      flowsheetRowStore.set(row.id, pgRowToFlowsheet(row));
+    }
+    const vitals = await _repos.vitalsEntry.findByTenant(tenantId, { limit: MAX_ITEMS });
+    for (const row of vitals) {
+      vitalsEntryStore.set(row.id, pgRowToVitals(row));
+    }
+    const total = beds.length + events.length + fRows.length + vitals.length;
+    if (total > 0) {
+      log.info(`Inpatient stores rehydrated ${total} items from PG`, { tenantId });
+    }
+  } catch (err) {
+    dbWarn('rehydrate', err);
+  }
+}
+
+function pgRowToBed(row: any): BedAssignment {
+  return {
+    id: row.id,
+    tenantId: row.tenantId,
+    locationId: row.locationId,
+    bedLabel: row.bedLabel,
+    status: row.status as BedStatus,
+    patientDfn: row.patientDfn ?? null,
+    patientName: row.patientName ?? null,
+    admittingProviderDuz: row.admittingProviderDuz ?? null,
+    wardName: row.wardName ?? '',
+    roomNumber: row.roomNumber ?? '',
+    admitDateTime: row.admitDateTime ?? null,
+    dischargeDateTime: row.dischargeDateTime ?? null,
+    precautions: typeof row.precautions === 'string' ? JSON.parse(row.precautions) : (row.precautions ?? []),
+    acuity: row.acuity ?? null,
+    updatedAt: row.updatedAt ?? new Date().toISOString(),
+  };
+}
+
+function pgRowToAdtEvent(row: any): AdtEvent {
+  return {
+    id: row.id,
+    tenantId: row.tenantId,
+    patientDfn: row.patientDfn,
+    eventType: row.eventType,
+    fromLocationId: row.fromLocationId ?? null,
+    toLocationId: row.toLocationId ?? null,
+    fromBedLabel: row.fromBedLabel ?? null,
+    toBedLabel: row.toBedLabel ?? null,
+    providerDuz: row.providerDuz,
+    reason: row.reason ?? '',
+    vistaMovementIen: row.vistaMovementIen ?? null,
+    createdAt: row.createdAt ?? new Date().toISOString(),
+  };
+}
+
+function pgRowToFlowsheet(row: any): FlowsheetRow {
+  return {
+    id: row.id,
+    tenantId: row.tenantId,
+    patientDfn: row.patientDfn,
+    flowsheetId: row.flowsheetId,
+    values: typeof row.valuesJson === 'string' ? JSON.parse(row.valuesJson) : (row.valuesJson ?? {}),
+    flags: typeof row.flagsJson === 'string' ? JSON.parse(row.flagsJson) : (row.flagsJson ?? {}),
+    recordedBy: row.recordedBy,
+    recordedAt: row.recordedAt,
+    source: row.source ?? 'manual',
+    deviceObservationId: row.deviceObservationId ?? null,
+  };
+}
+
+function pgRowToVitals(row: any): VitalsEntry {
+  return {
+    id: row.id,
+    tenantId: row.tenantId,
+    patientDfn: row.patientDfn,
+    vitals: typeof row.vitalsJson === 'string' ? JSON.parse(row.vitalsJson) : (row.vitalsJson ?? {}),
+    units: typeof row.unitsJson === 'string' ? JSON.parse(row.unitsJson) : (row.unitsJson ?? {}),
+    recordedBy: row.recordedBy,
+    recordedAt: row.recordedAt,
+    source: row.source ?? 'manual',
+    writebackStatus: row.writebackStatus ?? 'not_attempted',
+    vistaVitalsIen: row.vistaVitalsIen ?? null,
+    writebackError: row.writebackError ?? null,
+  };
+}
+
+// --- Stores -------------------------------------------------
 
 const bedAssignmentStore = new Map<string, BedAssignment>();
 const adtEventStore: AdtEvent[] = [];
 const flowsheetRowStore = new Map<string, FlowsheetRow>();
 const vitalsEntryStore = new Map<string, VitalsEntry>();
 
-// ─── Bed Assignments (Bedboard) ─────────────────────────────
+// --- Bed Assignments (Bedboard) -----------------------------
 
 export function createBedAssignment(
   tenantId: string,
   input: Omit<BedAssignment, 'id' | 'tenantId' | 'updatedAt'>
 ): BedAssignment {
   if (bedAssignmentStore.size >= MAX_ITEMS) {
-    // evict oldest (FIFO)
     const first = bedAssignmentStore.keys().next().value;
     if (first) bedAssignmentStore.delete(first);
   }
@@ -51,6 +172,25 @@ export function createBedAssignment(
     updatedAt: new Date().toISOString(),
   };
   bedAssignmentStore.set(bed.id, bed);
+  if (_repos) {
+    pgWrite('bed.insert', () => _repos!.bedAssignment.insert({
+      id: bed.id,
+      tenantId: bed.tenantId,
+      locationId: bed.locationId,
+      bedLabel: bed.bedLabel,
+      status: bed.status,
+      patientDfn: bed.patientDfn,
+      patientName: bed.patientName,
+      admittingProviderDuz: bed.admittingProviderDuz,
+      wardName: bed.wardName,
+      roomNumber: bed.roomNumber,
+      admitDateTime: bed.admitDateTime,
+      dischargeDateTime: bed.dischargeDateTime,
+      precautions: JSON.stringify(bed.precautions),
+      acuity: bed.acuity,
+      updatedAt: bed.updatedAt,
+    }));
+  }
   return bed;
 }
 
@@ -92,6 +232,20 @@ export function updateBedAssignment(
     updatedAt: new Date().toISOString(),
   };
   bedAssignmentStore.set(id, updated);
+  if (_repos) {
+    const pgPatch: Record<string, unknown> = { updatedAt: updated.updatedAt };
+    if (patch.status !== undefined) pgPatch.status = patch.status;
+    if (patch.patientDfn !== undefined) pgPatch.patientDfn = patch.patientDfn;
+    if (patch.patientName !== undefined) pgPatch.patientName = patch.patientName;
+    if (patch.admittingProviderDuz !== undefined) pgPatch.admittingProviderDuz = patch.admittingProviderDuz;
+    if (patch.admitDateTime !== undefined) pgPatch.admitDateTime = patch.admitDateTime;
+    if (patch.dischargeDateTime !== undefined) pgPatch.dischargeDateTime = patch.dischargeDateTime;
+    if (patch.precautions !== undefined) pgPatch.precautions = JSON.stringify(patch.precautions);
+    if (patch.acuity !== undefined) pgPatch.acuity = patch.acuity;
+    if (patch.wardName !== undefined) pgPatch.wardName = patch.wardName;
+    if (patch.roomNumber !== undefined) pgPatch.roomNumber = patch.roomNumber;
+    pgWrite('bed.update', () => _repos!.bedAssignment.update(id, pgPatch));
+  }
   return updated;
 }
 
@@ -122,7 +276,7 @@ export function dischargePatientFromBed(bedId: string): BedAssignment | undefine
   });
 }
 
-// ─── ADT Events ─────────────────────────────────────────────
+// --- ADT Events ---------------------------------------------
 
 export function recordAdtEvent(
   tenantId: string,
@@ -138,6 +292,21 @@ export function recordAdtEvent(
     createdAt: new Date().toISOString(),
   };
   adtEventStore.push(event);
+  if (_repos) {
+    pgWrite('adt.insert', () => _repos!.adtEvent.insert({
+      id: event.id,
+      tenantId: event.tenantId,
+      patientDfn: event.patientDfn,
+      eventType: event.eventType,
+      fromLocationId: event.fromLocationId,
+      toLocationId: event.toLocationId,
+      fromBedLabel: event.fromBedLabel,
+      toBedLabel: event.toBedLabel,
+      providerDuz: event.providerDuz,
+      reason: event.reason,
+      vistaMovementIen: event.vistaMovementIen,
+    }));
+  }
   return event;
 }
 
@@ -149,7 +318,7 @@ export function listAdtEvents(tenantId: string, patientDfn?: string): AdtEvent[]
   });
 }
 
-// ─── Nursing Flowsheet Rows ─────────────────────────────────
+// --- Nursing Flowsheet Rows ---------------------------------
 
 export function createFlowsheetRow(
   tenantId: string,
@@ -165,6 +334,20 @@ export function createFlowsheetRow(
     ...input,
   };
   flowsheetRowStore.set(row.id, row);
+  if (_repos) {
+    pgWrite('flowsheet.insert', () => _repos!.flowsheetRow.insert({
+      id: row.id,
+      tenantId: row.tenantId,
+      patientDfn: row.patientDfn,
+      flowsheetId: row.flowsheetId,
+      valuesJson: JSON.stringify(row.values),
+      flagsJson: JSON.stringify(row.flags),
+      recordedBy: row.recordedBy,
+      recordedAt: row.recordedAt,
+      source: row.source,
+      deviceObservationId: row.deviceObservationId,
+    }));
+  }
   return row;
 }
 
@@ -181,7 +364,7 @@ export function listFlowsheetRows(
   });
 }
 
-// ─── Vitals Entries ─────────────────────────────────────────
+// --- Vitals Entries -----------------------------------------
 
 export function createVitalsEntry(
   tenantId: string,
@@ -197,6 +380,21 @@ export function createVitalsEntry(
     ...input,
   };
   vitalsEntryStore.set(entry.id, entry);
+  if (_repos) {
+    pgWrite('vitals.insert', () => _repos!.vitalsEntry.insert({
+      id: entry.id,
+      tenantId: entry.tenantId,
+      patientDfn: entry.patientDfn,
+      vitalsJson: JSON.stringify(entry.vitals),
+      unitsJson: JSON.stringify(entry.units),
+      recordedBy: entry.recordedBy,
+      recordedAt: entry.recordedAt,
+      source: entry.source,
+      writebackStatus: entry.writebackStatus,
+      vistaVitalsIen: entry.vistaVitalsIen,
+      writebackError: entry.writebackError,
+    }));
+  }
   return entry;
 }
 
@@ -225,10 +423,17 @@ export function updateVitalsWriteback(
     writebackError,
   };
   vitalsEntryStore.set(id, updated);
+  if (_repos) {
+    pgWrite('vitals.update', () => _repos!.vitalsEntry.update(id, {
+      writebackStatus,
+      vistaVitalsIen,
+      writebackError,
+    }));
+  }
   return updated;
 }
 
-// ─── Writeback Posture ──────────────────────────────────────
+// --- Writeback Posture --------------------------------------
 
 export function getWritebackPosture(): WritebackPosture {
   return {
@@ -253,7 +458,7 @@ export function getWritebackPosture(): WritebackPosture {
   };
 }
 
-// ─── Bedboard Summary Stats ─────────────────────────────────
+// --- Bedboard Summary Stats ---------------------------------
 
 export interface BedboardSummary {
   totalBeds: number;
@@ -281,7 +486,7 @@ export function getBedboardSummary(tenantId: string): BedboardSummary {
   };
 }
 
-// ─── Reset (testing) ────────────────────────────────────────
+// --- Reset (testing) ----------------------------------------
 
 export function _resetInpatientStores(): void {
   bedAssignmentStore.clear();

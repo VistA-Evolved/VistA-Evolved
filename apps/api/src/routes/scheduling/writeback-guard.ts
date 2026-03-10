@@ -31,26 +31,24 @@ import type {
   SchedulingMode,
 } from '../../adapters/scheduling/interface.js';
 
-// ── Types ───────────────────────────────────────────────────
+// -- Types ---------------------------------------------------
 
 /**
- * Writeback status lifecycle (double-quoted for gate compatibility):
- *   "requested"           — Patient submitted the scheduling request
- *   "pending_approval"    — In staff queue for review
- *   "approved"            — Staff approved, VistA writeback pending
- *   "scheduled"           — VistA confirmed appointment (truth gate passed)
- *   "failed"              — Writeback attempted but VistA rejected/errored
- *   "cancelled"           — Cancelled by patient or staff
- *   "integration_pending" — VistA infrastructure not ready for writeback
+ * Writeback status lifecycle:
+ *   "requested"           -- Patient submitted the scheduling request
+ *   "pending_approval"    -- In staff queue for review
+ *   "approved"            -- Staff approved, VistA writeback pending
+ *   "scheduled"           -- VistA confirmed appointment (truth gate passed)
+ *   "failed"              -- Writeback attempted but VistA rejected/errored
+ *   "cancelled"           -- Cancelled by patient or staff
  */
 export type WritebackStatus =
-  | 'requested' // Patient submitted request
-  | 'pending_approval' // In staff queue
-  | 'approved' // Staff approved, VistA writeback pending
-  | 'scheduled' // VistA confirmed (truth gate passed)
-  | 'failed' // Writeback attempted but failed
-  | 'cancelled' // Cancelled
-  | 'integration_pending'; // Infrastructure not ready
+  | 'requested'
+  | 'pending_approval'
+  | 'approved'
+  | 'scheduled'
+  | 'failed'
+  | 'cancelled';
 
 export interface WritebackResult {
   ok: boolean;
@@ -69,7 +67,7 @@ export interface WritebackPolicy {
   detail: string;
 }
 
-// ── In-memory writeback tracking ────────────────────────────
+// -- In-memory writeback tracking ----------------------------
 
 export interface WritebackEntry {
   id: string;
@@ -90,7 +88,7 @@ const writebackEntries = new Map<string, WritebackEntry>();
 const WRITEBACK_TTL_MS = 24 * 60 * 60 * 1000; // 24h
 const WRITEBACK_MAX_SIZE = 1000;
 
-// ── PG Write-Through (W41-P4) ──────────────────────────────
+// -- PG Write-Through (W41-P4) ------------------------------
 
 interface WritebackRepo {
   upsert(data: any): Promise<any>;
@@ -177,7 +175,7 @@ function evictStaleWritebackEntries(): void {
 const _writebackCleanup = setInterval(evictStaleWritebackEntries, 60 * 60 * 1000);
 _writebackCleanup.unref();
 
-// ── Policy resolution ───────────────────────────────────────
+// -- Policy resolution ---------------------------------------
 
 let cachedMode: SchedulingMode | null = null;
 let cachedModeAt = 0;
@@ -209,7 +207,7 @@ async function resolveMode(): Promise<SchedulingMode> {
     sdoeInstalled: false,
     sdwlInstalled: false,
     mode: 'request_only',
-    detail: 'Mode resolution failed — defaulting to request_only',
+    detail: 'Mode resolution failed -- defaulting to request_only',
   };
 }
 
@@ -223,7 +221,7 @@ export async function getWritebackPolicy(): Promise<WritebackPolicy> {
   };
 }
 
-// ── Truth gate enforcement ──────────────────────────────────
+// -- Truth gate enforcement ----------------------------------
 
 /**
  * Run truth gate verification for an appointment reference.
@@ -242,8 +240,9 @@ export async function enforceTruthGate(
     if (!adapter || typeof adapter.verifyAppointment !== 'function') {
       return {
         ok: false,
-        status: 'integration_pending',
-        error: 'Scheduling adapter not available',
+        status: 'failed',
+        error: 'Scheduling adapter not available -- configure ADAPTER_SCHEDULING=vista',
+        rpcUsed: [],
         nextSteps: ['Configure ADAPTER_SCHEDULING=vista', 'Verify SDES RPCs installed'],
       };
     }
@@ -309,7 +308,7 @@ export async function enforceTruthGate(
   }
 }
 
-// ── Writeback tracking ──────────────────────────────────────
+// -- Writeback tracking --------------------------------------
 
 export function trackWriteback(
   appointmentRef: string,

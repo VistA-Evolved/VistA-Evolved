@@ -94,7 +94,7 @@ export async function getRevenueSummary(
   const db = getPgDb();
   const periodStart = periodStartDate(period);
 
-  // ── 1. Net Revenue ──────────────────────────────────────
+  // -- 1. Net Revenue --------------------------------------
   const revenueRows = await db
     .select({
       totalCharge: sql<number>`COALESCE(SUM(total_charge_cents), 0)`,
@@ -108,7 +108,7 @@ export async function getRevenueSummary(
   const totalPaidCents = Number(rev?.totalPaid ?? 0);
   const totalAdjCents = Number(rev?.totalAdj ?? 0);
 
-  // ── 2. Collection Rate ──────────────────────────────────
+  // -- 2. Collection Rate ----------------------------------
   const countRows = await db
     .select({ cnt: count() })
     .from(claimDraft)
@@ -130,7 +130,7 @@ export async function getRevenueSummary(
   const collectionRate =
     totalChargeCents > 0 ? Math.round((totalPaidCents / totalChargeCents) * 10000) / 100 : null;
 
-  // ── 3. Denials (this week by default for CFO view) ──────
+  // -- 3. Denials (this week by default for CFO view) ------
   const weekAgo = new Date(Date.now() - 7 * 86400000).toISOString();
   const deniedRows = await db
     .select({ cnt: count() })
@@ -167,7 +167,7 @@ export async function getRevenueSummary(
     count: Number(r.cnt),
   }));
 
-  // ── 4. AR Aging ─────────────────────────────────────────
+  // -- 4. AR Aging -----------------------------------------
   // Open claims (not paid, not closed) aged by date_of_service
   const arRows = await db
     .select({
@@ -203,7 +203,7 @@ export async function getRevenueSummary(
     }
   }
 
-  // ── 5. Payer Mix ────────────────────────────────────────
+  // -- 5. Payer Mix ----------------------------------------
   const payerRows = await db
     .select({
       payerId: claimDraft.payerId,

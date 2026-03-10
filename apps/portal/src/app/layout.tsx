@@ -14,7 +14,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Health Portal — Evolved',
+  title: 'Health Portal -- Evolved',
   description: 'Patient health portal - secure access to your health records',
 };
 

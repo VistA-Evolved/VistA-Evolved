@@ -1,5 +1,5 @@
 /**
- * Phase 52 — E2E Scenario 1: Clinician Clinical Workflow
+ * Phase 52 -- E2E Scenario 1: Clinician Clinical Workflow
  *
  * Full end-to-end hospital workflow:
  *   Login -> Patient Search -> Open Cover Sheet -> Open Problems
@@ -9,7 +9,7 @@
  */
 
 import { test, expect } from '@playwright/test';
-import { setupConsoleGate } from './helpers/auth';
+import { TEST_DFN, chartRoute, setupConsoleGate } from './helpers/auth';
 
 test.describe('Scenario 1: Clinician Clinical Workflow', () => {
   test.setTimeout(120_000);
@@ -97,7 +97,7 @@ test.describe('Scenario 1: Clinician Clinical Workflow', () => {
     // Extract DFN from URL
     const currentUrl = page.url();
     const dfnMatch = currentUrl.match(/\/cprs\/chart\/(\d+)\//);
-    const dfn = dfnMatch ? dfnMatch[1] : '3';
+    const dfn = dfnMatch ? dfnMatch[1] : TEST_DFN;
 
     await page.goto(`/cprs/chart/${dfn}/problems`);
     await page.waitForLoadState('domcontentloaded');
@@ -161,7 +161,7 @@ test.describe('Scenario 1: Clinician Clinical Workflow', () => {
     const errors = setupConsoleGate(page);
 
     // Go directly to a patient chart (using pre-auth session)
-    await page.goto('/cprs/chart/3/cover');
+    await page.goto(chartRoute('cover'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 
@@ -184,7 +184,7 @@ test.describe('Scenario 1: Clinician Clinical Workflow', () => {
   test('vitals section renders data or empty state', async ({ page }) => {
     const errors = setupConsoleGate(page);
 
-    await page.goto('/cprs/chart/3/cover');
+    await page.goto(chartRoute('cover'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
 

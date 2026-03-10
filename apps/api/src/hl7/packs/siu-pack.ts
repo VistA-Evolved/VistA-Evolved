@@ -1,5 +1,5 @@
 /**
- * HL7v2 Message Packs — SIU (Scheduling)
+ * HL7v2 Message Packs -- SIU (Scheduling)
  *
  * Phase 241 (Wave 6 P4): Builders and validators for SIU messages.
  * SIU^S12 (New Appointment), S13 (Rescheduled), S14 (Modified), S15 (Cancelled).
@@ -34,7 +34,7 @@ export interface ScheduleInfo {
   appointmentReason?: string;
   /** Appointment type (code^description) */
   appointmentType?: string;
-  /** Start date/time — YYYYMMDDHHMMSS */
+  /** Start date/time -- YYYYMMDDHHMMSS */
   startDateTime: string;
   /** Duration in minutes */
   durationMinutes?: number;
@@ -213,7 +213,7 @@ export function validateSiuMessage(message: Hl7Message): ValidationResult {
 
 export const siuPack: MessagePack = {
   id: 'siu',
-  name: 'SIU — Scheduling',
+  name: 'SIU -- Scheduling',
   messageTypes: SIU_EVENTS,
   description:
     'Scheduling messages: new appointment (S12), reschedule (S13), modify (S14), cancel (S15)',

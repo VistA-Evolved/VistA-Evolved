@@ -1,5 +1,5 @@
 /**
- * PG Session Repository — Async durable session store for multi-instance
+ * PG Session Repository -- Async durable session store for multi-instance
  *
  * Phase 117: Postgres-first prod posture
  *

@@ -1,5 +1,5 @@
 /**
- * Compliance Attestation Store — Phase 440.
+ * Compliance Attestation Store -- Phase 440.
  *
  * In-memory store for compliance attestation records. Tracks which
  * compliance requirements have been attested to, by whom, and with

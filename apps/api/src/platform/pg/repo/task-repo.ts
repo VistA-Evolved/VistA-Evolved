@@ -1,5 +1,5 @@
 /**
- * Task Repository (PostgreSQL) — payer onboarding tasks
+ * Task Repository (PostgreSQL) -- payer onboarding tasks
  *
  * Phase 102: Migrate Prototype Stores to PlatformStore
  *

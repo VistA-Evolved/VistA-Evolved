@@ -1,20 +1,20 @@
 /**
- * Claims Lifecycle v1 — API Routes (Phase 91)
+ * Claims Lifecycle v1 -- API Routes (Phase 91)
  *
  * Endpoints:
- *   GET  /rcm/claims/lifecycle                    — List claim cases (queue)
- *   POST /rcm/claims/lifecycle                    — Create claim case
- *   GET  /rcm/claims/lifecycle/:id                — Get claim case detail
- *   PATCH /rcm/claims/lifecycle/:id               — Update claim case fields
- *   PUT  /rcm/claims/lifecycle/:id/transition     — Transition lifecycle state
- *   POST /rcm/claims/lifecycle/:id/scrub          — Run scrubber on claim
- *   POST /rcm/claims/lifecycle/:id/attachments    — Add attachment metadata
- *   POST /rcm/claims/lifecycle/:id/denials        — Record denial
- *   PUT  /rcm/claims/lifecycle/denials/:denialId/resolve — Resolve denial
+ *   GET  /rcm/claims/lifecycle                    -- List claim cases (queue)
+ *   POST /rcm/claims/lifecycle                    -- Create claim case
+ *   GET  /rcm/claims/lifecycle/:id                -- Get claim case detail
+ *   PATCH /rcm/claims/lifecycle/:id               -- Update claim case fields
+ *   PUT  /rcm/claims/lifecycle/:id/transition     -- Transition lifecycle state
+ *   POST /rcm/claims/lifecycle/:id/scrub          -- Run scrubber on claim
+ *   POST /rcm/claims/lifecycle/:id/attachments    -- Add attachment metadata
+ *   POST /rcm/claims/lifecycle/:id/denials        -- Record denial
+ *   PUT  /rcm/claims/lifecycle/denials/:denialId/resolve -- Resolve denial
  *
- *   GET  /rcm/claims/lifecycle/denials             — List all denials (workbench)
- *   GET  /rcm/claims/lifecycle/stats               — Claim case stats
- *   GET  /rcm/claims/lifecycle/scrubber/packs      — Available rule packs
+ *   GET  /rcm/claims/lifecycle/denials             -- List all denials (workbench)
+ *   GET  /rcm/claims/lifecycle/stats               -- Claim case stats
+ *   GET  /rcm/claims/lifecycle/scrubber/packs      -- Available rule packs
  *
  * All routes fall under /rcm/ prefix -- existing security catch-all covers auth.
  * Mutations wired to appendRcmAudit.
@@ -39,7 +39,7 @@ import { scrubClaim, getAvailableRulePacks } from './scrubber.js';
 import { appendRcmAudit } from '../audit/rcm-audit.js';
 import type { ClaimLifecycleStatus } from './claim-types.js';
 
-/* ── Helper: extract session ───────────────────────────────── */
+/* -- Helper: extract session --------------------------------- */
 
 function getSession(request: FastifyRequest): { duz: string; tenantId: string } {
   const s = (request as any).session;
@@ -59,15 +59,15 @@ function getSession(request: FastifyRequest): { duz: string; tenantId: string } 
   };
 }
 
-/* ── Route Registration ────────────────────────────────────── */
+/* -- Route Registration -------------------------------------- */
 
 export default async function claimLifecycleRoutes(server: FastifyInstance): Promise<void> {
-  /* ── List Claim Cases (Queue) ──────────────────────────── */
+  /* -- List Claim Cases (Queue) ---------------------------- */
   server.get('/rcm/claims/lifecycle', async (request: FastifyRequest, reply: FastifyReply) => {
     const { tenantId } = getSession(request);
     const q = (request.query as any) || {};
 
-    const result = listClaimCases({
+    const result = await listClaimCases({
       tenantId,
       status: q.status as ClaimLifecycleStatus | undefined,
       payerId: q.payerId,
@@ -81,7 +81,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
     return reply.send({ ok: true, ...result });
   });
 
-  /* ── Create Claim Case ─────────────────────────────────── */
+  /* -- Create Claim Case ----------------------------------- */
   server.post('/rcm/claims/lifecycle', async (request: FastifyRequest, reply: FastifyReply) => {
     const { duz, tenantId } = getSession(request);
     const body = (request.body as any) || {};
@@ -142,16 +142,16 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
     return reply.status(201).send({ ok: true, claimCase: cc });
   });
 
-  /* ── Get Claim Case Detail ─────────────────────────────── */
+  /* -- Get Claim Case Detail ------------------------------- */
   server.get('/rcm/claims/lifecycle/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { tenantId } = getSession(request);
     const { id } = request.params as { id: string };
-    const cc = getClaimCase(id, tenantId);
+    const cc = await getClaimCase(id, tenantId);
     if (!cc) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
     return reply.send({ ok: true, claimCase: cc });
   });
 
-  /* ── Update Claim Case Fields ──────────────────────────── */
+  /* -- Update Claim Case Fields ---------------------- */
   server.patch(
     '/rcm/claims/lifecycle/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -159,7 +159,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
 
-      const existing = getClaimCase(id, tenantId);
+      const existing = await getClaimCase(id, tenantId);
       if (!existing) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
 
       // Only allow updates in editable states
@@ -183,7 +183,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
       delete body.events;
       delete body.scrubHistory;
 
-      const updated = updateClaimCase(tenantId, id, body);
+      const updated = await updateClaimCase(tenantId, id, body);
       if (!updated) return reply.status(500).send({ ok: false, error: 'Update failed' });
 
       appendRcmAudit('claim.updated', { claimId: id, userId: duz });
@@ -191,7 +191,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ── Transition Lifecycle State ────────────────────────── */
+  /* -- Transition Lifecycle State -------------------------- */
   server.put(
     '/rcm/claims/lifecycle/:id/transition',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -203,7 +203,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
         return reply.status(400).send({ ok: false, error: 'toStatus is required' });
       }
 
-      const result = transitionClaimCase(tenantId, id, body.toStatus, duz, body.detail);
+      const result = await transitionClaimCase(tenantId, id, body.toStatus, duz, body.detail);
       if (!result.ok) {
         return reply.status(409).send({ ok: false, error: result.error });
       }
@@ -218,7 +218,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ── Run Scrubber ──────────────────────────────────────── */
+  /* -- Run Scrubber ---------------------------------------- */
   server.post(
     '/rcm/claims/lifecycle/:id/scrub',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -226,7 +226,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
       const { id } = request.params as { id: string };
       const body = (request.body as any) || {};
 
-      const cc = getClaimCase(id, tenantId);
+      const cc = await getClaimCase(id, tenantId);
       if (!cc) return reply.status(404).send({ ok: false, error: 'Claim case not found' });
 
       // Run scrubber
@@ -237,7 +237,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
       });
 
       // Record result on the claim case
-      const updated = recordScrubResult(tenantId, id, scrubResult);
+      const updated = await recordScrubResult(tenantId, id, scrubResult);
       if (!updated)
         return reply.status(500).send({ ok: false, error: 'Failed to record scrub result' });
 
@@ -247,7 +247,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
         const newStatus: ClaimLifecycleStatus =
           scrubResult.outcome === 'fail' ? 'scrub_failed' : 'scrub_passed';
         // Only transition if valid
-        const transResult = transitionClaimCase(tenantId, id, newStatus, 'system', {
+        const transResult = await transitionClaimCase(tenantId, id, newStatus, 'system', {
           scrubOutcome: scrubResult.outcome,
           findingsCount: scrubResult.findings.length,
         });
@@ -272,7 +272,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ── Add Attachment ────────────────────────────────────── */
+  /* -- Add Attachment -------------------------------------- */
   server.post(
     '/rcm/claims/lifecycle/:id/attachments',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -312,7 +312,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ── Record Denial ─────────────────────────────────────── */
+  /* -- Record Denial --------------------------------------- */
   server.post(
     '/rcm/claims/lifecycle/:id/denials',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -351,7 +351,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ── Resolve Denial ────────────────────────────────────── */
+  /* -- Resolve Denial -------------------------------------- */
   server.put(
     '/rcm/claims/lifecycle/denials/:denialId/resolve',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -359,7 +359,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
       const { denialId } = request.params as { denialId: string };
       const body = (request.body as any) || {};
 
-      const resolved = resolveDenial(tenantId, denialId, duz, body.resolutionNote ?? '');
+      const resolved = await resolveDenial(tenantId, denialId, duz, body.resolutionNote ?? '');
       if (!resolved) return reply.status(404).send({ ok: false, error: 'Denial not found' });
 
       appendRcmAudit('workqueue.resolved', {
@@ -372,7 +372,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ── List Denials (Workbench) ──────────────────────────── */
+  /* -- List Denials (Workbench) ---------------------------- */
   server.get(
     '/rcm/claims/lifecycle/denials',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -391,7 +391,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ── Stats ─────────────────────────────────────────────── */
+  /* -- Stats ----------------------------------------------- */
   server.get(
     '/rcm/claims/lifecycle/stats',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -402,7 +402,7 @@ export default async function claimLifecycleRoutes(server: FastifyInstance): Pro
     }
   );
 
-  /* ── Available Scrubber Packs ──────────────────────────── */
+  /* -- Available Scrubber Packs ---------------------------- */
   server.get(
     '/rcm/claims/lifecycle/scrubber/packs',
     async (_request: FastifyRequest, reply: FastifyReply) => {

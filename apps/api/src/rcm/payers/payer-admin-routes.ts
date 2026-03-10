@@ -1,20 +1,20 @@
 /**
- * Payer Admin Routes — Phase 95: Payer Registry Persistence + Audit
+ * Payer Admin Routes -- Phase 95: Payer Registry Persistence + Audit
  *
  * Admin endpoints for the persistent payer registry:
- *   GET  /admin/payers             — list all payers (filterable, paginated)
- *   GET  /admin/payers/stats       — registry stats + evidence scores
- *   GET  /admin/payers/:id         — single payer detail
- *   POST /admin/payers/import      — import from snapshot JSON
- *   PATCH /admin/payers/:id/capabilities — update capabilities
- *   PATCH /admin/payers/:id/tasks  — update contracting tasks
- *   PATCH /admin/payers/:id/status — update payer status
- *   POST /admin/payers/:id/evidence — add evidence item
- *   GET  /admin/payers/:id/audit   — payer audit trail
- *   GET  /admin/payers/:id/evidence/validate — evidence validation
- *   GET  /admin/payers/audit/verify — verify audit chain integrity
- *   POST /admin/payers/:id/tenant-override — set tenant override
- *   GET  /admin/payers/:id/tenant-override — get tenant override
+ *   GET  /admin/payers             -- list all payers (filterable, paginated)
+ *   GET  /admin/payers/stats       -- registry stats + evidence scores
+ *   GET  /admin/payers/:id         -- single payer detail
+ *   POST /admin/payers/import      -- import from snapshot JSON
+ *   PATCH /admin/payers/:id/capabilities -- update capabilities
+ *   PATCH /admin/payers/:id/tasks  -- update contracting tasks
+ *   PATCH /admin/payers/:id/status -- update payer status
+ *   POST /admin/payers/:id/evidence -- add evidence item
+ *   GET  /admin/payers/:id/audit   -- payer audit trail
+ *   GET  /admin/payers/:id/evidence/validate -- evidence validation
+ *   GET  /admin/payers/audit/verify -- verify audit chain integrity
+ *   POST /admin/payers/:id/tenant-override -- set tenant override
+ *   GET  /admin/payers/:id/tenant-override -- get tenant override
  *
  * Auth: session-level (matched by /admin/ catch-all in AUTH_RULES).
  */
@@ -52,7 +52,7 @@ import type { HmoCapabilities, HmoEvidence, HmoStatus } from './ph-hmo-registry.
 let persistenceReady = false;
 
 const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => {
-  /* ── Init on first request ──────────────────────────────── */
+  /* -- Init on first request -------------------------------- */
   function ensurePersistence(): void {
     if (!persistenceReady) {
       const result = initPayerPersistence();
@@ -63,7 +63,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     }
   }
 
-  /* ── GET /admin/payers — list all payers ────────────────── */
+  /* -- GET /admin/payers -- list all payers ------------------ */
   server.get('/admin/payers', async (request, reply) => {
     ensurePersistence();
     const query = request.query as {
@@ -100,7 +100,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     });
   });
 
-  /* ── GET /admin/payers/stats — registry stats ──────────── */
+  /* -- GET /admin/payers/stats -- registry stats ------------ */
   server.get('/admin/payers/stats', async (_request, reply) => {
     ensurePersistence();
     const stats = getPayerRegistryStats();
@@ -119,13 +119,13 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     });
   });
 
-  /* ── GET /admin/payers/audit/verify — chain integrity ──── */
+  /* -- GET /admin/payers/audit/verify -- chain integrity ---- */
   server.get('/admin/payers/audit/verify', async (_request, reply) => {
     const result = verifyPayerAuditChain();
     return reply.send(result);
   });
 
-  /* ── POST /admin/payers/import — import from snapshot ──── */
+  /* -- POST /admin/payers/import -- import from snapshot ---- */
   server.post('/admin/payers/import', async (request, reply) => {
     ensurePersistence();
     const body = (request.body as any) || {};
@@ -154,7 +154,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     });
   });
 
-  /* ── GET /admin/payers/:id — single payer detail ────────── */
+  /* -- GET /admin/payers/:id -- single payer detail ---------- */
   server.get('/admin/payers/:id', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
@@ -188,7 +188,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     });
   });
 
-  /* ── PATCH /admin/payers/:id/capabilities — update caps ── */
+  /* -- PATCH /admin/payers/:id/capabilities -- update caps -- */
   server.patch('/admin/payers/:id/capabilities', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
@@ -221,7 +221,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     });
   });
 
-  /* ── PATCH /admin/payers/:id/tasks — update tasks ──────── */
+  /* -- PATCH /admin/payers/:id/tasks -- update tasks -------- */
   server.patch('/admin/payers/:id/tasks', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
@@ -250,7 +250,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     });
   });
 
-  /* ── PATCH /admin/payers/:id/status — update status ────── */
+  /* -- PATCH /admin/payers/:id/status -- update status ------ */
   server.patch('/admin/payers/:id/status', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
@@ -291,7 +291,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     });
   });
 
-  /* ── POST /admin/payers/:id/evidence — add evidence ────── */
+  /* -- POST /admin/payers/:id/evidence -- add evidence ------ */
   server.post('/admin/payers/:id/evidence', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
@@ -330,7 +330,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     });
   });
 
-  /* ── GET /admin/payers/:id/evidence/validate — validate ─── */
+  /* -- GET /admin/payers/:id/evidence/validate -- validate --- */
   server.get('/admin/payers/:id/evidence/validate', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
@@ -346,7 +346,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     return reply.send({ ok: true, validation, hashes });
   });
 
-  /* ── GET /admin/payers/:id/audit — audit trail ──────────── */
+  /* -- GET /admin/payers/:id/audit -- audit trail ------------ */
   server.get('/admin/payers/:id/audit', async (request, reply) => {
     const { id } = request.params as { id: string };
     const query = request.query as { limit?: string; offset?: string };
@@ -359,7 +359,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     return reply.send({ ok: true, total, events });
   });
 
-  /* ── POST /admin/payers/:id/tenant-override — set override */
+  /* -- POST /admin/payers/:id/tenant-override -- set override */
   server.post('/admin/payers/:id/tenant-override', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };
@@ -403,7 +403,7 @@ const payerAdminRoutes: FastifyPluginAsync = async (server: FastifyInstance) => 
     return reply.send({ ok: true, override });
   });
 
-  /* ── GET /admin/payers/:id/tenant-override — get override ─ */
+  /* -- GET /admin/payers/:id/tenant-override -- get override - */
   server.get('/admin/payers/:id/tenant-override', async (request, reply) => {
     ensurePersistence();
     const { id } = request.params as { id: string };

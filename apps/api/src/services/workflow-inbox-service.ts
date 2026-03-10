@@ -1,5 +1,5 @@
 /**
- * Workflow Inbox Service — Phase 350
+ * Workflow Inbox Service -- Phase 350
  *
  * Unified task inbox with producer/consumer model. Tasks are facility+department
  * scoped, support priority, assignment, and lifecycle transitions.
@@ -8,7 +8,7 @@
 
 import { randomUUID } from "node:crypto";
 
-// ─── Types ───────────────────────────────────────────────
+// --- Types -----------------------------------------------
 
 export type TaskPriority = "critical" | "high" | "normal" | "low";
 export type TaskStatus =
@@ -93,7 +93,7 @@ export interface TaskCounts {
   byCategory: Record<string, number>;
 }
 
-// ─── Stores ──────────────────────────────────────────────
+// --- Stores ----------------------------------------------
 
 const taskStore = new Map<string, WorkflowTask>();
 const eventStore: TaskEvent[] = [];
@@ -117,7 +117,7 @@ function pushEvent(evt: TaskEvent): void {
   }
 }
 
-// ─── Task CRUD ───────────────────────────────────────────
+// --- Task CRUD -------------------------------------------
 
 export function createTask(
   tenantId: string,
@@ -186,7 +186,7 @@ export function listTasks(filter: TaskFilter): WorkflowTask[] {
   return tasks.slice(0, limit);
 }
 
-// ─── Task Transitions ────────────────────────────────────
+// --- Task Transitions ------------------------------------
 
 export function assignTask(
   tenantId: string,
@@ -357,13 +357,13 @@ export function deferTask(
   return task;
 }
 
-// ─── Task Events ─────────────────────────────────────────
+// --- Task Events -----------------------------------------
 
 export function getTaskEvents(taskId: string, tenantId?: string): TaskEvent[] {
   return eventStore.filter((e) => e.taskId === taskId && (!tenantId || e.tenantId === tenantId));
 }
 
-// ─── Counts / Dashboard ──────────────────────────────────
+// --- Counts / Dashboard ----------------------------------
 
 export function getTaskCounts(tenantId: string, departmentId?: string): TaskCounts {
   let tasks = Array.from(taskStore.values()).filter(
@@ -391,7 +391,7 @@ export function getTaskCounts(tenantId: string, departmentId?: string): TaskCoun
   };
 }
 
-// ─── Store Reset ─────────────────────────────────────────
+// --- Store Reset -----------------------------------------
 
 export function _resetWorkflowStores(): void {
   taskStore.clear();

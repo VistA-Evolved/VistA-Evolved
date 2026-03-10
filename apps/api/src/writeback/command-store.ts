@@ -1,5 +1,5 @@
 /**
- * Clinical Writeback Command Bus — Command Store
+ * Clinical Writeback Command Bus -- Command Store
  *
  * Phase 300 (W12-P2): In-memory + PG-backed command persistence.
  *

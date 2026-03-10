@@ -17,7 +17,7 @@ import { randomUUID } from "node:crypto";
 import { getPgPool } from "../platform/pg/pg-db.js";
 import { isPgConfigured } from "../platform/pg/pg-db.js";
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+// --- Types ------------------------------------------------------------------
 
 export type ClusterStatus = "active" | "draining" | "standby" | "offline" | "decommissioned";
 export type PlacementReason = "initial" | "migration" | "failover" | "data_residency" | "manual";
@@ -85,15 +85,15 @@ export interface ClusterHealthSnapshot {
   requestsPerMinute: number | null;
 }
 
-// ─── In-Memory Stores ───────────────────────────────────────────────────────
+// --- In-Memory Stores -------------------------------------------------------
 
 const clusterStore = new Map<string, PlatformCluster>();
 const placementStore = new Map<string, TenantPlacement>();      // keyed by placement.id
-const placementByTenant = new Map<string, string>();             // tenantId → placement.id (active)
-const healthStore = new Map<string, ClusterHealthSnapshot>();    // clusterId → latest snapshot
+const placementByTenant = new Map<string, string>();             // tenantId -> placement.id (active)
+const healthStore = new Map<string, ClusterHealthSnapshot>();    // clusterId -> latest snapshot
 const auditLog: Array<{ ts: string; action: string; actor: string; detail: Record<string, unknown> }> = [];
 
-// ─── Cluster CRUD ───────────────────────────────────────────────────────────
+// --- Cluster CRUD -----------------------------------------------------------
 
 export function registerCluster(
   input: {
@@ -162,7 +162,7 @@ export function updateClusterStatus(id: string, status: ClusterStatus, actor: st
 
   if (!VALID_TRANSITIONS[cluster.status]?.includes(status)) {
     throw Object.assign(
-      new Error(`Invalid transition: ${cluster.status} → ${status}`),
+      new Error(`Invalid transition: ${cluster.status} -> ${status}`),
       { statusCode: 400 },
     );
   }
@@ -191,7 +191,7 @@ export function updateClusterMetadata(
   return cluster;
 }
 
-// ─── Health Snapshots ───────────────────────────────────────────────────────
+// --- Health Snapshots -------------------------------------------------------
 
 export function recordHealthSnapshot(snapshot: ClusterHealthSnapshot): void {
   healthStore.set(snapshot.clusterId, snapshot);
@@ -205,17 +205,17 @@ export function listHealthSnapshots(): ClusterHealthSnapshot[] {
   return Array.from(healthStore.values());
 }
 
-// ─── Deterministic Placement Engine ─────────────────────────────────────────
+// --- Deterministic Placement Engine -----------------------------------------
 
 /**
- * Place a tenant onto a cluster. Deterministic: same inputs → same output.
+ * Place a tenant onto a cluster. Deterministic: same inputs -> same output.
  *
  * Policy steps (in order):
- * 1. Data residency filter — exclude clusters outside residency constraint
- * 2. Region preference — prefer clusters in the requested region
- * 3. Plan tier capacity — enterprise tenants get dedicated-capacity clusters
- * 4. Load balancing — choose the cluster with lowest tenant count ratio
- * 5. Tiebreak — lexicographic by cluster name for determinism
+ * 1. Data residency filter -- exclude clusters outside residency constraint
+ * 2. Region preference -- prefer clusters in the requested region
+ * 3. Plan tier capacity -- enterprise tenants get dedicated-capacity clusters
+ * 4. Load balancing -- choose the cluster with lowest tenant count ratio
+ * 5. Tiebreak -- lexicographic by cluster name for determinism
  */
 export function placeTenant(request: PlacementRequest, actor: string): PlacementResult {
   const trace: PolicyTraceEntry[] = [];
@@ -253,7 +253,7 @@ export function placeTenant(request: PlacementRequest, actor: string): Placement
       input: constraint,
       decision: filtered.length > 0
         ? `${filtered.length} clusters match residency`
-        : `no match — keeping all ${candidates.length}`,
+        : `no match -- keeping all ${candidates.length}`,
     });
     if (filtered.length > 0) candidates = filtered;
   }
@@ -268,12 +268,12 @@ export function placeTenant(request: PlacementRequest, actor: string): Placement
       input: request.preferredRegion,
       decision: regionMatch.length > 0
         ? `${regionMatch.length} in preferred region`
-        : `no match — keeping ${candidates.length} from previous step`,
+        : `no match -- keeping ${candidates.length} from previous step`,
     });
     if (regionMatch.length > 0) candidates = regionMatch;
   }
 
-  // Step 3: Plan tier capacity — enterprise gets clusters with tier metadata
+  // Step 3: Plan tier capacity -- enterprise gets clusters with tier metadata
   const tier = request.planTier || "starter";
   if (tier === "enterprise") {
     const dedicated = candidates.filter((c) => c.metadata["tier"] === "enterprise");
@@ -282,19 +282,19 @@ export function placeTenant(request: PlacementRequest, actor: string): Placement
       input: tier,
       decision: dedicated.length > 0
         ? `${dedicated.length} enterprise-tier clusters`
-        : `no dedicated — using shared pool`,
+        : `no dedicated -- using shared pool`,
     });
     if (dedicated.length > 0) candidates = dedicated;
   } else {
     trace.push({ step: "plan_tier_filter", input: tier, decision: "shared pool (not enterprise)" });
   }
 
-  // Step 4: Load balancing — lowest tenant count ratio
+  // Step 4: Load balancing -- lowest tenant count ratio
   candidates.sort((a, b) => {
     const ratioA = a.currentTenantCount / Math.max(a.maxTenants, 1);
     const ratioB = b.currentTenantCount / Math.max(b.maxTenants, 1);
     if (ratioA !== ratioB) return ratioA - ratioB;
-    // Step 5: Tiebreak — lexicographic
+    // Step 5: Tiebreak -- lexicographic
     return a.name.localeCompare(b.name);
   });
   trace.push({
@@ -385,7 +385,7 @@ export function listPlacements(filters?: {
   return results.sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-// ─── Placement Simulation (Dry Run) ────────────────────────────────────────
+// --- Placement Simulation (Dry Run) ----------------------------------------
 
 export function simulatePlacement(request: PlacementRequest): {
   wouldPlace: boolean;
@@ -399,7 +399,7 @@ export function simulatePlacement(request: PlacementRequest): {
     if (existingId) {
       // Still run the policy engine but note existing placement
       const trace: PolicyTraceEntry[] = [
-        { step: "existing_check", input: request.tenantId, decision: "already placed — simulation only" },
+        { step: "existing_check", input: request.tenantId, decision: "already placed -- simulation only" },
       ];
 
       let candidates = Array.from(clusterStore.values()).filter((c) => c.status === "active");
@@ -476,7 +476,7 @@ function runPlacementPolicy(request: PlacementRequest): {
   return { cluster: candidates[0], trace };
 }
 
-// ─── Registry Summary ───────────────────────────────────────────────────────
+// --- Registry Summary -------------------------------------------------------
 
 export function getRegistrySummary(): {
   totalClusters: number;
@@ -506,7 +506,7 @@ export function getRegistrySummary(): {
   };
 }
 
-// ─── Audit ──────────────────────────────────────────────────────────────────
+// --- Audit ------------------------------------------------------------------
 
 const MAX_AUDIT = 10_000;
 
@@ -519,7 +519,7 @@ export function getClusterAuditLog(limit = 100, offset = 0): typeof auditLog {
   return auditLog.slice().reverse().slice(offset, offset + limit);
 }
 
-// ─── PG Persistence (fire-and-forget writes, cache-first reads) ──────────
+// --- PG Persistence (fire-and-forget writes, cache-first reads) ----------
 
 async function persistCluster(cluster: PlatformCluster): Promise<void> {
   if (!isPgConfigured()) return;
@@ -546,7 +546,7 @@ async function persistCluster(cluster: PlatformCluster): Promise<void> {
       ],
     );
   } catch {
-    // Fire-and-forget — in-memory is authoritative
+    // Fire-and-forget -- in-memory is authoritative
   }
 }
 
@@ -577,7 +577,7 @@ async function persistPlacement(placement: TenantPlacement): Promise<void> {
   }
 }
 
-// ─── Startup loader (hydrate from PG if available) ──────────────────────────
+// --- Startup loader (hydrate from PG if available) --------------------------
 
 export async function loadClusterRegistry(): Promise<{ clusters: number; placements: number }> {
   if (!isPgConfigured()) return { clusters: 0, placements: 0 };

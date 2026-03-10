@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Phase 48 — PHI Field Blocklist Lint Gate
+ * Phase 48 -- PHI Field Blocklist Lint Gate
  *
  * Scans all .ts source files for log calls that pass blocked field names
  * (PHI/PII/credentials) directly as object keys.
@@ -173,7 +173,7 @@ if (allViolations.length === 0) {
 } else {
   console.log(`  [FAIL] ${allViolations.length} violations in ${sourceFiles.length} files:`);
   for (const v of allViolations.slice(0, 20)) {
-    console.log(`    ${v.file}:${v.line} — field "${v.field}"`);
+    console.log(`    ${v.file}:${v.line} -- field "${v.field}"`);
     console.log(`      ${v.snippet}`);
   }
   if (allViolations.length > 20) {

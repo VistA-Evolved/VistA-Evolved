@@ -1,5 +1,5 @@
 /**
- * Phases 406-407 (W23-P8/P9): Exchange Packs — Store
+ * Phases 406-407 (W23-P8/P9): Exchange Packs -- Store
  */
 
 import { randomBytes } from 'crypto';
@@ -28,7 +28,7 @@ function genId(prefix: string): string {
   return `${prefix}-${randomBytes(8).toString('hex')}`;
 }
 
-// ─── Built-In Pack Profiles ────────────────────────────────
+// --- Built-In Pack Profiles --------------------------------
 
 const PACK_PROFILES: ExchangePackProfile[] = [
   {
@@ -101,7 +101,7 @@ export function getPackProfile(id: ExchangePackId): ExchangePackProfile | undefi
   return PACK_PROFILES.find((p) => p.id === id);
 }
 
-// ─── Connector CRUD ────────────────────────────────────────
+// --- Connector CRUD ----------------------------------------
 
 export function createConnector(
   input: Omit<ExchangeConnector, 'id' | 'createdAt' | 'updatedAt'>
@@ -148,7 +148,7 @@ export function deleteConnector(id: string): boolean {
   return connectorStore.delete(id);
 }
 
-// ─── Exchange Transactions ─────────────────────────────────
+// --- Exchange Transactions ---------------------------------
 
 export function createExchangeTransaction(
   input: Omit<ExchangeTransaction, 'id' | 'createdAt'>
@@ -220,7 +220,7 @@ export function simulateExchange(
   return tx;
 }
 
-// ─── Dashboard ─────────────────────────────────────────────
+// --- Dashboard ---------------------------------------------
 
 export function getExchangePackDashboardStats(tenantId: string): ExchangePackDashboardStats {
   const conns = Array.from(connectorStore.values()).filter((c) => c.tenantId === tenantId);

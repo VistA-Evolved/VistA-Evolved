@@ -1,5 +1,5 @@
 /**
- * Device Alarms Pipeline — Routes
+ * Device Alarms Pipeline -- Routes
  *
  * Phase 384 (W21-P7): REST endpoints for alarm management including
  * creation, acknowledgment, escalation, routing rules, and audit.
@@ -29,7 +29,7 @@ function tenantId(request: FastifyRequest): string {
 
 export default async function alarmRoutes(server: FastifyInstance): Promise<void> {
   // -------------------------------------------------------------------------
-  // POST /devices/alarms — Create alarm
+  // POST /devices/alarms -- Create alarm
   // -------------------------------------------------------------------------
   server.post('/devices/alarms', async (request, reply) => {
     const tenant = tenantId(request);
@@ -69,7 +69,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   });
 
   // -------------------------------------------------------------------------
-  // GET /devices/alarms — List alarms (with optional filters)
+  // GET /devices/alarms -- List alarms (with optional filters)
   // -------------------------------------------------------------------------
   server.get('/devices/alarms', async (request, reply) => {
     const tenant = tenantId(request);
@@ -85,7 +85,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   });
 
   // -------------------------------------------------------------------------
-  // GET /devices/alarms/stats — Alarm statistics
+  // GET /devices/alarms/stats -- Alarm statistics
   // -------------------------------------------------------------------------
   server.get('/devices/alarms/stats', async (request, reply) => {
     const tenant = tenantId(request);
@@ -93,7 +93,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   });
 
   // -------------------------------------------------------------------------
-  // GET /devices/alarms/:id — Get single alarm
+  // GET /devices/alarms/:id -- Get single alarm
   // -------------------------------------------------------------------------
   server.get('/devices/alarms/:id', async (request, reply) => {
     const tenant = tenantId(request);
@@ -104,7 +104,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   });
 
   // -------------------------------------------------------------------------
-  // POST /devices/alarms/:id/acknowledge — Acknowledge alarm
+  // POST /devices/alarms/:id/acknowledge -- Acknowledge alarm
   // -------------------------------------------------------------------------
   server.post('/devices/alarms/:id/acknowledge', async (request, reply) => {
     const tenant = tenantId(request);
@@ -127,7 +127,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   });
 
   // -------------------------------------------------------------------------
-  // POST /devices/alarms/:id/escalate — Escalate alarm
+  // POST /devices/alarms/:id/escalate -- Escalate alarm
   // -------------------------------------------------------------------------
   server.post('/devices/alarms/:id/escalate', async (request, reply) => {
     const tenant = tenantId(request);
@@ -140,7 +140,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   });
 
   // -------------------------------------------------------------------------
-  // PATCH /devices/alarms/:id/state — Update alarm state
+  // PATCH /devices/alarms/:id/state -- Update alarm state
   // -------------------------------------------------------------------------
   server.patch('/devices/alarms/:id/state', async (request, reply) => {
     const tenant = tenantId(request);
@@ -167,7 +167,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   });
 
   // -------------------------------------------------------------------------
-  // POST /devices/alarms/routing-rules — Create routing rule
+  // POST /devices/alarms/routing-rules -- Create routing rule
   // -------------------------------------------------------------------------
   server.post('/devices/alarms/routing-rules', async (request, reply) => {
     const tenant = tenantId(request);
@@ -194,7 +194,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   });
 
   // -------------------------------------------------------------------------
-  // GET /devices/alarms/routing-rules — List routing rules
+  // GET /devices/alarms/routing-rules -- List routing rules
   // -------------------------------------------------------------------------
   server.get('/devices/alarms/routing-rules', async (request, reply) => {
     const tenant = tenantId(request);
@@ -203,7 +203,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   });
 
   // -------------------------------------------------------------------------
-  // DELETE /devices/alarms/routing-rules/:id — Delete routing rule
+  // DELETE /devices/alarms/routing-rules/:id -- Delete routing rule
   // -------------------------------------------------------------------------
   server.delete('/devices/alarms/routing-rules/:id', async (request, reply) => {
     const tenant = tenantId(request);
@@ -214,7 +214,7 @@ export default async function alarmRoutes(server: FastifyInstance): Promise<void
   });
 
   // -------------------------------------------------------------------------
-  // GET /devices/alarms/audit — Alarm audit trail
+  // GET /devices/alarms/audit -- Alarm audit trail
   // -------------------------------------------------------------------------
   server.get('/devices/alarms/audit', async (request, reply) => {
     const tenant = tenantId(request);

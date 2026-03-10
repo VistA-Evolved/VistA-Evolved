@@ -1,12 +1,12 @@
 /**
- * Lab Writeback Executor — Phase 304 (W12-P6)
+ * Lab Writeback Executor -- Phase 304 (W12-P6)
  *
  * Domain executor for LAB writeback commands.
  * Implements the RpcExecutor interface from the command bus.
  *
  * Supported intents:
- *   PLACE_LAB_ORDER  → ORWDX LOCK + ORWDX SAVE + ORWDX UNLOCK
- *   ACK_LAB_RESULT   → ORWLRR ACK
+ *   PLACE_LAB_ORDER  -> ORWDX LOCK + ORWDX SAVE + ORWDX UNLOCK
+ *   ACK_LAB_RESULT   -> ORWLRR ACK
  *
  * Safety:
  *   - LOCK before order placement, always UNLOCK after
@@ -20,7 +20,7 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
-/* Intent → RPC mapping                                                */
+/* Intent -> RPC mapping                                                */
 /* ------------------------------------------------------------------ */
 
 const INTENT_RPC_MAP: Record<string, string[]> = {

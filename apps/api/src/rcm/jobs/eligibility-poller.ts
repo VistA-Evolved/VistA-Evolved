@@ -1,5 +1,5 @@
 /**
- * Eligibility Poller — Phase 69: RCM Ops Excellence v1
+ * Eligibility Poller -- Phase 69: RCM Ops Excellence v1
  *
  * Periodic polling job that checks patient eligibility with
  * configured payer adapters. Uses the PollingScheduler for
@@ -8,7 +8,7 @@
  * Rate limit: 60 requests/hour (default, configurable via env).
  * Interval: 300s (5 min) between polls.
  *
- * Results are stored in an in-memory ring buffer (not PHI —
+ * Results are stored in an in-memory ring buffer (not PHI --
  * only eligibility status, payer code, and timestamps).
  */
 
@@ -16,7 +16,7 @@ import type { RcmJobType } from './queue.js';
 import { getPayerAdapterForMode, type EligibilityResponse } from '../adapters/payer-adapter.js';
 import { log } from '../../lib/logger.js';
 
-/* ── Config ────────────────────────────────────────────────── */
+/* -- Config -------------------------------------------------- */
 
 const ELIGIBILITY_RATE_LIMIT = parseInt(process.env.RCM_ELIGIBILITY_RATE_LIMIT ?? '60', 10) || 60;
 const ELIGIBILITY_INTERVAL_MS =
@@ -24,7 +24,7 @@ const ELIGIBILITY_INTERVAL_MS =
 
 export const ELIGIBILITY_JOB_TYPE: RcmJobType = 'ELIGIBILITY_CHECK';
 
-/* ── Result Store (ring buffer, no PHI) ────────────────────── */
+/* -- Result Store (ring buffer, no PHI) ---------------------- */
 
 export interface EligibilityPollResult {
   id: string;
@@ -60,7 +60,7 @@ function pushResult(r: EligibilityPollResult): void {
   results.push(r);
 }
 
-/* ── Poller Handler ────────────────────────────────────────── */
+/* -- Poller Handler ------------------------------------------ */
 
 /**
  * Process a single eligibility check job.
@@ -162,7 +162,7 @@ export async function handleEligibilityJob(job: {
   }
 }
 
-/* ── Registration Config ───────────────────────────────────── */
+/* -- Registration Config ------------------------------------- */
 
 /**
  * Returns the PollingJobConfig for eligibility checking.

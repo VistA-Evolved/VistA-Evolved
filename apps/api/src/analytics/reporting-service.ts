@@ -1,5 +1,5 @@
 /**
- * Reporting Service — Phase 365 (W19-P4)
+ * Reporting Service -- Phase 365 (W19-P4)
  *
  * Operational, clinical, and RCM report definitions with parameterized
  * queries against the analytics extract + event store. CSV/JSON export.
@@ -12,7 +12,7 @@ import type { ReportId, ReportDefinition, ReportResult, ReportRow } from './extr
 import { queryAnalyticsEvents } from '../services/analytics-store.js';
 import { getExtractRuns, getExtractRecords } from './extract-layer.js';
 
-// ── Report Definitions ──────────────────────────────────────────────────
+// -- Report Definitions --------------------------------------------------
 
 const REPORT_DEFINITIONS: ReportDefinition[] = [
   {
@@ -142,7 +142,7 @@ const REPORT_DEFINITIONS: ReportDefinition[] = [
   },
 ];
 
-// ── Report Generation ───────────────────────────────────────────────────
+// -- Report Generation ---------------------------------------------------
 
 export function getReportDefinitions(category?: string): ReportDefinition[] {
   if (category) return REPORT_DEFINITIONS.filter((r) => r.category === category);
@@ -169,7 +169,7 @@ export function generateReport(
   return result;
 }
 
-// ── Report Generators ───────────────────────────────────────────────────
+// -- Report Generators ---------------------------------------------------
 
 type ReportGenerator = (tenantId: string, params: Record<string, unknown>) => ReportResult;
 
@@ -307,7 +307,7 @@ const REPORT_GENERATORS: Record<string, ReportGenerator> = {
   rcm_ack_reject_rate: rcmReportStub('rcm_ack_reject_rate'),
 };
 
-// ── Stubs for reports implemented in other modules ──────────────────────
+// -- Stubs for reports implemented in other modules ----------------------
 
 function qualityReportStub(reportId: string): ReportGenerator {
   return (tenantId, params) => {
@@ -336,7 +336,7 @@ export function registerReportGenerator(reportId: string, generator: ReportGener
   externalGenerators.set(reportId, generator);
 }
 
-// ── Export Functions ─────────────────────────────────────────────────────
+// -- Export Functions -----------------------------------------------------
 
 export function exportReportCsv(result: ReportResult): string {
   if (result.data.length === 0) return '';
@@ -358,7 +358,7 @@ function csvEscape(val: string): string {
   return val;
 }
 
-// ── Helpers ─────────────────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------------------
 
 function makeResult(
   reportId: ReportId,

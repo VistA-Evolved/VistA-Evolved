@@ -1,5 +1,5 @@
 /**
- * Phase 403 (W23-P5): Document Exchange — Routes
+ * Phase 403 (W23-P5): Document Exchange -- Routes
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -18,7 +18,7 @@ import {
 } from './exchange-store.js';
 
 export default async function documentExchangeRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Documents ─────────────────────────────────────────────
+  // --- Documents ---------------------------------------------
 
   server.get(
     '/document-exchange/documents',
@@ -103,7 +103,7 @@ export default async function documentExchangeRoutes(server: FastifyInstance): P
     }
   );
 
-  // ─── Submission Sets ───────────────────────────────────────
+  // --- Submission Sets ---------------------------------------
 
   server.get(
     '/document-exchange/submissions',
@@ -149,7 +149,7 @@ export default async function documentExchangeRoutes(server: FastifyInstance): P
     }
   );
 
-  // ─── Dashboard ─────────────────────────────────────────────
+  // --- Dashboard ---------------------------------------------
 
   server.get(
     '/document-exchange/dashboard',

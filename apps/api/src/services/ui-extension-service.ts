@@ -1,16 +1,16 @@
 /**
- * UI Extension Slots — Phase 359 (W18-P6)
+ * UI Extension Slots -- Phase 359 (W18-P6)
  *
  * Extension slot registry for plugins to inject UI components into predefined
  * locations (dashboard tiles, chart side panels, toolbar actions, etc.).
  * Tenant policy enforcement ensures only approved slots are filled.
  *
- * ADR: ADR-PLUGIN-MODEL.md — React portals for UI extensions.
+ * ADR: ADR-PLUGIN-MODEL.md -- React portals for UI extensions.
  */
 
 import { randomBytes } from "node:crypto";
 
-// ── Types ───────────────────────────────────────────────────────────────
+// -- Types ---------------------------------------------------------------
 
 export type SlotLocation =
   | "dashboard_tile"
@@ -59,15 +59,15 @@ export interface SlotPolicy {
   updatedAt: string;
 }
 
-// ── Stores ──────────────────────────────────────────────────────────────
+// -- Stores --------------------------------------------------------------
 
-/** Extension slots — keyed by extension ID */
+/** Extension slots -- keyed by extension ID */
 const extensions = new Map<string, UiExtensionSlot>();
 
-/** Slot policies — keyed by "tenantId:slotLocation" */
+/** Slot policies -- keyed by "tenantId:slotLocation" */
 const slotPolicies = new Map<string, SlotPolicy>();
 
-// ── Helpers ─────────────────────────────────────────────────────────────
+// -- Helpers -------------------------------------------------------------
 
 function genId(): string {
   return randomBytes(16).toString("hex");
@@ -93,7 +93,7 @@ export const SLOT_LOCATIONS: SlotLocation[] = [
   "custom",
 ];
 
-// ── Slot Policy CRUD ────────────────────────────────────────────────────
+// -- Slot Policy CRUD ----------------------------------------------------
 
 export function setSlotPolicy(
   tenantId: string,
@@ -130,7 +130,7 @@ export function listSlotPolicies(tenantId: string): SlotPolicy[] {
   return result;
 }
 
-// ── Extension CRUD ──────────────────────────────────────────────────────
+// -- Extension CRUD ------------------------------------------------------
 
 export function registerExtension(
   tenantId: string,
@@ -207,7 +207,7 @@ export function unregisterExtension(
   return true;
 }
 
-// ── Query Helpers ───────────────────────────────────────────────────────
+// -- Query Helpers -------------------------------------------------------
 
 export function getExtensionsForSlot(
   tenantId: string,
@@ -279,7 +279,7 @@ export function getExtensionStats(tenantId: string): {
   };
 }
 
-// ── Reset (testing) ─────────────────────────────────────────────────────
+// -- Reset (testing) -----------------------------------------------------
 
 export function _resetUiExtensions(): void {
   extensions.clear();

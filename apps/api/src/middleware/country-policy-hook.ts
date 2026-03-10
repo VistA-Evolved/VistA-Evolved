@@ -1,5 +1,5 @@
 /**
- * country-policy-hook.ts — Runtime Country Policy Spine
+ * country-policy-hook.ts -- Runtime Country Policy Spine
  *
  * Phase 493 (W34-P3)
  *
@@ -75,7 +75,7 @@ export async function countryPolicyHook(app: FastifyInstance): Promise<void> {
 
     const tenant = getTenant(tenantId);
     if (!tenant) {
-      // No tenant found — set null policy (will use system defaults)
+      // No tenant found -- set null policy (will use system defaults)
       request.countryPolicy = {
         pack: null,
         countryPackId: 'US',

@@ -1,5 +1,5 @@
 /**
- * RCM Domain — Remittance / EOB Types
+ * RCM Domain -- Remittance / EOB Types
  *
  * Phase 38: Models for 835 remittance advice, EOB, and adjustment reason codes.
  */

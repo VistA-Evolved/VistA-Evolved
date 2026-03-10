@@ -237,7 +237,7 @@ function FrameworksTab({ frameworks }: { frameworks: FrameworkDef[] }) {
             <td style={{ padding: '0.5rem' }}>{fw.countryCodes.join(', ')}</td>
             <td style={{ padding: '0.5rem' }}>{fw.phiElements.length}</td>
             <td style={{ padding: '0.5rem' }}>
-              {fw.defaultRetention.minYears}–{fw.defaultRetention.maxYears ?? '∞'} yr
+              {fw.defaultRetention.minYears}-{fw.defaultRetention.maxYears ?? 'Infinity'} yr
             </td>
           </tr>
         ))}
@@ -346,7 +346,7 @@ function ChainBadge({ label, valid }: { label: string; valid: boolean }) {
         color: valid ? '#166534' : '#991b1b',
       }}
     >
-      {valid ? 'VALID' : 'BROKEN'} — {label}
+      {valid ? 'VALID' : 'BROKEN'} -- {label}
     </span>
   );
 }

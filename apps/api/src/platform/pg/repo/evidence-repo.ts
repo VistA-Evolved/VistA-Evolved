@@ -1,5 +1,5 @@
 /**
- * Evidence Repository (PostgreSQL) — payer evidence snapshot management
+ * Evidence Repository (PostgreSQL) -- payer evidence snapshot management
  *
  * Phase 102: Migrate Prototype Stores to PlatformStore
  *

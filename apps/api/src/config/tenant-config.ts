@@ -1,5 +1,5 @@
 /**
- * Multi-tenant configuration — Phase 17A → Phase 275 (DB-backed).
+ * Multi-tenant configuration â€" Phase 17A â+' Phase 275 (DB-backed).
  *
  * Defines TenantConfig, FeatureFlags, UIDefaults, and a tenant store
  * that delegates to PostgreSQL when available, with in-memory fallback.
@@ -24,6 +24,7 @@ import {
   seedDefaultTenantToDb,
   type TenantConfigRow,
 } from '../platform/pg/repo/tenant-config-repo.js';
+import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -76,7 +77,7 @@ export const ALL_MODULES: ModuleId[] = [
   'aiassist',
 ];
 
-/** Feature flag identifiers — extensible union. */
+/** Feature flag identifiers â€" extensible union. */
 export type FeatureFlagId =
   | 'notes.templates'
   | 'orders.sign'
@@ -93,7 +94,7 @@ export interface FeatureFlags {
   [key: string]: boolean;
 }
 
-/** Default feature flags — everything enabled. */
+/** Default feature flags â€" everything enabled. */
 export const DEFAULT_FEATURE_FLAGS: FeatureFlags = {
   'notes.templates': true,
   'orders.sign': true,
@@ -127,7 +128,7 @@ export const DEFAULT_UI_DEFAULTS: UIDefaults = {
 };
 
 /* ------------------------------------------------------------------ */
-/* Tenant Branding Config — Phase 282                                  */
+/* Tenant Branding Config â€" Phase 282                                  */
 /* ------------------------------------------------------------------ */
 
 /**
@@ -162,7 +163,7 @@ export const DEFAULT_BRANDING: BrandingConfig = {
   enabled: false,
 };
 
-/* ── Branding Sanitization ──────────────────────────────────────── */
+/* â"€â"€ Branding Sanitization â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 const HEX_COLOR_RE = /^#[0-9a-fA-F]{6}$/;
 const HTTPS_URL_RE = /^https:\/\/.{1,2040}$/;
@@ -305,7 +306,7 @@ export interface TenantConfig {
 
 const tenants = new Map<string, TenantConfig>();
 
-/** Convert TenantConfig → TenantConfigRow for DB persistence */
+/** Convert TenantConfig â+' TenantConfigRow for DB persistence */
 function toRow(config: TenantConfig): TenantConfigRow {
   return {
     tenant_id: config.tenantId,
@@ -328,7 +329,7 @@ function toRow(config: TenantConfig): TenantConfigRow {
   };
 }
 
-/** Convert TenantConfigRow → TenantConfig from DB */
+/** Convert TenantConfigRow â+' TenantConfig from DB */
 function fromRow(row: TenantConfigRow): TenantConfig {
   return {
     tenantId: row.tenant_id,
@@ -353,7 +354,7 @@ function fromRow(row: TenantConfigRow): TenantConfig {
 
 /** Fire-and-forget DB sync (non-blocking, logs errors silently) */
 function syncToDb(config: TenantConfig): void {
-  dbUpsertTenant(toRow(config)).catch(() => {});
+  dbUpsertTenant(toRow(config)).catch((e) => log.warn('tenant-config DB write-through failed', { error: String(e) }));
 }
 
 /** Build the default tenant from environment variables. */
@@ -393,7 +394,7 @@ function buildDefaultTenant(): TenantConfig {
 // Seed default tenant on module load
 tenants.set('default', buildDefaultTenant());
 // Phase 275: Also seed to DB (fire-and-forget)
-seedDefaultTenantToDb(toRow(buildDefaultTenant())).catch(() => {});
+seedDefaultTenantToDb(toRow(buildDefaultTenant())).catch((e) => log.warn('tenant-config DB write-through failed', { error: String(e) }));
 
 /* ------------------------------------------------------------------ */
 /* Public API                                                          */
@@ -422,7 +423,7 @@ export function upsertTenant(config: TenantConfig): TenantConfig {
 export function deleteTenant(tenantId: string): boolean {
   if (tenantId === 'default') return false; // cannot delete default
   const result = tenants.delete(tenantId);
-  if (result) dbDeleteTenant(tenantId).catch(() => {}); // Phase 275: write-through
+  if (result) dbDeleteTenant(tenantId).catch((e) => log.warn('tenant-config DB write-through failed', { error: String(e) })); // Phase 275: write-through
   return result;
 }
 
@@ -432,7 +433,7 @@ export function updateFeatureFlags(tenantId: string, flags: FeatureFlags): Featu
   if (!tenant) return null;
   tenant.featureFlags = { ...tenant.featureFlags, ...flags };
   tenant.updatedAt = new Date().toISOString();
-  dbUpdateFeatureFlags(tenantId, flags).catch(() => {}); // Phase 275
+  dbUpdateFeatureFlags(tenantId, flags).catch((e) => log.warn('tenant-config DB write-through failed', { error: String(e) })); // Phase 275
   return tenant.featureFlags;
 }
 
@@ -445,7 +446,7 @@ export function updateUIDefaults(
   if (!tenant) return null;
   tenant.uiDefaults = { ...tenant.uiDefaults, ...defaults };
   tenant.updatedAt = new Date().toISOString();
-  dbUpdateUiDefaults(tenantId, defaults as Record<string, any>).catch(() => {}); // Phase 275
+  dbUpdateUiDefaults(tenantId, defaults as Record<string, any>).catch((e) => log.warn('tenant-config DB write-through failed', { error: String(e) })); // Phase 275
   return tenant.uiDefaults;
 }
 
@@ -465,7 +466,7 @@ export function updateEnabledModules(tenantId: string, modules: ModuleId[]): Mod
   if (!tenant) return null;
   tenant.enabledModules = modules;
   tenant.updatedAt = new Date().toISOString();
-  dbUpdateEnabledModules(tenantId, modules).catch(() => {}); // Phase 275
+  dbUpdateEnabledModules(tenantId, modules).catch((e) => log.warn('tenant-config DB write-through failed', { error: String(e) })); // Phase 275
   return tenant.enabledModules;
 }
 

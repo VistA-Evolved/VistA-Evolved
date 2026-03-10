@@ -1,5 +1,5 @@
 /**
- * Claim Packet Config — Phase 97B: Per-HMO Claim Packet Configuration
+ * Claim Packet Config -- Phase 97B: Per-HMO Claim Packet Configuration
  *
  * Defines per-HMO claim submission requirements including:
  * - Required documents and attachments
@@ -8,11 +8,11 @@
  * - VistA-first field annotations
  *
  * This config drives claim packet generation in claims-workflow.ts.
- * VistA IB/AR/PCE is the authoritative billing ledger — this config
+ * VistA IB/AR/PCE is the authoritative billing ledger -- this config
  * only describes what the PAYER needs from the provider.
  */
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 export interface VistaFieldAnnotation {
   field: string;
@@ -44,7 +44,7 @@ export interface ClaimPacketConfig {
   notes: string[];
 }
 
-/* ── Common VistA field annotations ─────────────────────────── */
+/* -- Common VistA field annotations --------------------------- */
 
 const COMMON_VISTA_FIELDS: VistaFieldAnnotation[] = [
   {
@@ -74,7 +74,7 @@ const COMMON_VISTA_FIELDS: VistaFieldAnnotation[] = [
     vistaFile: '^IB(350)',
     vistaRpc: 'IBD GET CHARGE',
     vistaStatus: 'empty_in_sandbox',
-    sandboxNote: 'IB charges file empty in WorldVistA Docker — integration pending',
+    sandboxNote: 'IB charges file empty in WorldVistA Docker -- integration pending',
   },
   {
     field: 'subscriberId',
@@ -82,7 +82,7 @@ const COMMON_VISTA_FIELDS: VistaFieldAnnotation[] = [
     vistaFile: '^DPT(.312)',
     vistaRpc: 'IBCNS',
     vistaStatus: 'empty_in_sandbox',
-    sandboxNote: 'Insurance entries empty in sandbox — manual entry required',
+    sandboxNote: 'Insurance entries empty in sandbox -- manual entry required',
   },
   {
     field: 'providerNpi',
@@ -115,7 +115,7 @@ const COMMON_VISTA_FIELDS: VistaFieldAnnotation[] = [
   },
 ];
 
-/* ── Common required documents ──────────────────────────────── */
+/* -- Common required documents -------------------------------- */
 
 const COMMON_REQUIRED_DOCS: RequiredDocument[] = [
   {
@@ -130,7 +130,7 @@ const COMMON_REQUIRED_DOCS: RequiredDocument[] = [
     description: 'Detailed breakdown of all charges',
     formats: ['PDF', 'Excel'],
     required: true,
-    vistaSource: 'VistA IB ^IB(350) — integration pending',
+    vistaSource: 'VistA IB ^IB(350) -- integration pending',
   },
   {
     name: 'Clinical Summary / Discharge Summary',
@@ -162,7 +162,7 @@ const COMMON_REQUIRED_DOCS: RequiredDocument[] = [
   },
 ];
 
-/* ── Per-HMO Claim Packet Configurations ────────────────────── */
+/* -- Per-HMO Claim Packet Configurations ---------------------- */
 
 function makeConfig(
   payerId: string,
@@ -184,7 +184,7 @@ function makeConfig(
 }
 
 export const CLAIM_PACKET_CONFIGS: Record<string, ClaimPacketConfig> = {
-  // ── Top-5 Portal-Capable (L1) ──────────────────────────────
+  // -- Top-5 Portal-Capable (L1) ------------------------------
   'PH-MAXICARE': makeConfig('PH-MAXICARE', 'MaxiCare Healthcare Corp.', {
     submissionFormat: 'portal_upload',
     filingDeadlineDays: 30,
@@ -222,10 +222,10 @@ export const CLAIM_PACKET_CONFIGS: Record<string, ClaimPacketConfig> = {
     notes: ['Submit via ValuCare provider portal'],
   }),
 
-  // ── Other L1 HMOs ─────────────────────────────────────────
+  // -- Other L1 HMOs -----------------------------------------
   'PH-INSULAR': makeConfig('PH-INSULAR', 'Insular Health Care, Inc.', {
     filingDeadlineDays: 30,
-    notes: ['Large HMO — portal integration pending'],
+    notes: ['Large HMO -- portal integration pending'],
   }),
   'PH-COCOLIFE': makeConfig('PH-COCOLIFE', 'Cocolife Health Care, Inc.', {
     filingDeadlineDays: 30,
@@ -233,10 +233,10 @@ export const CLAIM_PACKET_CONFIGS: Record<string, ClaimPacketConfig> = {
   }),
   'PH-PACIFIC-CROSS': makeConfig('PH-PACIFIC-CROSS', 'Pacific Cross Health Care, Inc.', {
     filingDeadlineDays: 30,
-    notes: ['Digital submission may be available — investigation pending'],
+    notes: ['Digital submission may be available -- investigation pending'],
   }),
 
-  // ── L3 HMOs ────────────────────────────────────────────────
+  // -- L3 HMOs ------------------------------------------------
   'PH-ASIANLIFE': makeConfig('PH-ASIANLIFE', 'AsianLife and General Assurance Corporation'),
   'PH-AVEGA': makeConfig('PH-AVEGA', 'Avega Managed Care, Inc.'),
   'PH-CAREHEALTH': makeConfig('PH-CAREHEALTH', 'CareHealth Plus Systems International, Inc.'),
@@ -258,7 +258,7 @@ export const CLAIM_PACKET_CONFIGS: Record<string, ClaimPacketConfig> = {
   'PH-STARCARE': makeConfig('PH-STARCARE', 'Starcare Health Systems, Inc.'),
 };
 
-/* ── Public API ─────────────────────────────────────────────── */
+/* -- Public API ----------------------------------------------- */
 
 /**
  * Get claim packet configuration for a specific payer.

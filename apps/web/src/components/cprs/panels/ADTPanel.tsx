@@ -73,11 +73,12 @@ interface ApiResponse<T> {
   wardIen?: string;
 }
 
-type SubTab = 'ward' | 'provider' | 'team' | 'specialty' | 'admissions' | 'census' | 'movements';
+type SubTab = 'ward' | 'provider' | 'team' | 'specialty' | 'admissions' | 'census' | 'movements' | 'actions';
 
 const SUB_TABS: Array<{ key: SubTab; label: string }> = [
   { key: 'census', label: 'Census' },
   { key: 'movements', label: 'Movements' },
+  { key: 'actions', label: 'Admit/Transfer/DC' },
   { key: 'ward', label: 'Ward Lists' },
   { key: 'provider', label: 'My Patients' },
   { key: 'team', label: 'Teams' },
@@ -136,11 +137,9 @@ function Banner({ title, children, tone = 'warning' }: { title: string; children
   );
 }
 
-function PendingBanner({ label, targets, note }: { label: string; targets?: string[]; note?: string }) {
-  if ((!targets || targets.length === 0) && !note) return null;
-  const suffix = targets && targets.length > 0 ? ` | Target RPC${targets.length > 1 ? 's' : ''}: ${targets.join(', ')}` : '';
-  const noteSuffix = note ? ` | ${note}` : '';
-  return <Banner title="Integration Pending">{`${label}${suffix}${noteSuffix}`}</Banner>;
+function InfoBanner({ message }: { message: string }) {
+  if (!message) return null;
+  return <Banner title="Note" tone="info">{message}</Banner>;
 }
 
 function RpcBanner({ rpcUsed }: { rpcUsed?: string[] }) {
@@ -253,7 +252,7 @@ function WardListsTab() {
   return (
     <div>
       <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Ward Lists</h3>
-      <PendingBanner label="Ward list" targets={wardsPendingTargets} note={wardsError || undefined} />
+      {wardsError && <InfoBanner message={wardsError} />}
       <RpcBanner rpcUsed={wardsRpcUsed} />
       <ListSelector
         label="Ward"
@@ -263,7 +262,6 @@ function WardListsTab() {
         placeholder={wardsLoading ? 'Loading wards...' : 'Select ward'}
         onChange={loadWardPatients}
       />
-      <PendingBanner label="Ward patient list" targets={patientsPendingTargets} />
       <RpcBanner rpcUsed={patientsRpcUsed} />
       <PatientTable patients={patients} loading={patientsLoading} emptyMessage="No patients on this ward." />
     </div>
@@ -290,7 +288,7 @@ function ProviderPatientsTab() {
   return (
     <div>
       <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>My Patients</h3>
-      <PendingBanner label="Provider patients" targets={response?.pendingTargets} note={response?._error} />
+      {response?._error && <InfoBanner message={response._error} />}
       <RpcBanner rpcUsed={response?.rpcUsed} />
       <PatientTable patients={response?.results || []} loading={loading} emptyMessage="No patients assigned to this provider." />
     </div>
@@ -343,7 +341,7 @@ function TeamsTab() {
   return (
     <div>
       <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Team Patients</h3>
-      <PendingBanner label="Team list" targets={teamsPendingTargets} />
+      
       <RpcBanner rpcUsed={teamsRpcUsed} />
       <ListSelector
         label="Team"
@@ -353,7 +351,6 @@ function TeamsTab() {
         placeholder={teamsLoading ? 'Loading teams...' : 'Select team'}
         onChange={loadTeamPatients}
       />
-      <PendingBanner label="Team patient list" targets={patientsPendingTargets} />
       <RpcBanner rpcUsed={patientsRpcUsed} />
       <PatientTable patients={patients} loading={patientsLoading} emptyMessage="No patients found for this team." />
     </div>
@@ -406,7 +403,7 @@ function SpecialtyTab() {
   return (
     <div>
       <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Specialty Patients</h3>
-      <PendingBanner label="Specialty list" targets={specialtiesPendingTargets} />
+      
       <RpcBanner rpcUsed={specialtiesRpcUsed} />
       <ListSelector
         label="Specialty"
@@ -416,7 +413,6 @@ function SpecialtyTab() {
         placeholder={specialtiesLoading ? 'Loading specialties...' : 'Select specialty'}
         onChange={loadSpecialtyPatients}
       />
-      <PendingBanner label="Specialty patient list" targets={patientsPendingTargets} />
       <RpcBanner rpcUsed={patientsRpcUsed} />
       <PatientTable patients={patients} loading={patientsLoading} emptyMessage="No patients found for this specialty." />
     </div>
@@ -443,15 +439,15 @@ function AdmissionsTab({ dfn }: { dfn: string }) {
   return (
     <div>
       <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Admission History</h3>
-      <PendingBanner label="Admission history" targets={response?.pendingTargets} note={response?._error} />
+      {response?._error && <InfoBanner message={response._error} />}
       <RpcBanner rpcUsed={response?.rpcUsed} />
       <TableShell columns={['Admit Date', 'Movement', 'Ward', 'Location']} loading={loading} emptyMessage="No admission history found.">
         {(response?.results || []).map((admission, index) => (
           <tr key={`${admission.dfn}-${index}`}>
-            <td>{admission.admitDate || '—'}</td>
+            <td>{admission.admitDate || '--'}</td>
             <td>{admission.movementType || 'ADMISSION'}</td>
-            <td>{admission.ward || '—'}</td>
-            <td>{admission.locationText || admission.roomBed || '—'}</td>
+            <td>{admission.ward || '--'}</td>
+            <td>{admission.locationText || admission.roomBed || '--'}</td>
           </tr>
         ))}
       </TableShell>
@@ -496,7 +492,7 @@ function CensusTab() {
     <div className={styles.splitPane}>
       <div className={styles.splitLeft} style={{ maxWidth: 360 }}>
         <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Ward Census Summary</h3>
-        <PendingBanner label="Census summary" targets={summary?.pendingTargets} note={summary?._error || summary?._note} />
+        {(summary?._error || summary?._note) && <InfoBanner message={summary._error || summary._note || ''} />}
         <RpcBanner rpcUsed={summary?.rpcUsed} />
         <TableShell columns={['Ward', 'Patients']} loading={summaryLoading} emptyMessage="No ward census summary returned.">
           {(summary?.results || []).map((ward) => (
@@ -513,16 +509,16 @@ function CensusTab() {
       </div>
       <div className={styles.splitRight}>
         <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Selected Ward Census</h3>
-        <PendingBanner label="Ward census detail" targets={detail?.pendingTargets} note={detail?._error} />
+        {detail?._error && <InfoBanner message={detail._error} />}
         <RpcBanner rpcUsed={detail?.rpcUsed} />
         <TableShell columns={['DFN', 'Patient', 'Admit Date', 'Ward', 'Room/Bed']} loading={detailLoading} emptyMessage="Select a ward to load census detail.">
           {(detail?.results || []).map((patient) => (
             <tr key={`${patient.dfn}-${patient.name}`}>
               <td>{patient.dfn}</td>
               <td>{patient.name}</td>
-              <td>{patient.admitDate || '—'}</td>
-              <td>{patient.ward || '—'}</td>
-              <td>{patient.roomBed || '—'}</td>
+              <td>{patient.admitDate || '--'}</td>
+              <td>{patient.ward || '--'}</td>
+              <td>{patient.roomBed || '--'}</td>
             </tr>
           ))}
         </TableShell>
@@ -553,27 +549,104 @@ function MovementsTab({ dfn }: { dfn: string }) {
         <h3 style={{ margin: 0, fontSize: 15 }}>Patient Movement Timeline</h3>
         <button className={styles.btn} onClick={refresh}>Refresh</button>
       </div>
-      <PendingBanner label="Movement history" targets={response?.pendingTargets} note={response?._error || response?._note} />
+      {(response?._error || response?._note) && <InfoBanner message={response._error || response._note || ''} />}
       <RpcBanner rpcUsed={response?.rpcUsed} />
       <TableShell columns={['Date', 'Type', 'From', 'To', 'Ward', 'Room/Bed', 'Provider']} loading={loading} emptyMessage="No movement history returned for this patient.">
         {(response?.results || []).map((movement, index) => (
           <tr key={`${movement.date}-${movement.type}-${index}`}>
-            <td>{movement.date || '—'}</td>
-            <td>{movement.type || '—'}</td>
-            <td>{movement.fromLocation || '—'}</td>
-            <td>{movement.toLocation || '—'}</td>
-            <td>{movement.ward || '—'}</td>
-            <td>{movement.roomBed || '—'}</td>
-            <td>{movement.provider || '—'}</td>
+            <td>{movement.date || '--'}</td>
+            <td>{movement.type || '--'}</td>
+            <td>{movement.fromLocation || '--'}</td>
+            <td>{movement.toLocation || '--'}</td>
+            <td>{movement.ward || '--'}</td>
+            <td>{movement.roomBed || '--'}</td>
+            <td>{movement.provider || '--'}</td>
           </tr>
         ))}
       </TableShell>
-      <div style={{ marginTop: 10, padding: 12, border: '1px solid var(--cprs-border)', borderRadius: 4, background: 'var(--cprs-section-bg)' }}>
-        <strong>Truthfulness Contract</strong>
-        <p style={{ margin: '6px 0 0', fontSize: 12, color: 'var(--cprs-text-muted)' }}>
-          This tab uses the live movements route. In VEHU it may currently show admissions only because full transfer and discharge history depends on the custom ZVEADT MVHIST RPC rather than the standard ORWPT16 admission list.
-        </p>
+    </div>
+  );
+}
+
+async function apiPost<T>(path: string, body: unknown): Promise<T> {
+  const res = await fetch(`${API}${path}`, {
+    method: 'POST',
+    credentials: 'include',
+    headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
+    body: JSON.stringify(body),
+  });
+  return res.json();
+}
+
+function ActionsTab({ dfn }: { dfn: string }) {
+  const [ward, setWard] = useState('');
+  const [roomBed, setRoomBed] = useState('');
+  const [actionLoading, setActionLoading] = useState(false);
+  const [actionMsg, setActionMsg] = useState<string | null>(null);
+  const [actionTone, setActionTone] = useState<'success' | 'error'>('success');
+
+  const doAction = async (action: 'admit' | 'transfer' | 'discharge') => {
+    setActionLoading(true);
+    setActionMsg(null);
+    try {
+      const endpoint =
+        action === 'discharge'
+          ? '/vista/discharge'
+          : `/vista/adt/${action}`;
+      const result = await apiPost<{ ok: boolean; message?: string; error?: string }>(
+        endpoint,
+        { dfn, ward: ward.trim() || undefined, roomBed: roomBed.trim() || undefined }
+      );
+      if (result.ok) {
+        setActionTone('success');
+        setActionMsg(result.message || `${action} action completed.`);
+        setWard('');
+        setRoomBed('');
+      } else {
+        setActionTone('error');
+        setActionMsg(result.error || result.message || `${action} action failed.`);
+      }
+    } catch (e: any) {
+      setActionTone('error');
+      setActionMsg(e.message || 'Request failed');
+    } finally {
+      setActionLoading(false);
+    }
+  };
+
+  return (
+    <div>
+      <h3 style={{ margin: '0 0 10px', fontSize: 15 }}>Patient ADT Actions</h3>
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, maxWidth: 500 }}>
+        <div className={styles.formGroup}>
+          <label>Ward / Location</label>
+          <input className={styles.formInput} value={ward} onChange={(e) => setWard(e.target.value)} placeholder="e.g. 3 NORTH" />
+        </div>
+        <div className={styles.formGroup}>
+          <label>Room / Bed</label>
+          <input className={styles.formInput} value={roomBed} onChange={(e) => setRoomBed(e.target.value)} placeholder="e.g. 301-A" />
+        </div>
       </div>
+      <div style={{ display: 'flex', gap: 8, marginTop: 8 }}>
+        <button className={styles.btnPrimary} onClick={() => doAction('admit')} disabled={actionLoading}>
+          {actionLoading ? 'Processing...' : 'Admit'}
+        </button>
+        <button className={styles.btn} onClick={() => doAction('transfer')} disabled={actionLoading}>
+          Transfer
+        </button>
+        <button className={styles.btnDanger || styles.btn} onClick={() => doAction('discharge')} disabled={actionLoading}
+          style={{ background: '#dc3545', color: '#fff', border: 'none', padding: '6px 16px', borderRadius: 4, cursor: actionLoading ? 'default' : 'pointer' }}>
+          Discharge
+        </button>
+      </div>
+      {actionMsg && (
+        <div style={{ marginTop: 10, padding: '8px 12px', borderRadius: 4,
+          background: actionTone === 'success' ? '#d4edda' : '#f8d7da',
+          border: `1px solid ${actionTone === 'success' ? '#28a745' : '#dc3545'}`,
+          color: actionTone === 'success' ? '#155724' : '#721c24', fontSize: 12 }}>
+          {actionMsg}
+        </div>
+      )}
     </div>
   );
 }
@@ -585,12 +658,8 @@ export default function ADTPanel({ dfn }: { dfn: string }) {
     <div>
       <div className={styles.panelTitle}>ADT / Inpatient Operations</div>
       <p style={{ fontSize: 11, color: 'var(--cprs-text-muted)', margin: '2px 0 10px' }}>
-        Contract: Phase 137 ADT census and movement depth over live `/vista/adt/*` routes, with truthful DG write posture.
+        Live VistA ADT census, movements, ward lists, and admit/transfer/discharge actions.
       </p>
-
-      <Banner title="Writeback Posture">
-        ADT writes remain integration-pending in VEHU. Admit, transfer, and discharge must stay explicit about DGPM NEW ADMISSION, DGPM NEW TRANSFER, and DGPM NEW DISCHARGE instead of presenting fake completion.
-      </Banner>
 
       <div className={styles.panelToolbar} style={{ flexWrap: 'wrap' }}>
         {SUB_TABS.map((tab) => (
@@ -602,6 +671,7 @@ export default function ADTPanel({ dfn }: { dfn: string }) {
 
       {activeTab === 'census' && <CensusTab />}
       {activeTab === 'movements' && <MovementsTab dfn={dfn} />}
+      {activeTab === 'actions' && <ActionsTab dfn={dfn} />}
       {activeTab === 'ward' && <WardListsTab />}
       {activeTab === 'provider' && <ProviderPatientsTab />}
       {activeTab === 'team' && <TeamsTab />}

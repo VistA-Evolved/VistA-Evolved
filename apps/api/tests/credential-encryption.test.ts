@@ -1,5 +1,5 @@
 /**
- * Credential Encryption Tests — Phase 573B
+ * Credential Encryption Tests -- Phase 573B
  *
  * Verifies that:
  *   1. encryptCredential produces encrypted output

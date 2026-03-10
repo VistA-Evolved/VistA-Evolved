@@ -1,5 +1,5 @@
 /**
- * VistA Clinical Engine Adapter — Phase 37C, extended Phase 436.
+ * VistA Clinical Engine Adapter -- Phase 37C, extended Phase 436.
  *
  * Default implementation that calls VistA RPCs via the RPC Broker client.
  * This is the production adapter for VA and WorldVistA environments.
@@ -8,6 +8,7 @@
 import type { ClinicalEngineAdapter } from './interface.js';
 import { log } from '../../lib/logger.js';
 import { auditAdapterWrite } from '../adapter-audit.js';
+import { safeErr } from '../../lib/safe-error.js';
 import type {
   AdapterResult,
   PatientRecord,
@@ -58,7 +59,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       });
       return { ok: true, data: patients };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -79,7 +80,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         },
       };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -93,7 +94,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       });
       return { ok: true, data: allergies };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -112,7 +113,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       });
       return { ok: true, data: vitals };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -133,7 +134,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       });
       return { ok: true, data: notes };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -150,7 +151,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       }
       return { ok: true, data: meds };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -167,7 +168,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         });
       return { ok: true, data: problems };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -186,7 +187,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       });
       return { ok: true, data: labs };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -260,7 +261,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       });
       return { ok: true, data: reports };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -280,12 +281,12 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       ]);
       return { ok: true, data: rawLines.join('\n') };
     } catch (err: any) {
-      return { ok: false, error: err.message };
+      return { ok: false, error: safeErr(err) };
     }
   }
 
   /* ---------------------------------------------------------------- */
-  /* Write methods — wired to RPCs (Phase 435)                         */
+  /* Write methods -- wired to RPCs (Phase 435)                         */
   /* ---------------------------------------------------------------- */
 
   async addAllergy(
@@ -343,7 +344,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         vistaGrounding: { rpc: 'ORWDAL32 SAVE ALLERGY', vistaPackage: 'OR', vistaFiles: ['120.8'] },
       };
     } catch (err: any) {
-      log.warn('addAllergy via adapter failed', { error: err.message });
+      log.warn('addAllergy via adapter failed', { error: safeErr(err) });
       auditAdapterWrite({
         action: 'write.allergy',
         success: false,
@@ -353,7 +354,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       });
       return {
         ok: false,
-        error: err.message,
+        error: safeErr(err),
         vistaGrounding: { rpc: 'ORWDAL32 SAVE ALLERGY', vistaPackage: 'OR', vistaFiles: ['120.8'] },
       };
     }
@@ -396,7 +397,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         vistaGrounding: { rpc: 'GMV ADD VM', vistaPackage: 'GMV', vistaFiles: ['120.5'] },
       };
     } catch (err: any) {
-      log.warn('addVital via adapter failed', { error: err.message });
+      log.warn('addVital via adapter failed', { error: safeErr(err) });
       auditAdapterWrite({
         action: 'write.vitals',
         success: false,
@@ -406,7 +407,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       });
       return {
         ok: false,
-        error: err.message,
+        error: safeErr(err),
         vistaGrounding: { rpc: 'GMV ADD VM', vistaPackage: 'GMV', vistaFiles: ['120.5'] },
       };
     }
@@ -471,7 +472,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         vistaGrounding: { rpc: 'TIU CREATE RECORD', vistaPackage: 'TIU', vistaFiles: ['8925'] },
       };
     } catch (err: any) {
-      log.warn('createNote via adapter failed', { error: err.message });
+      log.warn('createNote via adapter failed', { error: safeErr(err) });
       auditAdapterWrite({
         action: 'write.note',
         success: false,
@@ -481,7 +482,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       });
       return {
         ok: false,
-        error: err.message,
+        error: safeErr(err),
         vistaGrounding: { rpc: 'TIU CREATE RECORD', vistaPackage: 'TIU', vistaFiles: ['8925'] },
       };
     }
@@ -533,7 +534,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         vistaGrounding: { rpc: 'ORQQPL ADD SAVE', vistaPackage: 'OR', vistaFiles: ['9000011'] },
       };
     } catch (err: any) {
-      log.warn('addProblem via adapter failed', { error: err.message });
+      log.warn('addProblem via adapter failed', { error: safeErr(err) });
       auditAdapterWrite({
         action: 'write.problem',
         success: false,
@@ -543,7 +544,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       });
       return {
         ok: false,
-        error: err.message,
+        error: safeErr(err),
         vistaGrounding: { rpc: 'ORQQPL ADD SAVE', vistaPackage: 'OR', vistaFiles: ['9000011'] },
       };
     }
@@ -565,8 +566,8 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         });
       return { ok: true, data: wards };
     } catch (err: any) {
-      log.warn('getWards failed', { error: err.message });
-      return { ok: false, error: err.message };
+      log.warn('getWards failed', { error: safeErr(err) });
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -590,8 +591,8 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         });
       return { ok: true, data: movements };
     } catch (err: any) {
-      log.warn('getMovements failed', { error: err.message });
-      return { ok: false, error: err.message };
+      log.warn('getMovements failed', { error: safeErr(err) });
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -601,7 +602,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       pending: true,
       target: 'DGPM NEW ADMISSION',
       error:
-        'ADT admission write not available in sandbox — DGPM RPCs not exposed in OR CPRS GUI CHART context',
+        'ADT admission write not available in sandbox -- DGPM RPCs not exposed in OR CPRS GUI CHART context',
       vistaGrounding: {
         rpc: 'DGPM NEW ADMISSION',
         vistaPackage: 'DG',
@@ -617,7 +618,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       ok: false,
       pending: true,
       target: 'DGPM NEW TRANSFER',
-      error: 'ADT transfer write not available in sandbox — DGPM RPCs not exposed',
+      error: 'ADT transfer write not available in sandbox -- DGPM RPCs not exposed',
       vistaGrounding: {
         rpc: 'DGPM NEW TRANSFER',
         vistaPackage: 'DG',
@@ -633,7 +634,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       ok: false,
       pending: true,
       target: 'DGPM NEW DISCHARGE',
-      error: 'ADT discharge write not available in sandbox — DGPM RPCs not exposed',
+      error: 'ADT discharge write not available in sandbox -- DGPM RPCs not exposed',
       vistaGrounding: {
         rpc: 'DGPM NEW DISCHARGE',
         vistaPackage: 'DG',
@@ -649,7 +650,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
   /* ---------------------------------------------------------------- */
 
   async getInpatientMeds(dfn: string): Promise<AdapterResult<InpatientMedOrder[]>> {
-    // ORWPS ACTIVE returns all active meds — filter for inpatient types (UD, IV)
+    // ORWPS ACTIVE returns all active meds -- filter for inpatient types (UD, IV)
     try {
       const { safeCallRpc } = await import('../../lib/rpc-resilience.js');
       const rawLines = await safeCallRpc('ORWPS ACTIVE', [dfn]);
@@ -658,7 +659,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
         if (line.startsWith('~')) {
           const typeEnd = line.indexOf('^');
           const medType = line.substring(1, typeEnd);
-          // UD = Unit Dose, IV = IV meds — these are inpatient
+          // UD = Unit Dose, IV = IV meds -- these are inpatient
           if (medType === 'UD' || medType === 'IV') {
             const parts = line.substring(typeEnd + 1).split('^');
             meds.push({
@@ -678,8 +679,8 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       }
       return { ok: true, data: meds };
     } catch (err: any) {
-      log.warn('getInpatientMeds failed', { error: err.message });
-      return { ok: false, error: err.message };
+      log.warn('getInpatientMeds failed', { error: safeErr(err) });
+      return { ok: false, error: safeErr(err) };
     }
   }
 
@@ -691,7 +692,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       ok: false,
       pending: true,
       target: 'PSB MED LOG',
-      error: 'MAR data requires BCMA/PSB package — not available in WorldVistA sandbox',
+      error: 'MAR data requires BCMA/PSB package -- not available in WorldVistA sandbox',
       vistaGrounding: {
         rpc: 'PSB MED LOG',
         vistaPackage: 'PSB',
@@ -710,7 +711,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       pending: true,
       target: 'PSB MED LOG',
       error:
-        'Recording medication administration requires BCMA/PSB package — not available in WorldVistA sandbox',
+        'Recording medication administration requires BCMA/PSB package -- not available in WorldVistA sandbox',
       vistaGrounding: {
         rpc: 'PSB MED LOG',
         vistaPackage: 'PSB',
@@ -732,7 +733,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       pending: true,
       target: 'PSJBCMA',
       error:
-        'Barcode medication lookup requires PSJ/PSB BCMA package — not available in WorldVistA sandbox',
+        'Barcode medication lookup requires PSJ/PSB BCMA package -- not available in WorldVistA sandbox',
       vistaGrounding: {
         rpc: 'PSJBCMA',
         vistaPackage: 'PSJ',
@@ -751,7 +752,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       pending: true,
       target: 'PSB MED LOG',
       error:
-        'Administration history requires BCMA/PSB package — not available in WorldVistA sandbox',
+        'Administration history requires BCMA/PSB package -- not available in WorldVistA sandbox',
       vistaGrounding: {
         rpc: 'PSB MED LOG',
         vistaPackage: 'PSB',
@@ -770,7 +771,7 @@ export class VistaClinicalAdapter implements ClinicalEngineAdapter {
       pending: true,
       target: 'PSJ VERIFY',
       error:
-        'Pharmacist order verification requires PSJ package — not available in WorldVistA sandbox',
+        'Pharmacist order verification requires PSJ package -- not available in WorldVistA sandbox',
       vistaGrounding: {
         rpc: 'PSJ VERIFY',
         vistaPackage: 'PSJ',

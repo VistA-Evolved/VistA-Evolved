@@ -44,7 +44,7 @@ function readSrc(rel) {
 
 console.log('Phase 128 -- Imaging + Scheduling PG Restart-Durability Gate\n');
 
-// ── 1. PG Schema tables ─────────────────────────────────────
+// -- 1. PG Schema tables -------------------------------------
 console.log('PG Schema tables:');
 const pgSchema = readSrc('apps/api/src/platform/pg/pg-schema.ts') ?? '';
 gate('pgImagingWorkItem table in pg-schema', pgSchema.includes('pgTable("imaging_work_item"'));
@@ -61,7 +61,7 @@ gate(
   pgSchema.includes('pgTable("scheduling_booking_lock"')
 );
 
-// ── 2. PG Migration DDL (v12) ───────────────────────────────
+// -- 2. PG Migration DDL (v12) -------------------------------
 console.log('\nPG Migration DDL (v12):');
 const pgMigrate = readSrc('apps/api/src/platform/pg/pg-migrate.ts') ?? '';
 gate(
@@ -82,7 +82,7 @@ gate(
 );
 gate('v12 migration label exists', pgMigrate.includes('imaging_scheduling_durability_pg'));
 
-// ── 3. PG Repo files ────────────────────────────────────────
+// -- 3. PG Repo files ----------------------------------------
 console.log('\nPG Repo files:');
 
 const pgIwRepo = readSrc('apps/api/src/platform/pg/repo/pg-imaging-worklist-repo.ts');
@@ -166,7 +166,7 @@ gate(
 );
 gate('pg-scheduling-lock-repo has expires_at TTL logic', pgSlRepo?.includes('expires_at') ?? false);
 
-// ── 4. Store files async-safe ───────────────────────────────
+// -- 4. Store files async-safe -------------------------------
 console.log('\nStore async safety:');
 
 const imgWl = readSrc('apps/api/src/services/imaging-worklist.ts') ?? '';
@@ -245,7 +245,7 @@ gate(
   schedAdapter.includes('export async function getRequestStore')
 );
 
-// ── 5. index.ts wiring ──────────────────────────────────────
+// -- 5. index.ts wiring --------------------------------------
 console.log('\nStartup wiring (Phase 128 PG block):');
 const index = readSrc('apps/api/src/index.ts') ?? '';
 const lifecycle = readSrc('apps/api/src/server/lifecycle.ts') ?? '';
@@ -260,7 +260,7 @@ gate(
   startup.includes('await initSchedPgRepo') || startup.includes('await initSchedulingRepo')
 );
 
-// ── 6. PG barrel exports ────────────────────────────────────
+// -- 6. PG barrel exports ------------------------------------
 console.log('\nPG Barrel exports:');
 const pgBarrel = readSrc('apps/api/src/platform/pg/repo/index.ts') ?? '';
 gate('PG barrel exports pgImagingWorklistRepo', pgBarrel.includes('pgImagingWorklistRepo'));
@@ -268,7 +268,7 @@ gate('PG barrel exports pgImagingIngestRepo', pgBarrel.includes('pgImagingIngest
 gate('PG barrel exports pgSchedulingRequestRepo', pgBarrel.includes('pgSchedulingRequestRepo'));
 gate('PG barrel exports pgSchedulingLockRepo', pgBarrel.includes('pgSchedulingLockRepo'));
 
-// ── 7. RLS tenant list ──────────────────────────────────────
+// -- 7. RLS tenant list --------------------------------------
 console.log('\nRLS tenant list:');
 gate('imaging_work_item in RLS tenant list', pgMigrate.includes('"imaging_work_item"'));
 gate('imaging_ingest_event in RLS tenant list', pgMigrate.includes('"imaging_ingest_event"'));
@@ -278,7 +278,7 @@ gate(
 );
 gate('scheduling_booking_lock in RLS tenant list', pgMigrate.includes('"scheduling_booking_lock"'));
 
-// ── 8. Lock TTL ─────────────────────────────────────────────
+// -- 8. Lock TTL ---------------------------------------------
 console.log('\nLock TTL semantics:');
 gate(
   'pg-scheduling-lock-repo deletes expired before acquire',
@@ -292,7 +292,7 @@ gate(
 );
 gate('vista-adapter LOCK_TTL_MS defined', schedAdapter.includes('LOCK_TTL_MS'));
 
-// ── 9. Phase 128 VERIFY fixes ───────────────────────────────
+// -- 9. Phase 128 VERIFY fixes -------------------------------
 console.log('\nPhase 128 VERIFY fixes:');
 gate(
   'rowToLinkage falls back to createdAt for linkedAt',
@@ -328,7 +328,7 @@ gate(
   pgSlRepo?.includes('tenantId') && pgSlRepo?.includes('releaseLock') ? true : false
 );
 
-// ── Summary ─────────────────────────────────────────────────
+// -- Summary -------------------------------------------------
 console.log(`\n${'='.repeat(50)}`);
 console.log(`Phase 128 Imaging+Scheduling Restart Gate: ${pass} PASS / ${fail} FAIL`);
 

@@ -1,11 +1,11 @@
 /**
- * Phase 158: Specialty Template & Workflow Studio — Types
+ * Phase 158: Specialty Template & Workflow Studio -- Types
  *
  * Template DSL for structured clinical documentation with VistA TIU alignment.
- * Templates are orchestration metadata — clinical truth always lives in VistA.
+ * Templates are orchestration metadata -- clinical truth always lives in VistA.
  */
 
-// ─── Template Core Types ───────────────────────────────────────────
+// --- Template Core Types -------------------------------------------
 
 export type TemplateSetting = 'inpatient' | 'outpatient' | 'ed' | 'any';
 export type TemplateStatus = 'draft' | 'published' | 'archived';
@@ -34,7 +34,7 @@ export interface MappingTarget {
   /** VistA RPC to read source data (or "integration_pending" with target) */
   vistaReadRpc?: string;
   vistaReadStatus?: 'available' | 'integration_pending';
-  /** Billing code suggestion (ICD/CPT) — stored as suggestion only, never auto-coded */
+  /** Billing code suggestion (ICD/CPT) -- stored as suggestion only, never auto-coded */
   billingSuggestion?: string;
   /** Freeform mapping note */
   note?: string;
@@ -115,7 +115,7 @@ export interface QuickText {
   updatedAt: string;
 }
 
-// ─── Note Builder Types ────────────────────────────────────────────
+// --- Note Builder Types --------------------------------------------
 
 export interface NoteBuilderInput {
   templateId: string;
@@ -140,7 +140,7 @@ export interface NoteBuilderOutput {
   sectionsRendered: number;
 }
 
-// ─── Specialty Pack Types ──────────────────────────────────────────
+// --- Specialty Pack Types ------------------------------------------
 
 export interface SpecialtyPack {
   packId: string;
@@ -151,7 +151,7 @@ export interface SpecialtyPack {
   templates: Omit<ClinicalTemplate, 'id' | 'tenantId' | 'createdAt' | 'updatedAt'>[];
 }
 
-// ─── All 45 Specialty Tags ─────────────────────────────────────────
+// --- All 45 Specialty Tags -----------------------------------------
 
 export const SPECIALTY_TAGS = [
   'primary-care',

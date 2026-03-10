@@ -63,7 +63,7 @@ export type RbacPermission =
   | 'migration:admin';
 
 /**
- * Role → permission mapping. Principle of least privilege.
+ * Role -> permission mapping. Principle of least privilege.
  *
  * | Role        | Clinical | RCM      | Imaging  | Analytics | Admin | Audit |
  * |-------------|----------|----------|----------|-----------|-------|-------|

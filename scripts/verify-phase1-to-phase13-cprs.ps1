@@ -579,7 +579,7 @@ try {
 } catch {
     $statusCode = $null
     if ($_.Exception.Response) { $statusCode = [int]$_.Exception.Response.StatusCode }
-    Assert-Check "POST /auth/login (bad creds → 401)" ($statusCode -eq 401) "Status: $statusCode"
+    Assert-Check "POST /auth/login (bad creds -> 401)" ($statusCode -eq 401) "Status: $statusCode"
 }
 
 # Logout
@@ -619,7 +619,7 @@ try {
 Write-Host ""
 Write-Host "  --- Phase 13 Console Gateway ---" -ForegroundColor Yellow
 
-# WebSocket endpoint (HTTP-level check — verify it exists and rejects without token)
+# WebSocket endpoint (HTTP-level check -- verify it exists and rejects without token)
 try {
     Invoke-WebRequest -Uri "$apiBase/ws/console" -TimeoutSec 5 -UseBasicParsing -ErrorAction Stop
     Warn-Check "GET /ws/console (no token)" "Expected upgrade or rejection"

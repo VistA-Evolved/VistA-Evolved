@@ -1,5 +1,5 @@
 /**
- * PhilHealth eClaims 3.0 — API Routes
+ * PhilHealth eClaims 3.0 -- API Routes
  *
  * Phase 96: Fastify plugin exposing the eClaims 3.0 adapter skeleton.
  *
@@ -7,18 +7,18 @@
  * Auth: session-level via /rcm/ catch-all in security.ts AUTH_RULES.
  *
  * Endpoints:
- *   GET  /rcm/eclaims3/status          — Adapter status + spec gates
- *   POST /rcm/eclaims3/packets         — Build ClaimPacket from draft ID
- *   GET  /rcm/eclaims3/packets/:id     — Get a built packet
- *   POST /rcm/eclaims3/packets/:id/export — Generate export bundle
- *   GET  /rcm/eclaims3/submissions     — List submission records
- *   GET  /rcm/eclaims3/submissions/:id — Get submission detail
- *   PUT  /rcm/eclaims3/submissions/:id/status — Transition status
- *   POST /rcm/eclaims3/submissions/:id/denial — Record denial reason
- *   POST /rcm/eclaims3/submissions/:id/acceptance — Record acceptance (TCN)
- *   POST /rcm/eclaims3/submissions/:id/note — Add staff note
- *   GET  /rcm/eclaims3/submissions/stats — Submission stats
- *   GET  /rcm/eclaims3/spec-gates      — Spec acquisition gate status
+ *   GET  /rcm/eclaims3/status          -- Adapter status + spec gates
+ *   POST /rcm/eclaims3/packets         -- Build ClaimPacket from draft ID
+ *   GET  /rcm/eclaims3/packets/:id     -- Get a built packet
+ *   POST /rcm/eclaims3/packets/:id/export -- Generate export bundle
+ *   GET  /rcm/eclaims3/submissions     -- List submission records
+ *   GET  /rcm/eclaims3/submissions/:id -- Get submission detail
+ *   PUT  /rcm/eclaims3/submissions/:id/status -- Transition status
+ *   POST /rcm/eclaims3/submissions/:id/denial -- Record denial reason
+ *   POST /rcm/eclaims3/submissions/:id/acceptance -- Record acceptance (TCN)
+ *   POST /rcm/eclaims3/submissions/:id/note -- Add staff note
+ *   GET  /rcm/eclaims3/submissions/stats -- Submission stats
+ *   GET  /rcm/eclaims3/spec-gates      -- Spec acquisition gate status
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -46,7 +46,7 @@ import {
   type ExportFormat,
 } from './types.js';
 
-/* ── Packet Cache (in-memory) ───────────────────────────────── */
+/* -- Packet Cache (in-memory) --------------------------------- */
 
 const packetCache = new Map<string, ClaimPacket>();
 const exportCache = new Map<string, ReturnType<typeof generateExportBundle>>();
@@ -74,10 +74,10 @@ function requireTenantId(request: FastifyRequest, reply: FastifyReply): string |
   return null;
 }
 
-/* ── Plugin ─────────────────────────────────────────────────── */
+/* -- Plugin --------------------------------------------------- */
 
 export default async function eclaims3Routes(server: FastifyInstance): Promise<void> {
-  /* ── GET /rcm/eclaims3/status ─────────────────────────────── */
+  /* -- GET /rcm/eclaims3/status ------------------------------- */
   server.get('/rcm/eclaims3/status', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
     if (!tenantId) return;
@@ -96,7 +96,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     };
   });
 
-  /* ── GET /rcm/eclaims3/spec-gates ─────────────────────────── */
+  /* -- GET /rcm/eclaims3/spec-gates --------------------------- */
   server.get('/rcm/eclaims3/spec-gates', async () => {
     const completed = SPEC_ACQUISITION_GATES.filter((g) => g.status === 'completed').length;
     return {
@@ -106,7 +106,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     };
   });
 
-  /* ── POST /rcm/eclaims3/packets ───────────────────────────── */
+  /* -- POST /rcm/eclaims3/packets ----------------------------- */
   server.post('/rcm/eclaims3/packets', async (request: FastifyRequest, reply: FastifyReply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const draftId = body.draftId as string;
@@ -157,7 +157,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     };
   });
 
-  /* ── GET /rcm/eclaims3/packets/:id ────────────────────────── */
+  /* -- GET /rcm/eclaims3/packets/:id -------------------------- */
   server.get('/rcm/eclaims3/packets/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const { id } = request.params as { id: string };
     const packet = packetCache.get(id);
@@ -172,7 +172,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     };
   });
 
-  /* ── POST /rcm/eclaims3/packets/:id/export ────────────────── */
+  /* -- POST /rcm/eclaims3/packets/:id/export ------------------ */
   server.post(
     '/rcm/eclaims3/packets/:id/export',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -221,7 +221,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     }
   );
 
-  /* ── GET /rcm/eclaims3/submissions ────────────────────────── */
+  /* -- GET /rcm/eclaims3/submissions -------------------------- */
   server.get('/rcm/eclaims3/submissions', async (request: FastifyRequest, reply: FastifyReply) => {
     const query = request.query as Record<string, string>;
     const status = query.status as EClaimsSubmissionStatus | undefined;
@@ -237,14 +237,14 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     };
   });
 
-  /* ── GET /rcm/eclaims3/submissions/stats ──────────────────── */
+  /* -- GET /rcm/eclaims3/submissions/stats -------------------- */
   server.get('/rcm/eclaims3/submissions/stats', async (request: FastifyRequest, reply: FastifyReply) => {
     const tenantId = requireTenantId(request, reply);
     if (!tenantId) return;
     return { ok: true, ...getSubmissionStats(tenantId) };
   });
 
-  /* ── GET /rcm/eclaims3/submissions/:id ────────────────────── */
+  /* -- GET /rcm/eclaims3/submissions/:id ---------------------- */
   server.get(
     '/rcm/eclaims3/submissions/:id',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -259,7 +259,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     }
   );
 
-  /* ── PUT /rcm/eclaims3/submissions/:id/status ─────────────── */
+  /* -- PUT /rcm/eclaims3/submissions/:id/status --------------- */
   server.put(
     '/rcm/eclaims3/submissions/:id/status',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -281,7 +281,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
         if (!confirmation) {
           return reply.status(400).send({
             ok: false,
-            error: `Status '${toStatus}' requires staffConfirmation: true — this is a manual-only transition.`,
+            error: `Status '${toStatus}' requires staffConfirmation: true -- this is a manual-only transition.`,
           });
         }
       }
@@ -295,7 +295,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     }
   );
 
-  /* ── POST /rcm/eclaims3/submissions/:id/denial ────────────── */
+  /* -- POST /rcm/eclaims3/submissions/:id/denial -------------- */
   server.post(
     '/rcm/eclaims3/submissions/:id/denial',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -321,7 +321,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     }
   );
 
-  /* ── POST /rcm/eclaims3/submissions/:id/acceptance ─────────── */
+  /* -- POST /rcm/eclaims3/submissions/:id/acceptance ----------- */
   server.post(
     '/rcm/eclaims3/submissions/:id/acceptance',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -333,7 +333,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
       if (!tcn) {
         return reply.status(400).send({
           ok: false,
-          error: 'transmittalControlNumber is required — enter the TCN from PhilHealth.',
+          error: 'transmittalControlNumber is required -- enter the TCN from PhilHealth.',
         });
       }
 
@@ -348,7 +348,7 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
     }
   );
 
-  /* ── POST /rcm/eclaims3/submissions/:id/note ──────────────── */
+  /* -- POST /rcm/eclaims3/submissions/:id/note ---------------- */
   server.post(
     '/rcm/eclaims3/submissions/:id/note',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -372,5 +372,5 @@ export default async function eclaims3Routes(server: FastifyInstance): Promise<v
   );
 }
 
-/* ── Type helper for denial category ────────────────────────── */
+/* -- Type helper for denial category -------------------------- */
 type DenialCategory = 'documentation' | 'eligibility' | 'coding' | 'timely_filing' | 'other';

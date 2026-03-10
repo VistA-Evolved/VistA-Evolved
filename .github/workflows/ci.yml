@@ -15,7 +15,7 @@ env:
   PNPM_VERSION: '10.29.2'
 
 jobs:
-  # ── JOB 1: Code quality checks ────────────────────────────────────
+  # -- JOB 1: Code quality checks ------------------------------------
   quality-check:
     runs-on: ubuntu-latest
     steps:
@@ -51,7 +51,7 @@ jobs:
       - name: TypeScript type check (locale-utils)
         run: pnpm -C packages/locale-utils exec tsc --noEmit
 
-  # ── JOB 2: Unit tests ─────────────────────────────────────────────
+  # -- JOB 2: Unit tests ---------------------------------------------
   unit-tests:
     runs-on: ubuntu-latest
     needs: quality-check
@@ -83,7 +83,7 @@ jobs:
           path: apps/api/coverage/
           retention-days: 14
 
-  # ── JOB 3: Integration tests ───────────────────────────────────────
+  # -- JOB 3: Integration tests ---------------------------------------
   integration-tests:
     runs-on: ubuntu-latest
     needs: unit-tests
@@ -132,7 +132,7 @@ jobs:
           PLATFORM_PG_URL: postgresql://postgres@localhost:5432/vista_test
           REDIS_URL: ${{ format('{0}{1}localhost:{2}', 'redis', '://', '6379') }}
 
-  # ── JOB 4: Build check ────────────────────────────────────────────
+  # -- JOB 4: Build check --------------------------------------------
   build-check:
     runs-on: ubuntu-latest
     needs: quality-check
@@ -154,7 +154,7 @@ jobs:
       - name: Build all packages
         run: pnpm run build
 
-  # ── JOB 5: QA Gauntlet (RC on main, FAST on branches) ───────────
+  # -- JOB 5: QA Gauntlet (RC on main, FAST on branches) -----------
   qa-gauntlet:
     runs-on: ubuntu-latest
     needs: [unit-tests, build-check]

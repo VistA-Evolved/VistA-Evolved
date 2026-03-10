@@ -1,7 +1,7 @@
 /**
- * Server — Lifecycle: Startup & Shutdown
+ * Server -- Lifecycle: Startup & Shutdown
  *
- * Phase 173: Extracted from index.ts — all post-listen startup logic including
+ * Phase 173: Extracted from index.ts -- all post-listen startup logic including
  * PG init, repo wiring, Phase 146 durability wave, analytics, ETL,
  * background jobs, and shutdown.
  */
@@ -241,6 +241,21 @@ async function initPostgresLayer(): Promise<void> {
     log.warn('PG imaging worklist repo wire failed (in-memory fallback)', { error: iwErr.message });
   }
 
+  // Inpatient store -> PG (v66 migration)
+  try {
+    const { pgInpatientRepo } = await import('../platform/pg/repo/index.js');
+    const { initInpatientRepos } = await import('../inpatient/inpatient-store.js');
+    initInpatientRepos({
+      bedAssignment: pgInpatientRepo.createBedAssignmentRepo(),
+      adtEvent: pgInpatientRepo.createAdtEventRepo(),
+      flowsheetRow: pgInpatientRepo.createFlowsheetRowRepo(),
+      vitalsEntry: pgInpatientRepo.createVitalsEntryRepo(),
+    });
+    log.info('Inpatient store wired to PG');
+  } catch (ipErr: any) {
+    log.warn('PG inpatient repo wire failed (in-memory fallback)', { error: (ipErr as Error).message });
+  }
+
   // Phase 128: Imaging ingest store -> PG
   try {
     const pgIiRepo = await import('../platform/pg/repo/pg-imaging-ingest-repo.js');
@@ -282,9 +297,9 @@ async function initPostgresLayer(): Promise<void> {
     log.warn('PG scheduling lifecycle repo not available (non-fatal)', { error: lcErr.message });
   }
 
-  // ═══════════════════════════════════════════════════════════════════
-  // W38: Service Lines + Devices v2 — wire in-memory stores to PG
-  // ═══════════════════════════════════════════════════════════════════
+  // ===================================================================
+  // W38: Service Lines + Devices v2 -- wire in-memory stores to PG
+  // ===================================================================
 
   // W38: ED store -> PG
   try {
@@ -336,9 +351,9 @@ async function initPostgresLayer(): Promise<void> {
     log.warn('PG radiology repo wire failed (in-memory fallback)', { error: radErr.message });
   }
 
-  // ═══════════════════════════════════════════════════════════════════
-  // Phase 146: Durability Wave — wire all critical Map stores to PG
-  // ═══════════════════════════════════════════════════════════════════
+  // ===================================================================
+  // Phase 146: Durability Wave -- wire all critical Map stores to PG
+  // ===================================================================
   try {
     const DR = await import('../platform/pg/repo/durability-repos.js');
 
@@ -454,7 +469,7 @@ async function initPostgresLayer(): Promise<void> {
     // patient-safety and data-durability failure. Fail loud.
     const mode = getRuntimeMode();
     if (mode === 'rc' || mode === 'prod') {
-      log.fatal('Phase 146 durability wire failed in production mode — refusing to start with volatile stores', {
+      log.fatal('Phase 146 durability wire failed in production mode -- refusing to start with volatile stores', {
         error: d146Err.message,
         mode,
       });
@@ -465,9 +480,9 @@ async function initPostgresLayer(): Promise<void> {
     });
   }
 
-  // ═══════════════════════════════════════════════════════════════════
+  // ===================================================================
   // Wave 41: Restart-Safe Writeback + Durable Ops Stores (PG Wiring)
-  // ═══════════════════════════════════════════════════════════════════
+  // ===================================================================
   try {
     const W41 = await import('../platform/pg/repo/w41-durable-repos.js');
 
@@ -515,7 +530,7 @@ async function initPostgresLayer(): Promise<void> {
   } catch (w41Err: any) {
     const mode = getRuntimeMode();
     if (mode === 'rc' || mode === 'prod') {
-      log.fatal('Wave 41 durability wire failed in production mode — refusing to start with volatile stores', {
+      log.fatal('Wave 41 durability wire failed in production mode -- refusing to start with volatile stores', {
         error: w41Err.message,
         mode,
       });

@@ -1,11 +1,11 @@
 /**
- * PhilHealth eClaims 3.0 — Claim Packet Builder
+ * PhilHealth eClaims 3.0 -- Claim Packet Builder
  *
  * Phase 96: Assembles a normalized ClaimPacket from a PhilHealthClaimDraft.
  *
  * VistA-first: All clinical/billing data is sourced from the Phase 90
  * PhilHealthClaimDraft, which itself is grounded in VistA encounter data.
- * This builder does NOT recreate billing logic — it packages what VistA provides.
+ * This builder does NOT recreate billing logic -- it packages what VistA provides.
  *
  * The ClaimPacket is the single canonical internal object from which all
  * export formats (JSON, PDF text, XML) are generated.
@@ -15,13 +15,13 @@ import { createHash, randomBytes } from 'node:crypto';
 import type { PhilHealthClaimDraft } from '../payerOps/philhealth-types.js';
 import type { ClaimPacket } from './types.js';
 
-/* ── Packet ID Generation ───────────────────────────────────── */
+/* -- Packet ID Generation ------------------------------------- */
 
 function newPacketId(): string {
   return `pkt-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
-/* ── Content Hashing ────────────────────────────────────────── */
+/* -- Content Hashing ------------------------------------------ */
 
 function hashPacketContent(packet: Omit<ClaimPacket, 'contentHash'>): string {
   const serialized = JSON.stringify({
@@ -39,7 +39,7 @@ function hashPacketContent(packet: Omit<ClaimPacket, 'contentHash'>): string {
   return createHash('sha256').update(serialized).digest('hex');
 }
 
-/* ── Builder ────────────────────────────────────────────────── */
+/* -- Builder -------------------------------------------------- */
 
 export interface PacketBuilderOptions {
   facilityCode: string;

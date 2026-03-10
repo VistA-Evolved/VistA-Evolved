@@ -1,5 +1,5 @@
 /**
- * Hardening Routes — Phase 118: Go-Live Hardening Pack
+ * Hardening Routes -- Phase 118: Go-Live Hardening Pack
  *
  * Unified audit verification + backup status + security posture endpoints.
  * All routes under /hardening/* require admin auth (AUTH_RULES catch-all).
@@ -7,8 +7,9 @@
 
 import type { FastifyInstance } from 'fastify';
 import { log } from '../lib/logger.js';
+import { safeErr } from '../lib/safe-error.js';
 
-/* ── Lazy imports — avoid circular deps at module load time ── */
+/* -- Lazy imports -- avoid circular deps at module load time -- */
 
 async function verifyIamAudit() {
   try {
@@ -28,7 +29,7 @@ async function verifyIamAudit() {
   } catch (e: any) {
     return {
       chain: 'iam',
-      memory: { valid: false, totalEntries: 0, error: e.message },
+      memory: { valid: false, totalEntries: 0, error: safeErr(e) },
       file: { valid: false, totalEntries: 0, error: 'unavailable' },
     };
   }
@@ -41,7 +42,7 @@ async function verifyImagingAudit() {
     const stats = mod.getChainStats();
     return { chain: 'imaging', memory: { valid, totalEntries: stats.totalEntries } };
   } catch (e: any) {
-    return { chain: 'imaging', memory: { valid: false, totalEntries: 0, error: e.message } };
+    return { chain: 'imaging', memory: { valid: false, totalEntries: 0, error: safeErr(e) } };
   }
 }
 
@@ -51,11 +52,11 @@ async function verifyRcmAudit() {
     const result = mod.verifyRcmAuditChain();
     return { chain: 'rcm', memory: result };
   } catch (e: any) {
-    return { chain: 'rcm', memory: { valid: false, totalEntries: 0, error: e.message } };
+    return { chain: 'rcm', memory: { valid: false, totalEntries: 0, error: safeErr(e) } };
   }
 }
 
-/* ── Route Plugin ──────────────────────────────────────────── */
+/* -- Route Plugin -------------------------------------------- */
 
 export default async function hardeningRoutes(server: FastifyInstance): Promise<void> {
   /**
@@ -164,7 +165,7 @@ export default async function hardeningRoutes(server: FastifyInstance): Promise<
 
   /**
    * GET /hardening/rc-checklist
-   * Release candidate readiness checklist — machine-readable.
+   * Release candidate readiness checklist -- machine-readable.
    */
   server.get('/hardening/rc-checklist', async (_request, _reply) => {
     const checks: Array<{ name: string; status: 'pass' | 'fail' | 'warn'; detail?: string }> = [];

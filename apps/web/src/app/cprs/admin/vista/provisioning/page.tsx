@@ -4,7 +4,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { API_BASE } from '@/lib/api-config';
 import { getCsrfTokenSync } from '@/lib/csrf';
 
-/* ─── Types ──────────────────────────────────────────────────────── */
+/* --- Types -------------------------------------------------------- */
 
 interface VistaConfig {
   divisions: number;
@@ -44,7 +44,7 @@ interface ProvisionedTenant {
   createdAt: string;
 }
 
-/* ─── Styles ─────────────────────────────────────────────────────── */
+/* --- Styles ------------------------------------------------------- */
 
 const COLOR = {
   bg: '#f8fafc',
@@ -394,7 +394,7 @@ const MODULE_LABELS: Record<string, string> = {
 
 const LOCKED_MODULES = new Set(['kernel']);
 
-/* ─── Progress Bar ───────────────────────────────────────────────── */
+/* --- Progress Bar ------------------------------------------------- */
 
 function ProgressBar({ step }: { step: number }) {
   return (
@@ -416,7 +416,7 @@ function ProgressBar({ step }: { step: number }) {
   );
 }
 
-/* ─── Step 1: Entity Type ────────────────────────────────────────── */
+/* --- Step 1: Entity Type ------------------------------------------ */
 
 function StepEntityType({
   entityTypes,
@@ -463,7 +463,7 @@ function StepEntityType({
   );
 }
 
-/* ─── Step 2: Organization Details ───────────────────────────────── */
+/* --- Step 2: Organization Details --------------------------------- */
 
 function StepOrgDetails({
   orgName,
@@ -520,7 +520,7 @@ function StepOrgDetails({
   );
 }
 
-/* ─── Step 3: Module Selection ───────────────────────────────────── */
+/* --- Step 3: Module Selection ------------------------------------- */
 
 function StepModules({
   entityType,
@@ -577,7 +577,7 @@ function StepModules({
   );
 }
 
-/* ─── Step 4: Review ─────────────────────────────────────────────── */
+/* --- Step 4: Review ----------------------------------------------- */
 
 function StepReview({
   entityTypes,
@@ -624,11 +624,11 @@ function StepReview({
       <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12 }}>
         <div style={S.reviewSection}>
           <div style={S.reviewLabel}>SKU</div>
-          <div style={S.reviewValue}>{et?.defaultSku || '—'}</div>
+          <div style={S.reviewValue}>{et?.defaultSku || '--'}</div>
         </div>
         <div style={S.reviewSection}>
           <div style={S.reviewLabel}>Max Providers</div>
-          <div style={S.reviewValue}>{et?.maxProviders?.toLocaleString() || '—'}</div>
+          <div style={S.reviewValue}>{et?.maxProviders?.toLocaleString() || '--'}</div>
         </div>
       </div>
       <div style={S.reviewSection}>
@@ -642,22 +642,22 @@ function StepReview({
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12 }}>
         <div style={S.reviewSection}>
           <div style={S.reviewLabel}>Divisions</div>
-          <div style={S.reviewValue}>{et?.vistaConfig.divisions ?? '—'}</div>
+          <div style={S.reviewValue}>{et?.vistaConfig.divisions ?? '--'}</div>
         </div>
         <div style={S.reviewSection}>
           <div style={S.reviewLabel}>Max Clinics</div>
-          <div style={S.reviewValue}>{et?.vistaConfig.maxClinics ?? '—'}</div>
+          <div style={S.reviewValue}>{et?.vistaConfig.maxClinics ?? '--'}</div>
         </div>
         <div style={S.reviewSection}>
           <div style={S.reviewLabel}>Max Wards</div>
-          <div style={S.reviewValue}>{et?.vistaConfig.maxWards ?? '—'}</div>
+          <div style={S.reviewValue}>{et?.vistaConfig.maxWards ?? '--'}</div>
         </div>
       </div>
     </div>
   );
 }
 
-/* ─── Step 5: Confirmation ───────────────────────────────────────── */
+/* --- Step 5: Confirmation ----------------------------------------- */
 
 function StepConfirmation({
   tenant,
@@ -692,7 +692,7 @@ function StepConfirmation({
   );
 }
 
-/* ─── Main Wizard ────────────────────────────────────────────────── */
+/* --- Main Wizard -------------------------------------------------- */
 
 export default function ProvisioningWizardPage() {
   const [step, setStep] = useState(0);

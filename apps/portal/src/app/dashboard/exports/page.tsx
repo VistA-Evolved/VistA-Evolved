@@ -1,5 +1,5 @@
 /**
- * Export Health Records Page — Phase 31
+ * Export Health Records Page -- Phase 31
  *
  * Allows portal users to:
  * - Download full health record as PDF
@@ -324,7 +324,7 @@ export default function ExportPage() {
                   display: 'inline-block',
                 }}
               >
-                Development mode — not a production credential
+                Development mode -- not a production credential
               </p>
             )}
             <div style={{ marginTop: 8 }}>

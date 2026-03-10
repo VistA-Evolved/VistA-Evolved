@@ -36,7 +36,6 @@ import { safeCallRpc } from '../lib/rpc-resilience.js';
 import { hashPatientId, portalAudit } from '../services/portal-audit.js';
 import { authenticateUser } from '../portal-iam/portal-user-store.js';
 import { validateCredentials } from '../vista/config.js';
-import { connect, disconnect, callRpc } from '../vista/rpcBrokerClient.js';
 import {
   hashPortalToken,
   listActivePortalSessions,
@@ -75,7 +74,7 @@ setInterval(() => {
       portalSessions.delete(tokenHash);
     }
   }
-}, 60_000);
+}, 60_000).unref();
 
 function parsePatientName(dataJson: string): string {
   try {
@@ -197,7 +196,7 @@ function createPortalSession(tenantId: string, dfn: string, name: string): strin
     createdAt: new Date(now).toISOString(),
     expiresAt: new Date(now + PORTAL_SESSION_TTL_MS).toISOString(),
     lastActivityAt: new Date(now).toISOString(),
-  });
+  }).catch((e) => log.warn('Portal session PG upsert failed', { error: String(e) }));
 
   return token;
 }
@@ -221,7 +220,7 @@ export function getPortalSession(request: FastifyRequest): PortalSessionData | n
   session.lastActivity = now;
 
   // Phase 150: Touch PG session timestamp (fire-and-forget, best-effort)
-  void touchPortalSession(tokenHash);
+  void touchPortalSession(tokenHash).catch((e) => log.warn('Portal session PG touch failed', { error: String(e) }));
 
   return session;
 }
@@ -256,7 +255,175 @@ const COOKIE_OPTS = {
 /* ------------------------------------------------------------------ */
 
 export default async function portalAuthRoutes(server: FastifyInstance): Promise<void> {
-  // ─── POST /portal/auth/login ───
+  // --- POST /portal/auth/register ---
+  // Independent patient portal registration:
+  //   1. Patient provides lastName, firstName, dob, last4ssn
+  //   2. System calls VE PAT SEARCH to find matching patient in VistA
+  //   3. If exactly one match, creates portal account linked to that DFN
+  //   4. If no match, returns guidance to contact the facility
+  server.post('/portal/auth/register', async (request, reply) => {
+    const ip = (request.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || request.ip;
+
+    if (!checkLoginRate(ip)) {
+      portalAudit('portal.register.rate_limited', 'failure', 'unknown', {
+        tenantId: 'unknown',
+        sourceIp: ip,
+        detail: { reason: 'rate_limited' },
+      });
+      return reply.code(429).send({
+        ok: false,
+        error: 'Too many attempts. Please try again later.',
+      });
+    }
+
+    const body = (request.body as any) || {};
+    const { lastName, firstName, dob, last4ssn, email, password } = body;
+
+    if (!lastName || !firstName || !dob) {
+      return reply.code(400).send({
+        ok: false,
+        error: 'lastName, firstName, and dob are required',
+      });
+    }
+
+    if (!email || !password) {
+      return reply.code(400).send({
+        ok: false,
+        error: 'email and password are required for account creation',
+      });
+    }
+
+    if (typeof password === 'string' && password.length < 8) {
+      return reply.code(400).send({
+        ok: false,
+        error: 'Password must be at least 8 characters',
+      });
+    }
+
+    const rpcUsed: string[] = ['VE PAT SEARCH'];
+
+    try {
+      validateCredentials();
+      const searchName = `${String(lastName).trim().toUpperCase()},${String(firstName).trim().toUpperCase()}`;
+      const lines = await safeCallRpc('VE PAT SEARCH', [searchName, 'NAME']);
+
+      const matches = lines
+        .filter((l) => l.trim())
+        .map((line) => {
+          const parts = line.split('^');
+          return {
+            dfn: parts[0]?.trim() || '',
+            name: parts[1]?.trim() || '',
+            dob: parts[2]?.trim() || '',
+            sex: parts[3]?.trim() || '',
+            ssn4: parts[4]?.trim()?.slice(-4) || '',
+          };
+        })
+        .filter((m) => m.dfn && /^\d+$/.test(m.dfn));
+
+      const dobNorm = String(dob).replace(/-/g, '').trim();
+      const last4 = String(last4ssn || '').replace(/\D/g, '').slice(-4);
+
+      const verified = matches.filter((m) => {
+        const mDob = m.dob.replace(/-/g, '').replace(/\./g, '').trim();
+        let mDobNorm = mDob;
+        if (/^\d{7}$/.test(mDob)) {
+          const y = parseInt(mDob.substring(0, 3), 10) + 1700;
+          mDobNorm = `${y}${mDob.substring(3, 5)}${mDob.substring(5, 7)}`;
+        }
+        const dobMatch = mDobNorm === dobNorm || mDob === dobNorm;
+        if (!dobMatch) return false;
+        if (last4 && last4.length === 4 && m.ssn4) {
+          return m.ssn4 === last4;
+        }
+        return true;
+      });
+
+      if (verified.length === 0) {
+        portalAudit('portal.register.no_match', 'failure', 'unknown', {
+          tenantId: 'unknown',
+          sourceIp: ip,
+          detail: { reason: 'no_matching_patient' },
+        });
+        return reply.code(404).send({
+          ok: false,
+          error: 'No matching patient record found. Please contact your healthcare facility to register.',
+          rpcUsed,
+          source: 'vista',
+        });
+      }
+
+      if (verified.length > 1) {
+        portalAudit('portal.register.ambiguous', 'failure', 'unknown', {
+          tenantId: 'unknown',
+          sourceIp: ip,
+          detail: { reason: 'multiple_matches', count: verified.length },
+        });
+        return reply.code(409).send({
+          ok: false,
+          error: 'Multiple matching records found. Please contact your healthcare facility for assistance.',
+          rpcUsed,
+          source: 'vista',
+        });
+      }
+
+      const patient = verified[0];
+      const { createUser } = await import('../portal-iam/portal-user-store.js');
+      const username = String(email).toLowerCase().trim();
+      const displayName = `${String(firstName).trim()} ${String(lastName).trim()}`;
+
+      try {
+        const user = await createUser(username, username, password, displayName, {
+          dfn: patient.dfn,
+          name: patient.name,
+        });
+
+        const tenantId = user.tenantId || 'default';
+        const token = createPortalSession(tenantId, patient.dfn, patient.name);
+
+        portalAudit('portal.register', 'success', patient.dfn, {
+          tenantId,
+          sourceIp: ip,
+        });
+
+        log.info('Portal registration succeeded');
+
+        reply.setCookie(PORTAL_COOKIE, token, COOKIE_OPTS);
+        return reply.send({
+          ok: true,
+          registered: true,
+          patientName: patient.name,
+          rpcUsed,
+          source: 'vista',
+        });
+      } catch (userErr: any) {
+        const msg = String(userErr?.message || '');
+        if (msg.includes('already exists') || msg.includes('already registered')) {
+          return reply.code(409).send({
+            ok: false,
+            error: 'An account with this email already exists. Please log in instead.',
+            rpcUsed,
+            source: 'vista',
+          });
+        }
+        throw userErr;
+      }
+    } catch (err: any) {
+      portalAudit('portal.register.error', 'failure', 'unknown', {
+        tenantId: 'unknown',
+        sourceIp: ip,
+        detail: { reason: 'rpc_error' },
+      });
+      return reply.code(502).send({
+        ok: false,
+        error: 'Unable to verify identity at this time. Please try again later.',
+        rpcUsed,
+        source: 'vista',
+      });
+    }
+  });
+
+  // --- POST /portal/auth/login ---
   server.post('/portal/auth/login', async (request, reply) => {
     const ip = (request.headers['x-forwarded-for'] as string)?.split(',')[0]?.trim() || request.ip;
 
@@ -320,7 +487,7 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
     });
   });
 
-  // ─── POST /portal/auth/logout ───
+  // --- POST /portal/auth/logout ---
   server.post('/portal/auth/logout', async (request, reply) => {
     const cookie = (request as any).cookies?.[PORTAL_COOKIE];
     if (cookie) {
@@ -334,14 +501,14 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
       }
       portalSessions.delete(tokenHash);
       // Phase 150: Revoke in PG (fire-and-forget)
-      void revokePortalSession(tokenHash);
+      void revokePortalSession(tokenHash).catch((e) => log.warn('Portal session PG revoke failed', { error: String(e) }));
     }
 
     reply.clearCookie(PORTAL_COOKIE, { path: '/' });
     return reply.send({ ok: true });
   });
 
-  // ─── GET /portal/auth/session ───
+  // --- GET /portal/auth/session ---
   server.get('/portal/auth/session', async (request, reply) => {
     const session = getPortalSession(request);
     if (!session) {
@@ -354,7 +521,7 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
     });
   });
 
-  // ─── Portal Health Data Proxy Routes ───
+  // --- Portal Health Data Proxy Routes ---
   // These routes call VistA RPCs directly with the portal session's DFN.
   // Read-only. No clinician-only controls exposed.
 
@@ -376,9 +543,7 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
 
     try {
       validateCredentials();
-      await connect();
-      const lines = await callRpc(rpcName, params);
-      disconnect();
+      const lines = await safeCallRpc(rpcName, params);
       const results = parser(lines);
       return reply.send({
         ok: true,
@@ -389,19 +554,14 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
         rpcUsed: rpcName,
       });
     } catch (err: any) {
-      try {
-        disconnect();
-      } catch {}
-      // If VistA unavailable, return integration-pending instead of crashing
       return reply.send({
         ok: true,
         source: 'vista',
         resource,
         count: 0,
         results: [],
-        _integration: 'pending',
-        _rpc: rpcName,
-        _error: err.message?.includes('ECONNREFUSED') ? 'VistA unavailable' : undefined,
+        rpcUsed: rpcName,
+        _error: err.message?.includes('ECONNREFUSED') ? 'VistA unavailable' : String(err.message || ''),
       });
     }
   }
@@ -585,10 +745,8 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
 
     try {
       validateCredentials();
-      await connect();
       // Params: DFN, startDate(FM), endDate(FM) -- empty strings fetch all
-      const lines = await callRpc('ORWLRR INTERIM', [session.patientDfn, '', '']);
-      disconnect();
+      const lines = await safeCallRpc('ORWLRR INTERIM', [session.patientDfn, '', '']);
       // Parse structured lab results from caret-delimited or free-text lines
       const results: {
         testName: string;
@@ -643,18 +801,14 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
           : {}),
       });
     } catch (err: any) {
-      try {
-        disconnect();
-      } catch {}
       return reply.send({
         ok: true,
         source: 'vista',
         resource: 'labs',
         count: 0,
         results: [],
-        _integration: 'pending',
-        _rpc: 'ORWLRR INTERIM',
-        _error: err.message?.includes('ECONNREFUSED') ? 'VistA unavailable' : undefined,
+        rpcUsed: 'ORWLRR INTERIM',
+        _error: err.message?.includes('ECONNREFUSED') ? 'VistA unavailable' : String(err.message || ''),
       });
     }
   });
@@ -745,9 +899,8 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
 
     try {
       validateCredentials();
-      await connect();
       // CLASS=244 for Discharge Summaries; merge signed (1) and unsigned (2)
-      const signedLines = await callRpc('TIU DOCUMENTS BY CONTEXT', [
+      const signedLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [
         '244',
         '1',
         session.patientDfn,
@@ -757,7 +910,7 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
         '0',
         'D',
       ]);
-      const unsignedLines = await callRpc('TIU DOCUMENTS BY CONTEXT', [
+      const unsignedLines = await safeCallRpc('TIU DOCUMENTS BY CONTEXT', [
         '244',
         '2',
         session.patientDfn,
@@ -767,7 +920,6 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
         '0',
         'D',
       ]);
-      disconnect();
       const seenIens = new Set<string>();
       const allLines: string[] = [];
       for (const line of [...unsignedLines, ...signedLines]) {
@@ -808,18 +960,14 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
         rpcUsed: 'TIU DOCUMENTS BY CONTEXT',
       });
     } catch (err: any) {
-      try {
-        disconnect();
-      } catch {}
       return reply.send({
         ok: true,
         source: 'vista',
         resource: 'dc-summaries',
         count: 0,
         results: [],
-        _integration: 'pending',
-        _rpc: 'TIU DOCUMENTS BY CONTEXT (class 244)',
-        _error: err.message?.includes('ECONNREFUSED') ? 'VistA unavailable' : undefined,
+        rpcUsed: 'TIU DOCUMENTS BY CONTEXT',
+        _error: err.message?.includes('ECONNREFUSED') ? 'VistA unavailable' : String(err.message || ''),
       });
     }
   });
@@ -875,9 +1023,8 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
           resource: 'reports',
           count: 0,
           results: [],
-          _integration: 'pending',
-          _rpc: 'ORWRP REPORT LISTS',
-          _error: err.message?.includes('ECONNREFUSED') ? 'VistA unavailable' : undefined,
+          rpcUsed: 'ORWRP REPORT LISTS',
+          _error: err.message?.includes('ECONNREFUSED') ? 'VistA unavailable' : String(err.message || ''),
         });
       }
     }
@@ -908,14 +1055,13 @@ export default async function portalAuthRoutes(server: FastifyInstance): Promise
         resource: 'reports',
         count: 0,
         results: [],
-        _integration: 'pending',
-        _rpc: 'ORWRP REPORT TEXT',
-        _error: err.message?.includes('ECONNREFUSED') ? 'VistA unavailable' : undefined,
+        rpcUsed: 'ORWRP REPORT TEXT',
+        _error: err.message?.includes('ECONNREFUSED') ? 'VistA unavailable' : String(err.message || ''),
       });
     }
   });
 
-  // ─── Portal Audit Routes (admin-only) ───
+  // --- Portal Audit Routes (admin-only) ---
   server.get('/portal/audit/events', async (request, reply) => {
     const session = requirePortalSession(request, reply);
     const { queryPortalAuditEvents } = await import('../services/portal-audit.js');

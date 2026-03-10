@@ -1,5 +1,5 @@
 /**
- * AI Help — Patient-facing AI assistant for lab education and portal navigation.
+ * AI Help -- Patient-facing AI assistant for lab education and portal navigation.
  *
  * Rules:
  * - No clinical advice, diagnosis, or treatment recommendations

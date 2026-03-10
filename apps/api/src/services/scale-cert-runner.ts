@@ -9,7 +9,7 @@
 
 import { createHash } from 'node:crypto';
 
-// ── Types ──────────────────────────────────────────────────────────────
+// -- Types --------------------------------------------------------------
 
 export type CertGateStatus = "pass" | "fail" | "warn" | "skip";
 export type CertVerdict = "CERTIFIED" | "CONDITIONAL" | "NOT_CERTIFIED";
@@ -43,7 +43,7 @@ export interface CertProfile {
   description: string;
   requiredGateIds: string[];
   minScore: number; // minimum score for CERTIFIED
-  warnScore: number; // below this → NOT_CERTIFIED, above → CONDITIONAL
+  warnScore: number; // below this -> NOT_CERTIFIED, above -> CONDITIONAL
   createdAt: string;
   updatedAt: string;
 }
@@ -82,7 +82,7 @@ export interface CertBadge {
   runId: string;
 }
 
-// ── In-memory stores ──────────────────────────────────────────────────
+// -- In-memory stores --------------------------------------------------
 
 const certRuns = new Map<string, CertRun>();
 const certProfiles = new Map<string, CertProfile>();
@@ -105,7 +105,7 @@ function genId(prefix: string): string {
   return `${prefix}-${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 8)}`;
 }
 
-// ── Gate Definitions ──────────────────────────────────────────────────
+// -- Gate Definitions --------------------------------------------------
 
 interface GateDefinition {
   id: string;
@@ -223,7 +223,7 @@ function buildGateDefinitions(): GateDefinition[] {
       name: "Recent DR Drill",
       description: "A DR drill was completed within the certification window",
       check: () => "warn",
-      detailFn: () => "No recent drill found — schedule recommended",
+      detailFn: () => "No recent drill found -- schedule recommended",
     },
 
     // Scale Performance (Phase 334)
@@ -241,7 +241,7 @@ function buildGateDefinitions(): GateDefinition[] {
       name: "Load Test Baseline Exists",
       description: "At least one completed load test run with a verdict",
       check: () => "warn",
-      detailFn: () => "No load test baseline — run recommended before certification",
+      detailFn: () => "No load test baseline -- run recommended before certification",
     },
 
     // SRE Posture (Phase 335)
@@ -298,7 +298,7 @@ function buildGateDefinitions(): GateDefinition[] {
   ];
 }
 
-// ── Certification Engine ──────────────────────────────────────────────
+// -- Certification Engine ----------------------------------------------
 
 export function runCertification(
   tenantId: string,
@@ -325,7 +325,7 @@ export function runCertification(
     // If profile specifies required gates and this isn't one, skip it
     if (profile && profile.requiredGateIds.length > 0 && !profile.requiredGateIds.includes(def.id)) {
       status = "skip";
-      detail = "Skipped — not in profile required gates";
+      detail = "Skipped -- not in profile required gates";
     }
 
     gates.push({
@@ -414,7 +414,7 @@ export function getLatestCertRun(tenantId: string): CertRun | null {
   return runs[0] ?? null;
 }
 
-// ── Cert Profiles ─────────────────────────────────────────────────────
+// -- Cert Profiles -----------------------------------------------------
 
 export function createCertProfile(
   name: string,
@@ -448,7 +448,7 @@ export function getCertProfile(id: string): CertProfile | null {
   return certProfiles.get(id) ?? null;
 }
 
-// ── Cert Schedules ────────────────────────────────────────────────────
+// -- Cert Schedules ----------------------------------------------------
 
 export function createCertSchedule(
   tenantId: string,
@@ -489,7 +489,7 @@ export function listCertSchedules(tenantId: string): CertSchedule[] {
   return [...certSchedules.values()].filter((s) => s.tenantId === tenantId);
 }
 
-// ── Trends ────────────────────────────────────────────────────────────
+// -- Trends ------------------------------------------------------------
 
 export function getCertTrends(tenantId: string, limit = 20): CertTrend[] {
   return listCertRuns(tenantId)
@@ -509,7 +509,7 @@ export function getCertTrends(tenantId: string, limit = 20): CertTrend[] {
     });
 }
 
-// ── Badge ─────────────────────────────────────────────────────────────
+// -- Badge -------------------------------------------------------------
 
 export function getCertBadge(tenantId: string): CertBadge | null {
   const latest = getLatestCertRun(tenantId);
@@ -531,7 +531,7 @@ export function getCertBadge(tenantId: string): CertBadge | null {
   };
 }
 
-// ── Gate Catalog ──────────────────────────────────────────────────────
+// -- Gate Catalog ------------------------------------------------------
 
 export function getGateCatalog(): Array<{ id: string; category: string; name: string; description: string }> {
   return buildGateDefinitions().map((d) => ({
@@ -542,7 +542,7 @@ export function getGateCatalog(): Array<{ id: string; category: string; name: st
   }));
 }
 
-// ── Audit ──────────────────────────────────────────────────────────────
+// -- Audit --------------------------------------------------------------
 
 export function getCertAuditLog(limit = 200, tenantId?: string): AuditEntry[] {
   const scoped = tenantId

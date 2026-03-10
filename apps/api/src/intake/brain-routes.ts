@@ -2,15 +2,15 @@
  * Intake Brain Routes (Phase 143)
  *
  * API endpoints for the brain plugin system:
- *   - GET  /intake/providers          — list available brain providers
- *   - GET  /intake/providers/health   — health check all providers
- *   - POST /intake/sessions/:id/brain/start     — start brain session
- *   - POST /intake/sessions/:id/brain/next      — brain-driven next question
- *   - POST /intake/sessions/:id/brain/submit    — brain-driven answer submit
- *   - POST /intake/sessions/:id/brain/summary   — brain-driven summary
- *   - POST /intake/sessions/:id/tiu-draft       — generate TIU draft note
- *   - GET  /intake/brain/audit                  — brain decision audit log
- *   - GET  /intake/brain/audit/stats            — brain audit statistics
+ *   - GET  /intake/providers          -- list available brain providers
+ *   - GET  /intake/providers/health   -- health check all providers
+ *   - POST /intake/sessions/:id/brain/start     -- start brain session
+ *   - POST /intake/sessions/:id/brain/next      -- brain-driven next question
+ *   - POST /intake/sessions/:id/brain/submit    -- brain-driven answer submit
+ *   - POST /intake/sessions/:id/brain/summary   -- brain-driven summary
+ *   - POST /intake/sessions/:id/tiu-draft       -- generate TIU draft note
+ *   - GET  /intake/brain/audit                  -- brain decision audit log
+ *   - GET  /intake/brain/audit/stats            -- brain audit statistics
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -34,6 +34,7 @@ import {
 import type { QuestionnaireResponse } from './types.js';
 import { isRpcAvailable } from '../vista/rpcCapabilities.js';
 import { log } from '../lib/logger.js';
+import { safeErr } from '../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* Session + brain state storage (in-memory)                            */
@@ -41,6 +42,7 @@ import { log } from '../lib/logger.js';
 
 /** Per-session brain state: maps sessionId -> BrainSessionState */
 const brainStates = new Map<string, BrainSessionState>();
+const MAX_BRAIN_STATES = 5000;
 
 /* ------------------------------------------------------------------ */
 /* Session resolver helpers (same pattern as intake-routes)              */
@@ -124,6 +126,10 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       const latencyMs = Date.now() - startTime;
 
       brainStates.set(id, brainState);
+      if (brainStates.size > MAX_BRAIN_STATES) {
+        const oldest = brainStates.keys().next().value;
+        if (oldest != null) brainStates.delete(oldest);
+      }
 
       // Audit
       logBrainDecision({
@@ -167,11 +173,11 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       log.error('Brain start session failed', {
         sessionId: id,
         provider: plugin.id,
-        error: err?.message,
+        error: safeErr(err),
       });
       return reply
         .code(500)
-        .send({ ok: false, error: 'Brain session start failed', detail: err?.message });
+        .send({ ok: false, error: 'Brain session start failed', detail: safeErr(err) });
     }
   });
 
@@ -267,11 +273,11 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       log.error('Brain next question failed', {
         sessionId: id,
         provider: plugin.id,
-        error: err?.message,
+        error: safeErr(err),
       });
       return reply
         .code(500)
-        .send({ ok: false, error: 'Brain next question failed', detail: err?.message });
+        .send({ ok: false, error: 'Brain next question failed', detail: safeErr(err) });
     }
   });
 
@@ -377,11 +383,11 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       log.error('Brain submit answer failed', {
         sessionId: id,
         provider: plugin.id,
-        error: err?.message,
+        error: safeErr(err),
       });
       return reply
         .code(500)
-        .send({ ok: false, error: 'Brain answer submission failed', detail: err?.message });
+        .send({ ok: false, error: 'Brain answer submission failed', detail: safeErr(err) });
     }
   });
 
@@ -468,11 +474,11 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       log.error('Brain summary generation failed', {
         sessionId: id,
         provider: plugin.id,
-        error: err?.message,
+        error: safeErr(err),
       });
       return reply
         .code(500)
-        .send({ ok: false, error: 'Brain summary generation failed', detail: err?.message });
+        .send({ ok: false, error: 'Brain summary generation failed', detail: safeErr(err) });
     }
   });
 
@@ -536,7 +542,7 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
           citationCount: summary.citations.length,
         },
         vistaIntegration: {
-          status: vistaAvailable ? ('draft_ready' as const) : ('integration_pending' as const),
+          status: vistaAvailable ? ('draft_ready' as const) : ('vista_unavailable' as const),
           vistaAvailable,
           targetRpcs: ['TIU CREATE RECORD', 'TIU SET DOCUMENT TEXT'],
           rpcStatus: {
@@ -568,11 +574,11 @@ export default async function intakeBrainRoutes(server: FastifyInstance): Promis
       log.error('TIU draft generation failed', {
         sessionId: id,
         provider: plugin.id,
-        error: err?.message,
+        error: safeErr(err),
       });
       return reply
         .code(500)
-        .send({ ok: false, error: 'TIU draft generation failed', detail: err?.message });
+        .send({ ok: false, error: 'TIU draft generation failed', detail: safeErr(err) });
     }
   });
 

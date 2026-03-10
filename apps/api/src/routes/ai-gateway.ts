@@ -1,20 +1,20 @@
 /**
- * AI Gateway — REST Routes (Phase 33)
+ * AI Gateway -- REST Routes (Phase 33)
  *
  * Endpoints:
- *   POST /ai/request           — Submit an AI request (governed pipeline)
- *   POST /ai/confirm/:id       — Clinician confirms/rejects an AI draft
- *   GET  /ai/models            — List registered models
- *   GET  /ai/prompts           — List registered prompt templates
- *   GET  /ai/audit             — Query AI audit log (admin)
- *   GET  /ai/audit/stats       — Aggregate AI audit stats (admin)
- *   GET  /ai/policy            — Get current facility AI policy
- *   PUT  /ai/policy            — Update facility AI policy (admin)
- *   GET  /ai/health            — Gateway health check
+ *   POST /ai/request           -- Submit an AI request (governed pipeline)
+ *   POST /ai/confirm/:id       -- Clinician confirms/rejects an AI draft
+ *   GET  /ai/models            -- List registered models
+ *   GET  /ai/prompts           -- List registered prompt templates
+ *   GET  /ai/audit             -- Query AI audit log (admin)
+ *   GET  /ai/audit/stats       -- Aggregate AI audit stats (admin)
+ *   GET  /ai/policy            -- Get current facility AI policy
+ *   PUT  /ai/policy            -- Update facility AI policy (admin)
+ *   GET  /ai/health            -- Gateway health check
  *
  * Portal-facing endpoints (patient/proxy):
- *   POST /ai/portal/education  — Lab education (patient-safe)
- *   POST /ai/portal/search     — Portal navigation search
+ *   POST /ai/portal/education  -- Lab education (patient-safe)
+ *   POST /ai/portal/search     -- Portal navigation search
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -28,7 +28,7 @@ import type { AIUseCase, AIActorRole } from '../ai/types.js';
 import { log } from '../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
-/* Session helpers — reuse existing patterns                            */
+/* Session helpers -- reuse existing patterns                            */
 /* ------------------------------------------------------------------ */
 
 let requireSessionFn: ((req: any, reply: any) => any) | null = null;
@@ -49,7 +49,7 @@ export function initAiRoutes(
 
 export default async function aiGatewayRoutes(server: FastifyInstance): Promise<void> {
   /* ================================================================ */
-  /* POST /ai/request — Main governed AI request                      */
+  /* POST /ai/request -- Main governed AI request                      */
   /* ================================================================ */
   server.post('/ai/request', async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: 'AI routes not initialized' });
@@ -92,7 +92,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   });
 
   /* ================================================================ */
-  /* POST /ai/confirm/:id — Clinician confirm/reject AI draft         */
+  /* POST /ai/confirm/:id -- Clinician confirm/reject AI draft         */
   /* ================================================================ */
   server.post('/ai/confirm/:id', async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: 'AI routes not initialized' });
@@ -122,7 +122,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   });
 
   /* ================================================================ */
-  /* GET /ai/models — List registered models                          */
+  /* GET /ai/models -- List registered models                          */
   /* ================================================================ */
   server.get('/ai/models', async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: 'AI routes not initialized' });
@@ -133,7 +133,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   });
 
   /* ================================================================ */
-  /* GET /ai/prompts — List registered prompt templates                */
+  /* GET /ai/prompts -- List registered prompt templates                */
   /* ================================================================ */
   server.get('/ai/prompts', async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: 'AI routes not initialized' });
@@ -144,7 +144,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   });
 
   /* ================================================================ */
-  /* GET /ai/audit — Query AI audit log (admin)                       */
+  /* GET /ai/audit -- Query AI audit log (admin)                       */
   /* ================================================================ */
   server.get('/ai/audit', async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: 'AI routes not initialized' });
@@ -168,7 +168,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   });
 
   /* ================================================================ */
-  /* GET /ai/audit/stats — Aggregate AI audit stats (admin)           */
+  /* GET /ai/audit/stats -- Aggregate AI audit stats (admin)           */
   /* ================================================================ */
   server.get('/ai/audit/stats', async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: 'AI routes not initialized' });
@@ -183,7 +183,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   });
 
   /* ================================================================ */
-  /* GET /ai/policy — Get facility AI policy                          */
+  /* GET /ai/policy -- Get facility AI policy                          */
   /* ================================================================ */
   server.get('/ai/policy', async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: 'AI routes not initialized' });
@@ -194,7 +194,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   });
 
   /* ================================================================ */
-  /* PUT /ai/policy — Update facility AI policy (admin)               */
+  /* PUT /ai/policy -- Update facility AI policy (admin)               */
   /* ================================================================ */
   server.put('/ai/policy', async (request, reply) => {
     if (!requireSessionFn) return reply.code(500).send({ error: 'AI routes not initialized' });
@@ -217,7 +217,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   });
 
   /* ================================================================ */
-  /* GET /ai/health — Gateway health check                            */
+  /* GET /ai/health -- Gateway health check                            */
   /* ================================================================ */
   server.get('/ai/health', async (_request, reply) => {
     const providers = listProviders();
@@ -244,7 +244,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   });
 
   /* ================================================================ */
-  /* POST /ai/portal/education — Patient lab education                 */
+  /* POST /ai/portal/education -- Patient lab education                 */
   /* ================================================================ */
   server.post('/ai/portal/education', async (request, reply) => {
     if (!getPortalSessionFn) return reply.code(500).send({ error: 'AI routes not initialized' });
@@ -297,7 +297,7 @@ export default async function aiGatewayRoutes(server: FastifyInstance): Promise<
   });
 
   /* ================================================================ */
-  /* POST /ai/portal/search — Portal navigation search                 */
+  /* POST /ai/portal/search -- Portal navigation search                 */
   /* ================================================================ */
   server.post('/ai/portal/search', async (request, reply) => {
     if (!getPortalSessionFn) return reply.code(500).send({ error: 'AI routes not initialized' });

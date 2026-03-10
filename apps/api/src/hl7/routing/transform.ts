@@ -1,5 +1,5 @@
 /**
- * HL7v2 Routing — Transform Pipeline
+ * HL7v2 Routing -- Transform Pipeline
  *
  * Phase 240 (Wave 6 P3): Applies a chain of transformation steps to an
  * HL7v2 message before dispatch. Transforms operate on the raw message text.

@@ -1,5 +1,5 @@
 /**
- * Default Policy Configuration — Phase 35.
+ * Default Policy Configuration -- Phase 35.
  *
  * Defines the default role-action-resource policy for VistA Evolved.
  * This can be overridden by tenant-specific policies or OPA sidecar.

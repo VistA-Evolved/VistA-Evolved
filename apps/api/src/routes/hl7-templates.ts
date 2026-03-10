@@ -4,18 +4,18 @@
  * Phase 319 (W14-P3): REST endpoints for the message template library.
  *
  * Routes:
- *   GET    /hl7/templates           — list templates
- *   POST   /hl7/templates           — create template
- *   GET    /hl7/templates/:id       — get template
- *   POST   /hl7/templates/:id/status — update template status
- *   PUT    /hl7/templates/:id/segments — update segment templates
- *   PUT    /hl7/templates/:id/profiles — update conformance profiles
- *   POST   /hl7/templates/:id/clone — clone template
- *   DELETE /hl7/templates/:id       — delete draft template
- *   POST   /hl7/templates/:id/validate — validate message against template
- *   GET    /hl7/templates/:id/conformance — get conformance summary
- *   GET    /hl7/templates/profiles  — list well-known conformance profiles
- *   GET    /hl7/templates/stats     — template store stats
+ *   GET    /hl7/templates           -- list templates
+ *   POST   /hl7/templates           -- create template
+ *   GET    /hl7/templates/:id       -- get template
+ *   POST   /hl7/templates/:id/status -- update template status
+ *   PUT    /hl7/templates/:id/segments -- update segment templates
+ *   PUT    /hl7/templates/:id/profiles -- update conformance profiles
+ *   POST   /hl7/templates/:id/clone -- clone template
+ *   DELETE /hl7/templates/:id       -- delete draft template
+ *   POST   /hl7/templates/:id/validate -- validate message against template
+ *   GET    /hl7/templates/:id/conformance -- get conformance summary
+ *   GET    /hl7/templates/profiles  -- list well-known conformance profiles
+ *   GET    /hl7/templates/stats     -- template store stats
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -68,7 +68,7 @@ function getUserId(request: any): string {
 }
 
 export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
-  // ─── Static endpoints (must come before :id routes) ──────────────
+  // --- Static endpoints (must come before :id routes) --------------
 
   app.get('/hl7/templates/profiles', async () => {
     return { ok: true, count: WELL_KNOWN_PROFILES.length, profiles: WELL_KNOWN_PROFILES };
@@ -81,7 +81,7 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, ...stats };
   });
 
-  // ─── CRUD ────────────────────────────────────────────────────────
+  // --- CRUD --------------------------------------------------------
 
   app.get('/hl7/templates', async (request, reply) => {
     const tenantId = requireTenantId(request, reply);
@@ -239,7 +239,7 @@ export async function hl7TemplateRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, deleted: true };
   });
 
-  // ─── Validation ──────────────────────────────────────────────────
+  // --- Validation --------------------------------------------------
 
   app.post('/hl7/templates/:id/validate', async (request, reply) => {
     const { id } = request.params as { id: string };

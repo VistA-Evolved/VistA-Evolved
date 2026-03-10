@@ -1,5 +1,5 @@
 /**
- * Phase 97B Routes — PH HMO Deepening Pack v2
+ * Phase 97B Routes -- PH HMO Deepening Pack v2
  *
  * Routes for:
  *   - HMO adapter manifest (all 27 IC HMOs)
@@ -29,7 +29,7 @@ import {
 import { generateMarketSummary } from './market-dashboard.js';
 
 export default async function phase97bRoutes(server: FastifyInstance): Promise<void> {
-  /* ── Adapter Manifest ─────────────────────────────────────── */
+  /* -- Adapter Manifest --------------------------------------- */
 
   server.get('/rcm/hmo/manifest', async (_request, reply) => {
     const manifest = await generateHmoManifest();
@@ -45,7 +45,7 @@ export default async function phase97bRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, entry });
   });
 
-  /* ── LOA Templates ────────────────────────────────────────── */
+  /* -- LOA Templates ------------------------------------------ */
 
   server.get('/rcm/hmo/loa-templates', async (_request, reply) => {
     const templates = listLoaTemplates();
@@ -72,7 +72,7 @@ export default async function phase97bRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, ...fields });
   });
 
-  /* ── Claim Packet Configs ─────────────────────────────────── */
+  /* -- Claim Packet Configs ----------------------------------- */
 
   server.get('/rcm/hmo/claim-configs', async (_request, reply) => {
     const configs = listClaimPacketConfigs();
@@ -94,7 +94,7 @@ export default async function phase97bRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, payerId, annotations });
   });
 
-  /* ── Contracting Hub ──────────────────────────────────────── */
+  /* -- Contracting Hub ---------------------------------------- */
 
   server.get('/rcm/hmo/contracting', async (request, reply) => {
     const { tenantId } = (request.query as any) || {};
@@ -149,7 +149,7 @@ export default async function phase97bRoutes(server: FastifyInstance): Promise<v
     return reply.send({ ok: true, task });
   });
 
-  /* ── PH Market Dashboard ──────────────────────────────────── */
+  /* -- PH Market Dashboard ------------------------------------ */
 
   server.get('/rcm/hmo/market-summary', async (request, reply) => {
     const { tenantId } = (request.query as any) || {};

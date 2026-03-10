@@ -1,5 +1,5 @@
 /**
- * Family Access (Proxy Management) Page — Phase 29
+ * Family Access (Proxy Management) Page -- Phase 29
  *
  * Allows portal users to:
  * - View connected patient profiles (self + proxies)

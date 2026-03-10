@@ -2,7 +2,7 @@
  * Phase 166: Clinic Day Journey Routes
  *
  * Admin-only endpoints to run and inspect A-Z proof journeys.
- * No PHI in outputs — journey results contain only step names,
+ * No PHI in outputs -- journey results contain only step names,
  * RPC names, timing, and pass/fail status.
  */
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -15,7 +15,7 @@ import {
   clearJourneyResults,
 } from '../qa/clinic-day-journeys.js';
 
-/** Only allow loopback targets — prevent SSRF via attacker-controlled baseUrl */
+/** Only allow loopback targets -- prevent SSRF via attacker-controlled baseUrl */
 const ALLOWED_BASE_RE = /^https?:\/\/(127\.0\.0\.1|localhost)(:\d+)?$/;
 function sanitizeBaseUrl(raw?: string): string {
   const url = raw || 'http://127.0.0.1:3001';
@@ -94,7 +94,7 @@ export default async function qaJourneyRoutes(server: FastifyInstance) {
     }
   );
 
-  // RPC trace tripwire — verify expected RPCs for a journey
+  // RPC trace tripwire -- verify expected RPCs for a journey
   server.get(
     '/admin/qa/journeys/:journeyId/rpc-trace',
     async (request: FastifyRequest, reply: FastifyReply) => {

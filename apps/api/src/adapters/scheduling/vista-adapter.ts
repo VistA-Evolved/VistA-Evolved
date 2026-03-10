@@ -55,6 +55,7 @@ import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { randomUUID } from 'node:crypto';
 import { requiresPg } from '../../platform/runtime-mode.js';
+import { safeErr } from '../../lib/safe-error.js';
 
 /* ------------------------------------------------------------------ */
 /* DB-backed hybrid (Phase 121)                                          */
@@ -485,6 +486,7 @@ function grounding(
 /* ------------------------------------------------------------------ */
 
 const requestStore = new Map<string, WaitListEntry>();
+const MAX_SCHEDULING_REQUESTS = 20000;
 let requestSeq = 0;
 
 function toPendingAppointment(entry: WaitListEntry): Appointment | null {
@@ -506,7 +508,7 @@ function toPendingAppointment(entry: WaitListEntry): Appointment | null {
 }
 
 /** Lock map for double-booking prevention */
-const bookingLocks = new Map<string, number>(); // key: "tenant:dfn:date:clinic" → timestamp
+const bookingLocks = new Map<string, number>(); // key: "tenant:dfn:date:clinic" -> timestamp
 const LOCK_TTL_MS = 30_000; // 30s lock
 
 function scopedBookingLockKey(key: string, tenantId?: string): string {
@@ -632,7 +634,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('SDOE LIST ENCOUNTERS FOR PAT failed', { error: err.message });
+      log.warn('SDOE LIST ENCOUNTERS FOR PAT failed', { error: safeErr(err) });
       // Return just pending requests if VistA call fails
       const pendingRequests = [...requestStore.values()]
         .filter(
@@ -647,7 +649,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       return {
         ok: pendingRequests.length > 0,
         data: pendingRequests,
-        error: `VistA encounter list unavailable: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'SDOE LIST ENCOUNTERS FOR PAT',
       };
@@ -712,7 +714,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }
       } catch (err: any) {
         log.warn('SD W/L CREATE FILE unavailable, falling back to local store', {
-          error: err.message,
+          error: safeErr(err),
         });
       }
 
@@ -735,6 +737,10 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       };
 
       requestStore.set(id, entry);
+      if (requestStore.size > MAX_SCHEDULING_REQUESTS) {
+        const oldest = requestStore.keys().next().value;
+        if (oldest != null) requestStore.delete(oldest);
+      }
 
       // Phase 121: Write-through to DB
       persistEntry(entry);
@@ -882,11 +888,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('SD W/L RETRIVE HOSP LOC(#44) failed', { error: err.message });
+      log.warn('SD W/L RETRIVE HOSP LOC(#44) failed', { error: safeErr(err) });
       return {
         ok: false,
         data: [],
-        error: `Clinic lookup failed: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'SD W/L RETRIVE HOSP LOC(#44)',
       };
@@ -922,11 +928,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('SD W/L RETRIVE PERSON(200) failed', { error: err.message });
+      log.warn('SD W/L RETRIVE PERSON(200) failed', { error: safeErr(err) });
       return {
         ok: false,
         data: [],
-        error: `Provider lookup failed: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'SD W/L RETRIVE PERSON(200)',
       };
@@ -957,11 +963,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('SDOE LIST ENCOUNTERS FOR DATES failed', { error: err.message });
+      log.warn('SDOE LIST ENCOUNTERS FOR DATES failed', { error: safeErr(err) });
       return {
         ok: false,
         data: [],
-        error: `Date-range encounter list failed: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'SDOE LIST ENCOUNTERS FOR DATES',
       };
@@ -999,11 +1005,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('SDOE GET GENERAL DATA failed', { error: err.message, encounterIen });
+      log.warn('SDOE GET GENERAL DATA failed', { error: safeErr(err), encounterIen });
       return {
         ok: false,
         data: undefined,
-        error: `Encounter detail lookup failed: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'SDOE GET GENERAL DATA',
         vistaGrounding: grounding('SDOE GET GENERAL DATA', 'SD', {
@@ -1034,11 +1040,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('SDOE GET PROVIDERS failed', { error: err.message, encounterIen });
+      log.warn('SDOE GET PROVIDERS failed', { error: safeErr(err), encounterIen });
       return {
         ok: false,
         data: [],
-        error: `Encounter provider lookup failed: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'SDOE GET PROVIDERS',
         vistaGrounding: grounding('SDOE GET PROVIDERS', 'SD', {
@@ -1068,11 +1074,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('SDOE GET DIAGNOSES failed', { error: err.message, encounterIen });
+      log.warn('SDOE GET DIAGNOSES failed', { error: safeErr(err), encounterIen });
       return {
         ok: false,
         data: [],
-        error: `Encounter diagnosis lookup failed: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'SDOE GET DIAGNOSES',
         vistaGrounding: grounding('SDOE GET DIAGNOSES', 'SD', {
@@ -1096,7 +1102,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       vistaEntries = parseWaitListEntries(rawLines.join('\n'));
       rpcOk = true;
     } catch (err: any) {
-      log.warn('SD W/L RETRIVE FULL DATA failed', { error: err.message });
+      log.warn('SD W/L RETRIVE FULL DATA failed', { error: safeErr(err) });
     }
 
     // Merge local request store entries
@@ -1169,11 +1175,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('ORWPT APPTLST failed', { error: err.message });
+      log.warn('ORWPT APPTLST failed', { error: safeErr(err) });
       return {
         ok: false,
         data: [],
-        error: `CPRS appointment list failed: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'ORWPT APPTLST',
         vistaGrounding: grounding('ORWPT APPTLST', 'OR', {
@@ -1206,7 +1212,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       rpcResults.push(`PRIORITY:${result.priorities.length}`);
     } catch (err: any) {
       rpcResults.push('PRIORITY:error');
-      log.warn('SD W/L PRIORITY failed', { error: err.message });
+      log.warn('SD W/L PRIORITY failed', { error: safeErr(err) });
     }
 
     // SD W/L TYPE
@@ -1223,7 +1229,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       rpcResults.push(`TYPE:${result.types.length}`);
     } catch (err: any) {
       rpcResults.push('TYPE:error');
-      log.warn('SD W/L TYPE failed', { error: err.message });
+      log.warn('SD W/L TYPE failed', { error: safeErr(err) });
     }
 
     // SD W/L CURRENT STATUS
@@ -1240,7 +1246,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
       rpcResults.push(`STATUS:${result.statuses.length}`);
     } catch (err: any) {
       rpcResults.push('STATUS:error');
-      log.warn('SD W/L CURRENT STATUS failed', { error: err.message });
+      log.warn('SD W/L CURRENT STATUS failed', { error: safeErr(err) });
     }
 
     const totalEntries = result.priorities.length + result.types.length + result.statuses.length;
@@ -1549,11 +1555,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('SDES GET APPT TYPES failed', { error: err.message });
+      log.warn('SDES GET APPT TYPES failed', { error: safeErr(err) });
       return {
         ok: false,
         data: [],
-        error: `SDES GET APPT TYPES unavailable: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'SDES GET APPT TYPES',
       };
@@ -1607,11 +1613,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('SDES GET CANCEL REASONS failed', { error: err.message });
+      log.warn('SDES GET CANCEL REASONS failed', { error: safeErr(err) });
       return {
         ok: false,
         data: [],
-        error: `SDES GET CANCEL REASONS unavailable: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'SDES GET CANCEL REASONS',
       };
@@ -1686,11 +1692,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('SDES GET RESOURCE BY CLINIC failed', { error: err.message });
+      log.warn('SDES GET RESOURCE BY CLINIC failed', { error: safeErr(err) });
       return {
         ok: false,
         data: { clinicIen, clinicName: '' },
-        error: `SDES GET RESOURCE BY CLINIC unavailable: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'SDES GET RESOURCE BY CLINIC',
       };
@@ -1787,11 +1793,11 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('SDES GET CLIN AVAILABILITY failed', { error: err.message });
+      log.warn('SDES GET CLIN AVAILABILITY failed', { error: safeErr(err) });
       return {
         ok: false,
         data: [],
-        error: `SDES GET CLIN AVAILABILITY unavailable: ${err.message}`,
+        error: safeErr(err),
         pending: true,
         target: 'SDES GET CLIN AVAILABILITY',
       };
@@ -1865,7 +1871,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
         }),
       };
     } catch (err: any) {
-      log.warn('verifyAppointment failed', { error: err.message, appointmentRef, patientDfn });
+      log.warn('verifyAppointment failed', { error: safeErr(err), appointmentRef, patientDfn });
       return {
         ok: true,
         data: {
@@ -1875,7 +1881,7 @@ export class VistaSchedulingAdapter implements SchedulingAdapter {
           verificationMethod: 'none -- RPC unavailable',
           appointmentRef,
           patientDfn,
-          error: err.message,
+          error: safeErr(err),
           timestamp: new Date().toISOString(),
         },
       };

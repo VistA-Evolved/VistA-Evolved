@@ -1,5 +1,5 @@
 /**
- * compliance-matrix.ts — Maps regulatory requirements to implementation evidence.
+ * compliance-matrix.ts -- Maps regulatory requirements to implementation evidence.
  *
  * Each compliance obligation is linked to:
  *   - The regulatory framework (HIPAA, DPA_PH, DPA_GH)

@@ -1,5 +1,5 @@
 /**
- * Preflight Check Engine — Phase 246: Pilot Hospital Hardening
+ * Preflight Check Engine -- Phase 246: Pilot Hospital Hardening
  *
  * Runs a suite of pre-go-live checks for a pilot site.
  * Each check returns a pass/fail with details.
@@ -66,7 +66,7 @@ function makeCheck(
 }
 
 const PREFLIGHT_CHECKS: CheckFn[] = [
-  /* ── Environment checks ────────────────────────────────────── */
+  /* -- Environment checks -------------------------------------- */
   makeCheck('env-vista-endpoint', 'VistA Endpoint Configured', 'critical', async (site) => {
     if (!site.vistaEndpoint || site.vistaEndpoint === '127.0.0.1:9430') {
       return { status: 'fail', message: 'VistA endpoint is using default sandbox address' };
@@ -99,7 +99,7 @@ const PREFLIGHT_CHECKS: CheckFn[] = [
     return { status: 'pass', message: `Contact: ${site.siteContact}` };
   }),
 
-  /* ── Infrastructure checks ─────────────────────────────────── */
+  /* -- Infrastructure checks ----------------------------------- */
   makeCheck('infra-pg-configured', 'PostgreSQL Configured', 'critical', async () => {
     const pgUrl = process.env.PLATFORM_PG_URL;
     if (!pgUrl) {
@@ -113,7 +113,7 @@ const PREFLIGHT_CHECKS: CheckFn[] = [
     if (mode === 'dev' || mode === 'test') {
       return {
         status: 'fail',
-        message: `Runtime mode is '${mode}' — must be 'rc' or 'prod' for pilot`,
+        message: `Runtime mode is '${mode}' -- must be 'rc' or 'prod' for pilot`,
       };
     }
     return { status: 'pass', message: `Runtime mode: ${mode}` };
@@ -136,7 +136,7 @@ const PREFLIGHT_CHECKS: CheckFn[] = [
     return { status: 'pass', message: 'Audit shipping enabled' };
   }),
 
-  /* ── Capacity checks ───────────────────────────────────────── */
+  /* -- Capacity checks ----------------------------------------- */
   makeCheck('cap-expected-users', 'Expected Users Defined', 'info', async (site) => {
     if (!site.expectedUsers || site.expectedUsers <= 0) {
       return { status: 'fail', message: 'Expected user count not defined' };
@@ -146,12 +146,12 @@ const PREFLIGHT_CHECKS: CheckFn[] = [
 
   makeCheck('cap-environment-match', 'Environment Appropriate', 'warning', async (site) => {
     if (site.environment === 'sandbox') {
-      return { status: 'fail', message: "Environment is 'sandbox' — not suitable for pilot" };
+      return { status: 'fail', message: "Environment is 'sandbox' -- not suitable for pilot" };
     }
     return { status: 'pass', message: `Environment: ${site.environment}` };
   }),
 
-  /* ── Security checks ───────────────────────────────────────── */
+  /* -- Security checks ----------------------------------------- */
   makeCheck('sec-csrf-enabled', 'CSRF Protection Active', 'critical', async () => {
     // CSRF is always active in our security middleware
     return { status: 'pass', message: 'CSRF synchronizer token active' };

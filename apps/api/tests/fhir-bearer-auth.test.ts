@@ -1,9 +1,9 @@
 /**
- * Phase 231 — FHIR Bearer Auth Tests.
+ * Phase 231 -- FHIR Bearer Auth Tests.
  *
  * Tests for SMART-on-FHIR bearer token authentication:
  *   - extractBearerToken()
- *   - validateFhirBearerToken() — mock OIDC/JWT validation
+ *   - validateFhirBearerToken() -- mock OIDC/JWT validation
  *   - principalFromSession()
  */
 
@@ -245,11 +245,9 @@ describe('validateFhirBearerToken', () => {
     });
 
     const result = await validateFhirBearerToken('jwt.minimal.claims');
-    expect(result.ok).toBe(true);
-    if (result.ok) {
-      expect(result.principal.duz).toBe('ext-user-456');
-      expect(result.principal.userName).toBe('ext-user-456');
-      expect(result.principal.tenantId).toBe('default');
+    expect(result.ok).toBe(false);
+    if (!result.ok) {
+      expect(result.error).toContain('tenant_id');
     }
   });
 });
@@ -284,6 +282,6 @@ describe('principalFromSession', () => {
       role: 'nurse',
     });
 
-    expect(p.tenantId).toBe('default');
+    expect(p.tenantId).toBe('');
   });
 });

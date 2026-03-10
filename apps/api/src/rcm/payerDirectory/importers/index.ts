@@ -1,5 +1,5 @@
 /**
- * Payer Directory — Importer Registry
+ * Payer Directory -- Importer Registry
  *
  * Phase 44: Central registry of all authoritative importers.
  * Run all importers or select by country/id.
@@ -16,7 +16,7 @@ import {
 import { sgNzGatewayImporter } from './sg-nz-gateways.js';
 import type { PayerCountry } from '../../domain/payer.js';
 
-/* ── All Importers ──────────────────────────────────────────── */
+/* -- All Importers -------------------------------------------- */
 
 const ALL_IMPORTERS: PayerImporter[] = [
   phInsuranceCommissionImporter,
@@ -27,7 +27,7 @@ const ALL_IMPORTERS: PayerImporter[] = [
   sgNzGatewayImporter,
 ];
 
-/* ── Registry Functions ─────────────────────────────────────── */
+/* -- Registry Functions --------------------------------------- */
 
 export function getImporter(id: string): PayerImporter | undefined {
   return ALL_IMPORTERS.find((i) => i.id === id);

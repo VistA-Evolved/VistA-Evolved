@@ -1,5 +1,5 @@
 /**
- * X12 Scaffold Serializer — 837P/837I Wire Format
+ * X12 Scaffold Serializer -- 837P/837I Wire Format
  *
  * Phase 40: Generates X12 5010-compliant wire format from EdiClaim837.
  *
@@ -22,7 +22,7 @@
 
 import type { EdiClaim837 } from './types.js';
 
-/* ── Constants ──────────────────────────────────────────────── */
+/* -- Constants ------------------------------------------------ */
 
 const SEG_TERM = '~';
 const ELEM_SEP = '*';
@@ -59,22 +59,22 @@ function gsDate(): string {
   return `${d.getFullYear()}${padNum(d.getMonth() + 1, 2)}${padNum(d.getDate(), 2)}`;
 }
 
-/* ── ISA/IEA Envelope ───────────────────────────────────────── */
+/* -- ISA/IEA Envelope ----------------------------------------- */
 
 export interface X12SerializerOptions {
-  /** ISA05 — Sender qualifier ('ZZ' = mutually defined, '30' = TIN) */
+  /** ISA05 -- Sender qualifier ('ZZ' = mutually defined, '30' = TIN) */
   senderQualifier?: string;
-  /** ISA06 — Sender ID (15 chars, padded) */
+  /** ISA06 -- Sender ID (15 chars, padded) */
   senderId?: string;
-  /** ISA07 — Receiver qualifier */
+  /** ISA07 -- Receiver qualifier */
   receiverQualifier?: string;
-  /** ISA08 — Receiver ID (15 chars, padded) */
+  /** ISA08 -- Receiver ID (15 chars, padded) */
   receiverId?: string;
-  /** ISA13 — Interchange control number (9 digits) */
+  /** ISA13 -- Interchange control number (9 digits) */
   controlNumber?: string;
-  /** ISA15 — Usage indicator: 'T' for test, 'P' for production */
+  /** ISA15 -- Usage indicator: 'T' for test, 'P' for production */
   usageIndicator?: 'T' | 'P';
-  /** GS08 — Version/release/industry code */
+  /** GS08 -- Version/release/industry code */
   versionCode?: string;
 }
 
@@ -84,11 +84,11 @@ const DEFAULT_OPTS: Required<X12SerializerOptions> = {
   receiverQualifier: 'ZZ',
   receiverId: 'RECEIVER',
   controlNumber: '000000001',
-  usageIndicator: 'T', // Always test by default — safety first
+  usageIndicator: 'T', // Always test by default -- safety first
   versionCode: '005010X222A1', // 837P default
 };
 
-/* ── Serialize 837P/I to X12 wire format ────────────────────── */
+/* -- Serialize 837P/I to X12 wire format ---------------------- */
 
 export function serialize837(claim: EdiClaim837, options?: X12SerializerOptions): string {
   const opts = { ...DEFAULT_OPTS, ...options };
@@ -104,7 +104,7 @@ export function serialize837(claim: EdiClaim837, options?: X12SerializerOptions)
     stCount++;
   }
 
-  // ── ISA — Interchange Control Header
+  // -- ISA -- Interchange Control Header
   segments.push(
     [
       'ISA',
@@ -127,7 +127,7 @@ export function serialize837(claim: EdiClaim837, options?: X12SerializerOptions)
     ].join(ELEM_SEP) + SEG_TERM
   );
 
-  // ── GS — Functional Group
+  // -- GS -- Functional Group
   const gsControlNumber = opts.controlNumber;
   segments.push(
     [
@@ -143,24 +143,24 @@ export function serialize837(claim: EdiClaim837, options?: X12SerializerOptions)
     ].join(ELEM_SEP) + SEG_TERM
   );
 
-  // ── ST — Transaction Set Header
+  // -- ST -- Transaction Set Header
   stCount = 0;
   const stControlNumber = padNum(1, 4);
   seg('ST', claim.transactionSet === '837I' ? '837' : '837', stControlNumber, opts.versionCode);
 
-  // ── BHT — Beginning of Hierarchical Transaction
+  // -- BHT -- Beginning of Hierarchical Transaction
   seg('BHT', '0019', '00', claim.controlNumber, gsDate(), isaTime(), 'CH');
 
-  // ── 1000A — Submitter
+  // -- 1000A -- Submitter
   seg('NM1', '41', '2', claim.submitterInfo.name, '', '', '', '', '46', claim.submitterInfo.taxId);
   if (claim.submitterInfo.contactName) {
     seg('PER', 'IC', claim.submitterInfo.contactName, 'TE', claim.submitterInfo.contactPhone ?? '');
   }
 
-  // ── 1000B — Receiver
+  // -- 1000B -- Receiver
   seg('NM1', '40', '2', claim.receiverInfo.name, '', '', '', '', claim.receiverInfo.entityCode, '');
 
-  // ── 2000A HL — Billing Provider Hierarchical Level
+  // -- 2000A HL -- Billing Provider Hierarchical Level
   seg('HL', '1', '', '20', '1');
   seg(
     'NM1',
@@ -183,7 +183,7 @@ export function serialize837(claim: EdiClaim837, options?: X12SerializerOptions)
   );
   seg('REF', 'EI', claim.billingProvider.taxId);
 
-  // ── 2000B HL — Subscriber Hierarchical Level
+  // -- 2000B HL -- Subscriber Hierarchical Level
   seg('HL', '2', '1', '22', claim.patient ? '1' : '0');
   seg(
     'SBR',
@@ -222,7 +222,7 @@ export function serialize837(claim: EdiClaim837, options?: X12SerializerOptions)
     seg('DMG', 'D8', claim.subscriber.dob, claim.subscriber.gender ?? 'U');
   }
 
-  // ── 2000C HL — Patient (if different from subscriber)
+  // -- 2000C HL -- Patient (if different from subscriber)
   if (claim.patient) {
     seg('HL', '3', '2', '23', '0');
     seg('PAT', claim.patient.relationshipCode);
@@ -232,7 +232,7 @@ export function serialize837(claim: EdiClaim837, options?: X12SerializerOptions)
     }
   }
 
-  // ── 2300 — Claim Information
+  // -- 2300 -- Claim Information
   seg(
     'CLM',
     claim.claimInfo.claimId,
@@ -256,7 +256,7 @@ export function serialize837(claim: EdiClaim837, options?: X12SerializerOptions)
     seg(...dxElements);
   }
 
-  // ── 2400 — Service Lines
+  // -- 2400 -- Service Lines
   let lineSeq = 0;
   for (const line of claim.serviceLines) {
     lineSeq++;
@@ -286,7 +286,7 @@ export function serialize837(claim: EdiClaim837, options?: X12SerializerOptions)
       );
     }
 
-    // DTP — Service date
+    // DTP -- Service date
     seg('DTP', '472', 'D8', line.serviceDate.replace(/-/g, ''));
 
     // Diagnosis pointers
@@ -295,14 +295,14 @@ export function serialize837(claim: EdiClaim837, options?: X12SerializerOptions)
     }
   }
 
-  // ── SE — Transaction Set Trailer
+  // -- SE -- Transaction Set Trailer
   stCount++; // count SE itself
   seg('SE', stCount, stControlNumber);
 
-  // ── GE — Functional Group Trailer
+  // -- GE -- Functional Group Trailer
   segments.push(['GE', '1', gsControlNumber].join(ELEM_SEP) + SEG_TERM);
 
-  // ── IEA — Interchange Control Trailer
+  // -- IEA -- Interchange Control Trailer
   segments.push(
     ['IEA', '1', padNum(parseInt(opts.controlNumber, 10), 9)].join(ELEM_SEP) + SEG_TERM
   );
@@ -310,7 +310,7 @@ export function serialize837(claim: EdiClaim837, options?: X12SerializerOptions)
   return segments.join('\n');
 }
 
-/* ── Serialize 270 Eligibility Inquiry ──────────────────────── */
+/* -- Serialize 270 Eligibility Inquiry ------------------------ */
 
 export function serialize270(
   inquiry: {
@@ -375,15 +375,15 @@ export function serialize270(
   seg('ST', '270', padNum(1, 4), opts.versionCode);
   seg('BHT', '0022', '13', opts.controlNumber, gsDate(), isaTime());
 
-  // 2000A — Information Source
+  // 2000A -- Information Source
   seg('HL', '1', '', '20', '1');
   seg('NM1', 'PR', '2', '', '', '', '', '', 'PI', inquiry.payerId);
 
-  // 2000B — Information Receiver
+  // 2000B -- Information Receiver
   seg('HL', '2', '1', '21', '1');
   seg('NM1', '1P', '2', '', '', '', '', '', 'XX', inquiry.providerNpi);
 
-  // 2000C — Subscriber
+  // 2000C -- Subscriber
   seg('HL', '3', '2', '22', '0');
   seg(
     'NM1',
@@ -401,7 +401,7 @@ export function serialize270(
     seg('DMG', 'D8', inquiry.patient.dob.replace(/-/g, ''));
   }
 
-  // 2110C — Eligibility/Benefit Inquiry
+  // 2110C -- Eligibility/Benefit Inquiry
   seg('EQ', '30'); // Health Benefit Plan Coverage
 
   // SE
@@ -416,7 +416,7 @@ export function serialize270(
   return segments.join('\n');
 }
 
-/* ── Export bundle to filesystem ────────────────────────────── */
+/* -- Export bundle to filesystem ------------------------------ */
 
 export interface ExportBundleResult {
   path: string;

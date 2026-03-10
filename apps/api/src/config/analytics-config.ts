@@ -1,5 +1,5 @@
 /**
- * Analytics Configuration — Phase 25.
+ * Analytics Configuration -- Phase 25.
  *
  * Central configuration for the analytics subsystem including
  * event stream, aggregation, SQL endpoint, and BI exports.
@@ -43,7 +43,13 @@ export const ANALYTICS_EVENT_CONFIG = {
   /** Retention days for event file (used by cleanup job). */
   retentionDays: Number(process.env.ANALYTICS_RETENTION_DAYS || 7),
   /** Salt for hashing user IDs in analytics (rotate periodically). */
-  userIdSalt: process.env.ANALYTICS_USER_SALT || 've-analytics-salt-change-in-prod',
+  userIdSalt: (() => {
+    const _m = (process.env.PLATFORM_RUNTIME_MODE || process.env.NODE_ENV || 'dev').toLowerCase();
+    if ((_m === 'rc' || _m === 'prod' || _m === 'production') && !process.env.ANALYTICS_USER_SALT) {
+      throw new Error('ANALYTICS_USER_SALT must be set in rc/prod mode');
+    }
+    return process.env.ANALYTICS_USER_SALT || 've-analytics-salt-dev';
+  })(),
   /** Flush interval for batch writes to JSONL (ms). */
   flushIntervalMs: Number(process.env.ANALYTICS_FLUSH_INTERVAL_MS || 5000),
 } as const;

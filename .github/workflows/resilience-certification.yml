@@ -1,4 +1,4 @@
-# Phase 254 — Resilience Certification CI
+# Phase 254 -- Resilience Certification CI
 # Runs static resilience tests + drill validation on push/PR + nightly
 name: resilience-certification
 

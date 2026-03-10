@@ -1,6 +1,7 @@
 import { API_BASE } from '@/lib/api-config';
+import { csrfHeaders, getCsrfToken } from '@/lib/csrf';
 /**
- * Portal API client — all fetch calls to the Fastify API.
+ * Portal API client -- all fetch calls to the Fastify API.
  * Uses credentials: 'include' for httpOnly cookie auth.
  *
  * IMPORTANT: No PHI in console.log. No DFN in error messages.
@@ -17,11 +18,16 @@ async function portalFetch<T = unknown>(
   options: RequestInit = {}
 ): Promise<ApiResponse<T>> {
   try {
+    const method = (options.method || 'GET').toUpperCase();
+    const isMutation = method !== 'GET' && method !== 'HEAD';
+    // Eagerly fetch CSRF token before first mutation if not yet cached
+    if (isMutation) await getCsrfToken();
     const res = await fetch(`${API_BASE}${path}`, {
       ...options,
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
+        ...(isMutation ? csrfHeaders() : {}),
         ...options.headers,
       },
     });
@@ -38,7 +44,7 @@ async function portalFetch<T = unknown>(
   }
 }
 
-// ─── Portal Auth ───
+// --- Portal Auth ---
 
 export async function portalLogin(username: string, password: string) {
   return portalFetch('/portal/auth/login', {
@@ -55,7 +61,7 @@ export async function portalSession() {
   return portalFetch('/portal/auth/session');
 }
 
-// ─── Health Records (read-only, DFN-scoped by session) ───
+// --- Health Records (read-only, DFN-scoped by session) ---
 
 export async function fetchAllergies() {
   return portalFetch('/portal/health/allergies');
@@ -101,7 +107,7 @@ export async function fetchImmunizations() {
   return portalFetch('/portal/health/immunizations');
 }
 
-// ─── PDF Export (Phase 27) ───
+// --- PDF Export (Phase 27) ---
 
 export function exportSectionUrl(section: string): string {
   return `${API_BASE}/portal/export/section/${section}`;
@@ -111,9 +117,9 @@ export function exportFullRecordUrl(): string {
   return `${API_BASE}/portal/export/full`;
 }
 
-// ─── Secure Messaging (Phase 27) ───
+// --- Secure Messaging (Phase 27) ---
 
-/** Phase 130: VistA MailMan inbox (primary — falls back to PG store server-side). */
+/** Phase 130: VistA MailMan inbox (primary -- falls back to PG store server-side). */
 export async function fetchVistaMailmanInbox(limit = 50) {
   return portalFetch(`/portal/mailman/inbox?limit=${limit}`);
 }
@@ -193,7 +199,7 @@ export async function addMessageAttachment(
   });
 }
 
-// ─── Appointments (Phase 27) ───
+// --- Appointments (Phase 27) ---
 
 export async function fetchAppointments() {
   return portalFetch('/portal/appointments');
@@ -234,7 +240,7 @@ export async function fetchSchedulingMode() {
   return portalFetch('/scheduling/mode');
 }
 
-// ─── Record Sharing (Phase 27) ───
+// --- Record Sharing (Phase 27) ---
 
 export async function fetchShares() {
   return portalFetch('/portal/shares');
@@ -270,7 +276,7 @@ export async function verifyShare(
   });
 }
 
-// ─── Exports (Phase 31) ───
+// --- Exports (Phase 31) ---
 
 export async function exportJson(sections?: string[]) {
   const query = sections?.length ? `?sections=${sections.join(',')}` : '';
@@ -285,7 +291,7 @@ export async function exportShc(dataset: string) {
   return portalFetch(`/portal/export/shc/${dataset}`);
 }
 
-// ─── Settings (Phase 27) ───
+// --- Settings (Phase 27) ---
 
 export async function fetchSettings() {
   return portalFetch('/portal/settings');
@@ -302,7 +308,7 @@ export async function updatePortalSettings(patch: {
   });
 }
 
-// ─── Proxy Access (Phase 27) ───
+// --- Proxy Access (Phase 27) ---
 
 export async function fetchProxies() {
   return portalFetch('/portal/proxy/list');
@@ -327,7 +333,7 @@ export async function revokeProxyAccess(proxyId: string) {
   });
 }
 
-// ─── Telehealth (Phase 30) ───
+// --- Telehealth (Phase 30) ---
 
 export async function fetchTelehealthRoom(appointmentId: string) {
   return portalFetch(`/portal/telehealth/appointment/${appointmentId}/room`);
@@ -352,7 +358,7 @@ export async function submitDeviceCheckReport(report: Record<string, unknown>) {
   });
 }
 
-// ─── Refills (Phase 32) ───
+// --- Refills (Phase 32) ---
 
 export async function fetchRefills() {
   return portalFetch('/portal/refills');
@@ -369,7 +375,7 @@ export async function cancelRefill(refillId: string) {
   return portalFetch(`/portal/refills/${refillId}/cancel`, { method: 'POST' });
 }
 
-// ─── Tasks (Phase 32) ───
+// --- Tasks (Phase 32) ---
 
 export async function fetchTasks(status?: string) {
   const qs = status ? `?status=${status}` : '';
@@ -404,7 +410,7 @@ export async function askPortalSearch(query: string) {
   });
 }
 
-// ─── Documents (Phase 140) ───
+// --- Documents (Phase 140) ---
 
 export async function fetchDocumentTypes() {
   return portalFetch('/portal/documents');
@@ -421,7 +427,7 @@ export function documentDownloadUrl(token: string): string {
   return `${API_BASE}/portal/documents/download/${token}`;
 }
 
-// ─── Consents (Phase 140) ───
+// --- Consents (Phase 140) ---
 
 export async function fetchConsents() {
   return portalFetch('/portal/consents');

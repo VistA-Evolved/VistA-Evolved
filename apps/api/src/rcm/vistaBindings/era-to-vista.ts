@@ -1,25 +1,25 @@
 /**
- * VistA Binding: ERA / Remittance → VistA AR
+ * VistA Binding: ERA / Remittance -> VistA AR
  *
  * Posts remittance (835/ERA) data back to VistA Accounts Receivable.
  * In production, this would call RPCs like:
- *   RCDPE PAYMENT POST   — Post ERA payment to AR
- *   PRCA POST PAYMENT    — AR payment posting
+ *   RCDPE PAYMENT POST   -- Post ERA payment to AR
+ *   PRCA POST PAYMENT    -- AR payment posting
  *
  * Target VistA files:
- *   ^PRCA(430,IEN)   — AR Transaction file
- *   ^PRCA(433,IEN)   — AR Activity file
- *   ^RC(344,IEN)     — ERA file (if PRCA ERA module is active)
+ *   ^PRCA(430,IEN)   -- AR Transaction file
+ *   ^PRCA(433,IEN)   -- AR Activity file
+ *   ^RC(344,IEN)     -- ERA file (if PRCA ERA module is active)
  *
  * VistA-first: in sandbox mode returns integration-pending with
  * exact file/routine targets for production migration.
  *
- * Phase 40 (Superseding) — VistA-first binding points
+ * Phase 40 (Superseding) -- VistA-first binding points
  */
 
 import type { Remittance } from '../domain/remit.js';
 
-/* ─── Types ──────────────────────────────────────────────────── */
+/* --- Types ---------------------------------------------------- */
 
 export interface EraPostResult {
   ok: boolean;
@@ -35,7 +35,7 @@ export interface EraPostResult {
   errors?: string[];
 }
 
-/* ─── ERA → VistA AR posting ─────────────────────────────────── */
+/* --- ERA -> VistA AR posting ----------------------------------- */
 
 /**
  * Post an ERA/835 remittance to VistA Accounts Receivable.

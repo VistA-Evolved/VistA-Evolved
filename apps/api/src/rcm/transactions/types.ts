@@ -1,5 +1,5 @@
 /**
- * Transaction Correctness Engine — Types
+ * Transaction Correctness Engine -- Types
  *
  * Phase 45: Enterprise-grade transaction envelopes, correlation,
  * idempotency, and lifecycle tracking for X12 EDI transactions.
@@ -10,7 +10,7 @@
 
 import type { X12TransactionSet, IsaEnvelope, GsEnvelope } from '../edi/types.js';
 
-/* ── Transaction Envelope ────────────────────────────────────── */
+/* -- Transaction Envelope -------------------------------------- */
 
 export interface TransactionEnvelope {
   /** Unique ID for this transaction instance */
@@ -28,7 +28,7 @@ export interface TransactionEnvelope {
   /** GS-level functional group metadata */
   gs: GsEnvelope;
 
-  /** Our internal correlation ID (links request → response) */
+  /** Our internal correlation ID (links request -> response) */
   correlationId: string;
 
   /** Idempotency key to prevent duplicate processing */
@@ -55,7 +55,7 @@ export interface TransactionEnvelope {
   sourceType?: 'claim' | 'eligibility' | 'status_inquiry' | 'prior_auth';
 }
 
-/* ── Transaction Lifecycle ───────────────────────────────────── */
+/* -- Transaction Lifecycle ------------------------------------- */
 
 export type TransactionState =
   | 'created' // Envelope built, not yet serialized
@@ -90,7 +90,7 @@ export const TRANSACTION_STATE_TRANSITIONS: Record<TransactionState, Transaction
   dlq: ['queued'], // manual retry from DLQ
 };
 
-/* ── Translator types ────────────────────────────────────────── */
+/* -- Translator types ------------------------------------------ */
 
 export interface TranslatorResult {
   /** The X12 wire-format string */
@@ -124,7 +124,7 @@ export interface ParsedResponse {
   errors: Array<{ code: string; description: string; severity: string }>;
 }
 
-/* ── Connectivity Profile ────────────────────────────────────── */
+/* -- Connectivity Profile -------------------------------------- */
 
 export interface ConnectivityProfile {
   /** Profile version */
@@ -186,7 +186,7 @@ export interface ConnectivityProfile {
   };
 }
 
-/* ── Reconciliation types ────────────────────────────────────── */
+/* -- Reconciliation types -------------------------------------- */
 
 export interface ReconciliationSummary {
   claimId: string;
@@ -251,7 +251,7 @@ export interface ReconciliationSummary {
   reconciledAt?: string;
 }
 
-/* ── Transaction store entry ─────────────────────────────────── */
+/* -- Transaction store entry ----------------------------------- */
 
 export interface TransactionRecord {
   id: string;

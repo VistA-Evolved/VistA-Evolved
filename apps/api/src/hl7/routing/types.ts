@@ -1,5 +1,5 @@
 /**
- * HL7v2 Routing — Type Definitions
+ * HL7v2 Routing -- Type Definitions
  *
  * Phase 240 (Wave 6 P3): Types for message routing, filtering,
  * transformation, and destination dispatch.

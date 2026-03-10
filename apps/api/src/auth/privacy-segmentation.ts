@@ -1,5 +1,5 @@
 /**
- * Privacy Segmentation — Phase 343 (W16-P7).
+ * Privacy Segmentation -- Phase 343 (W16-P7).
  *
  * Sensitivity tags on clinical records, break-glass enforcement,
  * access reason tracking for compliance (42 CFR Part 2, HIV, etc.)
@@ -196,7 +196,7 @@ export function recordAccessReason(entry: Omit<AccessReason, 'id' | 'accessedAt'
         recordType: entry.recordType,
         categories: entry.categories,
         breakGlass: entry.breakGlass,
-        // Reason text NOT logged to avoid PHI leak — only hash
+        // Reason text NOT logged to avoid PHI leak -- only hash
         reasonHash: entry.reason.length > 0 ? 'present' : 'empty',
       },
     }

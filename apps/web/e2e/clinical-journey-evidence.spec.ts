@@ -1,5 +1,5 @@
 /**
- * Clinical Journey Evidence Spec — Phase 252
+ * Clinical Journey Evidence Spec -- Phase 252
  *
  * Captures evidence artifacts (screenshots, network logs) for each
  * clinical journey defined in journey-config.ts.
@@ -56,7 +56,7 @@ async function executeStep(page: any, step: JourneyStep, journeyId: string, step
 
 // --- Chart Review Journey ---
 test.describe('Journey: Clinician Chart Review', () => {
-  test('login → patient selection → chart tabs', async ({ page }) => {
+  test('login -> patient selection -> chart tabs', async ({ page }) => {
     const errors = setupConsoleGate(page);
     const evidence = new NetworkEvidence(page);
     evidence.start();
@@ -94,7 +94,7 @@ test.describe('Journey: Clinician Chart Review', () => {
 
 // --- Admin Posture Journey ---
 test.describe('Journey: Admin Posture Check', () => {
-  test('admin landing → integrations → analytics', async ({ page }) => {
+  test('admin landing -> integrations -> analytics', async ({ page }) => {
     const errors = setupConsoleGate(page);
     const journey = ADMIN_POSTURE_JOURNEY;
 
@@ -160,11 +160,11 @@ test.describe('Journey: FHIR R4 Endpoint Smoke', () => {
   test('unauthenticated clinical endpoints return 401', async ({ request }) => {
     const clinicalPaths = [
       '/vista/patient-search?term=A',
-      '/vista/allergies?dfn=3',
-      '/vista/vitals?dfn=3',
-      '/vista/problems?dfn=3',
-      '/vista/medications?dfn=3',
-      '/vista/notes?dfn=3',
+      '/vista/allergies?dfn=46',
+      '/vista/vitals?dfn=46',
+      '/vista/problems?dfn=46',
+      '/vista/medications?dfn=46',
+      '/vista/notes?dfn=46',
     ];
     for (const p of clinicalPaths) {
       const resp = await request.get(`${API_BASE}${p}`);

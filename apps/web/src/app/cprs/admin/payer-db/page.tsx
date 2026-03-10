@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Payer Registry (SQLite) — Admin UI
+ * Payer Registry (SQLite) -- Admin UI
  *
  * Phase 95B: Platform Persistence Unification
  *
@@ -13,7 +13,7 @@ import React, { useEffect, useState, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 interface Payer {
   id: string;
@@ -58,7 +58,7 @@ interface AuditEvent {
   createdAt: string;
 }
 
-/* ── Helpers ────────────────────────────────────────────────── */
+/* -- Helpers -------------------------------------------------- */
 
 async function api(path: string, opts?: RequestInit) {
   const res = await fetch(`${API}${path}`, {
@@ -71,7 +71,7 @@ async function api(path: string, opts?: RequestInit) {
 
 type Tab = 'payers' | 'capabilities' | 'evidence' | 'audit';
 
-/* ── Component ──────────────────────────────────────────────── */
+/* -- Component ------------------------------------------------ */
 
 export default function PayerDbPage() {
   const [tab, setTab] = useState<Tab>('payers');
@@ -86,7 +86,7 @@ export default function PayerDbPage() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  /* ── Payer list ─────────────────────────────────────────── */
+  /* -- Payer list ------------------------------------------- */
 
   const loadPayers = useCallback(async () => {
     setLoading(true);
@@ -108,21 +108,21 @@ export default function PayerDbPage() {
     loadPayers();
   }, [loadPayers]);
 
-  /* ── Capabilities ───────────────────────────────────────── */
+  /* -- Capabilities ----------------------------------------- */
 
   const loadCapabilities = useCallback(async (payerId: string) => {
     const data = await api(`/admin/payer-db/payers/${payerId}/capabilities`);
     if (data.ok) setCapabilities(data.capabilities);
   }, []);
 
-  /* ── Evidence ───────────────────────────────────────────── */
+  /* -- Evidence --------------------------------------------- */
 
   const loadEvidence = useCallback(async () => {
     const data = await api('/admin/payer-db/evidence');
     if (data.ok) setEvidence(data.snapshots);
   }, []);
 
-  /* ── Audit ──────────────────────────────────────────────── */
+  /* -- Audit ------------------------------------------------ */
 
   const loadAudit = useCallback(async () => {
     const data = await api('/admin/payer-db/audit?limit=100');
@@ -131,14 +131,14 @@ export default function PayerDbPage() {
     if (statsData.ok) setStats(statsData.stats);
   }, []);
 
-  /* ── Tab switch ─────────────────────────────────────────── */
+  /* -- Tab switch ------------------------------------------- */
 
   useEffect(() => {
     if (tab === 'evidence') loadEvidence();
     if (tab === 'audit') loadAudit();
   }, [tab, loadEvidence, loadAudit]);
 
-  /* ── Capability edit form ───────────────────────────────── */
+  /* -- Capability edit form --------------------------------- */
 
   const [capForm, setCapForm] = useState({
     capabilityKey: '',
@@ -165,7 +165,7 @@ export default function PayerDbPage() {
     }
   }
 
-  /* ── Evidence ingest ────────────────────────────────────── */
+  /* -- Evidence ingest -------------------------------------- */
 
   const [ingestPath, setIngestPath] = useState('data/payers/ph_hmos.json');
 
@@ -202,7 +202,7 @@ export default function PayerDbPage() {
     }
   }
 
-  /* ── Styles ─────────────────────────────────────────────── */
+  /* -- Styles ----------------------------------------------- */
 
   const headerStyle: React.CSSProperties = {
     padding: '16px 24px',
@@ -267,7 +267,7 @@ export default function PayerDbPage() {
       <div style={{ flex: 1, overflow: 'auto', padding: '16px 24px' }}>
         {error && <div style={{ color: '#dc2626', marginBottom: 8, fontSize: 12 }}>{error}</div>}
 
-        {/* ═══ PAYERS TAB ═══ */}
+        {/* === PAYERS TAB === */}
         {tab === 'payers' && (
           <>
             <div style={{ marginBottom: 12, display: 'flex', gap: 8 }}>
@@ -325,7 +325,7 @@ export default function PayerDbPage() {
           </>
         )}
 
-        {/* ═══ CAPABILITIES TAB ═══ */}
+        {/* === CAPABILITIES TAB === */}
         {tab === 'capabilities' && (
           <>
             {selectedPayer ? (
@@ -416,7 +416,7 @@ export default function PayerDbPage() {
           </>
         )}
 
-        {/* ═══ EVIDENCE TAB ═══ */}
+        {/* === EVIDENCE TAB === */}
         {tab === 'evidence' && (
           <>
             <div style={{ marginBottom: 16, padding: 12, background: '#f9fafb', borderRadius: 6 }}>
@@ -505,7 +505,7 @@ export default function PayerDbPage() {
           </>
         )}
 
-        {/* ═══ AUDIT TAB ═══ */}
+        {/* === AUDIT TAB === */}
         {tab === 'audit' && (
           <>
             {stats && (

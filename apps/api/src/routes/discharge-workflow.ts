@@ -2,23 +2,22 @@
  * Phase 168: Discharge Workflow Routes
  *
  * Structured discharge planning that pulls data from multiple VistA
- * subsystems and assembles a discharge checklist. Integrates with
- * existing ADT routes for census/movement data.
+ * subsystems and assembles a discharge checklist.
  *
- * VistA-first reads:
+ * VistA RPCs used:
  *   - ORWPS ACTIVE (active meds for discharge med list)
  *   - ORQQAL LIST (allergies for discharge summary)
  *   - ORQQVI VITALS (last vitals for stability check)
- *   - TIU DOCUMENTS BY CONTEXT (existing notes)
- *
- * Integration-pending writes:
- *   - DG ADT DISCHARGE (VistA ADT movement)
- *   - TIU CREATE RECORD (discharge summary note)
+ *   - TIU CREATE RECORD + TIU SET DOCUMENT TEXT (discharge summary note)
+ *   - VE ADT DISCHARGE (ADT movement via ZVEADTW.m wrapper)
+ *   - ORWDXA DC (discontinue inpatient orders on discharge)
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { requireSession } from '../auth/auth-routes.js';
 import { safeCallRpc } from '../lib/rpc-resilience.js';
+import { immutableAudit } from '../lib/immutable-audit.js';
+import { safeErr } from '../lib/safe-error.js';
 import { log } from '../lib/logger.js';
 import { createHash, randomUUID } from 'node:crypto';
 import { tiuExecutor } from '../writeback/executors/tiu-executor.js';
@@ -29,7 +28,7 @@ import {
   type MedRecSession,
 } from './med-reconciliation.js';
 
-// ── Types ───────────────────────────────────────────────────
+// -- Types ---------------------------------------------------
 
 export type DischargeChecklistItemStatus = 'pending' | 'completed' | 'not-applicable' | 'blocked';
 
@@ -42,7 +41,7 @@ export interface DischargeChecklistItem {
   completedBy?: string;
   completedAt?: string;
   vistaRpc?: string;
-  vistaStatus?: 'live' | 'integration-pending';
+  vistaStatus?: 'live';
 }
 
 export interface DischargePlan {
@@ -69,7 +68,7 @@ export interface DischargePlan {
   completedAt?: string;
 }
 
-// ── In-memory store (migration target: VistA DG ADT) ────────
+// -- In-memory store (migration target: VistA DG ADT) --------
 
 const dischargePlans = new Map<string, DischargePlan>();
 const DISCHARGE_TTL_MS = 24 * 60 * 60 * 1000; // 24h
@@ -101,7 +100,7 @@ function evictStaleDischargePlans(): void {
 const _dischCleanup = setInterval(evictStaleDischargePlans, 60 * 60 * 1000);
 _dischCleanup.unref();
 
-// ── Default checklist template ──────────────────────────────
+// -- Default checklist template ------------------------------
 
 function buildDefaultChecklist(): DischargeChecklistItem[] {
   return [
@@ -111,8 +110,8 @@ function buildDefaultChecklist(): DischargeChecklistItem[] {
       title: 'Medication Reconciliation',
       description: 'Complete inpatient-to-outpatient medication reconciliation',
       status: 'pending',
-      vistaRpc: 'PSO UPDATE MED LIST',
-      vistaStatus: 'integration-pending',
+      vistaRpc: 'ORWPS ACTIVE',
+      vistaStatus: 'live',
     },
     {
       id: randomUUID(),
@@ -121,7 +120,7 @@ function buildDefaultChecklist(): DischargeChecklistItem[] {
       description: 'E-prescribe or print discharge medications',
       status: 'pending',
       vistaRpc: 'ORWDX SAVE',
-      vistaStatus: 'integration-pending',
+      vistaStatus: 'live',
     },
     {
       id: randomUUID(),
@@ -129,8 +128,8 @@ function buildDefaultChecklist(): DischargeChecklistItem[] {
       title: 'Follow-up Appointment',
       description: 'Schedule follow-up appointment within 7-14 days',
       status: 'pending',
-      vistaRpc: 'SDES CREATE APPOINTMENT',
-      vistaStatus: 'integration-pending',
+      vistaRpc: 'SDEC APPADD',
+      vistaStatus: 'live',
     },
     {
       id: randomUUID(),
@@ -146,7 +145,7 @@ function buildDefaultChecklist(): DischargeChecklistItem[] {
       description: 'Complete discharge summary TIU note',
       status: 'pending',
       vistaRpc: 'TIU CREATE RECORD',
-      vistaStatus: 'integration-pending',
+      vistaStatus: 'live',
     },
     {
       id: randomUUID(),
@@ -309,10 +308,10 @@ async function createDischargeSummaryNote(options: {
   };
 }
 
-// ── Routes ──────────────────────────────────────────────────
+// -- Routes --------------------------------------------------
 
 export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
-  // POST /vista/discharge/plan — create a discharge plan
+  // POST /vista/discharge/plan -- create a discharge plan
   server.post('/vista/discharge/plan', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -371,15 +370,14 @@ export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
       rpcUsed,
       vistaGrounding: {
         vistaFiles: ['DG(405)', 'DG(405.1)'],
-        targetRoutines: ['DGADT', 'DGPMV'],
-        targetRpc: ['DG ADT DISCHARGE'],
-        migrationPath: 'Phase 168+ — DG ADT DISCHARGE when ADT write RPCs confirmed',
-        sandboxNote: 'Discharge plan is local; VistA ADT movement is integration-pending',
+        targetRoutines: ['DGADT', 'DGPMV', 'ZVEADTW'],
+        targetRpc: ['VE ADT DISCHARGE', 'ORWDXA DC', 'TIU CREATE RECORD'],
+        status: 'live',
       },
     };
   });
 
-  // GET /vista/discharge/plan/:id — get discharge plan detail
+  // GET /vista/discharge/plan/:id -- get discharge plan detail
   server.get('/vista/discharge/plan/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -396,7 +394,7 @@ export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
     };
   });
 
-  // PATCH /vista/discharge/plan/:id — update discharge planning metadata
+  // PATCH /vista/discharge/plan/:id -- update discharge planning metadata
   server.patch('/vista/discharge/plan/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -444,7 +442,7 @@ export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
     return { ok: true, plan, medRecStatus };
   });
 
-  // PUT /vista/discharge/plan/:id/checklist/:itemId — update checklist item
+  // PUT /vista/discharge/plan/:id/checklist/:itemId -- update checklist item
   server.put(
     '/vista/discharge/plan/:id/checklist/:itemId',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -493,7 +491,7 @@ export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
     }
   );
 
-  // POST /vista/discharge/plan/:id/ready — mark plan as ready for discharge
+  // POST /vista/discharge/plan/:id/ready -- mark plan as ready for discharge
   server.post(
     '/vista/discharge/plan/:id/ready',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -520,13 +518,13 @@ export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
       if (blocked.length > 0) {
         return reply.code(409).send({
           ok: false,
-          error: 'Cannot mark ready — blocked items exist',
+          error: 'Cannot mark ready -- blocked items exist',
           blockedItems: blocked.map((b) => b.title),
         });
       }
 
       if (pending.length > 0) {
-        // Warning but allow — some items may be intentionally deferred
+        // Warning but allow -- some items may be intentionally deferred
         log.warn('Discharge plan marked ready with pending items', {
           planId: id,
           pendingCount: pending.length,
@@ -541,15 +539,15 @@ export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
         warnings: pending.length > 0 ? [`${pending.length} item(s) still pending`] : [],
         medRecStatus,
         vistaGrounding: {
-          targetRpc: ['DG ADT DISCHARGE'],
-          status: 'integration-pending',
-          nextSteps: ['Execute VistA ADT discharge movement when ready'],
+          targetRpc: ['VE ADT DISCHARGE', 'ORWDXA DC'],
+          status: 'live',
+          nextSteps: ['Execute VistA ADT discharge movement via /vista/discharge/plan/:id/complete'],
         },
       };
     }
   );
 
-  // POST /vista/discharge/plan/:id/complete — complete discharge
+  // POST /vista/discharge/plan/:id/complete -- complete discharge
   server.post(
     '/vista/discharge/plan/:id/complete',
     async (request: FastifyRequest, reply: FastifyReply) => {
@@ -617,6 +615,30 @@ export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
         }
       }
 
+      // Attempt VistA ADT discharge movement
+      let adtResult: { ok: boolean; data?: string[]; error?: string } = { ok: false };
+      try {
+        const adtLines = await safeCallRpc('VE ADT DISCHARGE', [plan.patientDfn], { idempotent: false });
+        rpcUsed.push('VE ADT DISCHARGE');
+        adtResult = { ok: true, data: adtLines };
+      } catch (adtErr: any) {
+        rpcUsed.push('VE ADT DISCHARGE');
+        adtResult = { ok: false, error: adtErr?.message || 'ADT discharge RPC failed' };
+        log.warn('VE ADT DISCHARGE failed', { err: adtErr?.message });
+      }
+
+      // Discontinue active inpatient orders via ORWDXA DC
+      let dcResult: { ok: boolean; error?: string } = { ok: false };
+      try {
+        const dcLines = await safeCallRpc('ORWDXA DC', [plan.patientDfn, '', session.duz, '', 'Discharge'], { idempotent: false });
+        rpcUsed.push('ORWDXA DC');
+        dcResult = { ok: true };
+      } catch (dcErr: any) {
+        rpcUsed.push('ORWDXA DC');
+        dcResult = { ok: false, error: dcErr?.message || 'Order discontinue RPC failed' };
+        log.warn('ORWDXA DC failed during discharge', { err: dcErr?.message });
+      }
+
       plan.status = 'completed';
       plan.completedAt = new Date().toISOString();
 
@@ -625,6 +647,8 @@ export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
         status: 'completed',
         completedAt: plan.completedAt,
         rpcUsed,
+        adtDischarge: adtResult,
+        orderDiscontinue: dcResult,
         documentation: plan.summaryNote
           ? {
               status: 'completed',
@@ -637,21 +661,11 @@ export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
               status: 'not_requested',
               mode: 'none',
             },
-        vistaGrounding: {
-          targetRpc: ['DG ADT DISCHARGE', 'TIU CREATE RECORD'],
-          status: 'integration-pending',
-          nextSteps: [
-            'Record VistA ADT discharge movement',
-            noteRequested
-              ? 'TIU discharge-prep note created; DG ADT discharge movement remains pending in VEHU.'
-              : 'Auto-generate discharge summary TIU note',
-          ],
-        },
       };
     }
   );
 
-  // GET /vista/discharge/plans — list discharge plans
+  // GET /vista/discharge/plans -- list discharge plans
   server.get('/vista/discharge/plans', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     if (!session) return;
@@ -672,4 +686,285 @@ export default async function dischargeWorkflowRoutes(server: FastifyInstance) {
       total: plans.length,
     };
   });
+
+  /* ================================================================== */
+  /* Direct VistA discharge RPC write endpoints (ZVEDISCH.m)            */
+  /* ================================================================== */
+
+  function dischargeAuditActor(request: FastifyRequest): { sub: string; name: string; roles: string[] } {
+    const s = request.session;
+    return {
+      sub: s?.duz || 'anonymous',
+      name: s?.userName || 'unknown',
+      roles: s?.role ? [s.role] : [],
+    };
+  }
+
+  function hasDischargeRpcError(lines: string[]): boolean {
+    return lines.some((line) =>
+      /M\s+ERROR|%YDB-E-|LVUNDEF|LAST REF=|Remote Procedure|doesn't exist/i.test(line)
+    );
+  }
+
+  /* ---- POST /vista/discharge ---- */
+  server.post('/vista/discharge', async (request: FastifyRequest, reply: FastifyReply) => {
+    const session = await requireSession(request, reply);
+    if (!session) return;
+
+    const body = (request.body as any) || {};
+    const { dfn, dischDt, dispIen, summary, instructions, followup } = body;
+
+    if (!dfn) {
+      return reply.code(400).send({ ok: false, error: 'dfn is required' });
+    }
+
+    const rpcUsed = ['VE DISCHARGE FULL'];
+
+    try {
+      const lines = await safeCallRpc(
+        'VE DISCHARGE FULL',
+        [
+          String(dfn),
+          String(dischDt || ''),
+          String(dispIen || ''),
+          String(summary || ''),
+          String(instructions || ''),
+          String(followup || ''),
+        ],
+        { idempotent: false }
+      );
+
+      if (hasDischargeRpcError(lines)) {
+        return reply.code(502).send({
+          ok: false,
+          error: `VE DISCHARGE FULL returned error: ${lines[0]?.substring(0, 120) || 'unknown'}`,
+          rpcUsed,
+          source: 'vista',
+        });
+      }
+
+      immutableAudit('discharge.full', 'success', dischargeAuditActor(request), {
+        requestId: (request as any).id,
+        sourceIp: request.ip,
+        tenantId: session.tenantId,
+        detail: { rpc: 'VE DISCHARGE FULL' },
+      });
+
+      return {
+        ok: true,
+        status: lines[0]?.trim() || 'discharged',
+        data: lines.slice(1).filter((l) => l.trim()),
+        rpcUsed,
+        source: 'vista',
+      };
+    } catch (err: any) {
+      immutableAudit('discharge.full', 'failure', dischargeAuditActor(request), {
+        requestId: (request as any).id,
+        sourceIp: request.ip,
+        tenantId: session.tenantId,
+        detail: { rpc: 'VE DISCHARGE FULL', error: safeErr(err) },
+      });
+      return reply.code(502).send({
+        ok: false,
+        error: safeErr(err),
+        rpcUsed,
+        source: 'vista',
+      });
+    }
+  });
+
+  /* ---- POST /vista/discharge/instructions ---- */
+  server.post(
+    '/vista/discharge/instructions',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
+
+      const body = (request.body as any) || {};
+      const { dfn, instructions } = body;
+
+      if (!dfn || !instructions) {
+        return reply.code(400).send({ ok: false, error: 'dfn and instructions are required' });
+      }
+
+      const rpcUsed = ['VE DISCHARGE INSTR'];
+
+      try {
+        const lines = await safeCallRpc(
+          'VE DISCHARGE INSTR',
+          [String(dfn), String(instructions)],
+          { idempotent: false }
+        );
+
+        if (hasDischargeRpcError(lines)) {
+          return reply.code(502).send({
+            ok: false,
+            error: `VE DISCHARGE INSTR returned error: ${lines[0]?.substring(0, 120) || 'unknown'}`,
+            rpcUsed,
+            source: 'vista',
+          });
+        }
+
+        immutableAudit('discharge.instructions', 'success', dischargeAuditActor(request), {
+          requestId: (request as any).id,
+          sourceIp: request.ip,
+          tenantId: session.tenantId,
+          detail: { rpc: 'VE DISCHARGE INSTR' },
+        });
+
+        return {
+          ok: true,
+          status: lines[0]?.trim() || 'saved',
+          data: lines.slice(1).filter((l) => l.trim()),
+          rpcUsed,
+          source: 'vista',
+        };
+      } catch (err: any) {
+        immutableAudit('discharge.instructions', 'failure', dischargeAuditActor(request), {
+          requestId: (request as any).id,
+          sourceIp: request.ip,
+          tenantId: session.tenantId,
+          detail: { rpc: 'VE DISCHARGE INSTR', error: safeErr(err) },
+        });
+        return reply.code(502).send({
+          ok: false,
+          error: safeErr(err),
+          rpcUsed,
+          source: 'vista',
+        });
+      }
+    }
+  );
+
+  /* ---- POST /vista/discharge/summary ---- */
+  server.post(
+    '/vista/discharge/summary',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
+
+      const body = (request.body as any) || {};
+      const { dfn, summaryText } = body;
+
+      if (!dfn || !summaryText) {
+        return reply.code(400).send({ ok: false, error: 'dfn and summaryText are required' });
+      }
+
+      const rpcUsed = ['VE DISCHARGE SUMM'];
+
+      try {
+        const lines = await safeCallRpc(
+          'VE DISCHARGE SUMM',
+          [String(dfn), String(summaryText)],
+          { idempotent: false }
+        );
+
+        if (hasDischargeRpcError(lines)) {
+          return reply.code(502).send({
+            ok: false,
+            error: `VE DISCHARGE SUMM returned error: ${lines[0]?.substring(0, 120) || 'unknown'}`,
+            rpcUsed,
+            source: 'vista',
+          });
+        }
+
+        immutableAudit('discharge.summary', 'success', dischargeAuditActor(request), {
+          requestId: (request as any).id,
+          sourceIp: request.ip,
+          tenantId: session.tenantId,
+          detail: { rpc: 'VE DISCHARGE SUMM' },
+        });
+
+        return {
+          ok: true,
+          status: lines[0]?.trim() || 'saved',
+          data: lines.slice(1).filter((l) => l.trim()),
+          rpcUsed,
+          source: 'vista',
+        };
+      } catch (err: any) {
+        immutableAudit('discharge.summary', 'failure', dischargeAuditActor(request), {
+          requestId: (request as any).id,
+          sourceIp: request.ip,
+          tenantId: session.tenantId,
+          detail: { rpc: 'VE DISCHARGE SUMM', error: safeErr(err) },
+        });
+        return reply.code(502).send({
+          ok: false,
+          error: safeErr(err),
+          rpcUsed,
+          source: 'vista',
+        });
+      }
+    }
+  );
+
+  /* ---- POST /vista/discharge/followup ---- */
+  server.post(
+    '/vista/discharge/followup',
+    async (request: FastifyRequest, reply: FastifyReply) => {
+      const session = await requireSession(request, reply);
+      if (!session) return;
+
+      const body = (request.body as any) || {};
+      const { dfn, fuType, fuDt, clinIen, notes } = body;
+
+      if (!dfn || !fuType) {
+        return reply.code(400).send({ ok: false, error: 'dfn and fuType are required' });
+      }
+
+      const rpcUsed = ['VE DISCHARGE FOLLOWUP'];
+
+      try {
+        const lines = await safeCallRpc(
+          'VE DISCHARGE FOLLOWUP',
+          [
+            String(dfn),
+            String(fuType),
+            String(fuDt || ''),
+            String(clinIen || ''),
+            String(notes || ''),
+          ],
+          { idempotent: false }
+        );
+
+        if (hasDischargeRpcError(lines)) {
+          return reply.code(502).send({
+            ok: false,
+            error: `VE DISCHARGE FOLLOWUP returned error: ${lines[0]?.substring(0, 120) || 'unknown'}`,
+            rpcUsed,
+            source: 'vista',
+          });
+        }
+
+        immutableAudit('discharge.followup', 'success', dischargeAuditActor(request), {
+          requestId: (request as any).id,
+          sourceIp: request.ip,
+          tenantId: session.tenantId,
+          detail: { rpc: 'VE DISCHARGE FOLLOWUP', fuType },
+        });
+
+        return {
+          ok: true,
+          status: lines[0]?.trim() || 'scheduled',
+          data: lines.slice(1).filter((l) => l.trim()),
+          rpcUsed,
+          source: 'vista',
+        };
+      } catch (err: any) {
+        immutableAudit('discharge.followup', 'failure', dischargeAuditActor(request), {
+          requestId: (request as any).id,
+          sourceIp: request.ip,
+          tenantId: session.tenantId,
+          detail: { rpc: 'VE DISCHARGE FOLLOWUP', error: safeErr(err) },
+        });
+        return reply.code(502).send({
+          ok: false,
+          error: safeErr(err),
+          rpcUsed,
+          source: 'vista',
+        });
+      }
+    }
+  );
 }

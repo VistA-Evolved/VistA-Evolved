@@ -1,5 +1,5 @@
 /**
- * Worker Entrypoint — Phase 116: Postgres Job Queue (Graphile Worker)
+ * Worker Entrypoint -- Phase 116: Postgres Job Queue (Graphile Worker)
  *
  * Standalone process entry point for running the job worker.
  * Usage: pnpm api:worker   (or: tsx --env-file=.env.local src/jobs/worker-entrypoint.ts)
@@ -10,7 +10,7 @@
  *  3. Starts the Graphile Worker runner
  *  4. Handles graceful shutdown on SIGINT/SIGTERM
  *
- * It does NOT start the Fastify HTTP server — it's a pure job processor.
+ * It does NOT start the Fastify HTTP server -- it's a pure job processor.
  */
 
 import { log } from '../lib/logger.js';

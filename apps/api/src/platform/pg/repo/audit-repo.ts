@@ -1,5 +1,5 @@
 /**
- * Audit Repository (PostgreSQL) — READ-ONLY queries for payer audit events
+ * Audit Repository (PostgreSQL) -- READ-ONLY queries for payer audit events
  *
  * Phase 102: Migrate Prototype Stores to PlatformStore
  *

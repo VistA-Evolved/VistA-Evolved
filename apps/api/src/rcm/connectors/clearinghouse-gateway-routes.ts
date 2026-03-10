@@ -1,5 +1,5 @@
 /**
- * Clearinghouse Gateway v2 Routes — Phase 519 (Wave 37 B7)
+ * Clearinghouse Gateway v2 Routes -- Phase 519 (Wave 37 B7)
  *
  * REST endpoints for the provider-agnostic clearinghouse adapter
  * with record/replay trace management.
@@ -12,7 +12,7 @@ import type { X12TransactionSet } from '../edi/types.js';
 export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promise<void> {
   const prefix = '/rcm/clearinghouse/v2';
 
-  /* ── Health ──────────────────────────────────────────────
+  /* -- Health ----------------------------------------------
    * GET /rcm/clearinghouse/v2/health
    */
   server.get(`${prefix}/health`, async (_req: FastifyRequest, reply: FastifyReply) => {
@@ -21,7 +21,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     return reply.send(health);
   });
 
-  /* ── Config (redacted) ──────────────────────────────────
+  /* -- Config (redacted) ----------------------------------
    * GET /rcm/clearinghouse/v2/config
    */
   server.get(`${prefix}/config`, async (_req: FastifyRequest, reply: FastifyReply) => {
@@ -29,7 +29,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     return reply.send({ ok: true, config: gw.getConfig() });
   });
 
-  /* ── Submit 837 ─────────────────────────────────────────
+  /* -- Submit 837 -----------------------------------------
    * POST /rcm/clearinghouse/v2/submit
    * Body: { payload: string, metadata?: Record<string,string> }
    */
@@ -57,7 +57,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     });
   });
 
-  /* ── Check 276/277 ──────────────────────────────────────
+  /* -- Check 276/277 --------------------------------------
    * POST /rcm/clearinghouse/v2/check-status
    * Body: { payload: string, metadata?: Record<string,string> }
    */
@@ -85,7 +85,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     });
   });
 
-  /* ── Receive 835s ───────────────────────────────────────
+  /* -- Receive 835s ---------------------------------------
    * GET /rcm/clearinghouse/v2/receive?since=ISO
    */
   server.get(`${prefix}/receive`, async (req: FastifyRequest, reply: FastifyReply) => {
@@ -105,7 +105,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     });
   });
 
-  /* ── Submission history ─────────────────────────────────
+  /* -- Submission history ---------------------------------
    * GET /rcm/clearinghouse/v2/submissions?limit=50
    */
   server.get(`${prefix}/submissions`, async (req: FastifyRequest, reply: FastifyReply) => {
@@ -127,7 +127,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     });
   });
 
-  /* ── Get single submission ──────────────────────────────
+  /* -- Get single submission ------------------------------
    * GET /rcm/clearinghouse/v2/submissions/:id
    */
   server.get(`${prefix}/submissions/:id`, async (req: FastifyRequest, reply: FastifyReply) => {
@@ -153,7 +153,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     });
   });
 
-  /* ── Trace list ─────────────────────────────────────────
+  /* -- Trace list -----------------------------------------
    * GET /rcm/clearinghouse/v2/traces?transactionSet=835&limit=50
    */
   server.get(`${prefix}/traces`, async (req: FastifyRequest, reply: FastifyReply) => {
@@ -181,7 +181,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     });
   });
 
-  /* ── Get single trace ───────────────────────────────────
+  /* -- Get single trace -----------------------------------
    * GET /rcm/clearinghouse/v2/traces/:id
    */
   server.get(`${prefix}/traces/:id`, async (req: FastifyRequest, reply: FastifyReply) => {
@@ -196,7 +196,7 @@ export async function clearinghouseGatewayRoutes(server: FastifyInstance): Promi
     return reply.send({ ok: true, trace });
   });
 
-  /* ── Trace stats ────────────────────────────────────────
+  /* -- Trace stats ----------------------------------------
    * GET /rcm/clearinghouse/v2/traces/stats
    */
   server.get(`${prefix}/traces/stats`, async (_req: FastifyRequest, reply: FastifyReply) => {

@@ -1,14 +1,14 @@
 /**
- * Audit Shipping Routes — Phase 157
+ * Audit Shipping Routes -- Phase 157
  *
  * Admin-only endpoints for audit JSONL shipping status and control.
  * Auth: admin (matched by /audit/* catch-all in AUTH_RULES)
  *
  * Routes:
- *   GET  /audit/shipping/status    — Current shipping health
- *   POST /audit/shipping/trigger   — Manually trigger a ship cycle
- *   GET  /audit/shipping/manifests — List recent manifests
- *   GET  /audit/shipping/health    — S3 connectivity check
+ *   GET  /audit/shipping/status    -- Current shipping health
+ *   POST /audit/shipping/trigger   -- Manually trigger a ship cycle
+ *   GET  /audit/shipping/manifests -- List recent manifests
+ *   GET  /audit/shipping/health    -- S3 connectivity check
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -22,7 +22,7 @@ import {
 import { log } from '../lib/logger.js';
 
 export async function auditShippingRoutes(server: FastifyInstance): Promise<void> {
-  /** GET /audit/shipping/status — Shipping health overview */
+  /** GET /audit/shipping/status -- Shipping health overview */
   server.get('/audit/shipping/status', async () => {
     const status = getShipperStatus();
     const lastResult = getLastShipResult();
@@ -34,7 +34,7 @@ export async function auditShippingRoutes(server: FastifyInstance): Promise<void
     };
   });
 
-  /** POST /audit/shipping/trigger — Manually trigger a ship cycle */
+  /** POST /audit/shipping/trigger -- Manually trigger a ship cycle */
   server.post('/audit/shipping/trigger', async (_request, reply) => {
     log.info('Manual audit ship triggered');
     try {
@@ -56,7 +56,7 @@ export async function auditShippingRoutes(server: FastifyInstance): Promise<void
     }
   });
 
-  /** GET /audit/shipping/manifests — List recent manifests */
+  /** GET /audit/shipping/manifests -- List recent manifests */
   server.get('/audit/shipping/manifests', async (request) => {
     const query = request.query as { limit?: string };
     const limit = Math.min(Number(query.limit) || 50, 200);
@@ -69,7 +69,7 @@ export async function auditShippingRoutes(server: FastifyInstance): Promise<void
     };
   });
 
-  /** GET /audit/shipping/health — S3 connectivity check */
+  /** GET /audit/shipping/health -- S3 connectivity check */
   server.get('/audit/shipping/health', async () => {
     const connectivity = await checkS3Connectivity();
     const status = getShipperStatus();

@@ -1,14 +1,14 @@
 /**
- * Export v2 Routes — Phase 245: Data Exports v2
+ * Export v2 Routes -- Phase 245: Data Exports v2
  *
  * Unified export REST API.
  *
  * Routes:
- *   GET  /admin/exports/sources   — List available export sources
- *   POST /admin/exports/jobs      — Create a new export job
- *   GET  /admin/exports/jobs      — List export jobs
- *   GET  /admin/exports/jobs/:id  — Get job detail / download
- *   GET  /admin/exports/stats     — Export engine stats
+ *   GET  /admin/exports/sources   -- List available export sources
+ *   POST /admin/exports/jobs      -- Create a new export job
+ *   GET  /admin/exports/jobs      -- List export jobs
+ *   GET  /admin/exports/jobs/:id  -- Get job detail / download
+ *   GET  /admin/exports/stats     -- Export engine stats
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -49,7 +49,7 @@ export default async function exportV2Routes(server: FastifyInstance): Promise<v
     return null;
   }
 
-  /* ── GET /admin/exports/sources ─────────────────────────────── */
+  /* -- GET /admin/exports/sources ------------------------------- */
   server.get('/admin/exports/sources', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -58,7 +58,7 @@ export default async function exportV2Routes(server: FastifyInstance): Promise<v
     return { ok: true, sources, supportedFormats: SUPPORTED_FORMATS };
   });
 
-  /* ── POST /admin/exports/jobs ───────────────────────────────── */
+  /* -- POST /admin/exports/jobs --------------------------------- */
   server.post('/admin/exports/jobs', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -95,7 +95,7 @@ export default async function exportV2Routes(server: FastifyInstance): Promise<v
     }
   });
 
-  /* ── GET /admin/exports/jobs ────────────────────────────────── */
+  /* -- GET /admin/exports/jobs ---------------------------------- */
   server.get('/admin/exports/jobs', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -112,7 +112,7 @@ export default async function exportV2Routes(server: FastifyInstance): Promise<v
     return { ok: true, jobs: items };
   });
 
-  /* ── GET /admin/exports/jobs/:id ────────────────────────────── */
+  /* -- GET /admin/exports/jobs/:id ------------------------------ */
   server.get('/admin/exports/jobs/:id', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);
@@ -140,7 +140,7 @@ export default async function exportV2Routes(server: FastifyInstance): Promise<v
     return { ok: true, job: meta };
   });
 
-  /* ── GET /admin/exports/stats ───────────────────────────────── */
+  /* -- GET /admin/exports/stats --------------------------------- */
   server.get('/admin/exports/stats', async (request, reply) => {
     const session = await requireSession(request, reply);
     requireRole(session, ['admin'], reply);

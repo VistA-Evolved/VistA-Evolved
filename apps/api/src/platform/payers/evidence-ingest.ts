@@ -1,5 +1,5 @@
 /**
- * Evidence Ingest Pipeline — Phase 95B
+ * Evidence Ingest Pipeline -- Phase 95B
  *
  * Three ingest modes:
  *   Mode 1 (required): ingest committed JSON snapshot
@@ -15,7 +15,7 @@
 
 import { createHash } from 'node:crypto';
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
-import { join, dirname } from 'node:path';
+import { join, dirname, basename } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   insertEvidence,
@@ -38,9 +38,9 @@ const __dirname_resolved =
 const REPO_ROOT = join(__dirname_resolved, '..', '..', '..', '..', '..');
 const EVIDENCE_DIR = join(REPO_ROOT, 'data', 'evidence');
 
-/* ══════════════════════════════════════════════════════════════ */
+/* ============================================================== */
 /* Mode 1: Ingest from committed JSON snapshot                    */
-/* ══════════════════════════════════════════════════════════════ */
+/* ============================================================== */
 
 interface SnapshotPayer {
   payerId: string;
@@ -72,7 +72,7 @@ export interface SnapshotDiff {
 /**
  * Ingest a JSON snapshot from a committed file or raw JSON string.
  * Creates an evidence_snapshot record and computes diff vs current DB state.
- * Does NOT modify payer table — use promoteSnapshot() for that.
+ * Does NOT modify payer table -- use promoteSnapshot() for that.
  */
 export async function ingestJsonSnapshot(params: {
   jsonContent: string;
@@ -149,9 +149,9 @@ export async function ingestJsonSnapshot(params: {
   }
 }
 
-/* ══════════════════════════════════════════════════════════════ */
+/* ============================================================== */
 /* Mode 2: Ingest uploaded PDF evidence                           */
-/* ══════════════════════════════════════════════════════════════ */
+/* ============================================================== */
 
 export interface PdfIngestResult {
   ok: boolean;
@@ -162,7 +162,7 @@ export interface PdfIngestResult {
 }
 
 /**
- * Store a PDF evidence artifact. Does NOT parse PDF content —
+ * Store a PDF evidence artifact. Does NOT parse PDF content --
  * that's a future enhancement. The PDF is stored and hashed.
  */
 export async function ingestPdfEvidence(params: {
@@ -178,7 +178,8 @@ export async function ingestPdfEvidence(params: {
     }
 
     const sha256 = createHash('sha256').update(params.buffer).digest('hex');
-    const storedFilename = `evidence_${Date.now()}_${sha256.slice(0, 8)}_${params.filename}`;
+    const safeName = basename(params.filename).replace(/\.\./g, '');
+    const storedFilename = `evidence_${Date.now()}_${sha256.slice(0, 8)}_${safeName}`;
     const storedPath = join(EVIDENCE_DIR, storedFilename);
     writeFileSync(storedPath, params.buffer);
 
@@ -196,7 +197,7 @@ export async function ingestPdfEvidence(params: {
       snapshotId: evidence.id,
       sha256,
       storedPath: `data/evidence/${storedFilename}`,
-      message: 'PDF evidence stored. Parsing not implemented — evidence stored for manual review.',
+      message: 'PDF evidence stored. Parsing not implemented -- evidence stored for manual review.',
     };
   } catch (err) {
     return {
@@ -209,9 +210,9 @@ export async function ingestPdfEvidence(params: {
   }
 }
 
-/* ══════════════════════════════════════════════════════════════ */
+/* ============================================================== */
 /* Diff computation                                               */
-/* ══════════════════════════════════════════════════════════════ */
+/* ============================================================== */
 
 /**
  * Compute structured diff between a snapshot's payer list and
@@ -236,11 +237,11 @@ export async function computeSnapshotDiff(snapshotPayers: SnapshotPayer[]): Prom
       if (dbPayer) {
         const changes: string[] = [];
         if (dbPayer.canonicalName !== sp.name)
-          changes.push(`name: "${dbPayer.canonicalName}" → "${sp.name}"`);
+          changes.push(`name: "${dbPayer.canonicalName}" -> "${sp.name}"`);
         if (dbPayer.integrationMode !== (sp.integrationMode ?? null))
-          changes.push(`integrationMode: "${dbPayer.integrationMode}" → "${sp.integrationMode}"`);
+          changes.push(`integrationMode: "${dbPayer.integrationMode}" -> "${sp.integrationMode}"`);
         if (dbPayer.category !== (sp.category ?? null))
-          changes.push(`category: "${dbPayer.category}" → "${sp.category}"`);
+          changes.push(`category: "${dbPayer.category}" -> "${sp.category}"`);
         if (changes.length > 0) {
           modified.push({ payerId: sp.payerId, changes });
         } else {
@@ -260,9 +261,9 @@ export async function computeSnapshotDiff(snapshotPayers: SnapshotPayer[]): Prom
   return { added, removed, modified, unchanged };
 }
 
-/* ══════════════════════════════════════════════════════════════ */
+/* ============================================================== */
 /* Promote: apply snapshot changes to payer table                 */
-/* ══════════════════════════════════════════════════════════════ */
+/* ============================================================== */
 
 export interface PromoteResult {
   ok: boolean;

@@ -1,6 +1,8 @@
 'use client';
 
 import { useState } from 'react';
+import { Nav } from '../../components/Nav';
+import { Footer } from '../../components/Footer';
 
 type Step = 'org' | 'config' | 'payment' | 'provisioning';
 
@@ -72,10 +74,9 @@ export default function SignupPage() {
 
     try {
       const apiBase = process.env.NEXT_PUBLIC_API_URL || 'http://127.0.0.1:3001';
-      const res = await fetch(`${apiBase}/admin/provisioning/tenants`, {
+      const res = await fetch(`${apiBase}/signup/register`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        credentials: 'include',
         body: JSON.stringify({
           name: org.name,
           contactEmail: org.contactEmail,
@@ -84,10 +85,9 @@ export default function SignupPage() {
         }),
       });
 
-      if (res.status === 401 || res.status === 403) {
+      if (res.status === 429) {
         setProvisioningStatus(
-          'Your signup request has been received. An administrator will review and provision your organization. ' +
-          'You will receive an email at ' + org.contactEmail + ' when your instance is ready.'
+          'Too many signup attempts. Please try again in an hour.'
         );
         return;
       }
@@ -96,35 +96,20 @@ export default function SignupPage() {
         const errorData = await res.json().catch(() => null);
         setProvisioningStatus(
           `We encountered an issue (${res.status}). ` +
-          (errorData?.message ?? 'Please contact support@vistaevolved.com for assistance.')
+          (errorData?.error ?? 'Please contact support@vistaevolved.com for assistance.')
         );
         return;
       }
 
       const data = await res.json();
       if (data.ok) {
-        setProvisioningStatus('Organization created! Starting automated provisioning...');
-        const tenantId = data.tenant?.id;
-        if (tenantId) {
-          const provisionRes = await fetch(`${apiBase}/admin/provisioning/tenants/${tenantId}/provision`, {
-            method: 'POST',
-            credentials: 'include',
-          });
-          if (provisionRes.ok) {
-            setProvisioningStatus(
-              'Provisioning complete! Your VistA Evolved instance is being configured. ' +
-              'You will receive login credentials at ' + org.contactEmail + '.'
-            );
-          } else {
-            setProvisioningStatus(
-              'Organization created. Automated provisioning will be completed shortly. ' +
-              'Check ' + org.contactEmail + ' for updates.'
-            );
-          }
-        }
+        setProvisioningStatus(
+          data.message || 'Your organization has been registered! ' +
+          'An administrator will complete provisioning and you will receive credentials at ' + org.contactEmail + '.'
+        );
       } else {
         setProvisioningStatus(
-          `Registration received. ${data.message || 'An administrator will complete setup and contact you.'}`
+          `Registration received. ${data.error || 'An administrator will complete setup and contact you.'}`
         );
       }
     } catch (err: unknown) {
@@ -145,11 +130,7 @@ export default function SignupPage() {
 
   return (
     <div style={{ minHeight: '100vh', background: 'linear-gradient(135deg, #0f172a 0%, #1e293b 100%)' }}>
-      <nav style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '1.5rem 4rem', borderBottom: '1px solid rgba(255,255,255,0.1)' }}>
-        <a href="/" style={{ color: 'white', fontSize: '1.5rem', fontWeight: 700, textDecoration: 'none' }}>
-          VistA <span style={{ color: '#38bdf8' }}>Evolved</span>
-        </a>
-      </nav>
+      <Nav showCta={false} />
 
       <section style={{ maxWidth: '540px', margin: '3rem auto', padding: '0 1.5rem' }}>
         {/* Progress */}
@@ -263,6 +244,7 @@ export default function SignupPage() {
         )}
       </section>
 
+      <Footer />
       <style>{`@keyframes spin { to { transform: rotate(360deg); } }`}</style>
     </div>
   );

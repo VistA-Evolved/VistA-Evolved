@@ -32,7 +32,7 @@ Gate "G1: certification-runner.ts key exports" {
     (Select-String -Path $f -Pattern "getCertificationSummary" -Quiet)
 }
 
-# Gate 2: 17 checks present — static IDs + dynamic domain generation
+# Gate 2: 17 checks present -- static IDs + dynamic domain generation
 Gate "G2: 17 certification checks" {
   $f = Join-Path $root "apps/api/src/writeback/certification-runner.ts"
   $content = Get-Content $f -Raw
@@ -46,7 +46,7 @@ Gate "G2: 17 certification checks" {
   foreach ($id in $staticIds) {
     if ($content -match [regex]::Escape($id)) { $found++ }
   }
-  # Dynamic domain IDs generated via ALL_DOMAINS.map(checkDomainExecutor) — 6 domains
+  # Dynamic domain IDs generated via ALL_DOMAINS.map(checkDomainExecutor) -- 6 domains
   $hasDomainMap = $content -match "ALL_DOMAINS\.map\(checkDomainExecutor\)"
   $hasDomainIdTemplate = $content -match 'domain\.\$\{domain\.toLowerCase\(\)\}'
   $hasAllDomains = $content -match '"TIU".*"ORDERS".*"PHARM".*"LAB".*"ADT".*"IMG"'

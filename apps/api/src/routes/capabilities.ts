@@ -1,11 +1,11 @@
 /**
- * RPC Capability Discovery routes — Phase 14A + Phase 478.
+ * RPC Capability Discovery routes -- Phase 14A + Phase 478.
  *
- * GET /vista/rpc-capabilities — returns cached map of available RPCs
- *   ?refresh=true — force re-probe
- *   ?domain=orders — filter by domain
+ * GET /vista/rpc-capabilities -- returns cached map of available RPCs
+ *   ?refresh=true -- force re-probe
+ *   ?domain=orders -- filter by domain
  *
- * GET /vista/capabilities — Phase 478: unified capability snapshot
+ * GET /vista/capabilities -- Phase 478: unified capability snapshot
  *   Combines RPC probe data, registry metadata, and domain summaries.
  *   Used by scripts/vista-capability-snapshot.mjs for offline snapshots.
  *
@@ -91,7 +91,7 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
   });
 
   /**
-   * GET /vista/runtime-matrix — Phase 425
+   * GET /vista/runtime-matrix -- Phase 425
    *
    * Returns combined domain capability view with adapter + RPC readiness.
    * Requires prior capability discovery (calls discoverCapabilities if needed).
@@ -108,7 +108,7 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
   });
 
   /**
-   * POST /vista/runtime-matrix/drift — Phase 425
+   * POST /vista/runtime-matrix/drift -- Phase 425
    *
    * Compare current capabilities against provided baseline.
    * Body: { availableList: string[], missingList: string[], instanceId?: string }
@@ -134,7 +134,7 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
   });
 
   /**
-   * GET /vista/capabilities — Phase 478
+   * GET /vista/capabilities -- Phase 478
    *
    * Unified VistA capability snapshot. Combines:
    *   1. Live RPC probe results (from discoverCapabilities)
@@ -144,7 +144,7 @@ export default async function capabilityRoutes(server: FastifyInstance): Promise
    * Response shape is designed for offline snapshot consumption by
    * scripts/vista-capability-snapshot.mjs.
    *
-   * ?refresh=true — force re-probe before building snapshot.
+   * ?refresh=true -- force re-probe before building snapshot.
    */
   server.get('/vista/capabilities', async (request, reply) => {
     const { refresh } = request.query as { refresh?: string };

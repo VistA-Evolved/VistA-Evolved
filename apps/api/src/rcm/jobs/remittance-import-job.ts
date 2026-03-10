@@ -1,5 +1,5 @@
 /**
- * Remittance Import Job — Phase 142: RCM Operational Excellence
+ * Remittance Import Job -- Phase 142: RCM Operational Excellence
  *
  * Background job that processes an ERA 835 import:
  *   1. Parse the remittance batch from job payload
@@ -9,14 +9,14 @@
  *   5. Create underpayment cases for review
  *
  * Runs as REMITTANCE_IMPORT job type in the durable queue.
- * No external payer calls — processes already-received remittance data.
+ * No external payer calls -- processes already-received remittance data.
  */
 
 import { appendRcmAudit } from '../audit/rcm-audit.js';
 import { log } from '../../lib/logger.js';
 import type { RcmJobType } from './queue.js';
 
-/* ── Config ────────────────────────────────────────────────── */
+/* -- Config -------------------------------------------------- */
 
 /** Underpayment threshold: if paid < (billed * threshold), flag as underpayment */
 const UNDERPAYMENT_THRESHOLD = parseFloat(process.env.RCM_UNDERPAYMENT_THRESHOLD ?? '0.95') || 0.95;
@@ -28,7 +28,7 @@ const REMITTANCE_IMPORT_RATE_LIMIT =
 
 export const REMITTANCE_IMPORT_JOB_TYPE: RcmJobType = 'REMITTANCE_IMPORT';
 
-/* ── Result Types ──────────────────────────────────────────── */
+/* -- Result Types -------------------------------------------- */
 
 export interface RemittanceImportResult {
   processedAt: string;
@@ -40,7 +40,7 @@ export interface RemittanceImportResult {
   errors: string[];
 }
 
-/* ── Handler ───────────────────────────────────────────────── */
+/* -- Handler ------------------------------------------------- */
 
 /**
  * Process a remittance import job.
@@ -249,7 +249,7 @@ async function detectUnderpayments(tenantId: string, importId: string): Promise<
   return created;
 }
 
-/* ── Registration Config ───────────────────────────────────── */
+/* -- Registration Config ------------------------------------- */
 
 /**
  * Returns the PollingJobConfig for remittance import processing.

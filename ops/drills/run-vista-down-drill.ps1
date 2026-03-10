@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 <#
   ops/drills/run-vista-down-drill.ps1
-  Resilience drill: VistA Connection Loss — Phase 254
+  Resilience drill: VistA Connection Loss -- Phase 254
 
   Simulates VistA going down while the API is running.
   Validates: graceful degradation, /health vs /ready split, auto-recovery.
@@ -21,7 +21,7 @@ $pass = 0; $fail = 0; $results = @()
 function Gate($name, $ok, $detail) {
   $script:results += [PSCustomObject]@{ Gate=$name; Pass=$ok; Detail=$detail }
   if ($ok) { $script:pass++; Write-Host "  PASS  $name" -ForegroundColor Green }
-  else     { $script:fail++; Write-Host "  FAIL  $name — $detail" -ForegroundColor Red }
+  else     { $script:fail++; Write-Host "  FAIL  $name -- $detail" -ForegroundColor Red }
 }
 
 Write-Host "`n=== VistA Connection Loss Drill ===" -ForegroundColor Cyan
@@ -68,7 +68,7 @@ try {
 try {
   $raw = Invoke-WebRequest -Uri "$ApiUrl/ready" -UseBasicParsing -TimeoutSec 10
   $r = $raw.Content | ConvertFrom-Json
-  # Ready can be ok:false or vista:"unreachable" — either indicates degradation awareness
+  # Ready can be ok:false or vista:"unreachable" -- either indicates degradation awareness
   $degraded = ($r.ok -eq $false) -or ($r.vista -eq "unreachable")
   Gate "ready_degrades" $degraded "Readiness: ok=$($r.ok), vista=$($r.vista)"
 } catch {

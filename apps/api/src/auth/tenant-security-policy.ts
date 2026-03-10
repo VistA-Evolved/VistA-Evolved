@@ -1,5 +1,5 @@
 /**
- * Tenant Security Policy — Phase 342 (W16-P6).
+ * Tenant Security Policy -- Phase 342 (W16-P6).
  *
  * Configurable per-tenant security posture controls.
  * Controls: CIDR allowlists, MFA requirements, export permissions,

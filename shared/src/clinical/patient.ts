@@ -1,9 +1,9 @@
 /**
- * Canonical Patient types — THE single source of truth for patient data.
+ * Canonical Patient types -- THE single source of truth for patient data.
  *
  * All patient-related type definitions across the monorepo MUST reference
  * these types. Do NOT create local Patient/PatientDemographics interfaces
- * in individual apps — import from @vista-evolved/shared-types instead.
+ * in individual apps -- import from @vista-evolved/shared-types instead.
  *
  * --------------------------------------------------------------------------
  * Design notes:
@@ -35,7 +35,7 @@ export interface PatientSummary {
   sex?: string;
 }
 
-/** Comprehensive patient record — canonical across all apps. */
+/** Comprehensive patient record -- canonical across all apps. */
 export interface Patient {
   /* --- Core identity ------------------------------------------------ */
   /** VistA Data File Number (primary patient identifier) */

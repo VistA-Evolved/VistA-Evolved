@@ -1,5 +1,5 @@
 /**
- * Server-side compliance + hardening config — Phase 15F.
+ * Server-side compliance + hardening config -- Phase 15F.
  *
  * Central configuration for sessions, logging, PHI redaction, audit sink,
  * rate limits, circuit breakers, and caching. Defaults are secure.
@@ -53,7 +53,7 @@ export const LOG_CONFIG = {
 /* ------------------------------------------------------------------ */
 
 export const PHI_CONFIG = {
-  /** Phase 151: DFN must never appear in audit logs — use hashed refs instead */
+  /** Phase 151: DFN must never appear in audit logs -- use hashed refs instead */
   auditIncludesDfn: false,
   /** Never include these in any log output */
   neverLogFields: [
@@ -147,8 +147,28 @@ export const IMAGING_CONFIG = {
   maxUploadBytes: Number(process.env.IMAGING_MAX_UPLOAD_BYTES || 512 * 1024 * 1024),
   // Phase 23: Ingest workflow
   /** Shared secret for Orthanc ingest webhook (X-Service-Key header) */
-  ingestWebhookSecret:
-    process.env.IMAGING_INGEST_WEBHOOK_SECRET || 'dev-imaging-ingest-key-change-in-production',
+  ingestWebhookSecret: (() => {
+    const secret = process.env.IMAGING_INGEST_WEBHOOK_SECRET;
+    if (!secret && (process.env.PLATFORM_RUNTIME_MODE === 'rc' || process.env.PLATFORM_RUNTIME_MODE === 'prod' || process.env.NODE_ENV === 'production')) {
+      throw new Error('IMAGING_INGEST_WEBHOOK_SECRET must be set in rc/prod mode');
+    }
+    return secret || 'dev-imaging-ingest-key-change-in-production';
+  })(),
+} as const;
+
+/* ------------------------------------------------------------------ */
+/* Device / Gateway ingest                                             */
+/* ------------------------------------------------------------------ */
+
+export const DEVICE_INGEST_CONFIG = {
+  /** Shared secret for device ingest endpoints (X-Service-Key header) */
+  serviceKey: (() => {
+    const secret = process.env.DEVICE_INGEST_SERVICE_KEY;
+    if (!secret && (process.env.PLATFORM_RUNTIME_MODE === 'rc' || process.env.PLATFORM_RUNTIME_MODE === 'prod' || process.env.NODE_ENV === 'production')) {
+      throw new Error('DEVICE_INGEST_SERVICE_KEY must be set in rc/prod mode');
+    }
+    return secret || 'dev-device-ingest-key-change-in-production';
+  })(),
 } as const;
 
 /* ------------------------------------------------------------------ */
@@ -170,7 +190,7 @@ export const RATE_LIMIT_CONFIG = {
 
 export const CSRF_CONFIG = {
   /**
-   * CSRF cookie name — DEPRECATED (Phase 132).
+   * CSRF cookie name -- DEPRECATED (Phase 132).
    * Kept for backward compatibility with portal double-submit pattern.
    * EHR routes now use session-bound synchronizer token.
    */

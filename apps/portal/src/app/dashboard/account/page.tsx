@@ -1,5 +1,5 @@
 /**
- * Account Settings Page — Phase 29
+ * Account Settings Page -- Phase 29
  *
  * Allows portal users to:
  * - View account info

@@ -1,10 +1,10 @@
 /**
- * Messages Page — Secure messaging with care team.
+ * Messages Page -- Secure messaging with care team.
  * Inbox / Drafts / Sent tabs, compose form.
  *
  * Portal secure messaging with truthful VistA MailMan or local-mode posture.
  *
- * IMPORTANT: SLA disclaimer — this is NOT for urgent communication.
+ * IMPORTANT: SLA disclaimer -- this is NOT for urgent communication.
  */
 
 'use client';
@@ -72,7 +72,7 @@ export default function MessagesPage() {
         source = 'vista';
       }
     } catch {
-      /* VistA unavailable — fall through */
+      /* VistA unavailable -- fall through */
     }
     if (source !== 'vista') {
       const inRes = await fetchInbox();
@@ -83,7 +83,7 @@ export default function MessagesPage() {
     setInboxSource(source);
     setSlaDisclaimer(
       source === 'local'
-        ? 'Local Mode — VistA MailMan unavailable. Messages are stored locally.'
+        ? 'Local Mode -- VistA MailMan unavailable. Messages are stored locally.'
         : ''
     );
 
@@ -422,10 +422,10 @@ function MessageList({
               <div style={{ fontSize: '0.75rem', color: '#64748b', marginTop: '0.125rem' }}>
                 {msg.category && (
                   <span style={{ textTransform: 'capitalize' }}>
-                    {msg.category.replace('_', ' ')} ·{' '}
+                    {msg.category.replace('_', ' ')} *{' '}
                   </span>
                 )}
-                {msg.fromName && <span>{msg.fromName} · </span>}
+                {msg.fromName && <span>{msg.fromName} * </span>}
                 {msg.status === 'sent'
                   ? 'Sent'
                   : msg.status === 'draft'

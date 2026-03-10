@@ -38,7 +38,7 @@ test.describe("Phase 88: PH Payer Registry Ingestion + Capability Matrix -- IMPL
 
 });
 
-test.describe("Phase 89: LOA ENGINE v1 (Top 5 HMOs + Long Tail manual/portal) — IMPLE", () => {
+test.describe("Phase 89: LOA ENGINE v1 (Top 5 HMOs + Long Tail manual/portal) -- IMPLE", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/rcm/`);
     expect(r0.status(), "/rcm/ not 500").not.toBe(500);
@@ -104,7 +104,7 @@ test.describe("Phase 90: PhilHealth eClaims 3.0 Posture (Export + Validation + R
 
 });
 
-test.describe("Phase 91: Claims Lifecycle v1 + Scrubber + Denial Workbench — IMPLEMEN", () => {
+test.describe("Phase 91: Claims Lifecycle v1 + Scrubber + Denial Workbench -- IMPLEMEN", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/cprs/admin/claims-queue`);
     expect(r0.status(), "/cprs/admin/claims-queue not 500").not.toBe(500);
@@ -194,7 +194,7 @@ test.describe("Phase 92: PAYMENT TRACKING + RECONCILIATION + AGING + PAYER INTEL
   });
 });
 
-test.describe("Phase 93: PH HMO Deepening Pack (ALL Licensed HMOs) — IMPLEMENT", () => {
+test.describe("Phase 93: PH HMO Deepening Pack (ALL Licensed HMOs) -- IMPLEMENT", () => {
   test("API routes respond (no 500)", async ({ request }) => {
     const r0 = await request.get(`${API}/rcm/payers/ph/hmos`);
     expect(r0.status(), "/rcm/payers/ph/hmos not 500").not.toBe(500);

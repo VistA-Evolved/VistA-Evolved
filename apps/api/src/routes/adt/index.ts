@@ -19,7 +19,7 @@
  *
  * Auth: session-based (/vista/* catch-all in security.ts).
  * Audit: immutable audit trail for census + movement access (Phase 137).
- * Every response includes rpcUsed[], pendingTargets[], source.
+ * Every response includes rpcUsed[], source.
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -169,19 +169,15 @@ function parseAdmissionList(lines: string[]): Array<{
   return results;
 }
 
-/** Standard integration-pending error fallback. */
+/** Error fallback for failed RPC calls. */
 function pendingFallback(reply: FastifyReply, rpcName: string, err: any) {
   const errMsg = err?.message || String(err);
-  log.warn(`${rpcName} failed -- returning integration-pending`, { err: errMsg });
-  return reply.send({
+  log.warn(`${rpcName} failed`, { err: errMsg });
+  return reply.code(502).send({
     ok: false,
     source: 'vista',
-    count: 0,
-    results: [],
-    rpcUsed: [],
-    pendingTargets: [rpcName],
-    _integration: 'pending',
-    _error: errMsg.includes('ECONNREFUSED') ? 'VistA unavailable' : 'RPC call failed',
+    error: errMsg.includes('ECONNREFUSED') ? 'VistA unavailable' : `${rpcName} failed: ${errMsg}`,
+    rpcUsed: [rpcName],
   });
 }
 
@@ -204,7 +200,7 @@ async function getPgPoolLazy(): Promise<any> {
       return _pgPool;
     }
   } catch {
-    /* PG not available — ADT movements only audited via immutableAudit */
+    /* PG not available -- ADT movements only audited via immutableAudit */
   }
   return null;
 }
@@ -293,7 +289,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
         count: results.length,
         results,
         rpcUsed: ['ORQPT WARDS'],
-        pendingTargets: [],
+
       });
     } catch (err: any) {
       return pendingFallback(reply, 'ORQPT WARDS', err);
@@ -307,6 +303,9 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
     if (!ward) {
       return reply.status(400).send({ ok: false, error: 'ward query parameter required' });
     }
+    if (!/^\d+$/.test(String(ward))) {
+      return reply.status(400).send({ ok: false, error: 'ward must be a numeric IEN' });
+    }
     try {
       const lines = await safeCallRpc('ORQPT WARD PATIENTS', [String(ward)]);
       const results = parsePatientList(lines);
@@ -316,7 +315,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
         count: results.length,
         results,
         rpcUsed: ['ORQPT WARD PATIENTS'],
-        pendingTargets: [],
+
       });
     } catch (err: any) {
       return pendingFallback(reply, 'ORQPT WARD PATIENTS', err);
@@ -339,7 +338,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
           count: results.length,
           results,
           rpcUsed: ['ORQPT PROVIDER PATIENTS'],
-          pendingTargets: [],
+  
         });
       } catch (err: any) {
         return pendingFallback(reply, 'ORQPT PROVIDER PATIENTS', err);
@@ -359,7 +358,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
         count: results.length,
         results,
         rpcUsed: ['ORQPT TEAMS'],
-        pendingTargets: [],
+
       });
     } catch (err: any) {
       return pendingFallback(reply, 'ORQPT TEAMS', err);
@@ -373,6 +372,9 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
     if (!team) {
       return reply.status(400).send({ ok: false, error: 'team query parameter required' });
     }
+    if (!/^\d+$/.test(String(team))) {
+      return reply.status(400).send({ ok: false, error: 'team must be a numeric IEN' });
+    }
     try {
       const lines = await safeCallRpc('ORQPT TEAM PATIENTS', [String(team)]);
       const results = parsePatientList(lines);
@@ -382,7 +384,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
         count: results.length,
         results,
         rpcUsed: ['ORQPT TEAM PATIENTS'],
-        pendingTargets: [],
+
       });
     } catch (err: any) {
       return pendingFallback(reply, 'ORQPT TEAM PATIENTS', err);
@@ -401,7 +403,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
         count: results.length,
         results,
         rpcUsed: ['ORQPT SPECIALTIES'],
-        pendingTargets: [],
+
       });
     } catch (err: any) {
       return pendingFallback(reply, 'ORQPT SPECIALTIES', err);
@@ -417,6 +419,9 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
       if (!specialty) {
         return reply.status(400).send({ ok: false, error: 'specialty query parameter required' });
       }
+      if (!/^\d+$/.test(String(specialty))) {
+        return reply.status(400).send({ ok: false, error: 'specialty must be a numeric IEN' });
+      }
       try {
         const lines = await safeCallRpc('ORQPT SPECIALTY PATIENTS', [String(specialty)]);
         const results = parsePatientList(lines);
@@ -426,7 +431,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
           count: results.length,
           results,
           rpcUsed: ['ORQPT SPECIALTY PATIENTS'],
-          pendingTargets: [],
+  
         });
       } catch (err: any) {
         return pendingFallback(reply, 'ORQPT SPECIALTY PATIENTS', err);
@@ -450,7 +455,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
         count: results.length,
         results,
         rpcUsed: ['ORWU1 NEWLOC'],
-        pendingTargets: [],
+
       });
     } catch (err: any) {
       return pendingFallback(reply, 'ORWU1 NEWLOC', err);
@@ -463,6 +468,9 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
     const dfn = (request.query as any)?.dfn;
     if (!dfn) {
       return reply.status(400).send({ ok: false, error: 'dfn query parameter required' });
+    }
+    if (!/^\d+$/.test(String(dfn))) {
+      return reply.status(400).send({ ok: false, error: 'dfn must be a numeric patient ID' });
     }
     try {
       const lines = await safeCallRpc('ORWPT16 ADMITLST', [String(dfn)]);
@@ -482,7 +490,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
         count: results.length,
         results,
         rpcUsed: ['ORWPT16 ADMITLST'],
-        pendingTargets: [],
+
       });
     } catch (err: any) {
       return pendingFallback(reply, 'ORWPT16 ADMITLST', err);
@@ -506,7 +514,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
       // No ward specified: return ward list with patient counts
       try {
         const wardLines = await safeCallRpc('ORQPT WARDS', []);
-        const wards = parseIenNameList(wardLines);
+        const wards = parseIenNameList(wardLines).slice(0, 50);
         const summaries: Array<{ ien: string; name: string; patientCount: number }> = [];
         for (const w of wards) {
           let count = 0;
@@ -527,7 +535,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
           count: summaries.length,
           results: summaries,
           rpcUsed: ['ORQPT WARDS', 'ORQPT WARD PATIENTS'],
-          pendingTargets: [],
+  
         });
       } catch (err: any) {
         immutableAudit('inpatient.census', 'failure', auditActor(request), {
@@ -538,6 +546,9 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
     }
 
     // Specific ward census
+    if (!/^\d+$/.test(String(wardIen))) {
+      return reply.status(400).send({ ok: false, error: 'ward must be a numeric IEN' });
+    }
     try {
       const patientLines = await safeCallRpc('ORQPT WARD PATIENTS', [String(wardIen)]);
       const patients = parseWardPatientList(patientLines);
@@ -587,7 +598,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
         results: census,
         wardIen: String(wardIen),
         rpcUsed: ['ORQPT WARD PATIENTS', 'ORWPT16 ADMITLST', 'ORQPT WARDS'],
-        pendingTargets: [],
+
       });
     } catch (err: any) {
       immutableAudit('inpatient.census', 'failure', auditActor(request), {
@@ -607,6 +618,9 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
     const dfn = (request.query as any)?.dfn;
     if (!dfn) {
       return reply.status(400).send({ ok: false, error: 'dfn query parameter required' });
+    }
+    if (!/^\d+$/.test(String(dfn))) {
+      return reply.status(400).send({ ok: false, error: 'dfn must be a numeric patient ID' });
     }
     try {
       const lines = await safeCallRpc('ORWPT16 ADMITLST', [String(dfn)]);
@@ -630,7 +644,6 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
         results: movements,
         dfn: String(dfn),
         rpcUsed: ['ORWPT16 ADMITLST'],
-        pendingTargets: ['ZVEADT MVHIST'],
         _note: 'Only admission events shown. Full movement history requires ZVEADT MVHIST RPC.',
         vistaGrounding: {
           vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT MOVEMENT TYPE (405.1)'],
@@ -647,8 +660,7 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
     }
   });
 
-  /* ---- POST /vista/adt/admit -- PG-backed stub (ADT-1) ---- */
-  // TODO-RPC: Wire to DGPM NEW ADMISSION when available in VistA context
+  /* ---- POST /vista/adt/admit -- VistA-first via VE ADT ADMIT (ZVEADTW.m) ---- */
   server.post('/vista/adt/admit', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const body = (request.body as any) || {};
@@ -661,40 +673,78 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
       });
     }
 
-    // DGPM NEW ADMISSION is not usable in the WorldVistA sandbox (not exposed
-    // in OR CPRS GUI CHART context). Persist to PG as a pending movement.
     const dt = parsed.data.admitDateTime || new Date().toISOString();
-    const movementId = await insertAdtMovement({
-      movementType: 'admit',
-      patientDfn: parsed.data.patientDfn,
-      toWardIen: parsed.data.wardIen,
-      bedId: parsed.data.bedId,
-      admittingDuz: parsed.data.admittingPhysicianDuz || (session as any)?.duz,
-      movementDatetime: dt,
-    });
-    immutableAudit('adt.admit', movementId ? 'success' : 'blocked', auditActor(request), {
-      detail: { movementId, pgBacked: !!movementId },
-    });
-    return reply.status(201).send({
-      ok: true,
-      admissionId: movementId,
-      status: 'pending',
-      source: 'pg-pending-vista',
-      rpcUsed: [],
-      pendingTargets: ['DGPM NEW ADMISSION'],
-      _note: 'Stored in PG. Will sync to VistA when DGPM NEW ADMISSION becomes available.',
-      vistaGrounding: {
-        vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)'],
-        targetRoutines: ['DGPMV', 'DGADM'],
-        migrationPath: 'Wire DGPM admission RPCs with ward/bed selection + DG ADT event triggers',
-        sandboxNote:
-          'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
-      },
-    });
+    const duz = parsed.data.admittingPhysicianDuz || (session as any)?.duz || '';
+
+    // Try VistA first via custom VE ADT ADMIT RPC (ZVEADTW.m)
+    try {
+      const lines = await safeCallRpc('VE ADT ADMIT', [
+        parsed.data.patientDfn,
+        parsed.data.wardIen || '',
+        '',  // specien
+        duz,
+        '',  // admdt (defaults to NOW in M)
+      ]);
+      const result = (lines || [])[0] || '';
+      const status = result.split('^')[0] || '';
+      if (status === '1' || status.includes('OK')) {
+        const movementIen = (lines[1] || '').split('^')[1] || '';
+        const patientName = (lines[2] || '').split('^')[1] || '';
+        const wardName = (lines[3] || '').split('^')[1] || '';
+
+        // Also persist to PG for local tracking
+        await insertAdtMovement({
+          movementType: 'admit',
+          patientDfn: parsed.data.patientDfn,
+          toWardIen: parsed.data.wardIen,
+          bedId: parsed.data.bedId,
+          admittingDuz: duz,
+          movementDatetime: dt,
+          detail: { vistaMovementIen: movementIen, source: 'vista' },
+        });
+
+        immutableAudit('adt.admit', 'success', auditActor(request), {
+          detail: { movementIen, patientDfn: parsed.data.patientDfn, source: 'vista' },
+        });
+        return reply.status(201).send({
+          ok: true,
+          source: 'vista',
+          status: 'admitted',
+          movementIen,
+          patientName,
+          wardName,
+          rpcUsed: ['VE ADT ADMIT'],
+  
+        });
+      }
+      throw new Error(`VE ADT ADMIT returned: ${result}`);
+    } catch (vistaErr: any) {
+      log.warn('VE ADT ADMIT failed, falling back to PG', { err: vistaErr?.message });
+
+      // Fallback: store in PG
+      const movementId = await insertAdtMovement({
+        movementType: 'admit',
+        patientDfn: parsed.data.patientDfn,
+        toWardIen: parsed.data.wardIen,
+        bedId: parsed.data.bedId,
+        admittingDuz: duz,
+        movementDatetime: dt,
+      });
+      immutableAudit('adt.admit', 'fallback-pg', auditActor(request), {
+        detail: { movementId, pgBacked: !!movementId, vistaError: vistaErr?.message },
+      });
+      return reply.status(201).send({
+        ok: true,
+        admissionId: movementId,
+        status: 'pending-vista-sync',
+        source: 'pg',
+        rpcUsed: [],
+        _note: 'VE ADT ADMIT RPC not available. Stored in PG. Install ZVEADTW.m and run install-vista-routines.ps1.',
+      });
+    }
   });
 
-  /* ---- POST /vista/adt/transfer -- PG-backed stub (ADT-1) ---- */
-  // TODO-RPC: Wire to DGPM NEW TRANSFER when available in VistA context
+  /* ---- POST /vista/adt/transfer -- VistA-first via VE ADT TRANSFER (ZVEADTW.m) ---- */
   server.post('/vista/adt/transfer', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
     const body = (request.body as any) || {};
@@ -708,39 +758,73 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
     }
 
     const dt = parsed.data.transferDateTime || new Date().toISOString();
-    const movementId = await insertAdtMovement({
-      movementType: 'transfer',
-      patientDfn: parsed.data.patientDfn,
-      toWardIen: parsed.data.toWardIen,
-      bedId: parsed.data.toBedId,
-      attendingDuz: parsed.data.attendingDuz || (session as any)?.duz,
-      movementDatetime: dt,
-    });
-    immutableAudit('adt.transfer', movementId ? 'success' : 'blocked', auditActor(request), {
-      detail: { movementId, pgBacked: !!movementId },
-    });
-    return reply.status(201).send({
-      ok: true,
-      transferId: movementId,
-      status: 'pending',
-      source: 'pg-pending-vista',
-      rpcUsed: [],
-      pendingTargets: ['DGPM NEW TRANSFER'],
-      _note: 'Stored in PG. Will sync to VistA when DGPM NEW TRANSFER becomes available.',
-      vistaGrounding: {
-        vistaFiles: ['PATIENT MOVEMENT (405)', 'WARD LOCATION (42)'],
-        targetRoutines: ['DGPMV', 'DGTRAN'],
-        migrationPath: 'Wire DGPM transfer RPC with destination ward/bed + attending provider',
-        sandboxNote:
-          'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
-      },
-    });
+    const duz = parsed.data.attendingDuz || (session as any)?.duz || '';
+
+    try {
+      const lines = await safeCallRpc('VE ADT TRANSFER', [
+        parsed.data.patientDfn,
+        parsed.data.toWardIen,
+        '',  // specien
+        duz,
+        '',  // xferdt
+      ]);
+      const result = (lines || [])[0] || '';
+      const status = result.split('^')[0] || '';
+      if (status === '1' || status.includes('OK')) {
+        const movementIen = (lines[1] || '').split('^')[1] || '';
+        const wardName = (lines[3] || '').split('^')[1] || '';
+
+        await insertAdtMovement({
+          movementType: 'transfer',
+          patientDfn: parsed.data.patientDfn,
+          toWardIen: parsed.data.toWardIen,
+          bedId: parsed.data.toBedId,
+          attendingDuz: duz,
+          movementDatetime: dt,
+          detail: { vistaMovementIen: movementIen, source: 'vista' },
+        });
+
+        immutableAudit('adt.transfer', 'success', auditActor(request), {
+          detail: { movementIen, source: 'vista' },
+        });
+        return reply.status(201).send({
+          ok: true,
+          source: 'vista',
+          status: 'transferred',
+          movementIen,
+          toWard: wardName,
+          rpcUsed: ['VE ADT TRANSFER'],
+  
+        });
+      }
+      throw new Error(`VE ADT TRANSFER returned: ${result}`);
+    } catch (vistaErr: any) {
+      log.warn('VE ADT TRANSFER failed, falling back to PG', { err: vistaErr?.message });
+      const movementId = await insertAdtMovement({
+        movementType: 'transfer',
+        patientDfn: parsed.data.patientDfn,
+        toWardIen: parsed.data.toWardIen,
+        bedId: parsed.data.toBedId,
+        attendingDuz: duz,
+        movementDatetime: dt,
+      });
+      immutableAudit('adt.transfer', 'fallback-pg', auditActor(request), {
+        detail: { movementId, vistaError: vistaErr?.message },
+      });
+      return reply.status(201).send({
+        ok: true,
+        transferId: movementId,
+        status: 'pending-vista-sync',
+        source: 'pg',
+        rpcUsed: [],
+        _note: 'VE ADT TRANSFER RPC not available. Stored in PG. Install ZVEADTW.m and run install-vista-routines.ps1.',
+      });
+    }
   });
 
-  /* ---- POST /vista/adt/discharge -- PG-backed stub (ADT-1) ---- */
-  // TODO-RPC: Wire to DGPM NEW DISCHARGE when available in VistA context
+  /* ---- POST /vista/adt/discharge -- VistA-first via VE ADT DISCHARGE (ZVEADTW.m) ---- */
   server.post('/vista/adt/discharge', async (request: FastifyRequest, reply: FastifyReply) => {
-    await requireSession(request, reply);
+    const session = await requireSession(request, reply);
     const body = (request.body as any) || {};
     const parsed = DischargeSchema.safeParse(body);
     if (!parsed.success) {
@@ -752,30 +836,60 @@ export default async function adtRoutes(server: FastifyInstance): Promise<void> 
     }
 
     const dt = parsed.data.dischargeDateTime || new Date().toISOString();
-    const movementId = await insertAdtMovement({
-      movementType: 'discharge',
-      patientDfn: parsed.data.patientDfn,
-      dischargeType: parsed.data.dischargeType,
-      movementDatetime: dt,
-    });
-    immutableAudit('adt.discharge', movementId ? 'success' : 'blocked', auditActor(request), {
-      detail: { movementId, pgBacked: !!movementId },
-    });
-    return reply.status(201).send({
-      ok: true,
-      dischargeId: movementId,
-      status: 'pending',
-      source: 'pg-pending-vista',
-      rpcUsed: [],
-      pendingTargets: ['DGPM NEW DISCHARGE'],
-      _note: 'Stored in PG. Will sync to VistA when DGPM NEW DISCHARGE becomes available.',
-      vistaGrounding: {
-        vistaFiles: ['PATIENT MOVEMENT (405)', 'PATIENT (2)'],
-        targetRoutines: ['DGPMV', 'DGDIS'],
-        migrationPath: 'Wire DGPM discharge RPC with discharge type + disposition',
-        sandboxNote:
-          'WorldVistA Docker does not expose DG ADT write RPCs in the OR CPRS GUI CHART context',
-      },
-    });
+    const duz = (session as any)?.duz || '';
+
+    try {
+      const lines = await safeCallRpc('VE ADT DISCHARGE', [
+        parsed.data.patientDfn,
+        parsed.data.dischargeType || '',
+        duz,
+        '',  // dischdt
+      ]);
+      const result = (lines || [])[0] || '';
+      const status = result.split('^')[0] || '';
+      if (status === '1' || status.includes('OK')) {
+        const movementIen = (lines[1] || '').split('^')[1] || '';
+
+        await insertAdtMovement({
+          movementType: 'discharge',
+          patientDfn: parsed.data.patientDfn,
+          dischargeType: parsed.data.dischargeType,
+          movementDatetime: dt,
+          detail: { vistaMovementIen: movementIen, source: 'vista' },
+        });
+
+        immutableAudit('adt.discharge', 'success', auditActor(request), {
+          detail: { movementIen, source: 'vista' },
+        });
+        return reply.status(201).send({
+          ok: true,
+          source: 'vista',
+          status: 'discharged',
+          movementIen,
+          rpcUsed: ['VE ADT DISCHARGE'],
+  
+        });
+      }
+      throw new Error(`VE ADT DISCHARGE returned: ${result}`);
+    } catch (vistaErr: any) {
+      log.warn('VE ADT DISCHARGE failed, falling back to PG', { err: vistaErr?.message });
+      const movementId = await insertAdtMovement({
+        movementType: 'discharge',
+        patientDfn: parsed.data.patientDfn,
+        dischargeType: parsed.data.dischargeType,
+        movementDatetime: dt,
+      });
+      immutableAudit('adt.discharge', 'fallback-pg', auditActor(request), {
+        detail: { movementId, vistaError: vistaErr?.message },
+      });
+      return reply.status(201).send({
+        ok: true,
+        dischargeId: movementId,
+        status: 'pending-vista-sync',
+        source: 'pg',
+        rpcUsed: [],
+        _note: 'VE ADT DISCHARGE RPC not available. Stored in PG. Install ZVEADTW.m and run install-vista-routines.ps1.',
+      });
+    }
   });
 }

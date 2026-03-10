@@ -1,5 +1,5 @@
 /**
- * Workflow State Switchboard — centralized registry of all FSMs
+ * Workflow State Switchboard -- centralized registry of all FSMs
  * Phase 533 (Wave 39 P3)
  *
  * Routes workflow state transitions, emits events, provides a single
@@ -61,7 +61,7 @@ const registry = new Map<string, WorkflowRegistration>();
 
 /**
  * Register a workflow FSM in the switchboard.
- * Idempotent — re-registration with same name overwrites.
+ * Idempotent -- re-registration with same name overwrites.
  */
 export function registerWorkflow(reg: WorkflowRegistration): void {
   registry.set(reg.name, reg);

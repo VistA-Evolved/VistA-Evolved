@@ -1,8 +1,8 @@
 /**
- * Phase 86 — Shift Handoff In-Memory Store.
+ * Phase 86 -- Shift Handoff In-Memory Store.
  *
  * Follows the imaging-worklist pattern (Phase 23): Map<>-based in-memory store
- * that resets on API restart. This is intentional — CRHD RPCs are not available
+ * that resets on API restart. This is intentional -- CRHD RPCs are not available
  * in the WorldVistA Docker sandbox.
  *
  * Migration path:
@@ -16,6 +16,7 @@
  */
 
 import { randomBytes } from 'crypto';
+import { log } from '../../lib/logger.js';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                                */
@@ -158,7 +159,7 @@ export function createHandoffReport(input: {
       status: report.status,
       createdAt: report.createdAt,
     })
-    .catch(() => {});
+    .catch((e: unknown) => log.warn('Handoff store PG write-through failed', { error: String(e) }));
 
   return report;
 }

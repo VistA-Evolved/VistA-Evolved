@@ -1,5 +1,5 @@
 /**
- * Availity Connector — US Payer Network / Clearinghouse
+ * Availity Connector -- US Payer Network / Clearinghouse
  *
  * Phase 40 (Superseding): Integration-ready connector for Availity.
  * Availity is a major US health information network offering:

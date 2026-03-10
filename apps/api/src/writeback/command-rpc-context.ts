@@ -2,11 +2,17 @@ import { VISTA_CONTEXT, VISTA_HOST, VISTA_PORT } from '../vista/config.js';
 import { getVistaBinding } from '../auth/idp/vista-binding.js';
 import type { RpcContext } from '../vista/rpcConnectionPool.js';
 
+const MAX_COMMAND_TOKENS = 10000;
 const commandSessionTokens = new Map<string, string>();
 
 export function bindCommandToVistaSession(commandId: string, sessionToken: string | null): void {
   if (!commandId || !sessionToken) return;
   commandSessionTokens.set(commandId, sessionToken);
+  while (commandSessionTokens.size > MAX_COMMAND_TOKENS) {
+    const oldest = commandSessionTokens.keys().next().value;
+    if (oldest) commandSessionTokens.delete(oldest);
+    else break;
+  }
 }
 
 export function clearCommandVistaSession(commandId: string): void {

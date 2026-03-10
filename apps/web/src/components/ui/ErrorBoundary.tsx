@@ -3,7 +3,7 @@
 import { Component, type ReactNode, type ErrorInfo } from 'react';
 
 /* ================================================================== */
-/* Error Boundary — Phase 15E                                          */
+/* Error Boundary -- Phase 15E                                          */
 /*                                                                     */
 /* Catches render errors in child components and shows a recovery UI   */
 /* instead of white-screening the entire app.                          */
@@ -33,7 +33,7 @@ export class ErrorBoundary extends Component<Props, State> {
 
   componentDidCatch(error: Error, errorInfo: ErrorInfo): void {
     console.error(
-      `[ErrorBoundary${this.props.name ? ` — ${this.props.name}` : ''}]`,
+      `[ErrorBoundary${this.props.name ? ` -- ${this.props.name}` : ''}]`,
       error,
       errorInfo
     );
@@ -92,7 +92,7 @@ export class ErrorBoundary extends Component<Props, State> {
 }
 
 /* ================================================================== */
-/* Loading skeleton — Phase 15E                                        */
+/* Loading skeleton -- Phase 15E                                        */
 /* ================================================================== */
 
 interface LoadingPanelProps {

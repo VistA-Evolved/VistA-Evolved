@@ -1,0 +1,13 @@
+{
+  "rpcName": "ORWPT LIST ALL",
+  "caseName": "success",
+  "recordedAt": "2026-03-05T00:00:00Z",
+  "sanitized": true,
+  "params": ["A", "1", "50"],
+  "response": [
+    "46^PT_A1B2C3D4E5^M^2710501",
+    "47^PT_F6A7B8C9D0^F^2820715",
+    "49^PT_E1F2A3B4C5^M^2650930"
+  ],
+  "responseHash": "b2c3d4e5f6a1"
+}

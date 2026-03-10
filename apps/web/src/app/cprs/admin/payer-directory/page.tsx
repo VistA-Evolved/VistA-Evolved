@@ -1,12 +1,12 @@
 'use client';
 
 /**
- * Payer Directory Admin — Phase 88: PH Payer Registry Ingestion
+ * Payer Directory Admin -- Phase 88: PH Payer Registry Ingestion
  *
  * 3-tab interface:
- *   1. Payers — filterable payer list with tier/status management
- *   2. Sources — ingestion source snapshots + diff view
- *   3. Merge — duplicate payer merge tool
+ *   1. Payers -- filterable payer list with tier/status management
+ *   2. Sources -- ingestion source snapshots + diff view
+ *   3. Merge -- duplicate payer merge tool
  *
  * Accessible at /cprs/admin/payer-directory. Requires session + RCM module enabled.
  */
@@ -93,7 +93,7 @@ export default function PayerDirectoryPage() {
   );
 }
 
-/* ── Ingest Button ──────────────────────────────────────────── */
+/* -- Ingest Button -------------------------------------------- */
 
 function IngestButton({ onDone }: { onDone: () => void }) {
   const [loading, setLoading] = useState(false);
@@ -143,7 +143,7 @@ function IngestButton({ onDone }: { onDone: () => void }) {
   );
 }
 
-/* ── Payers Tab ─────────────────────────────────────────────── */
+/* -- Payers Tab ----------------------------------------------- */
 
 function PayersTab() {
   const [payers, setPayers] = useState<any[]>([]);
@@ -296,7 +296,7 @@ function PayersTab() {
   );
 }
 
-/* ── Sources Tab ────────────────────────────────────────────── */
+/* -- Sources Tab ---------------------------------------------- */
 
 function SourcesTab() {
   const [sources, setSources] = useState<any[]>([]);
@@ -425,7 +425,7 @@ function SourcesTab() {
   );
 }
 
-/* ── Merge Tab ──────────────────────────────────────────────── */
+/* -- Merge Tab ------------------------------------------------ */
 
 function MergeTab() {
   const [payers, setPayers] = useState<any[]>([]);
@@ -522,7 +522,7 @@ function MergeTab() {
   );
 }
 
-/* ── Shared Components ──────────────────────────────────────── */
+/* -- Shared Components ---------------------------------------- */
 
 function TypeBadge({ type }: { type: string }) {
   const colors: Record<string, { bg: string; fg: string }> = {

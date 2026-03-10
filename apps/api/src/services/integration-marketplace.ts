@@ -5,19 +5,19 @@
  * managing integration packages (connectors, templates, adapters).
  *
  * Architecture:
- *  1. MarketplaceListing — published integration packages
- *  2. ListingVersion — SemVer-tracked releases per listing
- *  3. ListingReview — community ratings & reviews
- *  4. ListingInstall — installation tracking per tenant
- *  5. MarketplaceCategory — taxonomy for discovery/search
- *  6. Built-in seed catalog — pre-loaded VistA-Evolved integrations
+ *  1. MarketplaceListing -- published integration packages
+ *  2. ListingVersion -- SemVer-tracked releases per listing
+ *  3. ListingReview -- community ratings & reviews
+ *  4. ListingInstall -- installation tracking per tenant
+ *  5. MarketplaceCategory -- taxonomy for discovery/search
+ *  6. Built-in seed catalog -- pre-loaded VistA-Evolved integrations
  */
 
 import crypto from "node:crypto";
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    1. TYPES & TAXONOMY
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export type ListingType = "connector" | "adapter" | "template" | "transform" | "validator" | "suite";
 export type ListingStatus = "draft" | "published" | "deprecated" | "archived";
@@ -86,18 +86,18 @@ export interface ListingInstall {
   config?: Record<string, string>;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    2. STORES
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 const categoryStore = new Map<string, MarketplaceCategory>();
 const listingStore = new Map<string, MarketplaceListing>();
 const reviewStore = new Map<string, ListingReview>();
 const installStore = new Map<string, ListingInstall>();
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    3. CATEGORIES
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function createCategory(input: Omit<MarketplaceCategory, "id">): MarketplaceCategory {
   const id = crypto.randomUUID();
@@ -114,9 +114,9 @@ export function getCategory(id: string): MarketplaceCategory | undefined {
   return categoryStore.get(id);
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    4. LISTINGS
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function createListing(input: {
   name: string;
@@ -225,9 +225,9 @@ export function updateListingStatus(id: string, status: ListingStatus): boolean 
   return true;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    5. REVIEWS
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function addReview(listingId: string, tenantId: string, rating: number, comment?: string): ListingReview | null {
   const listing = listingStore.get(listingId);
@@ -266,9 +266,9 @@ export function listReviews(listingId: string): ListingReview[] {
     .sort((a, b) => b.createdAt.localeCompare(a.createdAt));
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    6. INSTALLS
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function installListing(
   listingId: string,
@@ -328,9 +328,9 @@ export function getInstallForTenant(tenantId: string, id: string): ListingInstal
   return install;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    7. MARKETPLACE STATS
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function getMarketplaceStats(tenantId?: string): {
   categories: number;
@@ -386,9 +386,9 @@ export function getMarketplaceStats(tenantId?: string): {
   };
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    8. SEED CATALOG
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export function seedMarketplace(): void {
   if (categoryStore.size > 0) return;

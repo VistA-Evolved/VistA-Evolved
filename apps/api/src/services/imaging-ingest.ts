@@ -1,19 +1,19 @@
 /**
- * Imaging Ingest & Reconciliation Service — Phase 23.
+ * Imaging Ingest & Reconciliation Service -- Phase 23.
  *
  * Handles DICOM study ingest callbacks from Orthanc and reconciles
  * incoming studies to imaging orders via AccessionNumber + PatientID.
  *
  * Architecture:
- *   Orthanc → OnStableStudy Lua → POST /imaging/ingest/callback → Reconcile
+ *   Orthanc -> OnStableStudy Lua -> POST /imaging/ingest/callback -> Reconcile
  *   Unmatched studies go to quarantine for manual linking.
  *
  * Routes:
- *   POST /imaging/ingest/callback              — Orthanc stable-study webhook
- *   GET  /imaging/ingest/unmatched              — Quarantine queue (admin)
- *   POST /imaging/ingest/unmatched/:id/link     — Manual reconciliation (admin)
- *   GET  /imaging/ingest/linkages               — All study-order linkages
- *   GET  /imaging/ingest/linkages/by-patient/:dfn — Linkages for a patient
+ *   POST /imaging/ingest/callback              -- Orthanc stable-study webhook
+ *   GET  /imaging/ingest/unmatched              -- Quarantine queue (admin)
+ *   POST /imaging/ingest/unmatched/:id/link     -- Manual reconciliation (admin)
+ *   GET  /imaging/ingest/linkages               -- All study-order linkages
+ *   GET  /imaging/ingest/linkages/by-patient/:dfn -- Linkages for a patient
  *
  * Auth: /imaging/ingest/callback uses X-Service-Key header.
  *       All other routes use session auth (admin role).
@@ -66,7 +66,7 @@ export interface StudyLinkage {
   instanceCount: number;
   /** How the linkage was established */
   reconciliationType: "automatic-accession" | "automatic-patient-modality" | "manual";
-  /** Source of linkage metadata — "prototype-sidecar" until VistA MAG is wired */
+  /** Source of linkage metadata -- "prototype-sidecar" until VistA MAG is wired */
   source: "prototype-sidecar" | "vista-mag-2005";
   /** Timestamp of linkage creation */
   linkedAt: string;
@@ -105,7 +105,7 @@ export interface UnmatchedStudy {
 
 /** Orthanc OnStableStudy callback payload. */
 interface OrthancStableStudyPayload {
-  /** Orthanc resource type — always "study" */
+  /** Orthanc resource type -- always "study" */
   type?: string;
   /** Orthanc internal study ID */
   orthancStudyId: string;
@@ -235,7 +235,7 @@ function validateServiceKey(request: FastifyRequest): boolean {
   if (!key) return false;
   const expected = IMAGING_CONFIG.ingestWebhookSecret;
   if (!expected) {
-    log.warn("IMAGING_INGEST_WEBHOOK_SECRET not configured — rejecting all ingest callbacks");
+    log.warn("IMAGING_INGEST_WEBHOOK_SECRET not configured -- rejecting all ingest callbacks");
     return false;
   }
   // Constant-time comparison
@@ -278,7 +278,7 @@ async function reconcileStudy(payload: OrthancStableStudyPayload): Promise<Recon
       const linkage = await createLinkage(order, payload, "automatic-accession");
       return { matched: true, linkage, matchType: "accession-exact" };
     }
-    // AccessionNumber exists but patient mismatch — safety: quarantine
+    // AccessionNumber exists but patient mismatch -- safety: quarantine
     if (order && order.patientDfn !== patientId) {
       const unmatched = await quarantineStudy(payload,
         `AccessionNumber ${accessionNumber} found but patient mismatch: order DFN=${order.patientDfn}, DICOM PatientID=${patientId}`);
@@ -309,7 +309,7 @@ async function reconcileStudy(payload: OrthancStableStudyPayload): Promise<Recon
     }
   }
 
-  // No match — quarantine
+  // No match -- quarantine
   const unmatched = await quarantineStudy(payload,
     `No matching order found for PatientID=${patientId}, AccessionNumber=${accessionNumber || "none"}`);
   return { matched: false, unmatched };
@@ -490,11 +490,11 @@ export async function getAllUnmatched(): Promise<UnmatchedStudy[]> {
 
 export default async function imagingIngestRoutes(server: FastifyInstance): Promise<void> {
   /**
-   * POST /imaging/ingest/callback — Orthanc OnStableStudy webhook.
+   * POST /imaging/ingest/callback -- Orthanc OnStableStudy webhook.
    * Auth: X-Service-Key header (not session cookie).
    */
   server.post("/imaging/ingest/callback", async (request: FastifyRequest, reply: FastifyReply) => {
-    // Service auth — NOT session auth
+    // Service auth -- NOT session auth
     if (!validateServiceKey(request)) {
       audit("security.rbac-denied", "denied", { duz: "service" }, {
         sourceIp: request.ip,
@@ -549,7 +549,7 @@ export default async function imagingIngestRoutes(server: FastifyInstance): Prom
     }
 
     // Quarantined
-    log.warn("Study quarantined — no matching order", {
+    log.warn("Study quarantined -- no matching order", {
       unmatchedId: result.unmatched?.id,
       reason: result.unmatched?.reason,
       patientId: payload.patientId,
@@ -574,7 +574,7 @@ export default async function imagingIngestRoutes(server: FastifyInstance): Prom
   });
 
   /**
-   * GET /imaging/ingest/unmatched — List quarantined studies (admin).
+   * GET /imaging/ingest/unmatched -- List quarantined studies (admin).
    */
   server.get("/imaging/ingest/unmatched", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = (request as any).session;
@@ -593,7 +593,7 @@ export default async function imagingIngestRoutes(server: FastifyInstance): Prom
   });
 
   /**
-   * POST /imaging/ingest/unmatched/:id/link — Manual reconciliation.
+   * POST /imaging/ingest/unmatched/:id/link -- Manual reconciliation.
    * Body: { orderId: string }
    */
   server.post("/imaging/ingest/unmatched/:id/link", async (request: FastifyRequest, reply: FastifyReply) => {
@@ -675,7 +675,7 @@ export default async function imagingIngestRoutes(server: FastifyInstance): Prom
   });
 
   /**
-   * GET /imaging/ingest/linkages — All study-order linkages (admin).
+   * GET /imaging/ingest/linkages -- All study-order linkages (admin).
    */
   server.get("/imaging/ingest/linkages", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = (request as any).session;
@@ -704,7 +704,7 @@ export default async function imagingIngestRoutes(server: FastifyInstance): Prom
   });
 
   /**
-   * GET /imaging/ingest/linkages/by-patient/:dfn — Linkages for a patient.
+   * GET /imaging/ingest/linkages/by-patient/:dfn -- Linkages for a patient.
    */
   server.get("/imaging/ingest/linkages/by-patient/:dfn", async (request: FastifyRequest, reply: FastifyReply) => {
     const session = (request as any).session;

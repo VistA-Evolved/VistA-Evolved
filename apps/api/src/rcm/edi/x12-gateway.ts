@@ -1,26 +1,26 @@
 /**
- * X12 Gateway Service — Inbound Parser, Validator, Ack Generator & Router
+ * X12 Gateway Service -- Inbound Parser, Validator, Ack Generator & Router
  *
  * Phase 321 (W14-P5): Provides the missing inbound X12 processing layer.
  *
  * Architecture:
- *  1. Raw X12 text → parse into typed envelope + segments
+ *  1. Raw X12 text -> parse into typed envelope + segments
  *  2. Envelope validation (ISA/GS/ST field lengths, version, control numbers)
  *  3. 999/TA1 acknowledgment generation for inbound transactions
- *  4. Transaction routing — identify ST-SE sets and dispatch to processors
+ *  4. Transaction routing -- identify ST-SE sets and dispatch to processors
  *  5. Control number uniqueness tracking for duplicate detection
  *
  * Depends on:
- *  - rcm/edi/types.ts — X12TransactionSet, IsaEnvelope, GsEnvelope, EdiAcknowledgment
- *  - rcm/edi/ack-status-processor.ts — ingestAck, ingestStatusUpdate
- *  - rcm/edi/remit-processor.ts — ingestRemittance
+ *  - rcm/edi/types.ts -- X12TransactionSet, IsaEnvelope, GsEnvelope, EdiAcknowledgment
+ *  - rcm/edi/ack-status-processor.ts -- ingestAck, ingestStatusUpdate
+ *  - rcm/edi/remit-processor.ts -- ingestRemittance
  */
 
 import type { X12TransactionSet, IsaEnvelope, GsEnvelope } from './types.js';
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    1. RAW X12 PARSER
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export interface X12Segment {
   id: string; // segment identifier (ISA, GS, ST, BHT, CLP, etc.)
@@ -191,7 +191,7 @@ export function parseX12(rawText: string): X12ParseResult {
       currentGroup.transactionSets.push(currentTx);
       currentTx = null;
     } else if (seg.id === 'IEA') {
-      // Interchange trailer — handled below
+      // Interchange trailer -- handled below
     } else if (currentTx) {
       currentTx.segments.push(seg);
     }
@@ -216,9 +216,9 @@ export function parseX12(rawText: string): X12ParseResult {
   return { ok: errors.every((e) => e.severity !== 'fatal'), interchange, errors };
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    2. ENVELOPE VALIDATION
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export interface EnvelopeValidationResult {
   valid: boolean;
@@ -325,9 +325,9 @@ export function validateEnvelope(interchange: X12Interchange): EnvelopeValidatio
   };
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    3. 999 / TA1 ACKNOWLEDGMENT GENERATION
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export interface AckGenerationOptions {
   /** Our ISA sender ID (the acknowledger) */
@@ -480,9 +480,9 @@ export function generate999(
   return lines.join(term) + term;
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    4. INBOUND TRANSACTION ROUTER
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 export type TransactionHandler = (
   tx: X12TransactionSetParsed,
@@ -579,9 +579,9 @@ export async function routeInboundInterchange(
   };
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    5. CONTROL NUMBER TRACKING (duplicate detection)
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 interface ControlNumberEntry {
   controlNumber: string;
@@ -698,7 +698,7 @@ export async function processInboundX12(
     }
   }
 
-  // Validate envelope (after recording — failed validation still burns the control number
+  // Validate envelope (after recording -- failed validation still burns the control number
   // to prevent replay, but we record AFTER duplicate check above which is the important guard)
   const validationResult = validateEnvelope(interchange);
 
@@ -708,9 +708,9 @@ export async function processInboundX12(
   return { parseResult, validationResult, routingResult, isDuplicate: false };
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    6. X12 SEGMENT QUERY HELPERS
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 /** Find all segments with a given ID in a transaction set */
 export function findSegments(tx: X12TransactionSetParsed, segId: string): X12Segment[] {
@@ -749,7 +749,7 @@ export function mapTransactionSetType(
     '997': '997',
     TA1: 'TA1',
   };
-  // Bare "837" — disambiguate via GS08 version code (HP=professional, HI=institutional)
+  // Bare "837" -- disambiguate via GS08 version code (HP=professional, HI=institutional)
   if (stCode === '837') {
     if (gsVersionCode?.includes('HP') || gsVersionCode?.includes('837P')) return '837P';
     if (gsVersionCode?.includes('HI') || gsVersionCode?.includes('837I')) return '837I';
@@ -758,9 +758,9 @@ export function mapTransactionSetType(
   return MAP[stCode];
 }
 
-/* ═══════════════════════════════════════════════════════════════════
+/* ===================================================================
    INTERNAL HELPERS
-   ═══════════════════════════════════════════════════════════════════ */
+   =================================================================== */
 
 let _ctrlSeq = Math.floor(Math.random() * 900000000);
 

@@ -1,18 +1,18 @@
 /**
- * Department Pack Service — Phase 349
+ * Department Pack Service -- Phase 349
  *
  * Loads department pack manifests from config/packs/, manages installation
  * per tenant+department, and tracks installed packs in PG.
  *
  * ADR: docs/decisions/ADR-DEPARTMENT-PACKS-MODEL.md
- * Pattern: Config-driven JSON manifests — no dynamic code loading.
+ * Pattern: Config-driven JSON manifests -- no dynamic code loading.
  */
 
 import { randomUUID } from "node:crypto";
 import { readFileSync, existsSync } from "node:fs";
 import { join } from "node:path";
 
-// ─── Types ───────────────────────────────────────────────
+// --- Types -----------------------------------------------
 
 export interface DepartmentPack {
   id: string;
@@ -50,7 +50,7 @@ export interface PackValidationResult {
   missingPrerequisites: string[];
 }
 
-// ─── Pack Registry (loaded from config/) ─────────────────
+// --- Pack Registry (loaded from config/) -----------------
 
 const packRegistry = new Map<string, DepartmentPack>();
 const installationStore = new Map<string, PackInstallation>();
@@ -91,7 +91,7 @@ export function listPacks(departmentType?: string): DepartmentPack[] {
   return all.filter((p) => p.departmentType === departmentType);
 }
 
-// ─── Pack Validation ─────────────────────────────────────
+// --- Pack Validation -------------------------------------
 
 export function validatePack(
   packId: string,
@@ -140,7 +140,7 @@ export function validatePack(
   };
 }
 
-// ─── Pack Installation ───────────────────────────────────
+// --- Pack Installation -----------------------------------
 
 export function installPack(
   tenantId: string,
@@ -216,7 +216,7 @@ export function getInstallationForTenant(
   return installation;
 }
 
-// ─── Effective Feature Flags ─────────────────────────────
+// --- Effective Feature Flags -----------------------------
 
 /**
  * Resolve effective feature flags for a department by merging
@@ -247,7 +247,7 @@ export function resolveEffectiveFlags(
   return flags;
 }
 
-// ─── Store Reset ─────────────────────────────────────────
+// --- Store Reset -----------------------------------------
 
 export function _resetPackStores(): void {
   packRegistry.clear();

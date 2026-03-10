@@ -1,5 +1,5 @@
 /**
- * Phase 401 (W23-P3): MPI / Client Registry — Store
+ * Phase 401 (W23-P3): MPI / Client Registry -- Store
  */
 
 import { randomBytes } from 'crypto';
@@ -28,7 +28,7 @@ function genId(prefix: string): string {
   return `${prefix}-${randomBytes(8).toString('hex')}`;
 }
 
-// ─── Identity CRUD ─────────────────────────────────────────
+// --- Identity CRUD -----------------------------------------
 
 export function createIdentity(
   input: Omit<MpiPatientIdentity, 'id' | 'createdAt' | 'updatedAt'>
@@ -71,7 +71,7 @@ export function updateIdentity(
   return updated;
 }
 
-// ─── Deterministic Matching ────────────────────────────────
+// --- Deterministic Matching --------------------------------
 
 export function findMatches(
   tenantId: string,
@@ -127,7 +127,7 @@ export function findMatches(
   return results.sort((a, b) => b.score - a.score);
 }
 
-// ─── Merge / Link Operations ───────────────────────────────
+// --- Merge / Link Operations -------------------------------
 
 export function mergeIdentities(
   tenantId: string,
@@ -180,7 +180,7 @@ export function listMergeEvents(tenantId: string, limit = 100): MergeEvent[] {
     .slice(0, limit);
 }
 
-// ─── Dashboard Stats ───────────────────────────────────────
+// --- Dashboard Stats ---------------------------------------
 
 export function getMpiDashboardStats(tenantId: string): MpiDashboardStats {
   const ids = Array.from(identityStore.values()).filter((i) => i.tenantId === tenantId);

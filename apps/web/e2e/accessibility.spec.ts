@@ -1,5 +1,5 @@
 /**
- * Phase 37 — Accessibility smoke tests with axe-core.
+ * Phase 37 -- Accessibility smoke tests with axe-core.
  *
  * Tests key pages against WCAG 2.1 AA rules:
  * - Login page
@@ -11,6 +11,7 @@
 
 import { test, expect } from '@playwright/test';
 import AxeBuilder from '@axe-core/playwright';
+import { chartRoute } from './helpers/auth';
 
 /** Run axe on the current page and return violations grouped by impact. */
 async function runAxe(page: import('@playwright/test').Page, pageName: string) {
@@ -75,7 +76,7 @@ test.describe('Accessibility Smoke Tests', () => {
 
   test('CPRS chart shell passes critical a11y checks', async ({ page }) => {
     // Session pre-loaded via auth.setup.ts
-    await page.goto('/cprs/chart/3/cover');
+    await page.goto(chartRoute('cover'));
     await page.waitForLoadState('domcontentloaded');
 
     const results = await runAxe(page, 'chart-cover');

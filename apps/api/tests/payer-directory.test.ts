@@ -1,5 +1,5 @@
 /**
- * Phase 44 — Payer Directory Engine Unit Tests
+ * Phase 44 -- Payer Directory Engine Unit Tests
  *
  * Tests:
  *   - Authoritative importers produce valid payers
@@ -51,14 +51,14 @@ import type {
 // Payer registry (needed for routing fallback)
 import { initPayerRegistry } from '../src/rcm/payer-registry/registry.js';
 
-/* ─── Setup ──────────────────────────────────────────────────────── */
+/* --- Setup -------------------------------------------------------- */
 
 beforeEach(() => {
   resetDirectoryStore();
   initPayerRegistry();
 });
 
-/* ─── Importers ──────────────────────────────────────────────────── */
+/* --- Importers ---------------------------------------------------- */
 
 describe('Payer Directory Importers', () => {
   it('lists all registered importers', () => {
@@ -126,7 +126,7 @@ describe('Payer Directory Importers', () => {
   });
 });
 
-/* ─── Normalization ──────────────────────────────────────────────── */
+/* --- Normalization ------------------------------------------------ */
 
 describe('Normalization Pipeline', () => {
   it('normalizes import results and deduplicates by payerId', () => {
@@ -263,7 +263,7 @@ describe('Normalization Pipeline', () => {
   });
 });
 
-/* ─── Routing ────────────────────────────────────────────────────── */
+/* --- Routing ------------------------------------------------------ */
 
 describe('Routing Engine', () => {
   it('resolves a route for a known directory payer', () => {
@@ -299,7 +299,7 @@ describe('Routing Engine', () => {
   });
 });
 
-/* ─── Enrollment Packets ─────────────────────────────────────────── */
+/* --- Enrollment Packets ------------------------------------------- */
 
 describe('Enrollment Packets', () => {
   it('creates and retrieves enrollment packet', () => {
@@ -388,7 +388,7 @@ describe('Enrollment Packets', () => {
   });
 });
 
-/* ─── Directory Refresh End-to-End ───────────────────────────────── */
+/* --- Directory Refresh End-to-End --------------------------------- */
 
 describe('Directory Refresh', () => {
   it('full refresh populates directory and records history', () => {

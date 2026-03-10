@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Remittance Intake — Phase 94: PH HMO Workflow Automation
+ * Remittance Intake -- Phase 94: PH HMO Workflow Automation
  *
  * Remittance/EOB document intake and payment posting dashboard.
  *
@@ -15,7 +15,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Styles ─────────────────────────────────────────────────── */
+/* -- Styles --------------------------------------------------- */
 
 const PAGE: React.CSSProperties = {
   padding: '24px',
@@ -99,7 +99,7 @@ const STATUS_COLORS: Record<string, string> = {
   disputed: '#ef4444',
 };
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 interface RemittanceDoc {
   id: string;
@@ -241,7 +241,7 @@ export default function RemittanceIntakePage() {
   };
 
   const handlePost = async (id: string) => {
-    const notes = prompt('Posting notes (VistA AR integration pending in sandbox):');
+    const notes = prompt('Posting notes (VistA AR write-back not yet configured in sandbox):');
     if (notes === null) return;
     try {
       const res = await fetch(`${API}/rcm/remittance/${id}/post`, {
@@ -301,7 +301,7 @@ export default function RemittanceIntakePage() {
         ))}
       </div>
 
-      {/* ── Documents ────────────────────────────────────────── */}
+      {/* -- Documents ------------------------------------------ */}
       {tab === 'documents' && (
         <div>
           <div style={{ display: 'flex', gap: 8, marginBottom: 16, alignItems: 'center' }}>
@@ -453,7 +453,7 @@ export default function RemittanceIntakePage() {
                 </div>
                 <div>
                   <strong>Posted to VistA:</strong>{' '}
-                  {selectedDoc.postedToVista ? 'Yes' : 'No (integration pending)'}
+                  {selectedDoc.postedToVista ? 'Yes' : 'No (not yet configured)'}
                 </div>
                 <div>
                   <strong>Underpayment:</strong>{' '}
@@ -505,7 +505,7 @@ export default function RemittanceIntakePage() {
         </div>
       )}
 
-      {/* ── Upload ───────────────────────────────────────────── */}
+      {/* -- Upload --------------------------------------------- */}
       {tab === 'upload' && (
         <div style={{ maxWidth: 600 }}>
           <div style={CARD}>
@@ -575,7 +575,7 @@ export default function RemittanceIntakePage() {
         </div>
       )}
 
-      {/* ── Stats ────────────────────────────────────────────── */}
+      {/* -- Stats ---------------------------------------------- */}
       {tab === 'stats' && (
         <div>
           {stats ? (

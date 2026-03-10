@@ -1,12 +1,12 @@
 /**
- * MHA Routes — Phase 535/536: Mental Health Assessment v1 + TIU Writeback
+ * MHA Routes -- Phase 535/536: Mental Health Assessment v1 + TIU Writeback
  *
  * Endpoints:
- *   GET  /vista/mha/instruments              — List available MH instruments
- *   GET  /vista/mha/instruments/:id          — Get full instrument definition (FHIR Questionnaire)
- *   GET  /vista/mha/results?dfn=N            — Patient MH results history
- *   POST /vista/mha/administer               — Submit completed instrument + score
- *   POST /vista/mha/administer/:id/file-note — File scored result as TIU note (Phase 536)
+ *   GET  /vista/mha/instruments              -- List available MH instruments
+ *   GET  /vista/mha/instruments/:id          -- Get full instrument definition (FHIR Questionnaire)
+ *   GET  /vista/mha/results?dfn=N            -- Patient MH results history
+ *   POST /vista/mha/administer               -- Submit completed instrument + score
+ *   POST /vista/mha/administer/:id/file-note -- File scored result as TIU note (Phase 536)
  *
  * Auth: session-based (/vista/* catch-all in security.ts).
  * VistA RPCs: YTT/YTQZ namespace + TIU CREATE RECORD / TIU SET DOCUMENT TEXT.
@@ -51,7 +51,7 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
   loadInstruments();
 
   /* -------------------------------------------------------------- */
-  /* GET /vista/mha/instruments — list available instruments          */
+  /* GET /vista/mha/instruments -- list available instruments          */
   /* -------------------------------------------------------------- */
   server.get('/vista/mha/instruments', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
@@ -67,12 +67,12 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
       rpcUsed: [],
       pendingTargets: ['YTQZ LISTTESTS'],
       _note:
-        'Instruments loaded from FHIR Questionnaire definitions. VistA YTQZ LISTTESTS integration pending.',
+        'Instruments loaded from FHIR Questionnaire definitions. VistA YTQZ LISTTESTS not yet configured.',
     });
   });
 
   /* -------------------------------------------------------------- */
-  /* GET /vista/mha/instruments/:id — get single instrument           */
+  /* GET /vista/mha/instruments/:id -- get single instrument           */
   /* -------------------------------------------------------------- */
   server.get('/vista/mha/instruments/:id', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
@@ -95,12 +95,12 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
       rpcUsed: [],
       pendingTargets: ['YTT GET INSTRUMENT'],
       _note:
-        'Instrument definition from local FHIR Questionnaire. VistA YTT GET INSTRUMENT integration pending.',
+        'Instrument definition from local FHIR Questionnaire. VistA YTT GET INSTRUMENT not yet configured.',
     });
   });
 
   /* -------------------------------------------------------------- */
-  /* GET /vista/mha/results?dfn=N — patient MH results history        */
+  /* GET /vista/mha/results?dfn=N -- patient MH results history        */
   /* -------------------------------------------------------------- */
   server.get('/vista/mha/results', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
@@ -125,7 +125,7 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
         vistaAvailable = true;
       }
     } catch {
-      // RPC not available in sandbox — expected
+      // RPC not available in sandbox -- expected
     }
 
     // Local results
@@ -158,7 +158,7 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /* -------------------------------------------------------------- */
-  /* POST /vista/mha/administer — submit completed instrument         */
+  /* POST /vista/mha/administer -- submit completed instrument         */
   /* -------------------------------------------------------------- */
   server.post('/vista/mha/administer', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = requireSession(request, reply);
@@ -234,7 +234,7 @@ export default async function mhaRoutes(server: FastifyInstance): Promise<void> 
   });
 
   /* -------------------------------------------------------------- */
-  /* POST /vista/mha/administer/:id/file-note — TIU writeback        */
+  /* POST /vista/mha/administer/:id/file-note -- TIU writeback        */
   /* Phase 536: File scored result as TIU note in VistA               */
   /* -------------------------------------------------------------- */
   server.post(

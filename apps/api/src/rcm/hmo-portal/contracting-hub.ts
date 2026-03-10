@@ -1,11 +1,11 @@
 /**
- * Contracting Hub — Phase 97B: Payer Contracting Task Management
+ * Contracting Hub -- Phase 97B: Payer Contracting Task Management
  *
  * High-level service wrapping the task-repo with contracting-specific
  * business logic: task templates per payer type, progress tracking,
  * and summary dashboards.
  *
- * Uses the existing payerTask table (Phase 95B) — no new DB tables needed.
+ * Uses the existing payerTask table (Phase 95B) -- no new DB tables needed.
  */
 
 import {
@@ -18,7 +18,7 @@ import {
 import { PH_HMO_PAYER_TYPES, type PayerTypeClassification } from './adapter-manifest.js';
 import { getPhHmo } from '../payers/ph-hmo-registry.js';
 
-/* ── Contracting task templates ─────────────────────────────── */
+/* -- Contracting task templates ------------------------------- */
 
 export interface ContractingTemplate {
   title: string;
@@ -90,7 +90,7 @@ export const CONTRACTING_TASK_TEMPLATES: ContractingTemplate[] = [
   },
 ];
 
-/* ── Contracting hub service ────────────────────────────────── */
+/* -- Contracting hub service ---------------------------------- */
 
 export interface ContractingSummary {
   payerId: string;

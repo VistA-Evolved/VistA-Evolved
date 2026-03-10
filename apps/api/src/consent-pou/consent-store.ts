@@ -1,5 +1,5 @@
 /**
- * Phase 405 (W23-P7): Consent + Purpose of Use — Store
+ * Phase 405 (W23-P7): Consent + Purpose of Use -- Store
  */
 
 import { randomBytes } from 'crypto';
@@ -28,7 +28,7 @@ function genId(prefix: string): string {
   return `${prefix}-${randomBytes(8).toString('hex')}`;
 }
 
-// ─── Consent Directive CRUD ────────────────────────────────
+// --- Consent Directive CRUD --------------------------------
 
 export function createDirective(
   input: Omit<ConsentDirective, 'id' | 'createdAt' | 'updatedAt'>
@@ -82,7 +82,7 @@ export function revokeDirective(id: string, revokedBy: string): ConsentDirective
   return rec;
 }
 
-// ─── Purpose of Use Enforcement ────────────────────────────
+// --- Purpose of Use Enforcement ----------------------------
 
 export function evaluateConsent(
   tenantId: string,
@@ -113,7 +113,7 @@ export function evaluateConsent(
   return { decision: 'permit', reason: 'No applicable consent restriction found' };
 }
 
-// ─── Disclosure Logging ────────────────────────────────────
+// --- Disclosure Logging ------------------------------------
 
 export function logDisclosure(input: Omit<DisclosureLog, 'id' | 'createdAt'>): DisclosureLog {
   enforceMax(disclosureStore, MAX_DISCLOSURES);
@@ -134,7 +134,7 @@ export function listDisclosures(
     .slice(0, opts?.limit || 200);
 }
 
-// ─── Dashboard ─────────────────────────────────────────────
+// --- Dashboard ---------------------------------------------
 
 export function getConsentDashboardStats(tenantId: string): ConsentDashboardStats {
   const dirs = Array.from(directiveStore.values()).filter((d) => d.tenantId === tenantId);

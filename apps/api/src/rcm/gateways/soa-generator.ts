@@ -1,7 +1,7 @@
 /**
  * PhilHealth Electronic Statement of Account (SOA) Generator
  *
- * Phase 46: eClaims 3.0 mandates electronic SOA — no scanned PDFs.
+ * Phase 46: eClaims 3.0 mandates electronic SOA -- no scanned PDFs.
  * This module generates structured SOA artifacts from canonical claim data.
  *
  * Key rules:
@@ -13,7 +13,7 @@
 
 import { createHmac, randomUUID } from 'node:crypto';
 
-/* ── Types ───────────────────────────────────────────────────── */
+/* -- Types ----------------------------------------------------- */
 
 export interface SoaLineItem {
   description: string;
@@ -82,7 +82,7 @@ export interface SoaValidationResult {
   warnings: string[];
 }
 
-/* ── Scanned PDF rejection ───────────────────────────────────── */
+/* -- Scanned PDF rejection ------------------------------------- */
 
 const PDF_MAGIC = Buffer.from([0x25, 0x50, 0x44, 0x46]); // %PDF
 
@@ -97,7 +97,7 @@ export function isScannedPdf(data: Buffer | string): boolean {
   return false;
 }
 
-/* ── Validation ──────────────────────────────────────────────── */
+/* -- Validation ------------------------------------------------ */
 
 export function validateSoaInput(input: SoaInput): SoaValidationResult {
   const errors: string[] = [];
@@ -126,13 +126,13 @@ export function validateSoaInput(input: SoaInput): SoaValidationResult {
   }
 
   if (!input.dischargeDate) {
-    warnings.push('dischargeDate not set — SOA will show open admission');
+    warnings.push('dischargeDate not set -- SOA will show open admission');
   }
 
   return { valid: errors.length === 0, errors, warnings };
 }
 
-/* ── SOA Generation ──────────────────────────────────────────── */
+/* -- SOA Generation -------------------------------------------- */
 
 export function generateElectronicSoa(input: SoaInput, signingKey?: string): ElectronicSoa {
   const validation = validateSoaInput(input);

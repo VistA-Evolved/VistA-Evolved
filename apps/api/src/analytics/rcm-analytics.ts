@@ -1,5 +1,5 @@
 /**
- * RCM Analytics v1 — Phase 367 (W19-P6)
+ * RCM Analytics v1 -- Phase 367 (W19-P6)
  *
  * Revenue cycle management analytics: claim throughput, denial
  * distribution, days-in-AR, and acknowledgement reject rates.
@@ -11,7 +11,7 @@ import type { ReportId, ReportResult, ReportRow } from './extract-types.js';
 import { getExtractRuns, getExtractRecords } from './extract-layer.js';
 import { registerReportGenerator } from './reporting-service.js';
 
-// ── RCM Metric Computation ──────────────────────────────────────────────
+// -- RCM Metric Computation ----------------------------------------------
 
 interface RcmMetricResult {
   value: number;
@@ -112,7 +112,7 @@ function computeAckRejectRate(tenantId: string, runId: string): RcmMetricResult 
   return { value: rejectRate, sampleSize: withAck.length, breakdown: byAck };
 }
 
-// ── Report Generator Registration ───────────────────────────────────────
+// -- Report Generator Registration ---------------------------------------
 
 type RcmComputer = (tenantId: string, runId: string) => RcmMetricResult;
 
@@ -205,7 +205,7 @@ export function initRcmReportGenerators(): void {
   log.info('RCM report generators registered (Phase 367)');
 }
 
-// ── Direct query API ────────────────────────────────────────────────────
+// -- Direct query API ----------------------------------------------------
 
 export function computeRcmMetric(
   metricKey: string,

@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * LanguageSwitcher — Phase 132: Compact locale selector for the portal.
+ * LanguageSwitcher -- Phase 132: Compact locale selector for the portal.
  *
  * Shows a globe icon + current language code. Click to expand dropdown.
  * Used in the portal nav sidebar footer.

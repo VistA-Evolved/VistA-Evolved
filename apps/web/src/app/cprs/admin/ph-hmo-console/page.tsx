@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * PH HMO Console — Phase 93: PH HMO Deepening Pack
+ * PH HMO Console -- Phase 93: PH HMO Deepening Pack
  *
  * Admin console for billing staff to manage all 27 Philippine
  * Insurance Commission-licensed HMOs.
@@ -16,7 +16,7 @@
 import { useState, useEffect, useCallback } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 interface HmoCapabilities {
   loa: string;
@@ -86,7 +86,7 @@ interface ClaimPacket {
   generatedAt: string;
 }
 
-/* ── Color Maps ─────────────────────────────────────────────── */
+/* -- Color Maps ----------------------------------------------- */
 
 const STATUS_COLORS: Record<string, string> = {
   in_progress: '#2563eb',
@@ -110,7 +110,7 @@ const MODE_COLORS: Record<string, string> = {
   email: '#d97706',
 };
 
-/* ── Main Component ─────────────────────────────────────────── */
+/* -- Main Component ------------------------------------------- */
 
 type Tab = 'registry' | 'capabilities' | 'packets' | 'validation';
 
@@ -160,7 +160,7 @@ export default function PhHmoConsolePage() {
   );
 }
 
-/* ── Registry Tab ───────────────────────────────────────────── */
+/* -- Registry Tab --------------------------------------------- */
 
 function RegistryTab() {
   const [hmos, setHmos] = useState<PhHmo[]>([]);
@@ -325,7 +325,7 @@ function RegistryTab() {
   );
 }
 
-/* ── HMO Detail Panel ───────────────────────────────────────── */
+/* -- HMO Detail Panel ----------------------------------------- */
 
 function HmoDetailPanel({ hmo, onClose }: { hmo: PhHmo; onClose: () => void }) {
   return (
@@ -456,7 +456,7 @@ function HmoDetailPanel({ hmo, onClose }: { hmo: PhHmo; onClose: () => void }) {
   );
 }
 
-/* ── Capabilities Tab ───────────────────────────────────────── */
+/* -- Capabilities Tab ----------------------------------------- */
 
 function CapabilitiesTab() {
   const [hmos, setHmos] = useState<PhHmo[]>([]);
@@ -574,7 +574,7 @@ function CapabilitiesTab() {
   );
 }
 
-/* ── Packets Tab ────────────────────────────────────────────── */
+/* -- Packets Tab ---------------------------------------------- */
 
 function PacketsTab() {
   const [hmos, setHmos] = useState<PhHmo[]>([]);
@@ -745,7 +745,7 @@ function PacketsTab() {
   );
 }
 
-/* ── Validation Tab ─────────────────────────────────────────── */
+/* -- Validation Tab ------------------------------------------- */
 
 function ValidationTab() {
   const [validation, setValidation] = useState<ValidationResult | null>(null);
@@ -835,7 +835,7 @@ function ValidationTab() {
   );
 }
 
-/* ── Shared Components ──────────────────────────────────────── */
+/* -- Shared Components ---------------------------------------- */
 
 function Badge({ text, color }: { text: string; color: string }) {
   return (

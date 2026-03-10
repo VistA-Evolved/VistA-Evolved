@@ -1,7 +1,7 @@
 #!/usr/bin/env pwsh
 <#
   ops/drills/run-circuit-breaker-drill.ps1
-  Resilience drill: Circuit Breaker Verification — Phase 254
+  Resilience drill: Circuit Breaker Verification -- Phase 254
 
   Verifies circuit breaker opens after repeated failures and recovers.
   Requires: API running on :3001.
@@ -54,7 +54,7 @@ try {
 }
 
 # Gate 4: After VistA down, check health reports CB state
-# The circuit breaker may not be open yet — it opens after 5 RPC failures.
+# The circuit breaker may not be open yet -- it opens after 5 RPC failures.
 # /health always returns 200 but reports cbState.
 try {
   $h2 = Invoke-RestMethod -Uri "$ApiUrl/health" -UseBasicParsing -TimeoutSec 5

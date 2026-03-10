@@ -14,7 +14,7 @@ const ROOT = resolve(__dirname, '..', '..');
 const REPORT_PATH = resolve(ROOT, 'docs', 'QA_GAUNTLET_FAST_RESULTS.md');
 const ARTIFACT_PATH = resolve(ROOT, 'artifacts', 'qa-gauntlet.json');
 
-// ── Step 1: Get git SHA ─────────────────────────────────────
+// -- Step 1: Get git SHA -------------------------------------
 let gitSha = 'unknown';
 try {
   gitSha = execSync('git rev-parse --short HEAD', { cwd: ROOT, encoding: 'utf-8' }).trim();
@@ -22,7 +22,7 @@ try {
   console.warn('WARN: Could not get git SHA, using "unknown"');
 }
 
-// ── Step 2: Run gauntlet FAST suite ─────────────────────────
+// -- Step 2: Run gauntlet FAST suite -------------------------
 console.log('Running QA Gauntlet FAST suite...');
 let jsonOutput;
 let exitCode = 0;
@@ -64,7 +64,7 @@ console.log(
   `Gauntlet finished: ${jsonOutput.totals.pass} PASS, ${jsonOutput.totals.fail} FAIL, ${jsonOutput.totals.warn} WARN, ${jsonOutput.totals.skip} SKIP`
 );
 
-// ── Step 3: Build markdown ──────────────────────────────────
+// -- Step 3: Build markdown ----------------------------------
 const { totals, gates, durationMs, generatedAt, suite } = jsonOutput;
 const totalGates = gates.length;
 const durationSec = (durationMs / 1000).toFixed(1);
@@ -149,7 +149,7 @@ md += `- Machine output: \`artifacts/qa-gauntlet.json\`\n`;
 md += `- Run timestamp: ${timestamp}\n`;
 md += `- Git SHA: \`${gitSha}\`\n`;
 
-// ── Step 4: Write report ────────────────────────────────────
+// -- Step 4: Write report ------------------------------------
 writeFileSync(REPORT_PATH, md, 'utf-8');
 console.log(`Report written: docs/QA_GAUNTLET_FAST_RESULTS.md`);
 console.log(`Verdict: ${overallVerdict()}`);

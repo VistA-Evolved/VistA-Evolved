@@ -1,12 +1,12 @@
 /**
- * Passkeys Provider — Phase 35.
+ * Passkeys Provider -- Phase 35.
  *
  * Implements BiometricAuthProvider using Keycloak WebAuthn Passwordless.
  * This provider delegates all WebAuthn operations to Keycloak's built-in
  * WebAuthn authenticator. No biometric data is transmitted to our servers.
  *
  * Flow:
- *   1. Client calls startRegistration → returns Keycloak's WebAuthn options
+ *   1. Client calls startRegistration -> returns Keycloak's WebAuthn options
  *   2. Client performs WebAuthn ceremony in browser (navigator.credentials.create)
  *   3. Client calls completeRegistration with the attestation response
  *   4. For login: similar flow with navigator.credentials.get
@@ -41,6 +41,7 @@ interface PendingChallenge {
 }
 
 const pendingChallenges = new Map<string, PendingChallenge>();
+const MAX_PENDING_CHALLENGES = 5000;
 
 // Cleanup expired challenges every 60s
 setInterval(() => {
@@ -48,7 +49,7 @@ setInterval(() => {
   for (const [id, challenge] of pendingChallenges) {
     if (challenge.expiresAt < now) pendingChallenges.delete(id);
   }
-}, 60_000);
+}, 60_000).unref();
 
 /* ------------------------------------------------------------------ */
 /* Provider implementation                                             */
@@ -68,7 +69,7 @@ export class PasskeysProvider implements BiometricAuthProvider {
     this.enabled = process.env.PASSKEYS_ENABLED === 'true';
     const config = getOidcConfig();
     // Extract base URL and realm from issuer
-    // e.g., http://localhost:8180/realms/vista-evolved → http://localhost:8180, vista-evolved
+    // e.g., http://localhost:8180/realms/vista-evolved -> http://localhost:8180, vista-evolved
     const match = config.issuer.match(/^(https?:\/\/[^/]+)\/realms\/(.+)$/);
     this.keycloakBaseUrl = match?.[1] || 'http://localhost:8180';
     this.realmName = match?.[2] || 'vista-evolved';
@@ -110,6 +111,10 @@ export class PasskeysProvider implements BiometricAuthProvider {
     const expiresAt = Date.now() + 5 * 60 * 1000; // 5 min
 
     pendingChallenges.set(challengeId, { challenge, userId, expiresAt });
+    if (pendingChallenges.size > MAX_PENDING_CHALLENGES) {
+      const oldest = pendingChallenges.keys().next().value;
+      if (oldest != null) pendingChallenges.delete(oldest);
+    }
 
     // Return WebAuthn-compatible PublicKeyCredentialCreationOptions structure
     const options = {
@@ -133,7 +138,7 @@ export class PasskeysProvider implements BiometricAuthProvider {
         userVerification: 'preferred',
       },
       timeout: 300000,
-      attestation: 'none', // We don't need attestation — privacy first
+      attestation: 'none', // We don't need attestation -- privacy first
     };
 
     immutableAudit(
@@ -201,6 +206,10 @@ export class PasskeysProvider implements BiometricAuthProvider {
       userId: userId || 'discoverable',
       expiresAt,
     });
+    if (pendingChallenges.size > MAX_PENDING_CHALLENGES) {
+      const oldest = pendingChallenges.keys().next().value;
+      if (oldest != null) pendingChallenges.delete(oldest);
+    }
 
     const options: Record<string, unknown> = {
       challenge,

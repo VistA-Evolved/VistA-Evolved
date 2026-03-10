@@ -1,5 +1,5 @@
 /**
- * Phase 402 (W23-P4): Provider Directory — Types
+ * Phase 402 (W23-P4): Provider Directory -- Types
  */
 
 export type PractitionerStatus = 'active' | 'inactive' | 'suspended' | 'retired';

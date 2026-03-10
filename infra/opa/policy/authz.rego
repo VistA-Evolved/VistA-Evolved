@@ -1,5 +1,5 @@
 # VistA Evolved Authorization Policy
-# Phase 35 — OPA-compatible Rego policy
+# Phase 35 -- OPA-compatible Rego policy
 #
 # This policy file can be loaded by OPA sidecar or evaluated in-process.
 # Default-deny: all requests are denied unless explicitly allowed.

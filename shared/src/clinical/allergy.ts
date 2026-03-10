@@ -1,11 +1,11 @@
 /**
- * Canonical Allergy type — single source of truth.
+ * Canonical Allergy type -- single source of truth.
  *
  * Consolidates duplicates from:
  *   - apps/web/src/lib/chart-types.ts
  *   - apps/web/src/stores/data-cache.tsx
  *   - apps/web/src/app/patient-search/page.tsx (local)
- *   - apps/api/src/adapters/types.ts (AllergyRecord — richer shape)
+ *   - apps/api/src/adapters/types.ts (AllergyRecord -- richer shape)
  */
 
 /** Lightweight allergy for display in chart panels and cover sheets. */

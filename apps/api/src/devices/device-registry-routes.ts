@@ -1,5 +1,5 @@
 /**
- * Device Registry — Routes
+ * Device Registry -- Routes
  *
  * Phase 380 (W21-P3): REST endpoints for managed device inventory,
  * patient association, location mapping, and device audit.
@@ -47,7 +47,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
   // Device CRUD
   // -----------------------------------------------------------------------
 
-  /** POST /devices — Register a new device */
+  /** POST /devices -- Register a new device */
   server.post('/devices', async (request, reply) => {
     const body = (request.body as any) || {};
     const {
@@ -86,7 +86,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return reply.code(201).send({ ok: true, device: result });
   });
 
-  /** GET /devices — List devices */
+  /** GET /devices -- List devices */
   server.get('/devices', async (request, reply) => {
     const query = request.query as {
       gatewayId?: string;
@@ -102,7 +102,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return { ok: true, devices: items, total: items.length };
   });
 
-  /** GET /devices/:id — Get single device */
+  /** GET /devices/:id -- Get single device */
   server.get('/devices/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const dev = getDevice(id, tenantId(request));
@@ -110,7 +110,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return { ok: true, device: dev };
   });
 
-  /** GET /devices/by-serial — Lookup by serial number */
+  /** GET /devices/by-serial -- Lookup by serial number */
   server.get('/devices/by-serial', async (request, reply) => {
     const query = request.query as { serial: string };
     if (!query.serial) {
@@ -121,7 +121,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return { ok: true, device: dev };
   });
 
-  /** PATCH /devices/:id — Update device */
+  /** PATCH /devices/:id -- Update device */
   server.patch('/devices/:id', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
@@ -146,7 +146,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return { ok: true, device: dev };
   });
 
-  /** PATCH /devices/:id/status — Change device status */
+  /** PATCH /devices/:id/status -- Change device status */
   server.patch('/devices/:id/status', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
@@ -158,7 +158,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return { ok: true, device: dev };
   });
 
-  /** POST /devices/:id/decommission — Decommission device */
+  /** POST /devices/:id/decommission -- Decommission device */
   server.post('/devices/:id/decommission', async (request, reply) => {
     const { id } = request.params as { id: string };
     const ok = decommissionDevice(tenantId(request), id, 'admin');
@@ -170,7 +170,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
   // Patient Association
   // -----------------------------------------------------------------------
 
-  /** POST /devices/:id/associate — Associate device with patient */
+  /** POST /devices/:id/associate -- Associate device with patient */
   server.post('/devices/:id/associate', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
@@ -191,7 +191,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return reply.code(201).send({ ok: true, association: result });
   });
 
-  /** POST /devices/:id/disassociate — End patient association */
+  /** POST /devices/:id/disassociate -- End patient association */
   server.post('/devices/:id/disassociate', async (request, reply) => {
     const { id } = request.params as { id: string };
     const ok = disassociatePatient(tenantId(request), id, 'admin');
@@ -199,7 +199,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return { ok: true, status: 'disassociated' };
   });
 
-  /** GET /devices/:id/association — Get active association */
+  /** GET /devices/:id/association -- Get active association */
   server.get('/devices/:id/association', async (request, reply) => {
     const { id } = request.params as { id: string };
     const assoc = getActiveAssociation(tenantId(request), id);
@@ -209,7 +209,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return { ok: true, association: assoc };
   });
 
-  /** GET /devices/associations — List all associations */
+  /** GET /devices/associations -- List all associations */
   server.get('/devices/associations', async (request, reply) => {
     const query = request.query as {
       deviceId?: string;
@@ -229,7 +229,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
   // Location Mapping
   // -----------------------------------------------------------------------
 
-  /** POST /devices/:id/location — Map device to location */
+  /** POST /devices/:id/location -- Map device to location */
   server.post('/devices/:id/location', async (request, reply) => {
     const { id } = request.params as { id: string };
     const body = (request.body as any) || {};
@@ -253,7 +253,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return reply.code(201).send({ ok: true, location: result });
   });
 
-  /** GET /devices/:id/location — Get device location */
+  /** GET /devices/:id/location -- Get device location */
   server.get('/devices/:id/location', async (request, reply) => {
     const { id } = request.params as { id: string };
     const loc = getDeviceLocation(tenantId(request), id);
@@ -261,7 +261,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return { ok: true, location: loc };
   });
 
-  /** GET /devices/locations — List location mappings */
+  /** GET /devices/locations -- List location mappings */
   server.get('/devices/locations', async (request, reply) => {
     const query = request.query as {
       ward?: string;
@@ -279,7 +279,7 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
   // Audit + Stats
   // -----------------------------------------------------------------------
 
-  /** GET /devices/:id/audit — Device audit trail */
+  /** GET /devices/:id/audit -- Device audit trail */
   server.get('/devices/:id/audit', async (request, reply) => {
     const { id } = request.params as { id: string };
     const query = request.query as { limit?: string };
@@ -287,14 +287,14 @@ export default async function deviceRegistryRoutes(server: FastifyInstance): Pro
     return { ok: true, audit: entries, total: entries.length };
   });
 
-  /** GET /devices/audit — All device audit entries */
+  /** GET /devices/audit -- All device audit entries */
   server.get('/devices/audit', async (request, reply) => {
     const query = request.query as { limit?: string };
     const entries = getDeviceAudit(tenantId(request), undefined, parseInt(query.limit || '100', 10));
     return { ok: true, audit: entries, total: entries.length };
   });
 
-  /** GET /devices/stats — Registry statistics */
+  /** GET /devices/stats -- Registry statistics */
   server.get('/devices/stats', async (request, reply) => {
     return { ok: true, stats: getRegistryStats(tenantId(request)) };
   });

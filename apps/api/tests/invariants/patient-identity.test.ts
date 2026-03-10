@@ -1,6 +1,6 @@
 /**
- * Clinical Invariant Tests — Patient Identity Consistency
- * Phase 268 — W8-P3
+ * Clinical Invariant Tests -- Patient Identity Consistency
+ * Phase 268 -- W8-P3
  *
  * Validates that patient identity (DFN) is never mixed up across
  * API responses. Uses fixture data and synthetic bad data to

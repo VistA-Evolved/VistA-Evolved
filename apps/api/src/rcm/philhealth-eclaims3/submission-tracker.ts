@@ -1,5 +1,5 @@
 /**
- * PhilHealth eClaims 3.0 — Submission Tracker
+ * PhilHealth eClaims 3.0 â€" Submission Tracker
  *
  * Phase 96: Honest status tracking for eClaims 3.0 submissions.
  *
@@ -23,19 +23,20 @@ import {
   type DenialReason,
   type ClaimPacket,
 } from './types.js';
+import { log } from '../../lib/logger.js';
 
-/* ── ID Generation ──────────────────────────────────────────── */
+/* â"€â"€ ID Generation â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 function newSubmissionId(): string {
   return `sub-${Date.now().toString(36)}-${randomBytes(6).toString('hex')}`;
 }
 
-/* ── In-Memory Store ────────────────────────────────────────── */
+/* â"€â"€ In-Memory Store â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 const submissions = new Map<string, SubmissionRecord>();
-/** Index: sourceClaimDraftId → submissionId */
+/** Index: sourceClaimDraftId â+' submissionId */
 const byDraft = new Map<string, string>();
-/** Index: packetId → submissionId */
+/** Index: packetId â+' submissionId */
 const byPacket = new Map<string, string>();
 
 /* Phase 146: DB repo wiring */
@@ -47,7 +48,7 @@ export function initPhSubmissionStoreRepo(repo: typeof phSubDbRepo): void {
   phSubDbRepo = repo;
 }
 
-/* ── CRUD ───────────────────────────────────────────────────── */
+/* â"€â"€ CRUD â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 /**
  * Create a new submission record for a claim packet.
@@ -86,7 +87,7 @@ export function createSubmission(
       status: record.status,
       submittedAt: record.createdAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('ph-eclaims-tracker DB write-through failed', { error: String(e) }));
 
   return record;
 }
@@ -127,7 +128,7 @@ export function listSubmissions(filter?: {
   return results;
 }
 
-/* ── Status Transitions ─────────────────────────────────────── */
+/* â"€â"€ Status Transitions â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export interface TransitionResult {
   ok: boolean;
@@ -180,12 +181,12 @@ export function transitionSubmission(
       status: record.status,
       updatedAt: record.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('ph-eclaims-tracker DB write-through failed', { error: String(e) }));
 
   return { ok: true, submission: record };
 }
 
-/* ── Export Bundle Tracking ──────────────────────────────────── */
+/* â"€â"€ Export Bundle Tracking â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 /**
  * Record that an export bundle was generated for this submission.
@@ -205,12 +206,12 @@ export function recordExportBundle(tenantId: string, id: string, bundleId: strin
       status: record.status,
       updatedAt: record.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('ph-eclaims-tracker DB write-through failed', { error: String(e) }));
 
   return true;
 }
 
-/* ── Denial Recording ───────────────────────────────────────── */
+/* â"€â"€ Denial Recording â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 /**
  * Record a denial reason on a submission.
@@ -243,12 +244,12 @@ export function recordDenialReason(
       status: record.status,
       updatedAt: record.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('ph-eclaims-tracker DB write-through failed', { error: String(e) }));
 
   return { ok: true, submission: record };
 }
 
-/* ── Acceptance Confirmation ────────────────────────────────── */
+/* â"€â"€ Acceptance Confirmation â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 /**
  * Record acceptance details (TCN, payer ref) when staff confirms
@@ -281,12 +282,12 @@ export function recordAcceptance(
       status: record.status,
       updatedAt: record.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('ph-eclaims-tracker DB write-through failed', { error: String(e) }));
 
   return { ok: true, submission: record };
 }
 
-/* ── Staff Notes ────────────────────────────────────────────── */
+/* â"€â"€ Staff Notes â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export function addStaffNote(tenantId: string, id: string, note: string): boolean {
   const record = getSubmission(tenantId, id);
@@ -303,12 +304,12 @@ export function addStaffNote(tenantId: string, id: string, note: string): boolea
       status: record.status,
       updatedAt: record.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('ph-eclaims-tracker DB write-through failed', { error: String(e) }));
 
   return true;
 }
 
-/* ── Stats ──────────────────────────────────────────────────── */
+/* â"€â"€ Stats â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€â"€ */
 
 export function getSubmissionStats(tenantId: string): {
   total: number;

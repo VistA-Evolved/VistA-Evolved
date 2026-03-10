@@ -1,5 +1,5 @@
 /**
- * Release Candidate Baseline Load Test — Phase 118
+ * Release Candidate Baseline Load Test -- Phase 118
  *
  * Validates p95 latency budgets against live API endpoints.
  * Runs in 3 tiers: smoke (default), load, stress.
@@ -32,13 +32,13 @@ export const options = {
   vus: tier.vus,
   duration: tier.duration,
   thresholds: {
-    // Infrastructure endpoints — must be fast
+    // Infrastructure endpoints -- must be fast
     'http_req_duration{group:::infra}': ['p(95)<200'],
-    // Auth endpoints — VistA RPC dependent
+    // Auth endpoints -- VistA RPC dependent
     'http_req_duration{group:::auth}': ['p(95)<5000'],
-    // Clinical reads — VistA RPC dependent
+    // Clinical reads -- VistA RPC dependent
     'http_req_duration{group:::clinical}': ['p(95)<5000'],
-    // Admin/RCM reads — PG/SQLite backed
+    // Admin/RCM reads -- PG/SQLite backed
     'http_req_duration{group:::admin}': ['p(95)<1000'],
     // Global fallback
     http_req_duration: ['p(95)<10000'],
@@ -57,7 +57,7 @@ const failedChecks = new Counter('failed_checks');
 
 let cookies = {};
 
-/* ── Setup: Authenticate once ──────────────────────────────── */
+/* -- Setup: Authenticate once -------------------------------- */
 
 export function setup() {
   const loginRes = http.post(

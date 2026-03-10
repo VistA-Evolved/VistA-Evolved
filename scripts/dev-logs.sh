@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# VistA-Evolved — Development Logs Script
+# VistA-Evolved -- Development Logs Script
 # =============================================================================
 # Usage: ./scripts/dev-logs.sh           # all services
 #        ./scripts/dev-logs.sh api       # specific service

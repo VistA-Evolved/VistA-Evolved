@@ -9,7 +9,7 @@
 
 import { randomUUID } from "node:crypto";
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+// --- Types ------------------------------------------------------------------
 
 export type DrillType = "failover" | "switchback" | "data_loss_sim" | "network_partition" | "full_gameday";
 export type DrillStatus = "scheduled" | "running" | "completed" | "failed" | "cancelled";
@@ -100,7 +100,7 @@ export interface DrSchedule {
   createdAt: string;
 }
 
-// ─── In-Memory Stores ───────────────────────────────────────────────────────
+// --- In-Memory Stores -------------------------------------------------------
 
 const drillStore = new Map<string, DrDrill>();
 const scenarioStore = new Map<string, GameDayScenario>();
@@ -110,7 +110,7 @@ const scheduleStore = new Map<string, DrSchedule>();
 const auditLog: Array<{ ts: string; action: string; actor: string; detail: Record<string, unknown> }> = [];
 const MAX_AUDIT = 10_000;
 
-// ─── Default Scenarios ──────────────────────────────────────────────────────
+// --- Default Scenarios ------------------------------------------------------
 
 const FAILOVER_STEPS = [
   { name: "pre_check", description: "Verify source and target region health" },
@@ -134,7 +134,7 @@ const SWITCHBACK_STEPS = [
   { name: "post_check", description: "Full health check on original primary" },
 ];
 
-// ─── Scenario Management ────────────────────────────────────────────────────
+// --- Scenario Management ----------------------------------------------------
 
 export function createScenario(input: {
   name: string;
@@ -168,7 +168,7 @@ export function listScenarios(): GameDayScenario[] {
   return Array.from(scenarioStore.values()).sort((a, b) => a.name.localeCompare(b.name));
 }
 
-// ─── Drill Lifecycle ────────────────────────────────────────────────────────
+// --- Drill Lifecycle --------------------------------------------------------
 
 export function scheduleDrill(input: {
   name: string;
@@ -286,7 +286,7 @@ function gradeDrill(drill: DrDrill): DrillGrade {
   // Immediate F for critical findings or >50% failed steps
   if (criticalFindings > 0 || failedSteps > totalSteps / 2) return "F";
 
-  // RTO/RPO check — null means not measured, treat as N/A (skip check)
+  // RTO/RPO check -- null means not measured, treat as N/A (skip check)
   const rtoMet = drill.rtoActualSec === null || drill.rtoActualSec <= drill.rtoTargetSec;
   const rpoMet = drill.rpoActualSec === null || drill.rpoActualSec <= drill.rpoTargetSec;
 
@@ -355,7 +355,7 @@ export function listDrills(filters?: {
   return results.sort((a, b) => b.createdAt.localeCompare(a.createdAt)).slice(0, limit);
 }
 
-// ─── Evidence Packs ─────────────────────────────────────────────────────────
+// --- Evidence Packs ---------------------------------------------------------
 
 export function generateEvidencePack(drillId: string, frameworks?: string[]): EvidencePack {
   const drill = drillStore.get(drillId);
@@ -419,7 +419,7 @@ export function listEvidencePacks(drillId?: string): EvidencePack[] {
   return results.sort((a, b) => b.generatedAt.localeCompare(a.generatedAt));
 }
 
-// ─── Schedules ──────────────────────────────────────────────────────────────
+// --- Schedules --------------------------------------------------------------
 
 export function createSchedule(input: {
   scenarioId: string;
@@ -454,7 +454,7 @@ export function toggleSchedule(scheduleId: string, enabled: boolean): DrSchedule
   return schedule;
 }
 
-// ─── Summary ────────────────────────────────────────────────────────────────
+// --- Summary ----------------------------------------------------------------
 
 export function getDrSummary(): {
   totalDrills: number;
@@ -486,7 +486,7 @@ export function getDrSummary(): {
   };
 }
 
-// ─── Audit ──────────────────────────────────────────────────────────────────
+// --- Audit ------------------------------------------------------------------
 
 function appendAudit(action: string, actor: string, detail: Record<string, unknown>): void {
   auditLog.push({ ts: new Date().toISOString(), action, actor, detail });

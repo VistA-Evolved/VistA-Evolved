@@ -1,5 +1,5 @@
 /**
- * Claim-Status Poller — Phase 69: RCM Ops Excellence v1
+ * Claim-Status Poller -- Phase 69: RCM Ops Excellence v1
  *
  * Periodic polling job that checks claim adjudication status
  * with configured payer adapters. Uses the PollingScheduler.
@@ -8,14 +8,14 @@
  * Interval: 600s (10 min) between polls.
  *
  * Results are stored in an in-memory ring buffer.
- * No PHI in results — only claim ID, payer code, and status.
+ * No PHI in results -- only claim ID, payer code, and status.
  */
 
 import type { RcmJobType } from './queue.js';
 import { getPayerAdapterForMode, type ClaimStatusResponse } from '../adapters/payer-adapter.js';
 import { log } from '../../lib/logger.js';
 
-/* ── Config ────────────────────────────────────────────────── */
+/* -- Config -------------------------------------------------- */
 
 const CLAIM_STATUS_RATE_LIMIT = parseInt(process.env.RCM_CLAIM_STATUS_RATE_LIMIT ?? '30', 10) || 30;
 const CLAIM_STATUS_INTERVAL_MS =
@@ -23,7 +23,7 @@ const CLAIM_STATUS_INTERVAL_MS =
 
 export const CLAIM_STATUS_JOB_TYPE: RcmJobType = 'STATUS_POLL';
 
-/* ── Result Store (ring buffer, no PHI) ────────────────────── */
+/* -- Result Store (ring buffer, no PHI) ---------------------- */
 
 export interface ClaimStatusPollResult {
   id: string;
@@ -60,7 +60,7 @@ function pushResult(r: ClaimStatusPollResult): void {
   results.push(r);
 }
 
-/* ── Poller Handler ────────────────────────────────────────── */
+/* -- Poller Handler ------------------------------------------ */
 
 /**
  * Process a single claim status poll job.
@@ -161,7 +161,7 @@ export async function handleClaimStatusJob(job: {
   }
 }
 
-/* ── Registration Config ───────────────────────────────────── */
+/* -- Registration Config ------------------------------------- */
 
 /**
  * Returns the PollingJobConfig for claim status polling.

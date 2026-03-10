@@ -1,4 +1,4 @@
-# ve-tenant — Default values
+# ve-tenant -- Default values
 # One release per tenant. Override tenantId/tenantSlug per install.
 
 tenantId: ''

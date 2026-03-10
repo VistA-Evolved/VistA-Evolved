@@ -1,5 +1,5 @@
 /**
- * Security Alert Rules — Phase 344 (W16-P8).
+ * Security Alert Rules -- Phase 344 (W16-P8).
  *
  * Configurable alert rules that trigger on SIEM event patterns.
  * Rules: brute-force detection, privilege escalation, break-glass use,
@@ -53,9 +53,21 @@ export interface AlertTrigger {
 const alertRules: AlertRule[] = [];
 const alertTriggers: AlertTrigger[] = [];
 const MAX_TRIGGERS = 5000;
+const MAX_WINDOW_COUNTER_KEYS = 10000;
 
-/** Sliding window event counts: ruleId:actorId → timestamps[] */
+/** Sliding window event counts: ruleId:actorId -> timestamps[] */
 const windowCounters = new Map<string, number[]>();
+
+// Prune stale window counter keys every 5 min
+setInterval(() => {
+  const now = Date.now();
+  for (const [key, timestamps] of windowCounters) {
+    const maxWindow = 300_000; // 5 min (longest built-in rule window)
+    const fresh = timestamps.filter((t) => now - t < maxWindow);
+    if (fresh.length === 0) windowCounters.delete(key);
+    else windowCounters.set(key, fresh);
+  }
+}, 300_000).unref();
 
 /* ------------------------------------------------------------------ */
 /* Built-in Rules                                                      */
@@ -203,6 +215,13 @@ export function evaluateAlertRules(event: {
     const cutoff = now - rule.windowMs;
     const pruned = timestamps.filter((t) => t > cutoff);
     windowCounters.set(windowKey, pruned);
+
+    // Enforce total key cap to prevent OOM from many unique actors
+    if (windowCounters.size > MAX_WINDOW_COUNTER_KEYS) {
+      const iter = windowCounters.keys();
+      const oldest = iter.next().value;
+      if (oldest != null) windowCounters.delete(oldest);
+    }
 
     // Check threshold
     if (pruned.length >= rule.threshold) {

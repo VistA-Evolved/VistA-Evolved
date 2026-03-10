@@ -1,5 +1,5 @@
 /**
- * buildImmuPlan.ts — Phase 65: Generate immunization plan artifact.
+ * buildImmuPlan.ts -- Phase 65: Generate immunization plan artifact.
  *
  * Reads the Vivian grounding index, extracts immunization RPCs,
  * and writes artifacts/phase65/immu-plan.json.
@@ -30,7 +30,7 @@ function main() {
       const raw = JSON.parse(fs.readFileSync(VIVIAN_PATH, 'utf-8'));
       vivianEntries = Array.isArray(raw) ? raw : raw.rpcs || raw.entries || [];
     } catch {
-      console.warn('Could not parse Vivian index — using hardcoded list');
+      console.warn('Could not parse Vivian index -- using hardcoded list');
     }
   }
 

@@ -4,18 +4,18 @@
  * Phase 320 (W14-P4): Operational maturity endpoints.
  *
  * Routes:
- *   GET    /hl7/ops/dashboard          — unified ops dashboard
- *   GET    /hl7/ops/throughput/:endpointId — time-bucketed throughput
- *   POST   /hl7/ops/sla               — create SLA config
- *   GET    /hl7/ops/sla               — list SLA configs
- *   DELETE /hl7/ops/sla/:id           — delete SLA config
- *   POST   /hl7/ops/sla/evaluate      — trigger SLA evaluation
- *   GET    /hl7/ops/sla/violations    — list violations
- *   POST   /hl7/ops/sla/violations/:id/ack — acknowledge violation
- *   POST   /hl7/ops/retry/:dlqId      — queue DLQ entry for auto-retry
- *   GET    /hl7/ops/retry             — list retry queue
- *   GET    /hl7/ops/retry/stats       — retry queue stats
- *   GET    /hl7/ops/retry/due         — entries due for retry
+ *   GET    /hl7/ops/dashboard          -- unified ops dashboard
+ *   GET    /hl7/ops/throughput/:endpointId -- time-bucketed throughput
+ *   POST   /hl7/ops/sla               -- create SLA config
+ *   GET    /hl7/ops/sla               -- list SLA configs
+ *   DELETE /hl7/ops/sla/:id           -- delete SLA config
+ *   POST   /hl7/ops/sla/evaluate      -- trigger SLA evaluation
+ *   GET    /hl7/ops/sla/violations    -- list violations
+ *   POST   /hl7/ops/sla/violations/:id/ack -- acknowledge violation
+ *   POST   /hl7/ops/retry/:dlqId      -- queue DLQ entry for auto-retry
+ *   GET    /hl7/ops/retry             -- list retry queue
+ *   GET    /hl7/ops/retry/stats       -- retry queue stats
+ *   GET    /hl7/ops/retry/due         -- entries due for retry
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -65,7 +65,7 @@ function requireTenantId(request: any, reply: any): string | null {
 }
 
 export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
-  // ─── Dashboard ───────────────────────────────────────────────────
+  // --- Dashboard ---------------------------------------------------
 
   app.get('/hl7/ops/dashboard', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -76,7 +76,7 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, dashboard };
   });
 
-  // ─── Throughput ──────────────────────────────────────────────────
+  // --- Throughput --------------------------------------------------
 
   app.get('/hl7/ops/throughput/:endpointId', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -94,7 +94,7 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, throughput };
   });
 
-  // ─── SLA Configuration ──────────────────────────────────────────
+  // --- SLA Configuration ------------------------------------------
 
   app.post('/hl7/ops/sla', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -211,7 +211,7 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, acknowledged: true };
   });
 
-  // ─── Retry Queue ─────────────────────────────────────────────────
+  // --- Retry Queue -------------------------------------------------
 
   app.post('/hl7/ops/retry/:dlqId', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -253,7 +253,7 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, count: due.length, dueEntries: due };
   });
 
-  // ─── Retry State per DLQ entry ──────────────────────────────────
+  // --- Retry State per DLQ entry ----------------------------------
 
   app.get('/hl7/ops/retry/:dlqId', async (request, reply) => {
     const session = await requireSession(request, reply);
@@ -280,7 +280,7 @@ export async function hl7OpsRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true };
   });
 
-  // ─── Store Stats ────────────────────────────────────────────────
+  // --- Store Stats ------------------------------------------------
 
   app.get('/hl7/ops/store-stats', async (request, reply) => {
     const session = await requireSession(request, reply);

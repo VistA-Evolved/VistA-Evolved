@@ -1,5 +1,5 @@
 /**
- * Payer Dossier Repository (PostgreSQL) — CRUD for dossier + onboarding tasks
+ * Payer Dossier Repository (PostgreSQL) -- CRUD for dossier + onboarding tasks
  *
  * Phase 514 (Wave 37 B2): Payer Dossiers + Ops Onboarding Workflow
  *
@@ -12,14 +12,14 @@ import { eq, and, sql, desc } from 'drizzle-orm';
 import { getPgDb } from '../pg-db.js';
 import { payerDossier, payerOnboardingTask, payerAuditEvent } from '../pg-schema.js';
 
-/* ── Inferred types ──────────────────────────────────────── */
+/* -- Inferred types ---------------------------------------- */
 
 export type DossierRow = typeof payerDossier.$inferSelect;
 export type DossierInsert = typeof payerDossier.$inferInsert;
 export type OnboardingTaskRow = typeof payerOnboardingTask.$inferSelect;
 export type OnboardingTaskInsert = typeof payerOnboardingTask.$inferInsert;
 
-/* ── Dossier CRUD ───────────────────────────────────────── */
+/* -- Dossier CRUD ----------------------------------------- */
 
 export async function findDossierById(id: string, tenantId?: string): Promise<DossierRow | undefined> {
   const db = getPgDb();
@@ -159,7 +159,7 @@ export async function updateDossier(
   return updated;
 }
 
-/* ── Onboarding Task CRUD ───────────────────────────────── */
+/* -- Onboarding Task CRUD --------------------------------- */
 
 export async function listOnboardingTasks(
   dossierId: string,
@@ -284,7 +284,7 @@ export async function completeOnboardingTask(
   );
 }
 
-/* ── Dossier completeness ───────────────────────────────── */
+/* -- Dossier completeness --------------------------------- */
 
 /**
  * Recalculate & store completeness score for a dossier based on
@@ -306,7 +306,7 @@ export async function refreshCompletenessScore(dossierId: string, tenantId: stri
   return score;
 }
 
-/* ── Seed default onboarding tasks for a connector type ─── */
+/* -- Seed default onboarding tasks for a connector type --- */
 
 const DEFAULT_ONBOARDING_TASKS: Record<
   string,
@@ -377,7 +377,7 @@ const DEFAULT_ONBOARDING_TASKS: Record<
 
 /**
  * Seed default onboarding tasks for a dossier based on its integration mode.
- * Idempotent — skips if tasks already exist.
+ * Idempotent -- skips if tasks already exist.
  */
 export async function seedOnboardingTasks(
   dossierId: string,

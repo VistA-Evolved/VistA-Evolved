@@ -1,13 +1,13 @@
 /**
- * VistA RPC Capability Discovery + Cache — Phase 14A.
+ * VistA RPC Capability Discovery + Cache -- Phase 14A.
  *
  * Detects which RPCs are available on the connected VistA instance at runtime.
  * Provides helpers:
- *   - discoverCapabilities() — probes all known RPCs, caches results
- *   - requireRpc(name) — throws structured error if RPC unavailable
- *   - optionalRpc(name) — returns { available, fallback } without throwing
- *   - getCapabilities() — returns cached capability map
- *   - isRpcAvailable(name) — quick check from cache
+ *   - discoverCapabilities() -- probes all known RPCs, caches results
+ *   - requireRpc(name) -- throws structured error if RPC unavailable
+ *   - optionalRpc(name) -- returns { available, fallback } without throwing
+ *   - getCapabilities() -- returns cached capability map
+ *   - isRpcAvailable(name) -- quick check from cache
  *
  * Cache lifecycle:
  *   - Populated on first call to discoverCapabilities()
@@ -64,8 +64,8 @@ export interface RpcCheck {
  * SPacked format prefixes the error with a length byte (e.g., 'C' = chr(67)).
  *
  * Must NOT match:
- *   - "-1^Patient not found" (M routine ran — RPC is registered, just missing params)
- *   - "M  ERROR" / "%YDB-E-LVUNDEF" (M runtime error — RPC exists, routine executed)
+ *   - "-1^Patient not found" (M routine ran -- RPC is registered, just missing params)
+ *   - "M  ERROR" / "%YDB-E-LVUNDEF" (M runtime error -- RPC exists, routine executed)
  *   - "cannot be run at this time" (RPC exists but is locked/disabled)
  *
  * Only matches: "Remote Procedure '<name>' doesn't exist on the server."
@@ -188,7 +188,7 @@ export const KNOWN_RPCS: { rpc: string; domain: string; fallback?: string; descr
     // Encounter
     { rpc: 'ORWPCE SAVE', domain: 'encounter', description: 'Write-back: save encounter' },
 
-    // Phase 39: Billing Grounding — encounter/PCE reads
+    // Phase 39: Billing Grounding -- encounter/PCE reads
     { rpc: 'ORWPCE VISIT', domain: 'billing', description: 'Visit details for patient' },
     { rpc: 'ORWPCE GET VISIT', domain: 'billing', description: 'Get encounter data for visit' },
     { rpc: 'ORWPCE DIAG', domain: 'billing', description: 'Diagnoses for encounter' },
@@ -200,14 +200,14 @@ export const KNOWN_RPCS: { rpc: string; domain: string; fallback?: string; descr
     { rpc: 'ORWPCE LEXCODE', domain: 'billing', description: 'Get code for lexicon entry' },
     { rpc: 'ORWPCE ACTIVE CODE', domain: 'billing', description: 'Check ICD code active' },
 
-    // Phase 39: Billing Grounding — insurance
+    // Phase 39: Billing Grounding -- insurance
     {
       rpc: 'IBCN INSURANCE QUERY',
       domain: 'billing',
       description: 'Query patient insurance coverage',
     },
 
-    // Phase 39: Billing Grounding — IB forms + pharmacy billing
+    // Phase 39: Billing Grounding -- IB forms + pharmacy billing
     { rpc: 'IBD GET ALL PCE DATA', domain: 'billing', description: 'All PCE data for billing' },
     { rpc: 'IBD GET FORMSPEC', domain: 'billing', description: 'Billing form specification' },
     { rpc: 'IBARXM QUERY ONLY', domain: 'billing', description: 'Pharmacy billing query' },
@@ -264,7 +264,7 @@ export const KNOWN_RPCS: { rpc: string; domain: string; fallback?: string; descr
     { rpc: 'ZVEADT BEDS', domain: 'adt', description: 'Bed board (ZVEADT)' },
     { rpc: 'ZVEADT MVHIST', domain: 'adt', description: 'Movement history (ZVEADT)' },
 
-    // Phase 482 (W33-P2): Tier-0 hospital writeback RPCs — probed for capability evidence
+    // Phase 482 (W33-P2): Tier-0 hospital writeback RPCs -- probed for capability evidence
     // ADT write RPCs (DGPM package)
     { rpc: 'DGPM NEW ADMISSION', domain: 'adt', description: 'Write-back: admit patient (DGPM)' },
     { rpc: 'DGPM NEW TRANSFER', domain: 'adt', description: 'Write-back: transfer patient (DGPM)' },
@@ -303,15 +303,15 @@ let cachedCapabilities: CapabilityMap | null = null;
 let cacheTimestamp: number = 0;
 
 /**
- * WorldVistA Docker sandbox — RPCs that return "doesn't exist" (truly absent).
- * Note: RPCs that return LVUNDEF are NOT on this list — those exist on the
+ * WorldVistA Docker sandbox -- RPCs that return "doesn't exist" (truly absent).
+ * Note: RPCs that return LVUNDEF are NOT on this list -- those exist on the
  * server, they just fail when called with empty params. We only list RPCs
  * whose XWB response contains "Remote Procedure 'X' doesn't exist".
  */
 const WORLDVISTA_EXPECTED_MISSING = [
   'ORQQPL EDIT SAVE', // Returns CRemote "doesn't exist" (not installed)
   // All other RPCs that error with LVUNDEF are actually available.
-  // The list is intentionally short — only genuinely absent RPCs.
+  // The list is intentionally short -- only genuinely absent RPCs.
 ];
 
 /* ------------------------------------------------------------------ */
@@ -447,13 +447,13 @@ export async function discoverCapabilities(forceRefresh = false): Promise<Capabi
             await connect();
             const resp = await callRpc(rpcName, []);
             if (!isRpcMissing(resp)) {
-              // Second pass says it's available — override first-pass false negative
+              // Second pass says it's available -- override first-pass false negative
               rpcs[rpcName] = { rpcName, available: true, probedAt };
               missingList.splice(missingList.indexOf(rpcName), 1);
               availableList.push(rpcName);
             }
           } catch {
-            // Re-check failed — keep the first-pass result
+            // Re-check failed -- keep the first-pass result
           }
         }
       }
@@ -461,7 +461,7 @@ export async function discoverCapabilities(forceRefresh = false): Promise<Capabi
       // Leave the connection open for subsequent API calls
     });
   } catch (err: any) {
-    // Connection-level failure — mark everything unknown
+    // Connection-level failure -- mark everything unknown
     disconnect();
     throw new Error(`RPC capability discovery failed: ${err.message}`);
   }
@@ -504,7 +504,7 @@ export function isRpcAvailable(rpcName: string): boolean {
  */
 export function requireRpc(rpcName: string): RpcCheck {
   if (!cachedCapabilities) {
-    // Not yet discovered — allow through optimistically
+    // Not yet discovered -- allow through optimistically
     return { available: true, rpcName };
   }
   const cap = cachedCapabilities.rpcs[rpcName];
@@ -526,7 +526,7 @@ export function requireRpc(rpcName: string): RpcCheck {
 }
 
 /**
- * Check an RPC optionally — returns availability info without throwing.
+ * Check an RPC optionally -- returns availability info without throwing.
  * Use this in endpoints that can gracefully degrade.
  */
 export function optionalRpc(rpcName: string): RpcCheck {
@@ -572,7 +572,7 @@ export function getDomainCapabilities(domain: string): {
 }
 
 /* ------------------------------------------------------------------ */
-/* Phase 424: Drift detection — compare live vs baseline               */
+/* Phase 424: Drift detection -- compare live vs baseline               */
 /* ------------------------------------------------------------------ */
 
 export interface DriftReport {

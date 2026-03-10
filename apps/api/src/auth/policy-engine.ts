@@ -1,5 +1,5 @@
 /**
- * Policy-Based Authorization Engine — Phase 35.
+ * Policy-Based Authorization Engine -- Phase 35.
  *
  * Evaluates access control decisions using a role-based + attribute-based
  * policy model. Compatible with OPA policy structure but evaluated in-process
@@ -86,7 +86,7 @@ export interface PolicyDecision {
 /* ------------------------------------------------------------------ */
 
 /**
- * Action → required roles mapping.
+ * Action -> required roles mapping.
  * Wildcards: "clinical.*" means any action starting with "clinical."
  *
  * If an action is not listed, it defaults to DENY (unless admin).
@@ -162,11 +162,11 @@ const ROLE_ACTION_MAP: Record<string, PolicyRole[]> = {
 };
 
 /**
- * Route → action mapping.
+ * Route -> action mapping.
  * Maps API URL patterns to policy action strings.
  */
 export const ROUTE_ACTION_MAP: Record<string, string> = {
-  // Auth (no policy check — handled by auth gateway)
+  // Auth (no policy check -- handled by auth gateway)
   '/auth/login': 'auth.login',
   '/auth/logout': 'auth.logout',
   '/auth/session': 'auth.session',
@@ -261,10 +261,10 @@ export function evaluatePolicy(input: PolicyInput): PolicyDecision {
         evaluationTimeMs: performance.now() - start,
       };
     }
-    // Break-glass expired — fall through to normal policy
+    // Break-glass expired -- fall through to normal policy
   }
 
-  // Rule 3: Patient portal — own data only
+  // Rule 3: Patient portal -- own data only
   if (input.user.roles.includes('patient')) {
     if (input.action.startsWith('portal.')) {
       if (input.resource?.patientDfn && input.user.patientDfn) {
@@ -439,7 +439,7 @@ export function canPerform(roles: PolicyRole[], action: string): boolean {
 }
 
 /* ------------------------------------------------------------------ */
-/* RBAC → ABAC chained evaluation (Phase 340)                         */
+/* RBAC -> ABAC chained evaluation (Phase 340)                         */
 /* ------------------------------------------------------------------ */
 
 /** Extended decision with ABAC details. */
@@ -451,7 +451,7 @@ export interface PolicyDecisionWithAbac extends PolicyDecision {
 /**
  * Evaluate policy with ABAC refinement.
  *
- * Flow: RBAC first → if allowed → ABAC conditions checked → final decision.
+ * Flow: RBAC first -> if allowed -> ABAC conditions checked -> final decision.
  * ABAC can only DENY what RBAC allowed, never grant what RBAC denied.
  */
 export function evaluatePolicyWithAbac(
@@ -468,7 +468,7 @@ export function evaluatePolicyWithAbac(
   const rbacDecision = evaluatePolicy(input);
 
   if (!rbacDecision.allowed) {
-    // RBAC denied — skip ABAC entirely
+    // RBAC denied -- skip ABAC entirely
     return { ...rbacDecision, abac: undefined };
   }
 

@@ -1,5 +1,5 @@
 /**
- * Adapter Write Audit — Phase 436.
+ * Adapter Write Audit -- Phase 436.
  *
  * Centralized audit emitter for clinical adapter write operations.
  * Activates the orphaned write.* immutableAudit actions (defined since Phase 35).
@@ -21,7 +21,7 @@ export interface AdapterWriteAuditOpts {
   success: boolean;
   /** Provider DUZ */
   duz?: string;
-  /** Patient DFN (PHI-safe — automatically redacted by immutableAudit) */
+  /** Patient DFN (PHI-safe -- automatically redacted by immutableAudit) */
   dfn?: string;
   /** RPC(s) called */
   rpc: string;

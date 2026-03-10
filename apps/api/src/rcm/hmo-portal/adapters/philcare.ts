@@ -1,5 +1,5 @@
 /**
- * PhilCare Portal Adapter — Phase 97
+ * PhilCare Portal Adapter -- Phase 97
  *
  * Manual-assisted adapter for PhilCare.
  * Portal: https://www.philcare.com.ph/for-providers

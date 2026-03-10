@@ -1,5 +1,5 @@
 /**
- * Tasks Page — Patient notification/task center (Phase 32).
+ * Tasks Page -- Patient notification/task center (Phase 32).
  * Unified view of pending actions: appointments, messages, refills, etc.
  */
 

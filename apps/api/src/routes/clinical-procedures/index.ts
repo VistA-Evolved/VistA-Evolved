@@ -12,14 +12,7 @@ import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
 import { requireSession } from '../../auth/auth-routes.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
-
-interface VistaGrounding {
-  vistaFiles: string[];
-  targetRoutines: string[];
-  targetRpcs: string[];
-  migrationPath: string;
-  sandboxNote: string;
-}
+import { safeErr } from '../../lib/safe-error.js';
 
 interface CpListItem {
   id: string;
@@ -32,19 +25,21 @@ interface CpListItem {
   service?: string;
 }
 
-function integrationPendingResponse(endpoint: string, key: string, vistaGrounding: VistaGrounding) {
-  return {
-    ok: true,
-    source: 'integration-pending',
-    status: 'integration-pending',
-    endpoint,
-    key,
-    count: 0,
-    results: [],
-    vistaGrounding,
-    hint: 'This route remains pending only for MD-package functionality not exposed with useful sandbox data.',
-    rpcUsed: [],
-  };
+function parseMdResults(lines: string[]): Array<{ id: string; name: string; date: string; status: string }> {
+  const results: Array<{ id: string; name: string; date: string; status: string }> = [];
+  for (const line of lines) {
+    if (!line?.trim()) continue;
+    const parts = line.split('^');
+    const id = (parts[0] || '').trim();
+    if (!id) continue;
+    results.push({
+      id,
+      name: (parts[1] || '').trim() || `Procedure ${id}`,
+      date: formatVistaDateTime(parts[2] || ''),
+      status: (parts[3] || '').trim() || 'completed',
+    });
+  }
+  return results;
 }
 
 function formatVistaDateTime(value: string): string {
@@ -193,7 +188,7 @@ export default async function clinicalProceduresRoutes(server: FastifyInstance) 
       log.warn('Clinical Procedures consult fallback failed', { err: String(err), dfn });
       return reply.code(502).send({
         ok: false,
-        error: err?.message || String(err),
+        error: safeErr(err),
         rpcUsed,
       });
     }
@@ -208,21 +203,54 @@ export default async function clinicalProceduresRoutes(server: FastifyInstance) 
       return reply.code(400).send({ ok: false, error: 'Missing or invalid dfn query parameter' });
     }
 
-    return integrationPendingResponse('/vista/clinical-procedures/medicine', dfn, {
-      vistaFiles: [
-        'File 697.2 (Medicine)',
-        'File 690 (Electrocardiogram)',
-        'File 691 (Pulmonary Function)',
-        'File 694 (Cardiac Catheterization)',
-        'File 699 (Endoscopy)',
-      ],
-      targetRoutines: ['MDRPCOP', 'MDRPCOW', 'MDRPCW'],
-      targetRpcs: ['MD TMDPATIENT', 'MD TMDWIDGET', 'MD TMDCIDC'],
-      migrationPath:
-        '1) Verify MD package RPC availability in VEHU, 2) wire MD TMDPATIENT and MD TMDWIDGET for patient-scoped medicine results, 3) map package-specific output into stable web types.',
-      sandboxNote:
-        'The MD package remains pending because the sandbox does not expose useful medicine result data for these RPC families.',
-    });
+    const rpcUsed: string[] = [];
+
+    // Try MD TMDPATIENT for patient medicine results
+    try {
+      const mdLines = await safeCallRpc('MD TMDPATIENT', [dfn]);
+      rpcUsed.push('MD TMDPATIENT');
+      const results = parseMdResults(mdLines);
+
+      return {
+        ok: true,
+        source: 'vista',
+        count: results.length,
+        results,
+        rpcUsed,
+        note: results.length === 0
+          ? 'MD TMDPATIENT returned no medicine results for this patient.'
+          : undefined,
+      };
+    } catch (mdErr: any) {
+      rpcUsed.push('MD TMDPATIENT');
+      log.warn('MD TMDPATIENT failed, trying MD TMDWIDGET', { err: String(mdErr) });
+    }
+
+    // Fallback: try MD TMDWIDGET
+    try {
+      const widgetLines = await safeCallRpc('MD TMDWIDGET', [dfn]);
+      rpcUsed.push('MD TMDWIDGET');
+      const results = parseMdResults(widgetLines);
+
+      return {
+        ok: true,
+        source: 'vista',
+        count: results.length,
+        results,
+        rpcUsed,
+        note: results.length === 0
+          ? 'MD TMDWIDGET returned no medicine results for this patient.'
+          : undefined,
+      };
+    } catch (widgetErr: any) {
+      rpcUsed.push('MD TMDWIDGET');
+      log.warn('MD TMDWIDGET also failed', { err: String(widgetErr) });
+      return reply.code(502).send({
+        ok: false,
+        error: `Medicine RPCs failed: ${safeErr(widgetErr)}`,
+        rpcUsed,
+      });
+    }
   });
 
   server.get('/vista/clinical-procedures/consult-link', async (request: FastifyRequest, reply: FastifyReply) => {
@@ -274,7 +302,7 @@ export default async function clinicalProceduresRoutes(server: FastifyInstance) 
       };
     } catch (err: any) {
       log.warn('Clinical Procedures consult-link route failed', { err: String(err), dfn, consultId });
-      return reply.code(502).send({ ok: false, error: err?.message || String(err), rpcUsed });
+      return reply.code(502).send({ ok: false, error: safeErr(err), rpcUsed });
     }
   });
 

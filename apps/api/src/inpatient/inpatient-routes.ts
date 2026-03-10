@@ -1,20 +1,20 @@
 /**
- * Phase 391 (W22-P3): Inpatient Core — REST Routes
+ * Phase 391 (W22-P3): Inpatient Core -- REST Routes
  *
  * Endpoints:
- *   GET  /inpatient/bedboard               — Bedboard (all beds for tenant)
- *   GET  /inpatient/bedboard/summary       — Occupancy summary
- *   POST /inpatient/beds                    — Create bed assignment
- *   PATCH /inpatient/beds/:id               — Update bed assignment
- *   POST /inpatient/beds/:id/assign         — Assign patient to bed
- *   POST /inpatient/beds/:id/discharge      — Discharge patient from bed
- *   GET  /inpatient/adt-events              — ADT event log
- *   POST /inpatient/adt-events              — Record ADT event
- *   GET  /inpatient/flowsheet-rows          — Nursing flowsheet rows
- *   POST /inpatient/flowsheet-rows          — Record flowsheet row
- *   GET  /inpatient/vitals                  — Vitals entries
- *   POST /inpatient/vitals                  — Record vitals entry
- *   GET  /inpatient/writeback-posture       — Writeback posture report
+ *   GET  /inpatient/bedboard               -- Bedboard (all beds for tenant)
+ *   GET  /inpatient/bedboard/summary       -- Occupancy summary
+ *   POST /inpatient/beds                    -- Create bed assignment
+ *   PATCH /inpatient/beds/:id               -- Update bed assignment
+ *   POST /inpatient/beds/:id/assign         -- Assign patient to bed
+ *   POST /inpatient/beds/:id/discharge      -- Discharge patient from bed
+ *   GET  /inpatient/adt-events              -- ADT event log
+ *   POST /inpatient/adt-events              -- Record ADT event
+ *   GET  /inpatient/flowsheet-rows          -- Nursing flowsheet rows
+ *   POST /inpatient/flowsheet-rows          -- Record flowsheet row
+ *   GET  /inpatient/vitals                  -- Vitals entries
+ *   POST /inpatient/vitals                  -- Record vitals entry
+ *   GET  /inpatient/writeback-posture       -- Writeback posture report
  *
  * Auth: session-based (/inpatient/* in security.ts AUTH_RULES).
  * Admin: beds create/PATCH admin-only; reads session-level.
@@ -40,7 +40,7 @@ import {
 } from './inpatient-store.js';
 import type { BedStatus, AdtEventType } from './types.js';
 
-// ─── Allowed patch fields ───────────────────────────────────
+// --- Allowed patch fields -----------------------------------
 
 const BED_PATCH_FIELDS = new Set([
   'status',
@@ -55,10 +55,10 @@ const BED_PATCH_FIELDS = new Set([
   'roomNumber',
 ]);
 
-// ─── Plugin ─────────────────────────────────────────────────
+// --- Plugin -------------------------------------------------
 
 export async function inpatientRoutes(server: FastifyInstance): Promise<void> {
-  // ── Bedboard ────────────────────────────────────────────
+  // -- Bedboard --------------------------------------------
 
   server.get('/inpatient/bedboard', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -80,7 +80,7 @@ export async function inpatientRoutes(server: FastifyInstance): Promise<void> {
     }
   );
 
-  // ── Bed CRUD ────────────────────────────────────────────
+  // -- Bed CRUD --------------------------------------------
 
   server.post('/inpatient/beds', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -195,7 +195,7 @@ export async function inpatientRoutes(server: FastifyInstance): Promise<void> {
     }
   );
 
-  // ── ADT Events ──────────────────────────────────────────
+  // -- ADT Events ------------------------------------------
 
   server.get('/inpatient/adt-events', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -237,7 +237,7 @@ export async function inpatientRoutes(server: FastifyInstance): Promise<void> {
     return reply.code(201).send({ ok: true, event });
   });
 
-  // ── Nursing Flowsheet Rows ──────────────────────────────
+  // -- Nursing Flowsheet Rows ------------------------------
 
   server.get('/inpatient/flowsheet-rows', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -271,7 +271,7 @@ export async function inpatientRoutes(server: FastifyInstance): Promise<void> {
     return reply.code(201).send({ ok: true, row });
   });
 
-  // ── Vitals ──────────────────────────────────────────────
+  // -- Vitals ----------------------------------------------
 
   server.get('/inpatient/vitals', async (request: FastifyRequest, reply: FastifyReply) => {
     const session = await requireSession(request, reply);
@@ -308,7 +308,7 @@ export async function inpatientRoutes(server: FastifyInstance): Promise<void> {
     return reply.code(201).send({ ok: true, entry });
   });
 
-  // ── Writeback Posture ───────────────────────────────────
+  // -- Writeback Posture -----------------------------------
 
   server.get(
     '/inpatient/writeback-posture',

@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
+import { csrfHeaders } from '@/lib/csrf';
 
 /* ------------------------------------------------------------------ */
 /* Types                                                               */
@@ -47,7 +48,7 @@ interface UsageCounters {
 async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API}${path}`, {
     credentials: 'include',
-    headers: { 'Content-Type': 'application/json' },
+    headers: { 'Content-Type': 'application/json', ...csrfHeaders() },
     ...opts,
   });
   return res.json();

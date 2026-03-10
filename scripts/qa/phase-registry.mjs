@@ -21,7 +21,7 @@ const ROOT = process.cwd();
 const INDEX_PATH = resolve(ROOT, 'docs/qa/phase-index.json');
 const OUT_PATH = resolve(ROOT, 'artifacts/phase-registry.json');
 
-// ── Domain Classification ──
+// -- Domain Classification --
 
 const DOMAIN_PATTERNS = [
   {
@@ -93,7 +93,7 @@ export function classifyDomains(phase) {
   return [...domains];
 }
 
-// ── RPC Workflow Mapping ──
+// -- RPC Workflow Mapping --
 
 const RPC_WORKFLOWS = {
   login: {
@@ -138,7 +138,7 @@ export function mapRpcWorkflows(phase) {
   return matched;
 }
 
-// ── Store Dependencies ──
+// -- Store Dependencies --
 
 const STORE_PATTERNS = [
   { store: 'session-store', pattern: /session.?store/i },
@@ -159,7 +159,7 @@ export function mapStores(phase) {
   return STORE_PATTERNS.filter((s) => s.pattern.test(text)).map((s) => s.store);
 }
 
-// ── Test Classification ──
+// -- Test Classification --
 
 /**
  * Determine which test types are appropriate for a phase.
@@ -204,7 +204,7 @@ export function classifyTests(enrichedPhase) {
   return tests;
 }
 
-// ── Main ──
+// -- Main --
 
 export function buildRegistry() {
   if (!existsSync(INDEX_PATH)) {

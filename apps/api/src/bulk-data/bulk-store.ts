@@ -1,5 +1,5 @@
 /**
- * Phase 404 (W23-P6): Bulk Data — Store
+ * Phase 404 (W23-P6): Bulk Data -- Store
  */
 
 import { randomBytes } from 'crypto';
@@ -20,7 +20,7 @@ function genId(prefix: string): string {
   return `${prefix}-${randomBytes(8).toString('hex')}`;
 }
 
-// ─── Job CRUD ──────────────────────────────────────────────
+// --- Job CRUD ----------------------------------------------
 
 export function createBulkJob(input: {
   tenantId: string;
@@ -81,8 +81,8 @@ export function cancelBulkJob(id: string): BulkJob | undefined {
 }
 
 /**
- * Simulate job progression — in production this would be a background worker.
- * For now, transitions queued → in-progress → completed with mock outputs.
+ * Simulate job progression -- in production this would be a background worker.
+ * For now, transitions queued -> in-progress -> completed with mock outputs.
  */
 export function simulateJobProgress(id: string): BulkJob | undefined {
   const rec = jobStore.get(id);
@@ -110,7 +110,7 @@ export function simulateJobProgress(id: string): BulkJob | undefined {
   return rec;
 }
 
-// ─── Dashboard ─────────────────────────────────────────────
+// --- Dashboard ---------------------------------------------
 
 export function getBulkDataDashboardStats(tenantId: string): BulkDataDashboardStats {
   const jobs = Array.from(jobStore.values()).filter((j) => j.tenantId === tenantId);

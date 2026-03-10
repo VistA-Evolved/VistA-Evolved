@@ -2,11 +2,12 @@
 
 import { useEffect, useState, useCallback } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
+import { csrfHeaders } from '@/lib/csrf';
 
 /**
  * Phase 158: Encounter Note Builder Page
  * Select a published template, fill in fields, generate draft note.
- * Renders TIU-ready output with VistA integration-pending posture.
+ * Renders TIU-ready output with VistA writeback posture.
  */
 
 interface TemplateOption {
@@ -58,7 +59,7 @@ async function apiFetch(path: string, opts?: RequestInit) {
   const res = await fetch(`${API}${path}`, {
     credentials: 'include',
     ...opts,
-    headers: { 'Content-Type': 'application/json', ...opts?.headers },
+    headers: { 'Content-Type': 'application/json', ...csrfHeaders(), ...opts?.headers },
   });
   return res.json();
 }
@@ -149,7 +150,7 @@ export default function NoteBuilderPage() {
             fontSize: 12,
           }}
         >
-          integration-pending: TIU CREATE RECORD
+          VistA target: TIU CREATE RECORD (not yet configured)
         </span>
       </p>
 

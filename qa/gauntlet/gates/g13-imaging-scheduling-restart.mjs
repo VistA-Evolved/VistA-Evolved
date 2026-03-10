@@ -41,7 +41,7 @@ export async function run(opts = {}) {
     }
   }
 
-  // ── PG Schema ──
+  // -- PG Schema --
   const pgSchema = rd('apps/api/src/platform/pg/pg-schema.ts') ?? '';
   check('pgImagingWorkItem in schema', pgSchema.includes('pgTable("imaging_work_item"'));
   check('pgImagingIngestEvent in schema', pgSchema.includes('pgTable("imaging_ingest_event"'));
@@ -54,7 +54,7 @@ export async function run(opts = {}) {
     pgSchema.includes('pgTable("scheduling_booking_lock"')
   );
 
-  // ── PG Migration v12 ──
+  // -- PG Migration v12 --
   const pgMigrate = rd('apps/api/src/platform/pg/pg-migrate.ts') ?? '';
   check('v12 label in pg-migrate', pgMigrate.includes('imaging_scheduling_durability_pg'));
   check(
@@ -74,7 +74,7 @@ export async function run(opts = {}) {
     pgMigrate.includes('CREATE TABLE IF NOT EXISTS scheduling_booking_lock')
   );
 
-  // ── PG Repo files ──
+  // -- PG Repo files --
   const repos = [
     ['pg-imaging-worklist-repo.ts', 'insertWorkOrder'],
     ['pg-imaging-ingest-repo.ts', 'insertStudyLink'],
@@ -87,7 +87,7 @@ export async function run(opts = {}) {
     check(`${file} exports ${fn}`, src?.includes(`export async function ${fn}`) ?? false);
   }
 
-  // ── Store async safety ──
+  // -- Store async safety --
   const imgWl = rd('apps/api/src/services/imaging-worklist.ts') ?? '';
   check('imaging-worklist uses interface WorklistRepo', imgWl.includes('interface WorklistRepo'));
   check('imaging-worklist async reads', imgWl.includes('await Promise.resolve(_repo'));
@@ -115,7 +115,7 @@ export async function run(opts = {}) {
     sched.includes('export async function getRequestStore')
   );
 
-  // ── index.ts wiring ──
+  // -- index.ts wiring --
   const index = rd('apps/api/src/index.ts') ?? '';
   check('index wires pg-imaging-worklist-repo', index.includes('pg-imaging-worklist-repo'));
   check('index wires pg-imaging-ingest-repo', index.includes('pg-imaging-ingest-repo'));
@@ -123,20 +123,20 @@ export async function run(opts = {}) {
   check('index wires pg-scheduling-lock-repo', index.includes('pg-scheduling-lock-repo'));
   check('index wires initSchedulingLockRepo', index.includes('initSchedulingLockRepo'));
 
-  // ── PG barrel ──
+  // -- PG barrel --
   const barrel = rd('apps/api/src/platform/pg/repo/index.ts') ?? '';
   check('barrel pgImagingWorklistRepo', barrel.includes('pgImagingWorklistRepo'));
   check('barrel pgImagingIngestRepo', barrel.includes('pgImagingIngestRepo'));
   check('barrel pgSchedulingRequestRepo', barrel.includes('pgSchedulingRequestRepo'));
   check('barrel pgSchedulingLockRepo', barrel.includes('pgSchedulingLockRepo'));
 
-  // ── RLS ──
+  // -- RLS --
   check('imaging_work_item in RLS', pgMigrate.includes('"imaging_work_item"'));
   check('imaging_ingest_event in RLS', pgMigrate.includes('"imaging_ingest_event"'));
   check('scheduling_waitlist_request in RLS', pgMigrate.includes('"scheduling_waitlist_request"'));
   check('scheduling_booking_lock in RLS', pgMigrate.includes('"scheduling_booking_lock"'));
 
-  // ── Lock TTL ──
+  // -- Lock TTL --
   const lockRepo = rd('apps/api/src/platform/pg/repo/pg-scheduling-lock-repo.ts') ?? '';
   check('lock repo expires_at TTL', lockRepo.includes('expires_at'));
   check('lock repo unique violation handling', lockRepo.includes('23505'));

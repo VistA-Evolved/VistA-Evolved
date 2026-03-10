@@ -1,0 +1,12 @@
+{
+  "rpcName": "ORWPS ACTIVE",
+  "caseName": "success",
+  "recordedAt": "2026-03-05T00:00:00Z",
+  "sanitized": true,
+  "params": ["46"],
+  "response": [
+    "~1^METFORMIN HCL 500MG TAB^500MG^PO^BID",
+    "  Status: Active"
+  ],
+  "responseHash": "e5f6a1b2c3d4"
+}

@@ -1,5 +1,5 @@
 /**
- * Imaging Adapter Interface — Phase 37C.
+ * Imaging Adapter Interface -- Phase 37C.
  */
 
 import type { BaseAdapter, AdapterResult } from '../types.js';

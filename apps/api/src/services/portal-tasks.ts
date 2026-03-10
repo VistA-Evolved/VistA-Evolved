@@ -1,5 +1,5 @@
 /**
- * Portal Tasks & Notifications — Phase 32
+ * Portal Tasks & Notifications -- Phase 32
  *
  * Unified task/notification feed for patients and staff.
  * Aggregates from:
@@ -18,6 +18,7 @@
  */
 
 import { randomBytes } from "node:crypto";
+import { log } from "../lib/logger.js";
 import { portalAudit } from "./portal-audit.js";
 
 /* ------------------------------------------------------------------ */
@@ -48,7 +49,7 @@ export interface PortalTask {
   /** Deep link within the portal (e.g., /dashboard/messages, /dashboard/refills) */
   actionUrl: string | null;
   actionLabel: string | null;
-  /** Source reference — e.g., refill ID, appointment ID, message thread ID */
+  /** Source reference -- e.g., refill ID, appointment ID, message thread ID */
   sourceId: string | null;
   createdAt: string;
   updatedAt: string;
@@ -93,7 +94,7 @@ function persistTaskRow(task: PortalTask): void {
       createdAt: task.createdAt,
       updatedAt: task.updatedAt,
     })
-    .catch(() => {});
+    .catch((e) => log.warn('PG write-through failed', { error: String(e) }));
 }
 
 function generateId(): string {
@@ -242,7 +243,7 @@ export function getPatientTaskCounts(tenantId: string, patientDfn: string): {
 /* Staff queries                                                        */
 /* ------------------------------------------------------------------ */
 
-/** All active tasks across all patients — staff dashboard */
+/** All active tasks across all patients -- staff dashboard */
 export function getStaffTaskQueue(opts?: {
   tenantId?: string;
   categoryFilter?: TaskCategory[];
@@ -330,7 +331,7 @@ export function dismissTask(taskId: string, patientDfn: string, tenantId: string
     taskDbRepo.update(taskId, {
       status: task.status,
       updatedAt: task.updatedAt,
-    }).catch(() => {});
+    }).catch((e) => log.warn('PG write-through failed', { error: String(e) }));
   } else {
     persistTaskRow(task);
   }
@@ -358,7 +359,7 @@ export function completeTask(taskId: string, patientDfn: string, tenantId: strin
       status: task.status,
       completedAt: task.updatedAt,
       updatedAt: task.updatedAt,
-    }).catch(() => {});
+    }).catch((e) => log.warn('PG write-through failed', { error: String(e) }));
   } else {
     persistTaskRow(task);
   }

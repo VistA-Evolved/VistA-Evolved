@@ -1,13 +1,13 @@
 /**
- * Runtime Mode — Phase 125: Postgres-Only Production Data Plane
+ * Runtime Mode -- Phase 125: Postgres-Only Production Data Plane
  *
  * Single source of truth for the deployment runtime mode.
  *
  * PLATFORM_RUNTIME_MODE env var controls behaviour:
- *   "dev"  (default) — PG optional, RLS optional
- *   "test" — Same as dev (CI unit tests)
- *   "rc"   — PG required, RLS auto-enabled
- *   "prod" — PG required, RLS auto-enabled
+ *   "dev"  (default) -- PG optional, RLS optional
+ *   "test" -- Same as dev (CI unit tests)
+ *   "rc"   -- PG required, RLS auto-enabled
+ *   "prod" -- PG required, RLS auto-enabled
  *
  * rc/prod modes enforce:
  *   - PLATFORM_PG_URL must be set
@@ -29,9 +29,9 @@ let cachedMode: RuntimeMode | null = null;
 export function getRuntimeMode(): RuntimeMode {
   if (cachedMode) return cachedMode;
 
-  const raw = (process.env.PLATFORM_RUNTIME_MODE || 'dev').toLowerCase().trim();
+  const raw = (process.env.PLATFORM_RUNTIME_MODE || '').toLowerCase().trim();
 
-  if (VALID_MODES.includes(raw as RuntimeMode)) {
+  if (raw && VALID_MODES.includes(raw as RuntimeMode)) {
     cachedMode = raw as RuntimeMode;
   } else {
     // Fallback: map NODE_ENV to runtime mode for backwards compat

@@ -16,7 +16,7 @@ window.config = {
     thumbnail: 75,
     prefetch: 25,
   },
-  // DICOMweb data source — proxied through VistA-Evolved API
+  // DICOMweb data source -- proxied through VistA-Evolved API
   // In production, point to the API proxy: /imaging/dicom-web
   // For local dev, point directly to Orthanc
   dataSources: [

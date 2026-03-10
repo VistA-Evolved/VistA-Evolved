@@ -1,5 +1,5 @@
 /**
- * Orders Writeback Contract Tests — Phase 302 (W12-P4)
+ * Orders Writeback Contract Tests -- Phase 302 (W12-P4)
  *
  * Tests the Orders executor through the command bus without a live VistA.
  * Validates: submission, idempotency, gate checks, dry-run, validation, safety.

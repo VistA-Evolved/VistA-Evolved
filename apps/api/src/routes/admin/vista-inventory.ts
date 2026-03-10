@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -21,7 +22,7 @@ export default async function vistaInventoryRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE INV ITEM LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE INV ITEM LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -43,7 +44,7 @@ export default async function vistaInventoryRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE INV ITEM DETAIL', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE INV ITEM DETAIL', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -64,7 +65,7 @@ export default async function vistaInventoryRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE INV VENDOR LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE INV VENDOR LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -85,7 +86,7 @@ export default async function vistaInventoryRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE INV PO LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE INV PO LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

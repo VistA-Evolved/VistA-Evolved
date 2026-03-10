@@ -1,5 +1,5 @@
 /**
- * VistA Binding: Encounter → Claim
+ * VistA Binding: Encounter -> Claim
  *
  * Reads a VistA PCE encounter (^AUPNVSIT) and its associated
  * CPT codes (^AUPNVCPT) + diagnoses (^AUPNVPOV) to produce
@@ -10,25 +10,25 @@
  * `integration-pending` marker with migration guidance.
  *
  * Target RPCs:
- *   ORWPCE PCE4NOTE  — PCE encounter data linked to a note
- *   ORWPCE GETSVC    — Service connected conditions
- *   ORWPCE GETVSIT   — Visit/encounter details
- *   IB CHARGE DATA   — Integrated Billing charge details (empty in sandbox)
+ *   ORWPCE PCE4NOTE  -- PCE encounter data linked to a note
+ *   ORWPCE GETSVC    -- Service connected conditions
+ *   ORWPCE GETVSIT   -- Visit/encounter details
+ *   IB CHARGE DATA   -- Integrated Billing charge details (empty in sandbox)
  *
  * Target VistA files:
- *   ^AUPNVSIT(IEN)   — Visit file (9000010)
- *   ^AUPNVCPT(IEN)   — V CPT file (9000010.18)
- *   ^AUPNVPOV(IEN)   — V POV file (9000010.07)
- *   ^IB(350,IEN)      — IB Action file (charges)
- *   ^DGCR(399,IEN)    — Outpatient Encounter file (claims)
+ *   ^AUPNVSIT(IEN)   -- Visit file (9000010)
+ *   ^AUPNVCPT(IEN)   -- V CPT file (9000010.18)
+ *   ^AUPNVPOV(IEN)   -- V POV file (9000010.07)
+ *   ^IB(350,IEN)      -- IB Action file (charges)
+ *   ^DGCR(399,IEN)    -- Outpatient Encounter file (claims)
  *
- * Phase 40 (Superseding) — VistA-first binding points
+ * Phase 40 (Superseding) -- VistA-first binding points
  */
 
 import type { Claim, DiagnosisCode, ClaimLine, ProcedureCode } from '../domain/claim.js';
 import { createDraftClaim } from '../domain/claim.js';
 
-/* ─── Types ──────────────────────────────────────────────────── */
+/* --- Types ---------------------------------------------------- */
 
 export interface VistaEncounterData {
   visitIen: string;
@@ -67,11 +67,11 @@ export interface BindingResult<T> {
   errors?: string[];
 }
 
-/* ─── Encounter → Claim builder ──────────────────────────────── */
+/* --- Encounter -> Claim builder -------------------------------- */
 
 /**
  * Build a Claim from VistA encounter data.
- * This is the canonical mapping from PCE encounter → RCM claim.
+ * This is the canonical mapping from PCE encounter -> RCM claim.
  */
 export function buildClaimFromEncounterData(
   encounter: VistaEncounterData,

@@ -156,11 +156,11 @@ test.describe('Phase 28: ENTERPRISE INTAKE OS', () => {
 test.describe('Phase 131: 132 VERIFY', () => {
   test('API routes respond without 500', async ({ request }) => {
     const r__scheduling_appointments_cprs_dfn_3 = await request.get(
-      `${API}/scheduling/appointments/cprs?dfn=3`
+      `${API}/scheduling/appointments/cprs?dfn=46`
     );
     expect(
       r__scheduling_appointments_cprs_dfn_3.status(),
-      '/scheduling/appointments/cprs?dfn=3 should not be 500'
+      '/scheduling/appointments/cprs?dfn=46 should not be 500'
     ).not.toBe(500);
     const r__scheduling_health = await request.get(`${API}/scheduling/health`);
     expect(r__scheduling_health.status(), '/scheduling/health should not be 500').not.toBe(500);
@@ -185,7 +185,7 @@ test.describe('Phase 131: 132 VERIFY', () => {
   });
 
   test('integration-pending responses include nextSteps', async ({ request }) => {
-    const res = await request.get(`${API}/scheduling/appointments/cprs?dfn=3`);
+    const res = await request.get(`${API}/scheduling/appointments/cprs?dfn=46`);
     if (res.status() === 200) {
       const body = await res.json().catch(() => null);
       if (body?.status === 'integration-pending') {
@@ -231,7 +231,7 @@ test.describe('Phase 131: 132 VERIFY', () => {
   });
 
   test('scheduling endpoint contract', async ({ request }) => {
-    const res = await request.get(`${API}/scheduling/appointments/cprs?dfn=3`);
+    const res = await request.get(`${API}/scheduling/appointments/cprs?dfn=46`);
     expect([200, 401, 403]).toContain(res.status());
   });
 });

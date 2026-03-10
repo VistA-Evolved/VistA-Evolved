@@ -1,5 +1,5 @@
 /**
- * run-all.mjs — Orchestrator that runs all CPRS extraction scripts in sequence.
+ * run-all.mjs -- Orchestrator that runs all CPRS extraction scripts in sequence.
  *
  * Output directory: design/contracts/cprs/v1/
  * Files produced:
@@ -40,7 +40,7 @@ async function main() {
   await extractRpcs(formsResult, tabsResult, menusResult);
 
   const elapsed = ((Date.now() - t0) / 1000).toFixed(1);
-  console.log(`\nDone in ${elapsed}s — output in design/contracts/cprs/v1/`);
+  console.log(`\nDone in ${elapsed}s -- output in design/contracts/cprs/v1/`);
 }
 
 main().catch((err) => {

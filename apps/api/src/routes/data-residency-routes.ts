@@ -1,5 +1,5 @@
 /**
- * Data Residency Routes — Phase 311
+ * Data Residency Routes -- Phase 311
  * Phase 495 (W34-P5): + pack-aware residency enforcement endpoint.
  *
  * Admin-only endpoints for managing data regions and transfer agreements.
@@ -21,12 +21,12 @@ import {
 import { getEffectivePolicy } from '../middleware/country-policy-hook.js';
 import { randomBytes } from 'node:crypto';
 
-// ── In-Memory Stores (Phase 311 scaffold) ──────────────────────
+// -- In-Memory Stores (Phase 311 scaffold) ----------------------
 
 const transferAgreements = new Map<string, DataTransferAgreement>();
 const tenantRegions = new Map<string, DataRegion>();
 
-// ── Route Registration ─────────────────────────────────────────
+// -- Route Registration -----------------------------------------
 
 export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
   function resolveTenantId(request: any): string | null {
@@ -65,7 +65,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     return true;
   }
 
-  // GET /residency/regions — list all data regions
+  // GET /residency/regions -- list all data regions
   app.get('/residency/regions', async (_request, _reply) => {
     return {
       ok: true,
@@ -77,7 +77,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // GET /residency/regions/:region — get region details
+  // GET /residency/regions/:region -- get region details
   app.get('/residency/regions/:region', async (request, reply) => {
     const { region } = request.params as { region: string };
     if (!isValidDataRegion(region)) {
@@ -92,7 +92,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // GET /residency/tenant/:tenantId — get tenant's region assignment
+  // GET /residency/tenant/:tenantId -- get tenant's region assignment
   app.get('/residency/tenant/:tenantId', async (request, reply) => {
     const tenantId = requireTenantId(request, reply);
     if (!tenantId) return;
@@ -110,7 +110,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // POST /residency/tenant/:tenantId/assign — assign region (one-time only)
+  // POST /residency/tenant/:tenantId/assign -- assign region (one-time only)
   app.post('/residency/tenant/:tenantId/assign', async (request, reply) => {
     const tenantId = requireTenantId(request, reply);
     if (!tenantId) return;
@@ -152,7 +152,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // POST /residency/transfer-agreements — create a data transfer agreement
+  // POST /residency/transfer-agreements -- create a data transfer agreement
   app.post('/residency/transfer-agreements', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const {
@@ -210,7 +210,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // GET /residency/transfer-agreements — list agreements
+  // GET /residency/transfer-agreements -- list agreements
   app.get('/residency/transfer-agreements', async (request) => {
     const tenantId = resolveTenantId(request);
     if (!tenantId) {
@@ -227,7 +227,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, agreements, total: agreements.length };
   });
 
-  // POST /residency/validate-transfer — check if transfer is allowed
+  // POST /residency/validate-transfer -- check if transfer is allowed
   app.post('/residency/validate-transfer', async (request, reply) => {
     const body = (request.body as Record<string, unknown>) || {};
     const { sourceRegion, targetRegion, hasConsent, hasAgreement } = body as {
@@ -304,7 +304,7 @@ export async function dataResidencyRoutes(app: FastifyInstance): Promise<void> {
   });
 }
 
-// ── Helpers ────────────────────────────────────────────────────
+// -- Helpers ----------------------------------------------------
 
 function safeResolvePg(region: DataRegion): string | null {
   try {

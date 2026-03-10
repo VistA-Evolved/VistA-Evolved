@@ -1,5 +1,5 @@
 /**
- * SCIM 2.0 Routes — Phase 339 (W16-P3).
+ * SCIM 2.0 Routes -- Phase 339 (W16-P3).
  *
  * Exposes SCIM 2.0 (RFC 7643/7644) endpoints for automated user and
  * group provisioning from external IdPs.
@@ -175,7 +175,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
   /* ---------------------------------------------------------------- */
 
   /**
-   * POST /scim/v2/Users — Create user
+   * POST /scim/v2/Users -- Create user
    */
   server.post('/scim/v2/Users', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
@@ -195,7 +195,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
   });
 
   /**
-   * GET /scim/v2/Users/:id — Read user
+   * GET /scim/v2/Users/:id -- Read user
    */
   server.get('/scim/v2/Users/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
@@ -210,7 +210,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
   });
 
   /**
-   * GET /scim/v2/Users — List/filter users
+   * GET /scim/v2/Users -- List/filter users
    */
   server.get('/scim/v2/Users', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
@@ -227,7 +227,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
   });
 
   /**
-   * PUT /scim/v2/Users/:id — Replace user
+   * PUT /scim/v2/Users/:id -- Replace user
    */
   server.put('/scim/v2/Users/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
@@ -244,7 +244,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
   });
 
   /**
-   * PATCH /scim/v2/Users/:id — Patch user
+   * PATCH /scim/v2/Users/:id -- Patch user
    */
   server.patch('/scim/v2/Users/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
@@ -261,7 +261,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
   });
 
   /**
-   * DELETE /scim/v2/Users/:id — Deactivate user
+   * DELETE /scim/v2/Users/:id -- Deactivate user
    */
   server.delete('/scim/v2/Users/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
@@ -281,7 +281,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
   /* ---------------------------------------------------------------- */
 
   /**
-   * POST /scim/v2/Groups — Create group
+   * POST /scim/v2/Groups -- Create group
    */
   server.post('/scim/v2/Groups', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
@@ -300,7 +300,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
   });
 
   /**
-   * GET /scim/v2/Groups/:id — Read group
+   * GET /scim/v2/Groups/:id -- Read group
    */
   server.get('/scim/v2/Groups/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
@@ -315,7 +315,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
   });
 
   /**
-   * GET /scim/v2/Groups — List groups
+   * GET /scim/v2/Groups -- List groups
    */
   server.get('/scim/v2/Groups', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
@@ -325,7 +325,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
   });
 
   /**
-   * PATCH /scim/v2/Groups/:id — Patch group (add/remove members)
+   * PATCH /scim/v2/Groups/:id -- Patch group (add/remove members)
    */
   server.patch('/scim/v2/Groups/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);
@@ -342,7 +342,7 @@ export default async function scimRoutes(server: FastifyInstance): Promise<void>
   });
 
   /**
-   * DELETE /scim/v2/Groups/:id — Delete group
+   * DELETE /scim/v2/Groups/:id -- Delete group
    */
   server.delete('/scim/v2/Groups/:id', async (request, reply) => {
     const tenantId = validateScimAuth(request, reply);

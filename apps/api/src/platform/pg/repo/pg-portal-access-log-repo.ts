@@ -1,5 +1,5 @@
 /**
- * PG Portal Access Log Repository — Async durable access logs
+ * PG Portal Access Log Repository -- Async durable access logs
  *
  * Phase 127: Portal + Telehealth Durability (Map stores -> Postgres)
  *
@@ -13,7 +13,7 @@ import { pgPortalAccessLog } from '../pg-schema.js';
 
 export type PortalAccessLogRow = typeof pgPortalAccessLog.$inferSelect;
 
-/* ── Insert ────────────────────────────────────────────────── */
+/* -- Insert -------------------------------------------------- */
 
 export async function insertAccessLog(data: {
   id: string;
@@ -42,7 +42,7 @@ export async function insertAccessLog(data: {
   });
 }
 
-/* ── Query ─────────────────────────────────────────────────── */
+/* -- Query --------------------------------------------------- */
 
 export async function findAccessLogsByUser(
   userId: string,
@@ -95,7 +95,7 @@ export async function countAllAccessLogs(): Promise<number> {
   return result[0]?.count ?? 0;
 }
 
-/* ── Stats ─────────────────────────────────────────────────── */
+/* -- Stats --------------------------------------------------- */
 
 export async function getAccessLogStats(): Promise<{ total: number; users: number }> {
   const db = getPgDb();

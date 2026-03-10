@@ -1,5 +1,5 @@
 /**
- * PG Radiology Repository — Async durable radiology workflow state
+ * PG Radiology Repository -- Async durable radiology workflow state
  *
  * Phase 528 (W38-C7): Radiology Durability
  *
@@ -26,7 +26,7 @@ export type DoseRegistryEntryRow = typeof pgDoseRegistryEntry.$inferSelect;
 export type RadCriticalAlertRow = typeof pgRadCriticalAlert.$inferSelect;
 export type PeerReviewRow = typeof pgPeerReview.$inferSelect;
 
-/* ═══════════════════ RADIOLOGY ORDER ═══════════════════ */
+/* =================== RADIOLOGY ORDER =================== */
 
 export async function insertRadiologyOrder(data: {
   id: string;
@@ -179,7 +179,7 @@ export async function deleteRadiologyOrder(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ READING WORKLIST ITEM ═══════════════════ */
+/* =================== READING WORKLIST ITEM =================== */
 
 export async function insertReadingWorklistItem(data: {
   id: string;
@@ -306,7 +306,7 @@ export async function deleteReadingWorklistItem(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ RAD REPORT ═══════════════════ */
+/* =================== RAD REPORT =================== */
 
 export async function insertRadReport(data: {
   id: string;
@@ -439,7 +439,7 @@ export async function deleteRadReport(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ DOSE REGISTRY ENTRY ═══════════════════ */
+/* =================== DOSE REGISTRY ENTRY =================== */
 
 export async function insertDoseRegistryEntry(data: {
   id: string;
@@ -559,7 +559,7 @@ export async function deleteDoseRegistryEntry(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ RAD CRITICAL ALERT ═══════════════════ */
+/* =================== RAD CRITICAL ALERT =================== */
 
 export async function insertRadCriticalAlert(data: {
   id: string;
@@ -684,7 +684,7 @@ export async function deleteRadCriticalAlert(id: string): Promise<boolean> {
   return (result as any).rowCount > 0;
 }
 
-/* ═══════════════════ PEER REVIEW ═══════════════════ */
+/* =================== PEER REVIEW =================== */
 
 export async function insertPeerReview(data: {
   id: string;

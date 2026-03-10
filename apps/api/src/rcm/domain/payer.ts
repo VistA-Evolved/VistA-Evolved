@@ -1,5 +1,5 @@
 /**
- * RCM Domain — Payer Entity & Integration Modes
+ * RCM Domain -- Payer Entity & Integration Modes
  *
  * Phase 38: Payer types for the registry.
  *
@@ -66,7 +66,7 @@ export interface Payer {
   updatedAt: string;
 }
 
-/* ── Payer search / filter helpers ──────────────────────────── */
+/* -- Payer search / filter helpers ---------------------------- */
 
 export interface PayerFilter {
   country?: PayerCountry;

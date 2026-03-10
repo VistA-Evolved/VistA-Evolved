@@ -210,7 +210,7 @@ export default function ExportsPage() {
 
       {loading && <p style={{ color: '#6b7280' }}>Loading...</p>}
 
-      {/* ── Sources tab ────────────────────────────────────────── */}
+      {/* -- Sources tab ------------------------------------------ */}
       {tab === 'sources' && !loading && (
         <div>
           <div
@@ -317,7 +317,7 @@ export default function ExportsPage() {
         </div>
       )}
 
-      {/* ── Jobs tab ───────────────────────────────────────────── */}
+      {/* -- Jobs tab --------------------------------------------- */}
       {tab === 'jobs' && !loading && (
         <div>
           <div style={{ display: 'flex', justifyContent: 'space-between', marginBottom: 12 }}>
@@ -415,7 +415,7 @@ export default function ExportsPage() {
         </div>
       )}
 
-      {/* ── Stats tab ──────────────────────────────────────────── */}
+      {/* -- Stats tab -------------------------------------------- */}
       {tab === 'stats' && !loading && stats && (
         <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, 1fr)', gap: 16 }}>
           {[

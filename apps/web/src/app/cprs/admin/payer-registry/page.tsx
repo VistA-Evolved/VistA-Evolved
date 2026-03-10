@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Payer Registry — Phase 95: Payer Registry Persistence + Audit
+ * Payer Registry -- Phase 95: Payer Registry Persistence + Audit
  *
  * Admin page for managing the persistent payer registry. Provides:
  *   - Registry tab: list of all persisted payers with import action
@@ -14,7 +14,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 interface PersistedPayer {
   payerId: string;
@@ -77,7 +77,7 @@ interface RegistryStats {
   hasPhilHealth: boolean;
 }
 
-/* ── Color Maps ─────────────────────────────────────────────── */
+/* -- Color Maps ----------------------------------------------- */
 
 const STATUS_COLORS: Record<string, string> = {
   in_progress: '#2563eb',
@@ -96,7 +96,7 @@ const CAP_COLORS: Record<string, string> = {
 
 type Tab = 'registry' | 'evidence' | 'audit' | 'stats';
 
-/* ── Page ───────────────────────────────────────────────────── */
+/* -- Page ----------------------------------------------------- */
 
 export default function PayerRegistryPage() {
   const [tab, setTab] = useState<Tab>('registry');
@@ -114,7 +114,7 @@ export default function PayerRegistryPage() {
   const [search, setSearch] = useState('');
   const [loading, setLoading] = useState(false);
 
-  /* ── Fetchers ───────────────────────────────────────────── */
+  /* -- Fetchers --------------------------------------------- */
 
   const fetchPayers = useCallback(async () => {
     setLoading(true);
@@ -208,7 +208,7 @@ export default function PayerRegistryPage() {
     if (tab === 'audit') fetchAudit();
   }, [tab, fetchAudit]);
 
-  /* ── Styles ─────────────────────────────────────────────── */
+  /* -- Styles ----------------------------------------------- */
 
   const cardStyle: React.CSSProperties = {
     background: '#fff',
@@ -234,7 +234,7 @@ export default function PayerRegistryPage() {
     </span>
   );
 
-  /* ── Tabs ───────────────────────────────────────────────── */
+  /* -- Tabs ------------------------------------------------- */
 
   return (
     <div style={{ padding: 24, maxWidth: 1200, fontFamily: 'system-ui, sans-serif' }}>
@@ -266,7 +266,7 @@ export default function PayerRegistryPage() {
         ))}
       </div>
 
-      {/* ── Registry Tab ──────────────────────────────────── */}
+      {/* -- Registry Tab ------------------------------------ */}
       {tab === 'registry' && (
         <div>
           <div style={{ display: 'flex', gap: 12, marginBottom: 16, alignItems: 'center' }}>
@@ -429,7 +429,7 @@ export default function PayerRegistryPage() {
         </div>
       )}
 
-      {/* ── Evidence Tab ──────────────────────────────────── */}
+      {/* -- Evidence Tab ------------------------------------ */}
       {tab === 'evidence' && (
         <div>
           {evidenceScore ? (
@@ -523,7 +523,7 @@ export default function PayerRegistryPage() {
         </div>
       )}
 
-      {/* ── Audit Tab ─────────────────────────────────────── */}
+      {/* -- Audit Tab --------------------------------------- */}
       {tab === 'audit' && (
         <div>
           <div style={{ display: 'flex', gap: 12, marginBottom: 16, alignItems: 'center' }}>
@@ -613,7 +613,7 @@ export default function PayerRegistryPage() {
         </div>
       )}
 
-      {/* ── Stats Tab ─────────────────────────────────────── */}
+      {/* -- Stats Tab --------------------------------------- */}
       {tab === 'stats' && (
         <div>
           {stats ? (

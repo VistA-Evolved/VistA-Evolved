@@ -1,4 +1,5 @@
 import type { FastifyInstance } from 'fastify';
+import { safeErr } from '../../lib/safe-error.js';
 import { safeCallRpc } from '../../lib/rpc-resilience.js';
 import { log } from '../../lib/logger.js';
 import { requireSession, requireRole } from '../../auth/auth-routes.js';
@@ -21,7 +22,7 @@ export default async function vistaWardsRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE WARD LIST', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE WARD LIST', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -44,7 +45,7 @@ export default async function vistaWardsRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE WARD DETAIL', data: detail };
     } catch (err: any) {
       log.error('Failed to call VE WARD DETAIL', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -65,7 +66,7 @@ export default async function vistaWardsRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE CENSUS', count: data.length, data };
     } catch (err: any) {
       log.error('Failed to call VE CENSUS', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 
@@ -87,7 +88,7 @@ export default async function vistaWardsRoutes(server: FastifyInstance) {
       return { ok: true, source: 'vista', rpcUsed: 'VE WARD EDIT' };
     } catch (err: any) {
       log.error('Failed to call VE WARD EDIT', { err });
-      return reply.code(500).send({ ok: false, error: err.message });
+      return reply.code(500).send({ ok: false, error: safeErr(err) });
     }
   });
 }

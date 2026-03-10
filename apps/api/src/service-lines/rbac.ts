@@ -5,7 +5,7 @@
  * Controls access to ED, OR, and ICU endpoints by role.
  */
 
-// ── Service Lines ──────────────────────────────────────────────────
+// -- Service Lines --------------------------------------------------
 
 export type ServiceLine = 'ed' | 'or' | 'icu';
 
@@ -15,7 +15,7 @@ export type ServiceLinePermission =
   | 'manage' // Create/update visits, cases, admissions
   | 'admin'; // Configuration, bed management, blocks
 
-// ── Roles ──────────────────────────────────────────────────────────
+// -- Roles ----------------------------------------------------------
 
 export type ServiceLineRole =
   | 'ed_provider'
@@ -28,7 +28,7 @@ export type ServiceLineRole =
   | 'admin'
   | 'clerk';
 
-// ── Role -> Permission Mapping ─────────────────────────────────────
+// -- Role -> Permission Mapping -------------------------------------
 
 const ROLE_PERMISSIONS: Record<
   ServiceLineRole,
@@ -49,7 +49,7 @@ const ROLE_PERMISSIONS: Record<
   clerk: { ed: ['view'], or: ['view'], icu: ['view'] },
 };
 
-// ── Access Check ───────────────────────────────────────────────────
+// -- Access Check ---------------------------------------------------
 
 export function checkServiceLineAccess(
   roles: ServiceLineRole[],
@@ -63,7 +63,7 @@ export function checkServiceLineAccess(
   return false;
 }
 
-// ── Route prefixes -> service line mapping ──────────────────────────
+// -- Route prefixes -> service line mapping --------------------------
 
 const ROUTE_SERVICE_LINE: Record<string, ServiceLine> = {
   '/ed/': 'ed',
@@ -78,9 +78,9 @@ export function resolveServiceLine(path: string): ServiceLine | null {
   return null;
 }
 
-// ── Permission required per HTTP method ─────────────────────────────
+// -- Permission required per HTTP method -----------------------------
 
-/** Documentation sub-paths — POST to these is "document", not "manage". */
+/** Documentation sub-paths -- POST to these is "document", not "manage". */
 const DOCUMENT_PATHS = [
   '/triage',
   '/flowsheet',
@@ -112,7 +112,7 @@ export function requiredPermissionForMethod(method: string, path?: string): Serv
   }
 }
 
-// ── Export role definitions for documentation ───────────────────────
+// -- Export role definitions for documentation -----------------------
 
 export function getRoleDefinitions(): Record<
   ServiceLineRole,

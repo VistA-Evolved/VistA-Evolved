@@ -1,5 +1,5 @@
 /**
- * Device Registry — Types
+ * Device Registry -- Types
  *
  * Phase 380 (W21-P3): Managed device inventory with patient and location
  * association. Covers device lifecycle, association rules, and audit.

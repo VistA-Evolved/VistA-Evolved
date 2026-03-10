@@ -1,5 +1,5 @@
 /**
- * Idempotency Middleware — Request Deduplication
+ * Idempotency Middleware -- Request Deduplication
  *
  * Phase 103: DB Performance Posture
  *
@@ -72,7 +72,7 @@ function getTtlMs(): number {
 
 /**
  * Prune expired entries from in-memory store.
- * Called lazily on each lookup — O(n) but bounded by MAX_MEMORY_ENTRIES.
+ * Called lazily on each lookup -- O(n) but bounded by MAX_MEMORY_ENTRIES.
  */
 function pruneExpired(): void {
   const now = Date.now();
@@ -199,20 +199,16 @@ export function idempotencyGuard() {
     };
     memoryStore.set(cKey, marker);
     if (_repo) {
-      try {
-        _repo.upsertKey({
-          tenantId,
-          key: idempotencyKey,
-          method,
-          path: request.routeOptions?.url || request.url.split('?')[0],
-          statusCode: 0,
-          responseBody: '',
-          createdAt: marker.createdAt,
-          expiresAt: marker.expiresAt,
-        });
-      } catch (e) {
-        dbWarn('persist', e);
-      }
+      void _repo.upsertKey({
+        tenantId,
+        key: idempotencyKey,
+        method,
+        path: request.routeOptions?.url || request.url.split('?')[0],
+        statusCode: 0,
+        responseBody: '',
+        createdAt: marker.createdAt,
+        expiresAt: marker.expiresAt,
+      }).catch((e: unknown) => dbWarn('persist', e));
     }
 
     // On error, remove the marker so the request can be retried.
@@ -225,20 +221,16 @@ export function idempotencyGuard() {
         if (existing && existing.statusCode === 0) {
           existing.statusCode = reply.statusCode;
           if (_repo) {
-            try {
-              _repo.upsertKey({
-                tenantId,
-                key: idempotencyKey,
-                method,
-                path: request.routeOptions?.url || request.url.split('?')[0],
-                statusCode: reply.statusCode,
-                responseBody: existing.body != null ? JSON.stringify(existing.body) : '',
-                createdAt: existing.createdAt,
-                expiresAt: existing.expiresAt,
-              });
-            } catch (e) {
-              dbWarn('persist', e);
-            }
+            void _repo.upsertKey({
+              tenantId,
+              key: idempotencyKey,
+              method,
+              path: request.routeOptions?.url || request.url.split('?')[0],
+              statusCode: reply.statusCode,
+              responseBody: existing.body != null ? JSON.stringify(existing.body) : '',
+              createdAt: existing.createdAt,
+              expiresAt: existing.expiresAt,
+            }).catch((e: unknown) => dbWarn('persist', e));
           }
         }
       },
@@ -246,11 +238,8 @@ export function idempotencyGuard() {
         // On error, remove the marker so the request can be retried
         memoryStore.delete(cKey);
         if (_repo) {
-          try {
-            _repo.deleteKey(tenantId, idempotencyKey);
-          } catch (e) {
-            dbWarn('persist', e);
-          }
+          void _repo.deleteKey(tenantId, idempotencyKey)
+            .catch((e: unknown) => dbWarn('persist', e));
         }
       }
     );
@@ -295,20 +284,16 @@ export async function idempotencyOnSend(
     existing.statusCode = reply.statusCode;
     existing.body = body;
     if (_repo) {
-      try {
-        _repo.upsertKey({
-          tenantId,
-          key: idempotencyKey,
-          method,
-          path: request.routeOptions?.url || request.url.split('?')[0],
-          statusCode: reply.statusCode,
-          responseBody: body != null ? JSON.stringify(body) : '',
-          createdAt: existing.createdAt,
-          expiresAt: existing.expiresAt,
-        });
-      } catch (e) {
-        dbWarn('persist', e);
-      }
+      void _repo.upsertKey({
+        tenantId,
+        key: idempotencyKey,
+        method,
+        path: request.routeOptions?.url || request.url.split('?')[0],
+        statusCode: reply.statusCode,
+        responseBody: body != null ? JSON.stringify(body) : '',
+        createdAt: existing.createdAt,
+        expiresAt: existing.expiresAt,
+      }).catch((e: unknown) => dbWarn('persist', e));
     }
   }
 

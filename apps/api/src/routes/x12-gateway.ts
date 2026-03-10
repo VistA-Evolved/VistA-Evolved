@@ -4,15 +4,15 @@
  * Phase 321 (W14-P5): REST endpoints for the X12 inbound processing gateway.
  *
  * Routes:
- *   POST   /x12/gateway/ingest           — full inbound X12 processing pipeline
- *   POST   /x12/gateway/parse            — parse raw X12 without routing
- *   POST   /x12/gateway/validate         — parse + validate envelope only
- *   POST   /x12/gateway/ack/ta1          — generate TA1 for a given interchange
- *   POST   /x12/gateway/ack/999          — generate 999 for a given interchange
- *   GET    /x12/gateway/handlers         — list registered transaction handlers
- *   GET    /x12/gateway/control-numbers  — control number tracking stats
- *   DELETE /x12/gateway/control-numbers  — clear control number store (admin)
- *   GET    /x12/gateway/health           — gateway health summary
+ *   POST   /x12/gateway/ingest           -- full inbound X12 processing pipeline
+ *   POST   /x12/gateway/parse            -- parse raw X12 without routing
+ *   POST   /x12/gateway/validate         -- parse + validate envelope only
+ *   POST   /x12/gateway/ack/ta1          -- generate TA1 for a given interchange
+ *   POST   /x12/gateway/ack/999          -- generate 999 for a given interchange
+ *   GET    /x12/gateway/handlers         -- list registered transaction handlers
+ *   GET    /x12/gateway/control-numbers  -- control number tracking stats
+ *   DELETE /x12/gateway/control-numbers  -- clear control number store (admin)
+ *   GET    /x12/gateway/health           -- gateway health summary
  */
 
 import type { FastifyInstance } from 'fastify';
@@ -31,7 +31,7 @@ const DEFAULT_SENDER_ID = process.env.X12_GATEWAY_SENDER_ID || 'VISTAEVOLVED';
 const DEFAULT_SENDER_QUAL = process.env.X12_GATEWAY_SENDER_QUAL || 'ZZ';
 
 export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
-  // ─── Full Inbound Processing ─────────────────────────────────────
+  // --- Full Inbound Processing -------------------------------------
 
   app.post('/x12/gateway/ingest', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -78,7 +78,7 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // ─── Parse Only ──────────────────────────────────────────────────
+  // --- Parse Only --------------------------------------------------
 
   app.post('/x12/gateway/parse', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -118,7 +118,7 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // ─── Validate Only ──────────────────────────────────────────────
+  // --- Validate Only ----------------------------------------------
 
   app.post('/x12/gateway/validate', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -143,7 +143,7 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
     };
   });
 
-  // ─── TA1 Generation ─────────────────────────────────────────────
+  // --- TA1 Generation ---------------------------------------------
 
   app.post('/x12/gateway/ack/ta1', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -173,7 +173,7 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, ta1 };
   });
 
-  // ─── 999 Generation ─────────────────────────────────────────────
+  // --- 999 Generation ---------------------------------------------
 
   app.post('/x12/gateway/ack/999', async (request, reply) => {
     const body = (request.body as any) || {};
@@ -198,14 +198,14 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, ack999 };
   });
 
-  // ─── Handler Registry ───────────────────────────────────────────
+  // --- Handler Registry -------------------------------------------
 
   app.get('/x12/gateway/handlers', async () => {
     const handlers = getRegisteredHandlers();
     return { ok: true, count: handlers.length, handlers };
   });
 
-  // ─── Control Number Stats ───────────────────────────────────────
+  // --- Control Number Stats ---------------------------------------
 
   app.get('/x12/gateway/control-numbers', async () => {
     const stats = getControlNumberStats();
@@ -217,7 +217,7 @@ export async function x12GatewayRoutes(app: FastifyInstance): Promise<void> {
     return { ok: true, cleared: true };
   });
 
-  // ─── Health ─────────────────────────────────────────────────────
+  // --- Health -----------------------------------------------------
 
   app.get('/x12/gateway/health', async () => {
     const handlers = getRegisteredHandlers();

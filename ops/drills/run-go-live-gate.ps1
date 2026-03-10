@@ -1,6 +1,6 @@
 <#
 .SYNOPSIS
-  Go-Live Gate — Phase 256 Pilot Hospital Go-Live Kit
+  Go-Live Gate -- Phase 256 Pilot Hospital Go-Live Kit
   Aggregates all Wave 7 verification gates into a single go/no-go decision.
 .DESCRIPTION
   Runs all 8 Wave 7 verifiers (P2-P8) plus its own structural checks

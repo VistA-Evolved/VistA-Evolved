@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from 'react';
 import { API_BASE as API } from '@/lib/api-config';
 
 /* ================================================================== */
-/*  Phase 162 — Performance + UX Speed Pass Admin Dashboard            */
+/*  Phase 162 -- Performance + UX Speed Pass Admin Dashboard            */
 /* ================================================================== */
 
 type Tab = 'summary' | 'profiles' | 'budgets' | 'slow';

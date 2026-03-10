@@ -37,7 +37,7 @@ describe("Phase 260: HL7v2 Use-Cases v1 (Wave 8 P4)", () => {
   });
 });
 
-describe("Phase 261: Payer Adapters at Scale — IMPLEMENT", () => {
+describe("Phase 261: Payer Adapters at Scale -- IMPLEMENT", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/rcm/sdk/adapters`);
     expect(r0.status, "/rcm/sdk/adapters").not.toBe(500);
@@ -52,7 +52,7 @@ describe("Phase 261: Payer Adapters at Scale — IMPLEMENT", () => {
   });
 });
 
-describe("Phase 263: Support Tooling v2 — IMPLEMENT", () => {
+describe("Phase 263: Support Tooling v2 -- IMPLEMENT", () => {
   it("API routes respond (no 500)", async () => {
     const r0 = await fetch(`${API}/admin/support/bundles`);
     expect(r0.status, "/admin/support/bundles").not.toBe(500);

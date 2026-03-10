@@ -1,8 +1,8 @@
 /**
- * Key Rotation Manager — Phase 341 (W16-P5).
+ * Key Rotation Manager -- Phase 341 (W16-P5).
  *
  * Manages key lifecycle: generation, rotation, retiring, expiry.
- * Rotation is non-destructive — old keys are retained until expired.
+ * Rotation is non-destructive -- old keys are retained until expired.
  *
  * Flow:
  *   1. Generate new key version (status = "active")

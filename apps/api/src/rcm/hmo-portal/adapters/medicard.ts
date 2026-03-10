@@ -1,5 +1,5 @@
 /**
- * MediCard Portal Adapter — Phase 97
+ * MediCard Portal Adapter -- Phase 97
  *
  * Manual-assisted adapter for MediCard.
  * Portal: https://provider.medicard.com.ph/

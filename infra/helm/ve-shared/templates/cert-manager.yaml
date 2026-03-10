@@ -1,6 +1,6 @@
 {{- if .Values.certManager.enabled }}
 ---
-# cert-manager ClusterIssuer — self-signed CA for dev/staging
+# cert-manager ClusterIssuer -- self-signed CA for dev/staging
 # Replace with Let's Encrypt or ACME issuer for production.
 apiVersion: cert-manager.io/v1
 kind: ClusterIssuer

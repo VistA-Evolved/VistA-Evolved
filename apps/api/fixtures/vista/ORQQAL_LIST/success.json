@@ -1,0 +1,12 @@
+{
+  "rpcName": "ORQQAL LIST",
+  "caseName": "success",
+  "recordedAt": "2026-03-05T00:00:00Z",
+  "sanitized": true,
+  "params": ["46"],
+  "response": [
+    "120752^CHOCOLATE^ALLERGY^ACTIVE",
+    "120753^PENICILLIN^DRUG^ACTIVE"
+  ],
+  "responseHash": "c3d4e5f6a1b2"
+}

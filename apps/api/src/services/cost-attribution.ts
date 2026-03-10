@@ -12,7 +12,7 @@
 
 import { randomUUID } from "node:crypto";
 
-// ─── Types ──────────────────────────────────────────────────────────────────
+// --- Types ------------------------------------------------------------------
 
 export type CostSource = "opencost" | "manual" | "cloud-billing" | "supplementary";
 export type BudgetTier = "starter" | "professional" | "enterprise" | "custom";
@@ -99,7 +99,7 @@ export interface OpenCostConfig {
   };
 }
 
-// ─── Budget Tier Defaults ───────────────────────────────────────────────────
+// --- Budget Tier Defaults ---------------------------------------------------
 
 const TIER_DEFAULTS: Record<BudgetTier, { monthlyBudgetUsd: number; alertThresholdPct: number; hardLimitPct: number }> = {
   starter: { monthlyBudgetUsd: 500, alertThresholdPct: 0.8, hardLimitPct: 1.2 },
@@ -108,18 +108,21 @@ const TIER_DEFAULTS: Record<BudgetTier, { monthlyBudgetUsd: number; alertThresho
   custom: { monthlyBudgetUsd: 0, alertThresholdPct: 0.8, hardLimitPct: 2.0 },
 };
 
-// ─── In-Memory Stores ───────────────────────────────────────────────────────
+// --- In-Memory Stores -------------------------------------------------------
 
-const costStore = new Map<string, TenantCostDaily>();           // id → cost record
-const costByTenantDate = new Map<string, Set<string>>();        // `${tenantId}:${date}` → record IDs
-const budgetStore = new Map<string, TenantBudget>();            // tenantId → budget
-const alertStore = new Map<string, BudgetAlert>();              // id → alert
-const anomalyStore = new Map<string, CostAnomaly>();            // id → anomaly
+const MAX_COST_RECORDS = 50_000;
+const MAX_TENANT_DATE_KEYS = 10_000;
+
+const costStore = new Map<string, TenantCostDaily>();           // id -> cost record
+const costByTenantDate = new Map<string, Set<string>>();        // `${tenantId}:${date}` -> record IDs
+const budgetStore = new Map<string, TenantBudget>();            // tenantId -> budget
+const alertStore = new Map<string, BudgetAlert>();              // id -> alert
+const anomalyStore = new Map<string, CostAnomaly>();            // id -> anomaly
 
 const auditLog: Array<{ ts: string; action: string; actor: string; detail: Record<string, unknown> }> = [];
 const MAX_AUDIT = 10_000;
 
-// ─── OpenCost Config ────────────────────────────────────────────────────────
+// --- OpenCost Config --------------------------------------------------------
 
 let openCostConfig: OpenCostConfig = {
   enabled: process.env.OPENCOST_ENABLED === "true",
@@ -141,7 +144,7 @@ export function updateOpenCostConfig(partial: Partial<OpenCostConfig>, actor: st
   return { ...openCostConfig };
 }
 
-// ─── Cost Ingestion ─────────────────────────────────────────────────────────
+// --- Cost Ingestion ---------------------------------------------------------
 
 export function ingestCostRecord(input: {
   tenantId: string;
@@ -182,10 +185,18 @@ export function ingestCostRecord(input: {
   };
 
   costStore.set(record.id, record);
+  while (costStore.size > MAX_COST_RECORDS) {
+    const oldest = costStore.keys().next().value as string;
+    costStore.delete(oldest);
+  }
 
   const tdKey = `${record.tenantId}:${record.date}`;
   if (!costByTenantDate.has(tdKey)) costByTenantDate.set(tdKey, new Set());
   costByTenantDate.get(tdKey)!.add(record.id);
+  while (costByTenantDate.size > MAX_TENANT_DATE_KEYS) {
+    const oldest = costByTenantDate.keys().next().value as string;
+    costByTenantDate.delete(oldest);
+  }
 
   // Update current month spend on the tenant budget
   checkAndUpdateBudgetSpend(record.tenantId);
@@ -224,7 +235,7 @@ export function listCostRecords(filters?: {
   return results.sort((a, b) => b.date.localeCompare(a.date) || a.tenantId.localeCompare(b.tenantId)).slice(0, limit);
 }
 
-// ─── Cost Breakdown ─────────────────────────────────────────────────────────
+// --- Cost Breakdown ---------------------------------------------------------
 
 export function getCostBreakdown(tenantId: string, period: string, region?: string): CostBreakdown {
   const records = Array.from(costStore.values()).filter((r) => {
@@ -266,7 +277,7 @@ export function getCostBreakdown(tenantId: string, period: string, region?: stri
   return breakdown;
 }
 
-// ─── Budget Management ──────────────────────────────────────────────────────
+// --- Budget Management ------------------------------------------------------
 
 export function setBudget(input: {
   tenantId: string;
@@ -346,7 +357,7 @@ function checkAndUpdateBudgetSpend(tenantId: string): void {
   }
 }
 
-// ─── Alerts ─────────────────────────────────────────────────────────────────
+// --- Alerts -----------------------------------------------------------------
 
 function fireAlert(
   tenantId: string,
@@ -421,7 +432,7 @@ export function listAlerts(filters?: {
   return results.sort((a, b) => b.firedAt.localeCompare(a.firedAt)).slice(0, limit);
 }
 
-// ─── Anomaly Detection ──────────────────────────────────────────────────────
+// --- Anomaly Detection ------------------------------------------------------
 
 /**
  * Detect anomalies using 7-day rolling average as baseline.
@@ -434,7 +445,7 @@ export function detectAnomalies(tenantId: string, thresholdDeviationPct = 0.5): 
 
   if (allRecords.length < 8) return []; // need at least 7 days + 1 to check
 
-  // Group by date → total daily cost
+  // Group by date -> total daily cost
   const dailyTotals = new Map<string, number>();
   for (const r of allRecords) {
     dailyTotals.set(r.date, (dailyTotals.get(r.date) || 0) + r.totalCostUsd);
@@ -478,7 +489,7 @@ export function listAnomalies(filters?: { tenantId?: string }, limit = 100): Cos
   return results.sort((a, b) => b.detectedAt.localeCompare(a.detectedAt)).slice(0, limit);
 }
 
-// ─── Summary ────────────────────────────────────────────────────────────────
+// --- Summary ----------------------------------------------------------------
 
 export function getCostSummary(tenantId?: string): {
   totalRecords: number;
@@ -516,7 +527,7 @@ export function getCostSummary(tenantId?: string): {
   };
 }
 
-// ─── Audit ──────────────────────────────────────────────────────────────────
+// --- Audit ------------------------------------------------------------------
 
 function appendAudit(action: string, actor: string, detail: Record<string, unknown>): void {
   auditLog.push({ ts: new Date().toISOString(), action, actor, detail });

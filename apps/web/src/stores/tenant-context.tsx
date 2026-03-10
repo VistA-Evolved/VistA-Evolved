@@ -1,14 +1,14 @@
 'use client';
 
 /**
- * Tenant context — Phase 17C.
+ * Tenant context -- Phase 17C.
  *
  * Fetches current user's tenant config (enabled modules, feature flags, UI defaults,
  * note templates) via GET /admin/my-tenant. Provides hooks for:
- *   - `useTenant()` — full tenant data
- *   - `useFeatureFlag(flagId)` — boolean check
- *   - `useModuleEnabled(moduleId)` — boolean check
- *   - `useFacilityDefaults()` — UI defaults from tenant config
+ *   - `useTenant()` -- full tenant data
+ *   - `useFeatureFlag(flagId)` -- boolean check
+ *   - `useModuleEnabled(moduleId)` -- boolean check
+ *   - `useFacilityDefaults()` -- UI defaults from tenant config
  */
 
 import { createContext, useContext, useState, useEffect, useCallback, type ReactNode } from 'react';
@@ -86,7 +86,7 @@ export interface TenantData {
   facilityName: string;
   facilityStation: string;
   enabledModules: ModuleId[];
-  /** System-level module IDs (kernel, clinical, rcm, etc.) — Phase 135 */
+  /** System-level module IDs (kernel, clinical, rcm, etc.) -- Phase 135 */
   systemModules: string[];
   featureFlags: Record<string, boolean>;
   uiDefaults: UIDefaults;

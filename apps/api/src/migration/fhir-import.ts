@@ -15,7 +15,7 @@ import type {
   FhirImportResult,
 } from './types.js';
 
-// ── In-memory batch store ──────────────────────────────────────────
+// -- In-memory batch store ------------------------------------------
 
 const batches = new Map<string, FhirMigrationBatch>();
 
@@ -29,7 +29,7 @@ export function listBatches(): FhirMigrationBatch[] {
   );
 }
 
-// ── Supported resource types ───────────────────────────────────────
+// -- Supported resource types ---------------------------------------
 
 const SUPPORTED_TYPES = new Set([
   'Patient',
@@ -40,7 +40,7 @@ const SUPPORTED_TYPES = new Set([
   'Encounter',
 ]);
 
-// ── Validation ─────────────────────────────────────────────────────
+// -- Validation -----------------------------------------------------
 
 function validateResource(resource: FhirResource): FhirMigrationError[] {
   const errors: FhirMigrationError[] = [];
@@ -123,7 +123,7 @@ function validateResource(resource: FhirResource): FhirMigrationError[] {
   return errors;
 }
 
-// ── Import pipeline ────────────────────────────────────────────────
+// -- Import pipeline ------------------------------------------------
 
 export function importFhirBundle(bundle: FhirBundle, userId: string): FhirImportResult {
   const batchId = `mig-${randomBytes(8).toString('hex')}`;

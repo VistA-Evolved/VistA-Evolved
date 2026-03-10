@@ -1,7 +1,7 @@
 /**
- * Inbox / Notifications routes — Phase 13B + Phase 14B compat layer.
+ * Inbox / Notifications routes -- Phase 13B + Phase 14B compat layer.
  *
- * GET /vista/inbox — aggregates pending items across clinical domains:
+ * GET /vista/inbox -- aggregates pending items across clinical domains:
  *   - Unsigned orders
  *   - Abnormal lab results
  *   - Pending consult requests
@@ -17,8 +17,10 @@ import type { FastifyInstance } from 'fastify';
 import { requireSession } from '../auth/auth-routes.js';
 import { validateCredentials } from '../vista/config.js';
 import { connect, disconnect, callRpc, getDuz } from '../vista/rpcBrokerClient.js';
+import { safeCallRpc } from '../lib/rpc-resilience.js';
 import { optionalRpc } from '../vista/rpcCapabilities.js';
 import { safeErr } from '../lib/safe-error.js';
+import { log } from '../lib/logger.js';
 
 function parseNotificationDate(raw: string | undefined): string {
   const normalized = (raw || '').trim().replace('@', ' ');
@@ -225,33 +227,30 @@ export default async function inboxRoutes(server: FastifyInstance): Promise<void
       return reply.code(400).send({ ok: false, error: 'itemId required' });
     }
 
-    return reply.code(202).send({
-      ok: false,
-      status: 'integration-pending',
-      integrationPending: true,
-      pending: true,
-      itemId,
-      source: 'vista',
-      error:
-        'Inbox acknowledgement cannot be persisted in the current VEHU sandbox because ORWORB KILL EXPIR MSG is not available.',
-      rpcUsed: [],
-      pendingTargets: [
-        {
-          rpc: 'ORWORB KILL EXPIR MSG',
-          package: 'OR',
-          reason: 'Persist inbox acknowledgement back to VistA notifications',
-        },
-      ],
-      vistaGrounding: {
-        targetRpc: ['ORWORB KILL EXPIR MSG'],
-        status: 'integration-pending',
-        nextSteps: [
-          'Install or verify ORWORB KILL EXPIR MSG in the active VistA lane.',
-          'Wire the acknowledge action to real VistA persistence once the RPC is available.',
-        ],
-      },
-      note:
-        'The inbox item remains visible by design until a real VistA acknowledge path is available.',
-    });
+    const rpcUsed: string[] = [];
+    const alertId = itemId.replace(/^notif-/, '');
+
+    try {
+      const result = await safeCallRpc('ORB DELETE ALERT', [alertId, session.duz], { idempotent: false });
+      rpcUsed.push('ORB DELETE ALERT');
+
+      return {
+        ok: true,
+        itemId,
+        source: 'vista',
+        rpcUsed,
+        data: result,
+      };
+    } catch (err: any) {
+      rpcUsed.push('ORB DELETE ALERT');
+      log.warn('ORB DELETE ALERT failed', { err: err?.message, alertId });
+      return reply.code(502).send({
+        ok: false,
+        itemId,
+        source: 'vista',
+        error: `Alert acknowledgement failed: ${safeErr(err)}`,
+        rpcUsed,
+      });
+    }
   });
 }

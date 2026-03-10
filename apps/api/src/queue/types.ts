@@ -1,5 +1,5 @@
 /**
- * Phase 159: Patient Queue / Waiting / Numbering / Calling System — Types
+ * Phase 159: Patient Queue / Waiting / Numbering / Calling System -- Types
  */
 
 /** Priority levels for queue tickets */
@@ -84,7 +84,7 @@ export interface DepartmentQueueConfig {
   updatedAt: string;
 }
 
-/** Queue display board data — no auth, public-safe */
+/** Queue display board data -- no auth, public-safe */
 export interface QueueDisplayBoard {
   department: string;
   displayName: string;

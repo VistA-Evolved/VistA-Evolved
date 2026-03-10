@@ -1,5 +1,5 @@
 #!/bin/sh
-# HL7 Test Message Sender — Phase 258
+# HL7 Test Message Sender -- Phase 258
 # Usage: sh send-test-message.sh <fixture-file> [host] [port]
 #
 # Sends an HL7v2 message wrapped in MLLP framing to the target host:port.

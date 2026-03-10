@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * Claims Workbench — Phase 94: PH HMO Workflow Automation
+ * Claims Workbench -- Phase 94: PH HMO Workflow Automation
  *
  * Unified claims management dashboard for PH HMO payers.
  *
@@ -16,7 +16,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Styles ─────────────────────────────────────────────────── */
+/* -- Styles --------------------------------------------------- */
 
 const PAGE: React.CSSProperties = {
   padding: '24px',
@@ -104,7 +104,7 @@ const STATUS_COLORS: Record<string, string> = {
   closed: '#888',
 };
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 interface StatusBoard {
   total: number;
@@ -280,7 +280,7 @@ export default function ClaimsWorkbenchPage() {
         ))}
       </div>
 
-      {/* ── Status Board ─────────────────────────────────────── */}
+      {/* -- Status Board --------------------------------------- */}
       {tab === 'board' && (
         <div>
           {loading ? (
@@ -351,7 +351,7 @@ export default function ClaimsWorkbenchPage() {
         </div>
       )}
 
-      {/* ── Create Claim ─────────────────────────────────────── */}
+      {/* -- Create Claim --------------------------------------- */}
       {tab === 'create' && (
         <div style={{ maxWidth: 600 }}>
           <div style={CARD}>
@@ -411,7 +411,7 @@ export default function ClaimsWorkbenchPage() {
         </div>
       )}
 
-      {/* ── VistA Sources ────────────────────────────────────── */}
+      {/* -- VistA Sources -------------------------------------- */}
       {tab === 'sources' && (
         <div>
           <div
@@ -433,7 +433,7 @@ export default function ClaimsWorkbenchPage() {
               </div>
             </div>
             <div style={CARD}>
-              <div style={{ fontSize: 11, color: '#888' }}>Integration Pending</div>
+              <div style={{ fontSize: 11, color: '#888' }}>Awaiting Config</div>
               <div style={{ fontSize: 22, fontWeight: 700, color: '#f59e0b' }}>
                 {sourceStats.integrationPending}
               </div>
@@ -471,7 +471,7 @@ export default function ClaimsWorkbenchPage() {
                         background:
                           s.status === 'available'
                             ? '#16a34a'
-                            : s.status === 'integration_pending'
+                            : s.status === 'requires_config'
                               ? '#d97706'
                               : '#666',
                         color: '#fff',
@@ -494,7 +494,7 @@ export default function ClaimsWorkbenchPage() {
         </div>
       )}
 
-      {/* ── Rulepacks ────────────────────────────────────────── */}
+      {/* -- Rulepacks ------------------------------------------ */}
       {tab === 'rulepacks' && (
         <div>
           {rulepacks.length === 0 ? (

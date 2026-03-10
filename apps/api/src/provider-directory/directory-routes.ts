@@ -1,5 +1,5 @@
 /**
- * Phase 402 (W23-P4): Provider Directory — Routes
+ * Phase 402 (W23-P4): Provider Directory -- Routes
  */
 
 import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
@@ -23,7 +23,7 @@ import {
 } from './directory-store.js';
 
 export default async function providerDirectoryRoutes(server: FastifyInstance): Promise<void> {
-  // ─── Practitioner ──────────────────────────────────────────
+  // --- Practitioner ------------------------------------------
 
   server.get(
     '/provider-directory/practitioners',
@@ -105,7 +105,7 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
     }
   );
 
-  // ─── Organization ──────────────────────────────────────────
+  // --- Organization ------------------------------------------
 
   server.get(
     '/provider-directory/organizations',
@@ -173,7 +173,7 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
     }
   );
 
-  // ─── Location ──────────────────────────────────────────────
+  // --- Location ----------------------------------------------
 
   server.get(
     '/provider-directory/locations',
@@ -240,7 +240,7 @@ export default async function providerDirectoryRoutes(server: FastifyInstance): 
     }
   );
 
-  // ─── Dashboard ─────────────────────────────────────────────
+  // --- Dashboard ---------------------------------------------
 
   server.get(
     '/provider-directory/dashboard',

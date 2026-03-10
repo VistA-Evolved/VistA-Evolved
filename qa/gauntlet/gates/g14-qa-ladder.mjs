@@ -49,7 +49,7 @@ export async function run(opts = {}) {
     details.push(`WARN: ${label}`);
   }
 
-  // ── Workstream A: Playwright Journeys ──
+  // -- Workstream A: Playwright Journeys --
 
   const journeys = rd('apps/web/e2e/qa-ladder-journeys.spec.ts');
   check('Playwright journeys spec exists', journeys !== null);
@@ -61,7 +61,7 @@ export async function run(opts = {}) {
   check('Uses selectPatient helper', journeys?.includes('selectPatient') ?? false);
   check('Uses setupConsoleGate', journeys?.includes('setupConsoleGate') ?? false);
 
-  // ── Workstream B: Contract Tests ──
+  // -- Workstream B: Contract Tests --
 
   const contracts = rd('apps/api/tests/qa-ladder-contracts.test.ts');
   check('Contract test file exists', contracts !== null);
@@ -76,7 +76,7 @@ export async function run(opts = {}) {
   check('Contract: timing budget', contracts?.includes('MAX_RESPONSE_MS') ?? false);
   check('Contract: PHI leak prevention', contracts?.includes('not.toContain') ?? false);
 
-  // ── Workstream C: RPC Golden Trace ──
+  // -- Workstream C: RPC Golden Trace --
 
   const goldenTrace = rd('apps/api/tests/fixtures/rpc-golden-trace.json');
   check('Golden trace file exists', goldenTrace !== null);
@@ -115,7 +115,7 @@ export async function run(opts = {}) {
   check('Trace: sequence stability', traceTest?.includes('sequence stability') ?? false);
   check('Trace: live replay', traceTest?.includes('Live RPC replay') ?? false);
 
-  // ── Workstream D: Chaos/Restart ──
+  // -- Workstream D: Chaos/Restart --
 
   const chaos = rd('apps/api/tests/chaos-restart.test.ts');
   check('Chaos/restart test exists', chaos !== null);
@@ -125,7 +125,7 @@ export async function run(opts = {}) {
   check('Chaos: concurrent requests', chaos?.includes('Concurrent request') ?? false);
   check('Chaos: error shape under stress', chaos?.includes('Error shape under stress') ?? false);
 
-  // ── Workstream E: Visual Regression ──
+  // -- Workstream E: Visual Regression --
 
   const visual = rd('apps/web/e2e/visual-regression.spec.ts');
   check('Visual regression spec exists', visual !== null);
@@ -136,7 +136,7 @@ export async function run(opts = {}) {
   check('Visual: uses toHaveScreenshot', visual?.includes('toHaveScreenshot') ?? false);
   check('Visual: PHI masking', visual?.includes('mask:') ?? false);
 
-  // ── Cross-cutting: no placeholder tests ──
+  // -- Cross-cutting: no placeholder tests --
 
   const allTestSources = [journeys, contracts, traceTest, chaos, visual].filter(Boolean);
   let placeholderCount = 0;
@@ -147,7 +147,7 @@ export async function run(opts = {}) {
   }
   check('No empty/placeholder test bodies', placeholderCount === 0);
 
-  // ── Cross-cutting: no hardcoded credentials in test files ──
+  // -- Cross-cutting: no hardcoded credentials in test files --
 
   let credLeak = false;
   for (const src of allTestSources) {
@@ -169,7 +169,7 @@ export async function run(opts = {}) {
   }
   check('No hardcoded PROV123 outside env/assert context', !credLeak);
 
-  // ── Summary ──
+  // -- Summary --
 
   const elapsed = Date.now() - start;
   details.unshift(`QA Ladder: ${p} PASS / ${f} FAIL (${elapsed}ms)`);

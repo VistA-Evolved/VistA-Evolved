@@ -1,7 +1,7 @@
 'use client';
 
 /**
- * LOA Workbench — Phase 94: PH HMO Workflow Automation
+ * LOA Workbench -- Phase 94: PH HMO Workflow Automation
  *
  * Unified LOA management dashboard for billing staff.
  *
@@ -15,7 +15,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { csrfHeaders } from '@/lib/csrf';
 import { API_BASE as API } from '@/lib/api-config';
 
-/* ── Types ──────────────────────────────────────────────────── */
+/* -- Types ---------------------------------------------------- */
 
 interface LoaRequest {
   id: string;
@@ -41,7 +41,7 @@ interface LoaStats {
   byStatus: Record<string, number>;
 }
 
-/* ── Styles ─────────────────────────────────────────────────── */
+/* -- Styles --------------------------------------------------- */
 
 const PAGE: React.CSSProperties = {
   padding: '24px',
@@ -136,7 +136,7 @@ export default function LoaWorkbenchPage() {
   const [selectedLoa, setSelectedLoa] = useState<LoaRequest | null>(null);
   const [message, setMessage] = useState('');
 
-  /* ── Form state ───────────────────────────────────────────── */
+  /* -- Form state --------------------------------------------- */
   const [formPatientDfn, setFormPatientDfn] = useState('');
   const [formPatientName, setFormPatientName] = useState('');
   const [formPayerId, setFormPayerId] = useState('');
@@ -292,7 +292,7 @@ export default function LoaWorkbenchPage() {
         ))}
       </div>
 
-      {/* ── Active LOAs tab ──────────────────────────────────── */}
+      {/* -- Active LOAs tab ------------------------------------ */}
       {tab === 'active' && (
         <div>
           <div style={{ display: 'flex', gap: 8, marginBottom: 16, alignItems: 'center' }}>
@@ -495,7 +495,7 @@ export default function LoaWorkbenchPage() {
         </div>
       )}
 
-      {/* ── Create LOA tab ───────────────────────────────────── */}
+      {/* -- Create LOA tab ------------------------------------- */}
       {tab === 'create' && (
         <div style={{ maxWidth: 600 }}>
           <div style={CARD}>
@@ -595,7 +595,7 @@ export default function LoaWorkbenchPage() {
         </div>
       )}
 
-      {/* ── Stats tab ────────────────────────────────────────── */}
+      {/* -- Stats tab ------------------------------------------ */}
       {tab === 'stats' && (
         <div>
           {stats ? (

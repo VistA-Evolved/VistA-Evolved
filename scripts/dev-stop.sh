@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # =============================================================================
-# VistA-Evolved — Development Stop Script
+# VistA-Evolved -- Development Stop Script
 # =============================================================================
 # Usage: ./scripts/dev-stop.sh
 #        ./scripts/dev-stop.sh -v   # also remove volumes

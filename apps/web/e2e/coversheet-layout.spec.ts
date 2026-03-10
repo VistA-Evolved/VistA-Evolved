@@ -11,11 +11,12 @@
  */
 
 import { test, expect } from '@playwright/test';
+import { chartRoute } from './helpers/auth';
 
 test.describe('Cover Sheet Layout Parity (Phase 79)', () => {
   test.beforeEach(async ({ page }) => {
     // Pre-authenticated via storageState in playwright.config
-    await page.goto('/cprs/chart/3/cover');
+    await page.goto(chartRoute('cover'));
     await page.waitForLoadState('domcontentloaded');
     await page.waitForTimeout(2000);
   });
